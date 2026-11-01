@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-11-01T15:00:04.129Z",
+ "generatedAt": "2026-11-01T17:58:41.177Z",
  "sources": {
   "ranking": "iNaturalist research-grade observations (Germany + France, Agaricomycetes + Pezizomycetes) x number of Wikipedia language editions (Wikidata sitelinks)",
   "regions": "iNaturalist research-grade observations within 50 km of Berlin / Grenoble",
-  "names_edibility_morphology": "Wikidata (CC0)",
+  "names_edibility_morphology": "Wikidata (CC0); edibility conflicts resolved with mycodb.fr",
   "text": "Wikipedia FR/EN/DE (CC BY-SA 4.0), see text.<lang>.url"
  },
  "species": [
@@ -391,8 +391,8 @@
    "lookalikes": [
     544554,
     63489,
-    507493,
-    125688
+    544552,
+    507493
    ]
   },
   {
@@ -408,7 +408,7 @@
    "score": 260964,
    "wikidata": "Q772098",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "edible",
    "edibilitySource": [
     "poisonous mushroom",
     "edible mushroom",
@@ -461,6 +461,11 @@
       "fr": "parasitisme"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Laetiporus sulphureus",
+    "value": "Comestible",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Laetiporus&espece=sulphureus"
    },
    "names": {
     "fr": "Polypore soufré",
@@ -532,7 +537,7 @@
    "score": 247637,
    "wikidata": "Q753833",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "edible mushroom",
     "medicinal mushrooms",
@@ -580,6 +585,11 @@
       "fr": "saprophyte"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Trametes versicolor",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Trametes&espece=versicolor"
    },
    "names": {
     "fr": "Tramète Versicolore",
@@ -764,11 +774,16 @@
    "score": 237350,
    "wikidata": "Q229814",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "medicinal mushrooms"
    ],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Fomes fomentarius",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Fomes&espece=fomentarius"
+   },
    "names": {
     "fr": "Amadouvier",
     "en": "Hoof Fungus",
@@ -1085,7 +1100,7 @@
     515954,
     48418,
     117308,
-    351447
+    58693
    ]
   },
   {
@@ -1210,8 +1225,8 @@
    },
    "lookalikes": [
     125932,
-    135216,
-    194485
+    194485,
+    135216
    ]
   },
   {
@@ -1334,9 +1349,9 @@
     "grenoble": 21
    },
    "lookalikes": [
-    64071,
     130203,
-    157994
+    157994,
+    64071
    ]
   },
   {
@@ -1352,7 +1367,7 @@
    "score": 173200,
    "wikidata": "Q941733",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "toxic",
    "edibilitySource": [
     "edible mushroom",
     "medicinal mushrooms",
@@ -1411,6 +1426,11 @@
       "fr": "parasitisme"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Schizophyllum commune",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Schizophyllum&espece=commune"
    },
    "names": {
     "fr": "Schizophylle commun",
@@ -1488,7 +1508,7 @@
    "score": 163044,
    "wikidata": "Q96894257",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "edible mushroom",
     "medicinal mushrooms",
@@ -1534,6 +1554,11 @@
       "fr": "parasitisme"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Fomitopsis betulina",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Fomitopsis&espece=betulina"
    },
    "names": {
     "fr": "Polypore du bouleau",
@@ -1732,7 +1757,7 @@
    "score": 135144,
    "wikidata": "Q757125",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "toxic",
    "edibilitySource": [
     "edible mushroom",
     "caution mushroom"
@@ -1787,6 +1812,11 @@
      }
     ]
    },
+   "edibilityMycodb": {
+    "name": "Clitocybe nebularis",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Clitocybe&espece=nebularis"
+   },
    "names": {
     "fr": "Clitocybe nébuleux",
     "en": "Cloudy Clitocybe",
@@ -1840,9 +1870,9 @@
    },
    "lookalikes": [
     510199,
+    194737,
     118213,
-    67351,
-    118313
+    67351
    ]
   },
   {
@@ -1858,7 +1888,7 @@
    "score": 126180,
    "wikidata": "Q28492278",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "edible",
    "edibilitySource": [
     "inedible mushroom",
     "edible mushroom",
@@ -1881,6 +1911,11 @@
       "fr": "blanc"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Laccaria amethystina",
+    "value": "Comestible",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Laccaria&espece=amethystina"
    },
    "names": {
     "fr": "Laccaire améthyste",
@@ -2056,9 +2091,9 @@
     "grenoble": 38
    },
    "lookalikes": [
+    151795,
     154675,
-    118139,
-    151795
+    118139
    ]
   },
   {
@@ -2074,7 +2109,7 @@
    "score": 124740,
    "wikidata": "Q752497",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "edible",
    "edibilitySource": [
     "poisonous mushroom",
     "edible mushroom"
@@ -2129,6 +2164,11 @@
      }
     ]
    },
+   "edibilityMycodb": {
+    "name": "Imleria badia",
+    "value": "Comestible",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Imleria&espece=badia"
+   },
    "names": {
     "fr": "Bolet bai",
     "en": "Bay Bolete",
@@ -2182,10 +2222,10 @@
     "grenoble": 22
    },
    "lookalikes": [
-    147354,
-    485374,
-    474502,
-    438013
+    875042,
+    544552,
+    625287,
+    147354
    ]
   },
   {
@@ -2308,10 +2348,10 @@
     "grenoble": 5
    },
    "lookalikes": [
+    118215,
     203806,
     122333,
-    125720,
-    118215
+    125720
    ]
   },
   {
@@ -2327,7 +2367,7 @@
    "score": 114264,
    "wikidata": "Q48188",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "edible mushroom",
     "medicinal mushrooms",
@@ -2366,6 +2406,11 @@
       "fr": "saprophyte"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Phallus impudicus",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Phallus&espece=impudicus"
    },
    "names": {
     "fr": "Satyre puant",
@@ -2553,10 +2598,10 @@
     "grenoble": 5
    },
    "lookalikes": [
+    52529,
     351875,
     136399,
-    205516,
-    154750
+    205516
    ]
   },
   {
@@ -2799,8 +2844,8 @@
    "lookalikes": [
     126831,
     64021,
-    566555,
-    568292
+    626851,
+    566555
    ]
   },
   {
@@ -3168,8 +3213,8 @@
     "grenoble": 8
    },
    "lookalikes": [
-    47392,
-    48521
+    48521,
+    47392
    ]
   },
   {
@@ -4201,7 +4246,7 @@
    },
    "wikidata": "Q728673",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "toxic",
    "edibilitySource": [
     "poisonous mushroom",
     "edible mushroom"
@@ -4253,6 +4298,11 @@
       "de": "Saprobiont"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Coprinopsis atramentaria",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Coprinopsis&espece=atramentaria"
    },
    "names": {
     "fr": "Coprin noir d'encre",
@@ -4834,120 +4884,68 @@
    "no": null,
    "ex": 7,
    "extra": true,
-   "inat": 125688,
-   "latin": "Gyroporus castaneus",
+   "inat": 544552,
+   "latin": "Lanmaoa fragrans",
    "obs": {
     "DE": 0,
     "FR": 0
    },
-   "wikidata": "Q1165913",
+   "wikidata": "Q41713384",
    "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom",
-    "medicinal mushrooms"
-   ],
-   "morph": {
-    "hymenium": [
-     {
-      "qid": "Q19861549",
-      "en": "pores",
-      "de": "Poren",
-      "fr": "pore"
-     }
-    ],
-    "cap": [
-     {
-      "qid": "Q14544535",
-      "de": "gewölbt",
-      "en": "convex mushroom cap",
-      "fr": "chapeau convexe simple"
-     }
-    ],
-    "stipe": [
-     {
-      "qid": "Q14544581",
-      "de": "ringloser Stiel",
-      "en": "bare stipe",
-      "fr": "stipe lisse"
-     }
-    ],
-    "spores": [
-     {
-      "qid": "Q943",
-      "en": "yellow",
-      "fr": "jaune",
-      "de": "Gelb"
-     }
-    ],
-    "ecology": [
-     {
-      "qid": "Q99974",
-      "en": "mycorrhiza",
-      "de": "Mykorrhiza",
-      "fr": "mycorhize"
-     }
-    ]
+   "edibility": "none",
+   "edibilitySource": [],
+   "morph": {},
+   "edibilityMycodb": {
+    "name": "Lanmaoa fragrans",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Lanmaoa&espece=fragrans"
    },
    "names": {
-    "fr": "Bolet châtain",
-    "en": "Chestnut Bolete",
-    "de": "Hasenröhrling"
+    "fr": "Bolet odorant",
+    "en": "Lanmaoa fragrans",
+    "de": "Lanmaoa fragrans"
    },
    "nameSource": {
     "fr": "inaturalist",
-    "en": "inaturalist",
-    "de": "wikidata"
+    "en": "latin",
+    "de": "latin"
    },
    "text": {
     "fr": {
-     "intro": "Gyroporus castaneus, le Bolet châtain, anciennement Boletus castaneus, est une espèce de champignons basidiomycètes du genre Gyroporus dans la famille des Gyroporaceae. Il est caractérisé par ses tons châtains et son pied lisse, caverneux à la coupe.",
-     "habitat": "C'est une espèce ectomycorhizienne, poussant sous feuillus et sous conifères. Souvent sous chênes en milieu acidophile.",
-     "url": "https://fr.wikipedia.org/wiki/Gyroporus_castaneus"
+     "intro": "Lanmaoa fragrans, le Bolet odorant, anciennement Boletus fragrans, est une espèce de champignons basidiomycètes du genre Lanmaoa et de la famille des Boletaceae. Il est caractérisé par son pied lisse radicant, sa chair plus au moins bleuissante à la coupe et son odeur fruitée.",
+     "habitat": "Il s'agit un champignon ectomycorhizien à tendance thermophile, poussant de juin à novembre dans les régions méditerranéennes, venant dans les forêts chaudes de feuillus mais aussi dans les parcs et les lisières de terrain, sur terrain peu calcaire, de préférence acide, surtout sous les chênes (Q. cerris, Q.",
+     "url": "https://fr.wikipedia.org/wiki/Bolet_odorant"
     },
     "en": {
-     "intro": "Gyroporus castaneus, commonly known as the chestnut bolete, is a small, white-pored mushroom in the Gyroporaceae of order Boletales. It has a brown cap, and is usually found with oak trees. It differs from the true boletes in that the spores are a pale straw colour.",
-     "habitat": "The mushroom is found occasionally in Britain and throughout continental Europe, as well as eastern North America, but it is rare in western North America. It grows in small groups, or singly, in an ectomycorrhizal relationship with oaks (Quercus).",
-     "url": "https://en.wikipedia.org/wiki/Gyroporus_castaneus"
-    },
-    "de": {
-     "intro": "Der Hasen-Röhrling, auch Zimt-Röhrling, ist eine seltene Pilzart aus der Familie der Blasssporröhrlingsverwandten. Innerhalb der Gattung der Blasssporröhrlinge ist er Teil eines Artenaggregats, dem mehrere unbeschriebene kryptische europäische Arten angehören.",
-     "habitat": "Der Hasen-Röhrling ist ein Mykorrhizapilz, der mit verschiedenen Laubbäumen, in Mitteleuropa vor allem mit der Rotbuche und mit Eichenarten, eine Symbiose bildet. Hierbei kommt er sowohl auf sauren als auch auf basischen Böden vor.",
-     "url": "https://de.wikipedia.org/wiki/Hasen-R%C3%B6hrling"
+     "intro": "Lanmaoa fragrans is a rare species of bolete fungus in the family Boletaceae found in Europe. It has a brownish convex cap measuring 5–12 cm in diameter that initially has a velvety texture before becoming smooth. The spindle-shaped stipe measures 7–9 cm long by 3–5 cm wide.",
+     "habitat": "",
+     "url": "https://en.wikipedia.org/wiki/Lanmaoa_fragrans"
     }
    },
    "lookalikeTitles": [
     [
      "fr",
-     "Gyroporus ammophilus"
+     "Bolet bai"
     ],
     [
      "fr",
-     "Gyroporus ammophilus"
+     "Bolet bai"
     ],
     [
      "fr",
-     "Stipe (champignon)"
+     "Cyanoboletus pulverulentus"
     ],
     [
      "fr",
-     "Pin (plante)"
+     "Cyanoboletus pulverulentus"
     ],
     [
      "fr",
-     "Gyroporus cyanescens"
+     "Bolet radicant"
     ],
     [
      "fr",
-     "Gyroporus cyanescens"
-    ],
-    [
-     "fr",
-     "Suillus variegatus"
-    ],
-    [
-     "fr",
-     "Suillus variegatus"
+     "Bolet radicant"
     ],
     [
      "fr",
@@ -4968,6 +4966,10 @@
     [
      "fr",
      "Boletus reticulatus"
+    ],
+    [
+     "fr",
+     "Butyriboletus"
     ]
    ],
    "season": {
@@ -4977,28 +4979,26 @@
      0,
      0,
      0,
-     4,
-     23,
-     61,
-     56,
-     42,
-     12,
+     0,
+     0,
+     0,
+     8,
+     3,
+     0,
      0
     ],
     "months": [
-     7,
-     8,
      9,
-     10,
-     11
+     10
     ]
    },
    "regions": {
-    "berlin": 23,
+    "berlin": 0,
     "grenoble": 0
    },
    "lookalikes": [
-    48701
+    48701,
+    510854
    ]
   },
   {
@@ -5193,11 +5193,16 @@
    },
    "wikidata": "Q736892",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "medicinal mushrooms"
    ],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Trametes hirsuta",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Trametes&espece=hirsuta"
+   },
    "names": {
     "fr": "Tramète hirsute",
     "en": "Hairy Bracket",
@@ -5287,9 +5292,14 @@
    },
    "wikidata": "Q10724777",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Trametes ochracea",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Trametes&espece=ochracea"
+   },
    "names": {
     "fr": "Tramète zonée",
     "en": "Ochre Bracket",
@@ -5369,11 +5379,16 @@
    },
    "wikidata": "Q548690",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "medicinal mushrooms"
    ],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Trametes suaveolens",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Trametes&espece=suaveolens"
+   },
    "names": {
     "fr": "Tramète parfumée",
     "en": "Fragrant bracket",
@@ -5440,11 +5455,16 @@
    },
    "wikidata": "Q531200",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "medicinal mushrooms"
    ],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Bjerkandera adusta",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Bjerkandera&espece=adusta"
+   },
    "names": {
     "fr": "Polypore brûlé",
     "en": "Smoky polypore",
@@ -5533,11 +5553,16 @@
    },
    "wikidata": "Q1356296",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "medicinal mushrooms"
    ],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Phellinus igniarius",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Phellinus&espece=igniarius"
+   },
    "names": {
     "fr": "Faux amadouvier",
     "en": "Willow Bracket",
@@ -5944,50 +5969,91 @@
    "no": null,
    "ex": 16,
    "extra": true,
-   "inat": 351447,
-   "latin": "Macrolepiota mastoidea",
+   "inat": 58693,
+   "latin": "Chlorophyllum brunneum",
    "obs": {
     "DE": 0,
     "FR": 0
    },
-   "wikidata": "Q206727",
+   "wikidata": "Q4036155",
    "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom"
-   ],
+   "edibility": "toxic",
+   "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Chlorophyllum brunneum",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Chlorophyllum&espece=brunneum"
+   },
    "names": {
-    "fr": "Lépiote mamelonnée",
-    "en": "Slender Parasol",
-    "de": "Zitzen-Riesenschirmling"
+    "fr": "Lépiote des jardins",
+    "en": "Shaggy Parasol",
+    "de": "Garten-Riesenschirmling"
    },
    "nameSource": {
     "fr": "inaturalist",
     "en": "inaturalist",
-    "de": "inaturalist"
+    "de": "wikidata"
    },
    "text": {
     "fr": {
-     "intro": "Macrolepiota mastoidea, la Lépiote mammelonnée, est une espèce de champignons de la famille des Agaricaceae.",
-     "habitat": "",
-     "url": "https://fr.wikipedia.org/wiki/Macrolepiota_mastoidea"
-    },
-    "en": {
-     "intro": "Macrolepiota mastoidea is a species of mushroom producing fungus in the family Agaricaceae.",
-     "habitat": "This species is found in Europe from August to November.",
-     "url": "https://en.wikipedia.org/wiki/Macrolepiota_mastoidea"
-    },
-    "de": {
-     "intro": "Der Zitzen-Riesenschirmling ist eine Pilzart aus der Gattung der Riesenschirmlinge. Weitere deutsche Namen sind Spitzbuckliger Schirmling, Warzenschirmling, Warzen-Schirmpilz, Zitzen- oder Zitzenwarziger Riesenschirmpilz.",
-     "habitat": "Wie die anderen Arten der Gattung Riesenschirmlinge sind auch die Zitzen-Riesenschirmlinge saprobiontische Bodenbewohner.",
-     "url": "https://de.wikipedia.org/wiki/Zitzen-Riesenschirmling"
+     "intro": "Chlorophyllum brunneum, la Lépiote des jardins ou Lépiote vénéneuse, autrefois Macrolepiota venenata, est une espèce de champignon basidiomycète du genre Chlorophyllum dans la famille des Agaricaceae. Variablement toxique, elle est caractérisée par son bulbe typiquement marginé, son anneau simple, sa chair rosissante et son habitat dans les lieux anthropisés.",
+     "habitat": "Il s'agit un champignon saprophyte, venant dans les lieux et sur des sols enrichis en azote comme les détritus, le terreau, à proximité des lieux habités, dans les milieux anthropisés tels que jardins, parcs, tas de compost, serres, et sols riches en nutriments en forêts, etc, plus ou mois en touffe ou en grande troupe.",
+     "url": "https://fr.wikipedia.org/wiki/Chlorophyllum_brunneum"
     }
    },
    "lookalikeTitles": [
     [
-     "en",
-     "Chlorophyllum"
+     "fr",
+     "Macrolepiota procera"
+    ],
+    [
+     "fr",
+     "Macrolepiota procera"
+    ],
+    [
+     "fr",
+     "Macrolepiota procera"
+    ],
+    [
+     "fr",
+     "Chlorophyllum rhacodes"
+    ],
+    [
+     "fr",
+     "Chlorophyllum rhacodes"
+    ],
+    [
+     "fr",
+     "Lépiote d'Olivier"
+    ],
+    [
+     "fr",
+     "Chlorophyllum olivieri"
+    ],
+    [
+     "fr",
+     "Chlorophyllum molybdites"
+    ],
+    [
+     "fr",
+     "Chlorophyllum molybdites"
+    ],
+    [
+     "fr",
+     "Macrolepiota mastoidea"
+    ],
+    [
+     "fr",
+     "Macrolepiota mastoidea"
+    ],
+    [
+     "fr",
+     "Macrolepiota excoriata"
+    ],
+    [
+     "fr",
+     "Macrolepiota excoriata"
     ]
    ],
    "season": {
@@ -5997,23 +6063,25 @@
      0,
      0,
      0,
-     3,
      0,
-     5,
-     23,
-     123,
-     38,
-     7
+     10,
+     16,
+     22,
+     33,
+     21,
+     4
     ],
     "months": [
+     7,
+     8,
      9,
      10,
      11
     ]
    },
    "regions": {
-    "berlin": 7,
-    "grenoble": 5
+    "berlin": 36,
+    "grenoble": 0
    },
    "lookalikes": [
     63401
@@ -6149,7 +6217,7 @@
    },
    "wikidata": "Q271098",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [
     "medicinal mushrooms"
    ],
@@ -6200,6 +6268,11 @@
       "fr": "parasitisme"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Ganoderma lucidum",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Ganoderma&espece=lucidum"
    },
    "names": {
     "fr": "Ganoderme luisant",
@@ -6416,9 +6489,14 @@
    },
    "wikidata": "Q1411830",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Heterobasidion annosum",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Heterobasidion&espece=annosum"
+   },
    "names": {
     "fr": "Polypore du rond des pins",
     "en": "Conifer-base Polypore",
@@ -6644,7 +6722,7 @@
    },
    "wikidata": "Q198709",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "toxic",
    "edibilitySource": [
     "caution mushroom"
    ],
@@ -6696,6 +6774,11 @@
       "de": "Saprobiont"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Hypholoma lateritium",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Hypholoma&espece=lateritium"
    },
    "names": {
     "fr": "Hypholome couleur de brique",
@@ -6784,9 +6867,14 @@
    },
    "wikidata": "Q42052",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "none",
    "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Gymnopus fusipes",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Gymnopus&espece=fusipes"
+   },
    "names": {
     "fr": "Collybie à pied en fuseau",
     "en": "Spindleshank",
@@ -7387,72 +7475,26 @@
    "no": null,
    "ex": 27,
    "extra": true,
-   "inat": 118313,
-   "latin": "Hygrophorus agathosmus",
+   "inat": 194737,
+   "latin": "Ampulloclitocybe clavipes",
    "obs": {
     "DE": 0,
     "FR": 0
    },
-   "wikidata": "Q1897213",
+   "wikidata": "Q54356860",
    "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom"
-   ],
-   "morph": {
-    "hymenium": [
-     {
-      "qid": "Q269345",
-      "fr": "lame",
-      "en": "lamella",
-      "de": "Lamelle"
-     }
-    ],
-    "cap": [
-     {
-      "qid": "Q14544535",
-      "de": "gewölbt",
-      "en": "convex mushroom cap",
-      "fr": "chapeau convexe simple"
-     }
-    ],
-    "attachment": [
-     {
-      "qid": "Q14544569",
-      "de": "Lamellen breit angewachsen",
-      "en": "adnate hymenium attachment",
-      "fr": "hyménium tenu par le chapeau et l'adnée"
-     }
-    ],
-    "stipe": [
-     {
-      "qid": "Q14544581",
-      "de": "ringloser Stiel",
-      "en": "bare stipe",
-      "fr": "stipe lisse"
-     }
-    ],
-    "spores": [
-     {
-      "qid": "Q23444",
-      "en": "white",
-      "de": "Weiß",
-      "fr": "blanc"
-     }
-    ],
-    "ecology": [
-     {
-      "qid": "Q99974",
-      "en": "mycorrhiza",
-      "de": "Mykorrhiza",
-      "fr": "mycorhize"
-     }
-    ]
+   "edibility": "toxic",
+   "edibilitySource": [],
+   "morph": {},
+   "edibilityMycodb": {
+    "name": "Ampulloclitocybe clavipes",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Ampulloclitocybe&espece=clavipes"
    },
    "names": {
-    "fr": "Hygrophore à odeur agréable",
-    "en": "Almond woodwax",
-    "de": "Wohlriechender Schneckling"
+    "fr": "Clitocybe à pied en massue",
+    "en": "Club Foot",
+    "de": "Keulenfuß-Trichterling"
    },
    "nameSource": {
     "fr": "inaturalist",
@@ -7460,42 +7502,25 @@
     "de": "inaturalist"
    },
    "text": {
-    "fr": {
-     "intro": "Hygrophorus agathosmus, ou Hygrophore à odeur agréable, est une espèce de champignons de la famille des Hygrophoraceae dans l’ordre des Agaricales.",
-     "habitat": "",
-     "url": "https://fr.wikipedia.org/wiki/Hygrophorus_agathosmus"
-    },
     "en": {
-     "intro": "Hygrophorus agathosmus, commonly known as the gray almond waxy cap or the almond woodwax, is a species of fungus in the family Hygrophoraceae. It was first described by Elias Magnus Fries in 1815; Fries gave it its current name in 1838. The fruit bodies are characterized by a light grayish cap that measures up to 8 cm in diameter, waxy gills, a dry stem, and the distinct odor of bitter almonds.",
-     "habitat": "Hygrophorus agathosmus is an ectomycorrhizal fungus, and it has been isolated, cultivated, and maintained as pure cultures of vegetative fungal inocula for artificial mycorrhization of planting stock in forest nurseries. Fruiting bodies are found scattered under spruce and pine and in mixed woods in the United States.",
-     "url": "https://en.wikipedia.org/wiki/Hygrophorus_agathosmus"
+     "intro": "Ampulloclitocybe clavipes, commonly known as the club-foot or club-footed clitocybe, is a species of gilled mushroom from Europe and North America. The grey-brown mushrooms have yellowish decurrent gills and a bulbous stalk, and are found in deciduous and conifer woodlands. While potentially edible, it resembles poisonous species and its consumption with alcohol can result in a disulfiram-like reaction.",
+     "habitat": "It is widespread and abundant across Northern Europe and the British Isles, and is becoming more common. In North America, it is common under pine plantations in the east, and less common in the Pacific Northwest.",
+     "url": "https://en.wikipedia.org/wiki/Ampulloclitocybe_clavipes"
     },
     "de": {
-     "intro": ") ist eine essbare Pilzart aus der Familie der Schnecklingsverwandten. Es ist eine weitverbreitete Art, die in Nordamerika, Europa, Afrika und Asien vorkommt. In Mitteleuropa findet man sie vorwiegend in Bergnadelwäldern unter Fichten und Kiefern.",
-     "habitat": "Der Wohlriechende Schneckling ist ein Ektomykorrhiza-Pilz, der hauptsächlich mit Fichten in Symbiose lebt. Er wurde isoliert, gezüchtet und in Reinkultur als vegetativ vermehrtes Inokulum gehalten für das künstliche Mykorrhizieren des Pflanzgutes von Forstbaumschulen.",
-     "url": "https://de.wikipedia.org/wiki/Wohlriechender_Schneckling"
+     "intro": "Der Keulenfuß-Trichterling oder Keulenfüßige Trichterling ist eine Pilzart aus der Familie der Schnecklingsverwandten. Die Fruchtkörper erscheinen von Juli bis November in Nadelwäldern bei Kiefern und Fichten. Der Pilz gilt als giftverdächtig und soll bei gleichzeitigem Alkoholgenuss leichte Vergiftungserscheinungen hervorrufen.",
+     "habitat": "Die Fruchtkörper des Keulenfuß-Trichterlings erscheinen von Juli bis November in vorwiegend bodensauren Nadelwäldern, seltener auch in Laubwäldern mit eingestreuten Fichten oder Kiefern. Der Keulenfuß-Trichterling ist in ganz Europa weit verbreitet und ziemlich häufig, aber gebietsweise rückläufig.",
+     "url": "https://de.wikipedia.org/wiki/Keulenfu%C3%9F-Trichterling"
     }
    },
    "lookalikeTitles": [
     [
      "en",
-     "Hygrophorus pustulatus"
+     "Ampulloclitocybe avellaneialba"
     ],
     [
      "en",
-     "Hygrophorus occidentalis"
-    ],
-    [
-     "en",
-     "Conifer"
-    ],
-    [
-     "en",
-     "Oak"
-    ],
-    [
-     "en",
-     "Hygrophorus marzuolus"
+     "Clitocybe nebularis"
     ]
    ],
    "season": {
@@ -7505,20 +7530,22 @@
      0,
      0,
      0,
-     0,
-     0,
-     0,
-     0,
-     18,
      1,
-     0
+     2,
+     6,
+     54,
+     72,
+     15,
+     2
     ],
     "months": [
-     10
+     9,
+     10,
+     11
     ]
    },
    "regions": {
-    "berlin": 0,
+    "berlin": 30,
     "grenoble": 1
    },
    "lookalikes": [
@@ -7868,9 +7895,14 @@
    },
    "wikidata": "Q306634",
    "edibilityConflict": false,
-   "edibility": null,
+   "edibility": "toxic",
    "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Lycoperdon marginatum",
+    "value": "Toxique",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Lycoperdon&espece=marginatum"
+   },
    "names": {
     "fr": "Vesse-de-loup marginée",
     "en": "Peeling Puffball",
@@ -8042,78 +8074,68 @@
    "no": null,
    "ex": 33,
    "extra": true,
-   "inat": 474502,
-   "latin": "Xerocomellus pruinatus",
+   "inat": 625287,
+   "latin": "Aureoboletus moravicus",
    "obs": {
     "DE": 0,
     "FR": 0
    },
-   "wikidata": "Q818958",
+   "wikidata": "Q20721683",
    "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom"
-   ],
+   "edibility": "none",
+   "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Aureoboletus moravicus",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Aureoboletus&espece=moravicus"
+   },
    "names": {
-    "fr": "Bolet pruineux",
-    "en": "Matte Bolete",
-    "de": "Bereifter Rotfußröhrling"
+    "fr": "Bolet couleur de lion",
+    "en": "Tawny bolete",
+    "de": "Aureoboletus moravicus"
    },
    "nameSource": {
     "fr": "inaturalist",
     "en": "inaturalist",
-    "de": "inaturalist"
+    "de": "latin"
    },
    "text": {
     "fr": {
-     "intro": "Xerocomellus pruinatus, le Bolet pruineux, anciennement Boletus pruinatus, est une espèce de champignons de la famille des Boletaceae du genre Xerocomellus. Il est caractérisé par sa chair jaunâtre lentement bleuissante à la coupe vers le bas du pied.",
-     "habitat": "Il s'agit un champignon ectomycorhizien, surtout automnal, fructifiant généralement entre septembre et novembre, venant sous conifères; Sapins (Abies sp), Épicéa (Picea abies) et Pins (Pinus sp), et sous feuillus, surtout sous Hêtre (Fagus sylvatica) et plus rarement sous Chênes (Quercus sp). Il est de tendance montagnarde, venant surtout sur sols acides.",
-     "url": "https://fr.wikipedia.org/wiki/Bolet_pruineux"
+     "intro": "Aureoboletus moravicus, le Bolet couleur de lion, auparavant Xerocomus leonis ou Xerocomus moravicus, est une espèce de champignon basidiomycète du genre Aureoboletus dans la famille des Boletaceae. Il est caractérisé par son odeur agréable dite de \"pâtisserie\".",
+     "habitat": "Il s'agit un champignon ectomycorhizien, poussant dans les forêts chaudes de différents feuillus, surtout les chênes (Quercus) et les charmes (Carpinus), mais aussi les châtaigniers (Castanea) ou les tilleuls (Tilia).",
+     "url": "https://fr.wikipedia.org/wiki/Aureoboletus_moravicus"
     },
     "en": {
-     "intro": "Xerocomellus pruinatus, commonly known as the matte bolete and formerly known as Boletus pruinatus or Xerocomus pruinatus, is a mushroom in the family Boletaceae native to Europe. It was transferred to the new genus Xerocomellus described by Czech mycologist Josef Šutara in 2008.",
-     "habitat": "",
-     "url": "https://en.wikipedia.org/wiki/Xerocomellus_pruinatus"
-    },
-    "de": {
-     "intro": "Der Bereifte Rotfußröhrling ist eine Pilzart aus der Familie der Steinpilzverwandten. Bis vor wenigen Jahren wurde er in der Gattung Filzröhrlinge geführt, die aber aufgrund molekularbiologischer Erkenntnisse auf den Verwandtschaftskreis der Ziegenlippe reduziert wurde. Wegen der recht kompakten Fruchtkörper heißt er auch Stattlicher Rotfußröhrling.",
-     "habitat": "Der Bereifte Rotfußröhrling kommt in diversen Waldgesellschaften vor, darunter Fichtenforste, Hainbuchen-Eichen-Wälder, aber auch Gärten und Parks. In den zuletzt genannten Habitaten erscheinen die Fruchtkörper bevorzugt an den stickstoffreicheren Wegrändern und Säumen.",
-     "url": "https://de.wikipedia.org/wiki/Bereifter_Rotfu%C3%9Fr%C3%B6hrling"
+     "intro": "Aureoboletus moravicus, commonly known as the tawny bolete, is a species of bolete fungus in the family Boletaceae that is found in Europe. It is an uncommon bolete of unknown edibility that appears as a vulnerable species on some European Red Lists, and is considered critically endangered in the Czech Republic. Preferred habitats include parklands, near oak trees.",
+     "habitat": "3), frequently underlaid by [[[loess]] deposits. In Slovakia, surveys have uncovered populations in the Štiavnica Mountains and Kremnica Mountains as well as the Zvolenská kotlina basin, at elevations between 210 and 518 m above sea level.",
+     "url": "https://en.wikipedia.org/wiki/Aureoboletus_moravicus"
     }
    },
    "lookalikeTitles": [
     [
      "fr",
-     "Bolet à chair jaune"
+     "Bolet subtomenteux"
     ],
     [
      "fr",
-     "Bolet à chair jaune"
+     "Bolet subtomenteux"
     ],
     [
      "fr",
-     "Bolet bai"
+     "Bolet dépoli"
     ],
     [
      "fr",
-     "Bolet bai"
+     "Bolet dépoli"
     ],
     [
      "fr",
-     "Xerocomellus cisalpinus"
+     "Bolet des chênes verts"
     ],
     [
      "fr",
-     "Xerocomellus cisalpinus"
-    ],
-    [
-     "fr",
-     "Bolet commun"
-    ],
-    [
-     "fr",
-     "Bolet commun"
+     "Bolet des chênes verts"
     ]
    ],
    "season": {
@@ -8123,24 +8145,22 @@
      0,
      0,
      0,
-     4,
-     15,
-     22,
-     59,
-     123,
-     51,
-     3
+     0,
+     0,
+     0,
+     1,
+     3,
+     0,
+     0
     ],
     "months": [
-     8,
      9,
-     10,
-     11
+     10
     ]
    },
    "regions": {
-    "berlin": 28,
-    "grenoble": 2
+    "berlin": 0,
+    "grenoble": 0
    },
    "lookalikes": [
     510854
@@ -8149,467 +8169,6 @@
   {
    "no": null,
    "ex": 34,
-   "extra": true,
-   "inat": 438013,
-   "latin": "Xerocomellus chrysenteron",
-   "obs": {
-    "DE": 0,
-    "FR": 0
-   },
-   "wikidata": "Q254161",
-   "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom"
-   ],
-   "morph": {
-    "hymenium": [
-     {
-      "qid": "Q19861549",
-      "en": "pores",
-      "de": "Poren",
-      "fr": "pore"
-     }
-    ],
-    "cap": [
-     {
-      "qid": "Q14544535",
-      "de": "gewölbt",
-      "en": "convex mushroom cap",
-      "fr": "chapeau convexe simple"
-     }
-    ],
-    "stipe": [
-     {
-      "qid": "Q14544581",
-      "de": "ringloser Stiel",
-      "en": "bare stipe",
-      "fr": "stipe lisse"
-     }
-    ],
-    "spores": [
-     {
-      "qid": "Q19888352",
-      "de": "olivbraun",
-      "en": "olive brown",
-      "fr": "olive brun"
-     }
-    ]
-   },
-   "names": {
-    "fr": "Bolet à chair jaune",
-    "en": "Red-cracking Bolete",
-    "de": "Gemeiner Rotfußröhrling"
-   },
-   "nameSource": {
-    "fr": "inaturalist",
-    "en": "inaturalist",
-    "de": "inaturalist"
-   },
-   "text": {
-    "fr": {
-     "intro": "Xerocomellus chrysenteron, le Bolet à chair jaune, anciennement Boletus chrysenteron, est une espèce de champignon basidiomycète du genre Xerocomellus appartenant à la famille des Boletaceae. C'est une espèce très courante que l’on rencontre dans de nombreux bois. Comestible moyen, il est caractérisé par la chair de son pied en partie rouge à la coupe.",
-     "habitat": "C'est un champignon ectomycorhizien, poussant communément dans tous les bois, aussi bien dans les bois de conifères, que dans les bois de feuillus, de l’été à la fin de l'automne, Juin-novembre, plutôt estival. Il pousse parfois sur les souches très pourries.",
-     "url": "https://fr.wikipedia.org/wiki/Bolet_%C3%A0_chair_jaune"
-    },
-    "en": {
-     "intro": "Xerocomellus chrysenteron, formerly known as Boletus chrysenteron or Xerocomus chrysenteron and commonly known as the red cracking bolete, is a species of fungus in the family Boletaceae. The small mushroom has tubes and pores instead of gills beneath their caps. It is edible but not choice.",
-     "habitat": "Xerocomellus chrysenteron grows singly or in small groups in hardwood/conifer woods from early summer to mid-winter. It is mycorrhizal with hardwood trees, often beech on well-drained soils.",
-     "url": "https://en.wikipedia.org/wiki/Xerocomellus_chrysenteron"
-    },
-    "de": {
-     "intro": "Der Gemeine oder Echte Rotfußröhrling, bisweilen auch Rotfüßchen genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten. Bis vor wenigen Jahren wurde er in der Gattung Filzröhrlinge geführt, die aber aufgrund molekularbiologischer Erkenntnisse auf den Verwandtschaftskreis der Ziegenlippe reduziert wurde.",
-     "habitat": "Der Gemeine Rotfußröhrling ist im Laub- und Nadelwald anzutreffen und stellt keine besonderen Bodenansprüche. Er ist ein häufiger Pilz, der von Juli bis November gefunden werden kann.",
-     "url": "https://de.wikipedia.org/wiki/Gemeiner_Rotfu%C3%9Fr%C3%B6hrling"
-    }
-   },
-   "lookalikeTitles": [
-    [
-     "fr",
-     "Xerocomus"
-    ],
-    [
-     "fr",
-     "Xerocomellus"
-    ],
-    [
-     "fr",
-     "Hortiboletus"
-    ],
-    [
-     "fr",
-     "Imleria"
-    ],
-    [
-     "fr",
-     "Rheubarbariboletus"
-    ],
-    [
-     "fr",
-     "Bolet pruineux"
-    ],
-    [
-     "fr",
-     "Bolet pruineux"
-    ],
-    [
-     "fr",
-     "Bolet pruineux"
-    ],
-    [
-     "fr",
-     "Bolet pruineux"
-    ],
-    [
-     "fr",
-     "Bolet de Sarnari"
-    ],
-    [
-     "fr",
-     "Xerocomellus sarnarii"
-    ],
-    [
-     "fr",
-     "Bolet de Poeder"
-    ],
-    [
-     "fr",
-     "Xerocomellus poederi"
-    ],
-    [
-     "fr",
-     "Xerocomellus cisalpinus"
-    ],
-    [
-     "fr",
-     "Xerocomellus cisalpinus"
-    ],
-    [
-     "fr",
-     "Xerocomellus cisalpinus"
-    ],
-    [
-     "fr",
-     "Xerocomellus cisalpinus"
-    ],
-    [
-     "fr",
-     "Xerocomellus porosporus"
-    ],
-    [
-     "fr",
-     "Xerocomellus porosporus"
-    ],
-    [
-     "fr",
-     "Bolet subtomenteux"
-    ],
-    [
-     "fr",
-     "Bolet subtomenteux"
-    ],
-    [
-     "fr",
-     "Bolet commun"
-    ],
-    [
-     "fr",
-     "Bolet commun"
-    ],
-    [
-     "fr",
-     "Bolet bai"
-    ],
-    [
-     "fr",
-     "Bolet bai"
-    ],
-    [
-     "en",
-     "Xerocomellus pruinatus"
-    ],
-    [
-     "en",
-     "Hortiboletus rubellus"
-    ],
-    [
-     "en",
-     "Xerocomellus porosporus"
-    ],
-    [
-     "en",
-     "Xerocomellus cisalpinus"
-    ],
-    [
-     "en",
-     "Hortiboletus engelii"
-    ],
-    [
-     "en",
-     "Xerocomellus dryophilus"
-    ],
-    [
-     "en",
-     "Aureoboletus mirabilis"
-    ],
-    [
-     "en",
-     "Xerocomellus zelleri"
-    ],
-    [
-     "en",
-     "Imleria badia"
-    ]
-   ],
-   "season": {
-    "histogram": [
-     0,
-     0,
-     0,
-     0,
-     2,
-     21,
-     24,
-     57,
-     177,
-     216,
-     60,
-     0
-    ],
-    "months": [
-     8,
-     9,
-     10,
-     11
-    ]
-   },
-   "regions": {
-    "berlin": 41,
-    "grenoble": 4
-   },
-   "lookalikes": [
-    510854
-   ]
-  },
-  {
-   "no": null,
-   "ex": 35,
-   "extra": true,
-   "inat": 485374,
-   "latin": "Xerocomus subtomentosus",
-   "obs": {
-    "DE": 0,
-    "FR": 0
-   },
-   "wikidata": "Q198817",
-   "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom",
-    "medicinal mushrooms"
-   ],
-   "morph": {
-    "hymenium": [
-     {
-      "qid": "Q19861549",
-      "en": "pores",
-      "de": "Poren",
-      "fr": "pore"
-     }
-    ],
-    "cap": [
-     {
-      "qid": "Q14544535",
-      "de": "gewölbt",
-      "en": "convex mushroom cap",
-      "fr": "chapeau convexe simple"
-     }
-    ],
-    "stipe": [
-     {
-      "qid": "Q14544581",
-      "de": "ringloser Stiel",
-      "en": "bare stipe",
-      "fr": "stipe lisse"
-     }
-    ],
-    "spores": [
-     {
-      "qid": "Q19888352",
-      "de": "olivbraun",
-      "en": "olive brown",
-      "fr": "olive brun"
-     }
-    ]
-   },
-   "names": {
-    "fr": "Bolet tomenteux",
-    "en": "Suede Bolete",
-    "de": "Ziegenlippe"
-   },
-   "nameSource": {
-    "fr": "inaturalist",
-    "en": "inaturalist",
-    "de": "inaturalist"
-   },
-   "text": {
-    "fr": {
-     "intro": "Xerocomus subtomentosus, le Bolet subtomenteux ou Bolet tomenteux, anciennement Boletus subtomentosus, est une espèce de champignons basidiomycètes du genre Xerocomus dans la famille des Boletaceae largement répandue dans les bois de toute l'Eurasie, l'Amérique du Nord et l'Australie. Commun, il est caractérisé par sa chair rosâtre dans la moitié inférieure du pied à la coupe et son mycélium basal blanc.",
-     "habitat": "Il s'agit un champignon ectomycorhizien, ubiquiste, acidiphile ou calcicole. Très commun, on le trouve à partir du milieu de l'été jusqu'à la fin de l'automne dans les forêts.",
-     "url": "https://fr.wikipedia.org/wiki/Bolet_subtomenteux"
-    },
-    "en": {
-     "intro": "Xerocomus subtomentosus, commonly known as suede bolete, brown and yellow bolete, boring brown bolete or yellow-cracked bolete, is a species of bolete fungus in the family Boletaceae. The fungus was initially described by Carl Linnaeus in 1753 and known for many years as Boletus subtomentosus. The fungus produces spore-bearing fruit bodies.",
-     "habitat": "Xerocomus subtomentosus occurs in autumn in forests throughout Eurasia, North America and Australia and forming a mycorrhizal relationship with a wide range of hardwood and conifer trees. It has been recorded from the vicinity of Tangier in Morocco, growing under cork oak (Quercus suber).",
-     "url": "https://en.wikipedia.org/wiki/Xerocomus_subtomentosus"
-    },
-    "de": {
-     "intro": "Die Ziegenlippe oder der Filzige Röhrling ist ein essbarer Pilz aus der Familie der Steinpilzverwandten.",
-     "habitat": "Die Ziegenlippe ist ein Mykorrhiza-Pilz von Laubbäumen, der bevorzugt in verschiedenen Rotbuchenwäldern, vor allem Hainsimsen- und Waldmeister-Buchenwälder, anzutreffen ist. Seltener kommt sie in Eichen-Hainbuchenwäldern sowie in Parks, Gärten und ähnlichen Biotopen vor.",
-     "url": "https://de.wikipedia.org/wiki/Ziegenlippe"
-    }
-   },
-   "lookalikeTitles": [
-    [
-     "fr",
-     "Bolet bai"
-    ],
-    [
-     "fr",
-     "Imleria badia"
-    ],
-    [
-     "fr",
-     "Bolet bai"
-    ],
-    [
-     "fr",
-     "Bolet bai"
-    ],
-    [
-     "fr",
-     "Xerocomus ferrugineus"
-    ],
-    [
-     "fr",
-     "Xerocomus ferrugineus"
-    ],
-    [
-     "fr",
-     "Xerocomus ferrugineus"
-    ],
-    [
-     "fr",
-     "Xerocomus ferrugineus"
-    ],
-    [
-     "fr",
-     "Bolet commun"
-    ],
-    [
-     "fr",
-     "Bolet commun"
-    ],
-    [
-     "fr",
-     "Bolet couleur de lion"
-    ],
-    [
-     "fr",
-     "Aureoboletus moravicus"
-    ],
-    [
-     "fr",
-     "Xerocomus silwoodensis"
-    ],
-    [
-     "fr",
-     "Xerocomus silwoodensis"
-    ],
-    [
-     "fr",
-     "Xerocomus chrysonemus"
-    ],
-    [
-     "fr",
-     "Xerocomus chrysonemus"
-    ],
-    [
-     "fr",
-     "Pseudoboletus parasiticus"
-    ],
-    [
-     "fr",
-     "Pseudoboletus parasiticus"
-    ],
-    [
-     "fr",
-     "Scleroderma"
-    ],
-    [
-     "en",
-     "Xerocomus silwoodensis"
-    ],
-    [
-     "en",
-     "Populus"
-    ],
-    [
-     "en",
-     "Xerocomus chrysonemus"
-    ],
-    [
-     "en",
-     "Xerocomellus chrysenteron"
-    ],
-    [
-     "en",
-     "Xerocomus mendocinensis"
-    ],
-    [
-     "en",
-     "Xerocomus truncatus"
-    ],
-    [
-     "en",
-     "Boletus chrysenteron"
-    ]
-   ],
-   "season": {
-    "histogram": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     17,
-     32,
-     78,
-     44,
-     56,
-     13,
-     0
-    ],
-    "months": [
-     6,
-     7,
-     8,
-     9,
-     10,
-     11
-    ]
-   },
-   "regions": {
-    "berlin": 38,
-    "grenoble": 2
-   },
-   "lookalikes": [
-    510854
-   ]
-  },
-  {
-   "no": null,
-   "ex": 36,
    "extra": true,
    "inat": 147354,
    "latin": "Chalciporus piperatus",
@@ -8753,7 +8312,105 @@
   },
   {
    "no": null,
-   "ex": 37,
+   "ex": 35,
+   "extra": true,
+   "inat": 875042,
+   "latin": "Hortiboletus bubalinus",
+   "obs": {
+    "DE": 0,
+    "FR": 0
+   },
+   "wikidata": "Q42159039",
+   "edibilityConflict": false,
+   "edibility": "none",
+   "edibilitySource": [],
+   "morph": {},
+   "edibilityMycodb": {
+    "name": "Hortiboletus bubalinus",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Hortiboletus&espece=bubalinus"
+   },
+   "names": {
+    "fr": "Bolet chamois",
+    "en": "Ascot Hat",
+    "de": "Rötender Filzröhrling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "text": {
+    "fr": {
+     "intro": "Hortiboletus bubalinus, le Bolet chamois, auparavant Xerocomus bubalinus, est une espèce de champignons basidiomycètes du genre Hortiboletus dans la famille des Boletaceae. Il est caractérisé par sa chair sous-cuticulaire rose et bleuissante au-dessus des tubes à la coupe, son chapeau plus pâle vers les bords, ainsi que son habitat souvent dans les jardins et autres zones herbeuses.",
+     "habitat": "Il s'agit un champignon ectomycorhizien, venant surtout sous peupliers, tilleuls et bouleaux, surtout dans les milieux ouverts comme les parcs, les pelouses, les jardins et les clairières, en Europe.",
+     "url": "https://fr.wikipedia.org/wiki/Hortiboletus_bubalinus"
+    },
+    "en": {
+     "intro": "Hortiboletus bubalinus is a species of bolete fungus in the family Boletaceae. Originally described in 1991 as a species of Boletus, the fungus was transferred to Xerocomus in 1993. It was transferred to Hortiboletus by Bálint Dima in 2015.",
+     "habitat": "",
+     "url": "https://en.wikipedia.org/wiki/Hortiboletus_bubalinus"
+    }
+   },
+   "lookalikeTitles": [
+    [
+     "fr",
+     "Bolet commun"
+    ],
+    [
+     "fr",
+     "Bolet commun"
+    ],
+    [
+     "fr",
+     "Pulchroboletus roseoalbidus"
+    ],
+    [
+     "fr",
+     "Pulchroboletus roseoalbidus"
+    ],
+    [
+     "fr",
+     "Bolet à chair jaune"
+    ],
+    [
+     "fr",
+     "Bolet à chair jaune"
+    ]
+   ],
+   "season": {
+    "histogram": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     13,
+     26,
+     26,
+     9,
+     0,
+     0
+    ],
+    "months": [
+     7,
+     8,
+     9,
+     10
+    ]
+   },
+   "regions": {
+    "berlin": 25,
+    "grenoble": 0
+   },
+   "lookalikes": [
+    510854
+   ]
+  },
+  {
+   "no": null,
+   "ex": 36,
    "extra": true,
    "inat": 118215,
    "latin": "Tricholoma equestre",
@@ -8763,7 +8420,7 @@
    },
    "wikidata": "Q312756",
    "edibilityConflict": true,
-   "edibility": null,
+   "edibility": "deadly",
    "edibilitySource": [
     "caution mushroom"
    ],
@@ -8815,6 +8472,11 @@
       "fr": "mycorhize"
      }
     ]
+   },
+   "edibilityMycodb": {
+    "name": "Tricholoma equestre",
+    "value": "Mortel",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Tricholoma&espece=equestre"
    },
    "names": {
     "fr": "Tricholome équestre",
@@ -8955,7 +8617,7 @@
   },
   {
    "no": null,
-   "ex": 38,
+   "ex": 37,
    "extra": true,
    "inat": 203806,
    "latin": "Russula heterophylla",
@@ -9088,7 +8750,7 @@
   },
   {
    "no": null,
-   "ex": 39,
+   "ex": 38,
    "extra": true,
    "inat": 122333,
    "latin": "Russula aeruginea",
@@ -9225,7 +8887,7 @@
   },
   {
    "no": null,
-   "ex": 40,
+   "ex": 39,
    "extra": true,
    "inat": 125720,
    "latin": "Russula virescens",
@@ -9424,7 +9086,7 @@
   },
   {
    "no": null,
-   "ex": 41,
+   "ex": 40,
    "extra": true,
    "inat": 128521,
    "latin": "Phallus hadriani",
@@ -9548,7 +9210,7 @@
   },
   {
    "no": null,
-   "ex": 42,
+   "ex": 41,
    "extra": true,
    "inat": 63580,
    "latin": "Mutinus caninus",
@@ -9670,7 +9332,7 @@
   },
   {
    "no": null,
-   "ex": 43,
+   "ex": 42,
    "extra": true,
    "inat": 206090,
    "latin": "Morchella rufobrunnea",
@@ -9842,7 +9504,7 @@
   },
   {
    "no": null,
-   "ex": 44,
+   "ex": 43,
    "extra": true,
    "inat": 351875,
    "latin": "Pleurotus cornucopiae",
@@ -9956,7 +9618,7 @@
   },
   {
    "no": null,
-   "ex": 45,
+   "ex": 44,
    "extra": true,
    "inat": 136399,
    "latin": "Pleurotus pulmonarius",
@@ -10145,7 +9807,7 @@
   },
   {
    "no": null,
-   "ex": 46,
+   "ex": 45,
    "extra": true,
    "inat": 205516,
    "latin": "Pleurotus eryngii",
@@ -10268,26 +9930,28 @@
   },
   {
    "no": null,
-   "ex": 47,
+   "ex": 46,
    "extra": true,
-   "inat": 154750,
-   "latin": "Hohenbuehelia petaloides",
+   "inat": 52529,
+   "latin": "Phyllotopsis nidulans",
    "obs": {
     "DE": 0,
     "FR": 0
    },
-   "wikidata": "Q10674253",
+   "wikidata": "Q2424811",
    "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "edible mushroom",
-    "medicinal mushrooms"
-   ],
+   "edibility": "none",
+   "edibilitySource": [],
    "morph": {},
+   "edibilityMycodb": {
+    "name": "Phyllotopsis nidulans",
+    "value": "Sans intérêt",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Phyllotopsis&espece=nidulans"
+   },
    "names": {
-    "fr": "Pleurote petaloïde",
-    "en": "Shoehorn Oyster",
-    "de": "Trichterförmiger Muscheling"
+    "fr": "Pleurote en forme de nid",
+    "en": "Stinking Orange Oyster",
+    "de": "Orangeseitling"
    },
    "nameSource": {
     "fr": "inaturalist",
@@ -10296,46 +9960,64 @@
    },
    "text": {
     "en": {
-     "intro": "Hohenbuehelia petaloides, commonly known as the leaflike oyster or the shoehorn oyster mushroom, is a species of agaric fungus belonging to the family Pleurotaceae. The fruit bodies have pale to brown funnel-shaped caps with decurrent gills. The species has a cosmopolitan distribution and is found near the decaying wood it feeds on.",
-     "habitat": "The species is saprobic, feeding on decaying wood. It can be found either alone or clustering in small groups around woody debris or the occasional stump.",
-     "url": "https://en.wikipedia.org/wiki/Hohenbuehelia_petaloides"
+     "intro": "Phyllotopsis nidulans, commonly known as the mock oyster or the orange oyster, is a species of fungus in the family Phyllotopsidaceae. The fungus fruit body consists of a fan-shaped, light orange fuzzy cap up to 10 cm wide that grows singly or in overlapping clusters. On the cap underside are crowded orange gills.",
+     "habitat": "Fruit bodies grow singly or in overlapping clusters on dead wood. Phyllotopsis nidulans is widely distributed in temperate regions of the Northern Hemisphere.",
+     "url": "https://en.wikipedia.org/wiki/Phyllotopsis_nidulans"
     }
    },
    "lookalikeTitles": [
     [
      "en",
-     "Crepidotus"
+     "Phyllotopsis subnidulans"
+    ],
+    [
+     "en",
+     "Lentinellus ursinusus"
+    ],
+    [
+     "en",
+     "Crepidotus mollis"
+    ],
+    [
+     "en",
+     "Panus rudis"
+    ],
+    [
+     "en",
+     "Panus conchatus"
+    ],
+    [
+     "en",
+     "Pleurotus ostreatus"
     ]
    ],
    "season": {
     "histogram": [
-     0,
-     0,
-     1,
-     0,
-     0,
-     1,
+     129,
+     104,
+     51,
+     16,
      2,
-     3,
-     3,
-     5,
-     2,
-     1
+     1,
+     1,
+     9,
+     10,
+     90,
+     116,
+     197
     ],
     "months": [
+     1,
+     2,
      3,
-     6,
-     7,
-     8,
-     9,
      10,
      11,
      12
     ]
    },
    "regions": {
-    "berlin": 0,
-    "grenoble": 0
+    "berlin": 109,
+    "grenoble": 1
    },
    "lookalikes": [
     48494
@@ -10343,7 +10025,7 @@
   },
   {
    "no": null,
-   "ex": 48,
+   "ex": 47,
    "extra": true,
    "inat": 64021,
    "latin": "Omphalotus olearius",
@@ -10538,7 +10220,7 @@
   },
   {
    "no": null,
-   "ex": 49,
+   "ex": 48,
    "extra": true,
    "inat": 126831,
    "latin": "Omphalotus illudens",
@@ -10713,6 +10395,114 @@
   },
   {
    "no": null,
+   "ex": 49,
+   "extra": true,
+   "inat": 626851,
+   "latin": "Cantharellus pallens",
+   "obs": {
+    "DE": 0,
+    "FR": 0
+   },
+   "wikidata": "Q4355294",
+   "edibilityConflict": false,
+   "edibility": "edible",
+   "edibilitySource": [],
+   "morph": {},
+   "edibilityMycodb": {
+    "name": "Cantharellus pallens",
+    "value": "Bon comestible",
+    "url": "https://www.mycodb.fr/fiche.php?genre=Cantharellus&espece=pallens"
+   },
+   "names": {
+    "fr": "Girolle pruineuse",
+    "en": "Cantharellus pallens",
+    "de": "Blasser Pfifferling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "latin",
+    "de": "inaturalist"
+   },
+   "text": {
+    "fr": {
+     "intro": "Cantharellus pallens, la Girolle pruineuse, est une espèce de champignons basidiomycètes de la famille des Cantharellaceae. Caractérisé par ses tons pâles pruineux de blanc, ses plis plus colorés vers le bords du chapeau et sa chair jaunissante à la manipulation, c'est un comestible réputé. Elle cependant souvent prise pour la Girolle classique; C.",
+     "habitat": "C'est une espèce ectomycorhizienne, venant sous différents feuillus et conifères ainsi que sur différents types de sols, c'est une espèce commune qui commence à venir assez tôt dans la saison, plus tôt que C. cibarius; dès le mois de mai, et jusqu'en octobre.",
+     "url": "https://fr.wikipedia.org/wiki/Cantharellus_pallens"
+    },
+    "en": {
+     "intro": "Cantharellus pallens, the pale chanterelle, is a species of Cantharellus from Europe.",
+     "habitat": "",
+     "url": "https://en.wikipedia.org/wiki/Cantharellus_pallens"
+    }
+   },
+   "lookalikeTitles": [
+    [
+     "fr",
+     "Cantharellus cibarius"
+    ],
+    [
+     "fr",
+     "Cantharellus cibarius"
+    ],
+    [
+     "fr",
+     "Girolle ferrugineuse"
+    ],
+    [
+     "fr",
+     "Cantharellus ferruginascens"
+    ],
+    [
+     "fr",
+     "Cantharellus alborufescens"
+    ],
+    [
+     "fr",
+     "Cantharellus alborufescens"
+    ],
+    [
+     "fr",
+     "Chêne vert"
+    ],
+    [
+     "fr",
+     "Chêne-liège"
+    ]
+   ],
+   "season": {
+    "histogram": [
+     1,
+     0,
+     0,
+     0,
+     15,
+     31,
+     30,
+     39,
+     17,
+     18,
+     5,
+     2
+    ],
+    "months": [
+     5,
+     6,
+     7,
+     8,
+     9,
+     10
+    ]
+   },
+   "regions": {
+    "berlin": 21,
+    "grenoble": 1
+   },
+   "lookalikes": [
+    47347
+   ]
+  },
+  {
+   "no": null,
    "ex": 50,
    "extra": true,
    "inat": 566555,
@@ -10863,154 +10653,6 @@
    "no": null,
    "ex": 51,
    "extra": true,
-   "inat": 568292,
-   "latin": "Cantharellus friesii",
-   "obs": {
-    "DE": 0,
-    "FR": 0
-   },
-   "wikidata": "Q596896",
-   "edibilityConflict": false,
-   "edibility": "edible",
-   "edibilitySource": [
-    "choice mushroom"
-   ],
-   "morph": {
-    "hymenium": [
-     {
-      "qid": "Q19861551",
-      "en": "ridges",
-      "fr": "hyménophore strié"
-     }
-    ],
-    "cap": [
-     {
-      "qid": "Q19887958",
-      "de": "trichterförmig",
-      "en": "infundibuliform mushroom cap",
-      "fr": "chapeau infundibuliforme"
-     }
-    ],
-    "attachment": [
-     {
-      "qid": "Q19887925",
-      "de": "Lamellen herablaufend",
-      "en": "decurrent hymenium attachment",
-      "fr": "attache d'hyménium décurrente"
-     }
-    ],
-    "stipe": [
-     {
-      "qid": "Q14544581",
-      "de": "ringloser Stiel",
-      "en": "bare stipe",
-      "fr": "stipe lisse"
-     }
-    ],
-    "spores": [
-     {
-      "qid": "Q943",
-      "en": "yellow",
-      "fr": "jaune",
-      "de": "Gelb"
-     }
-    ],
-    "ecology": [
-     {
-      "qid": "Q99974",
-      "en": "mycorrhiza",
-      "de": "Mykorrhiza",
-      "fr": "mycorhize"
-     }
-    ]
-   },
-   "names": {
-    "fr": "Girolle abricot",
-    "en": "Orange chanterelle",
-    "de": "Samt-Pfifferling"
-   },
-   "nameSource": {
-    "fr": "inaturalist",
-    "en": "inaturalist",
-    "de": "wikidata"
-   },
-   "text": {
-    "fr": {
-     "intro": "Cantharellus friesii, la Girolle abricot, est une espèce de la famille des Hydnaceae. Elle est caractérisée par ses teintes orangées ou orange rosé.",
-     "habitat": "C'est une espèce mycorhizienne, poussant sous feuillus, sous le hêtre et les chênes, plus rarement sous le noisetier, les bouleaux, le charme et le châtaignier, dans les bois humides en été et en automne, souvent dans les forêts anciennes, plutôt sur sol non ou peu calcaire, neutre.",
-     "url": "https://fr.wikipedia.org/wiki/Cantharellus_friesii"
-    },
-    "en": {
-     "intro": "Cantharellus friesii, the orange or velvet chanterelle, is a fungus native to Asia and Europe. The cap color varies from deep yellow to reddish orange and is 2–4 cm wide. It occurs in beech, fir and spruce forests.",
-     "habitat": "",
-     "url": "https://en.wikipedia.org/wiki/Cantharellus_friesii"
-    },
-    "de": {
-     "intro": "Der Samtige, Samt- oder Fries’sche Pfifferling ist eine Pilzart aus der Familie der Stoppelpilzverwandten.",
-     "habitat": "Der Samtige Pfifferling ist, wie die anderen Pfifferlinge ein Mykorrhizabildner, der mit verschiedenen Laub- und Nadelbäumen zusammen vorkommen kann. Er tritt in Buchen-, Tannen-Buchen und Fichten-Tannen- bis hin zu reinen Fichtenwäldern auf, wo er bevorzugt an kahlen, von krautigen Pflanzen möglichst freien Standorten hervortritt.",
-     "url": "https://de.wikipedia.org/wiki/Samtiger_Pfifferling"
-    }
-   },
-   "lookalikeTitles": [
-    [
-     "fr",
-     "Cantharellus cibarius"
-    ],
-    [
-     "fr",
-     "Cantharellus cibarius"
-    ],
-    [
-     "fr",
-     "Girolle naine"
-    ],
-    [
-     "fr",
-     "Cantharellus romagnesianus"
-    ],
-    [
-     "fr",
-     "Fausse chanterelle"
-    ],
-    [
-     "fr",
-     "Fausse chanterelle"
-    ]
-   ],
-   "season": {
-    "histogram": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     12,
-     25,
-     16,
-     14,
-     1,
-     0
-    ],
-    "months": [
-     7,
-     8,
-     9,
-     10
-    ]
-   },
-   "regions": {
-    "berlin": 0,
-    "grenoble": 0
-   },
-   "lookalikes": [
-    47347
-   ]
-  },
-  {
-   "no": null,
-   "ex": 52,
-   "extra": true,
    "inat": 179332,
    "latin": "Amylocystis lapponica",
    "obs": {
@@ -11080,7 +10722,7 @@
   },
   {
    "no": null,
-   "ex": 53,
+   "ex": 52,
    "extra": true,
    "inat": 130919,
    "latin": "Ischnoderma resinosum",
@@ -11150,7 +10792,7 @@
   },
   {
    "no": null,
-   "ex": 54,
+   "ex": 53,
    "extra": true,
    "inat": 475619,
    "latin": "Helvella lacunosa",

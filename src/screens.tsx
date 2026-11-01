@@ -47,7 +47,6 @@ export function Login({ ctx, configured, onSend, onOffline }: { ctx: Ctx; config
   return (
     <div className="scroll">
       <div className="logo">PILZDEX</div>
-      <p className="sub center">Berlin · Grenoble</p>
       <div className="box">
         <h3>{ctx.t("loginTitle")}</h3>
         {!configured ? <p>{ctx.t("notConfigured")}</p> : state === "sent" ? <p>{ctx.t("inbox")}</p> : (
