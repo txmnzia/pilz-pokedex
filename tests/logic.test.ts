@@ -151,3 +151,24 @@ describe("resampleRGB (Pillow-style bilinear)", () => {
   });
   it("output size", () => expect(resampleRGB(new Uint8Array(10 * 6 * 3), 10, 6, 3, 5, 3).length).toBe(45));
 });
+
+import { readExif } from "../src/lib/exif";
+describe("readExif", () => {
+  const load = (f: string) => { const b = readFileSync(`tests/fixtures/${f}`); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
+  it("date and GPS (N/E)", () => {
+    const m = readExif(load("exif-berlin.jpg"));
+    expect(m.date).toBe("2024-09-15");
+    expect(m.lat).toBeCloseTo(52.52, 3);
+    expect(m.lng).toBeCloseTo(13.405, 3);
+  });
+  it("S/W are negative", () => {
+    const m = readExif(load("exif-southwest.jpg"));
+    expect(m.date).toBe("2023-05-02");
+    expect(m.lat).toBeLessThan(0); expect(m.lng).toBeLessThan(0);
+  });
+  it("date only", () => expect(readExif(load("exif-dateonly.jpg"))).toEqual({ date: "2022-10-01" }));
+  it("no EXIF / not a JPEG", () => {
+    expect(readExif(load("no-exif.jpg"))).toEqual({});
+    expect(readExif(new Uint8Array([1, 2, 3, 4]).buffer)).toEqual({});
+  });
+});

@@ -3,6 +3,7 @@ import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
 import { CONFIDENT, type Guess } from "./lib/rank";
+import { readExif } from "./lib/exif";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, Lang, MorphKey, Species } from "./lib/types";
 
@@ -213,6 +214,16 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
   const locate = () => navigator.geolocation?.getCurrentPosition(
     p => { setPos({ lat: p.coords.latitude, lng: p.coords.longitude }); setMsg(ctx.t("gpsOk")); },
     () => setMsg(ctx.t("gpsFail")), { enableHighAccuracy: true, timeout: 15000 });
+  // camera: now + here. library: the photo's own date/place (EXIF); never today's GPS for an old photo
+  const pick = async (f: File | undefined, source: "camera" | "library") => {
+    if (!f) return;
+    setFile(f); setPreview(URL.createObjectURL(f)); runIdentify(f);
+    if (source === "camera") { setDate(new Date().toISOString().slice(0, 10)); setPos(null); locate(); return; }
+    const meta = readExif(await f.arrayBuffer());
+    setDate(meta.date ?? new Date().toISOString().slice(0, 10));
+    setPos(meta.lat != null && meta.lng != null ? { lat: meta.lat, lng: meta.lng } : null);
+    setMsg(meta.date && meta.lat != null ? ctx.t("fromPhotoMeta") : meta.date ? ctx.t("fromPhotoDate") : ctx.t("noPhotoMeta"));
+  };
   const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex!) - (b.no ?? b.ex!) : a.extra ? 1 : -1));
   return (
     <>
@@ -223,13 +234,13 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
           if (!file) { setMsg(ctx.t("photoNeeded")); return; }
           onSave({ file, species, observed_on: date, place, note, lat: pos?.lat ?? null, lng: pos?.lng ?? null });
         }}>
-          <label className="shot" htmlFor="ph">
-            {preview ? <img src={preview} alt="" /> : <><span className="cam">📷</span><span>{ctx.t("photo")}</span></>}
-            <input id="ph" type="file" accept="image/*" capture="environment" onChange={e => {
-              const f = e.target.files?.[0]; if (!f) return;
-              setFile(f); setPreview(URL.createObjectURL(f)); if (!pos) locate(); runIdentify(f);
-            }} />
-          </label>
+          {preview && <div className="shot"><img src={preview} alt="" /></div>}
+          <div className="srcrow">
+            <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>{ctx.t("takePhoto")}
+              <input id="ph" type="file" accept="image/*" capture="environment" onChange={e => { pick(e.target.files?.[0], "camera"); e.target.value = ""; }} /></label>
+            <label className="cta ghost srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="10" r="1.8" /><path d="M4 18l5-5 4 4 3-3 4 4" /></svg>{ctx.t("fromLibrary")}
+              <input id="phlib" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0], "library"); e.target.value = ""; }} /></label>
+          </div>
           {ident !== "idle" && (
             <div className="box ident" aria-live="polite" ref={el => { if (el && ident === "done") el.scrollIntoView({ block: "nearest", behavior: "smooth" }); }}>
               <h3>{ctx.t("suggestion")}</h3>
@@ -262,7 +273,7 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
               <button type="button" className="chip" onClick={locate} aria-pressed={!!pos}>📍 GPS</button></div></div>
           <div className="field"><label htmlFor="nt">{ctx.t("note")}</label><input id="nt" value={note} onChange={e => setNote(e.target.value)} /></div>
           <button className="cta" type="submit">{ctx.t("save")}</button>
-          <p className="note">{msg}</p>
+          <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
         </form>
       </div>
     </>
