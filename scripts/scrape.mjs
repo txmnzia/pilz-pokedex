@@ -2,8 +2,8 @@
 //   Ranking, regions, season: iNaturalist (research-grade observations)
 //   Names, edibility, morphology: Wikidata
 //   Description, habitat, lookalikes: Wikipedia FR/EN/DE (CC BY-SA, source URL kept per entry)
-// Usage: node scripts/scrape.mjs [--top 30]   -> writes data/species.next.json
-// Then:  node scripts/check-data.mjs data/species.next.json && mv data/species.next.json data/species.json
+// Usage: node scripts/scrape.mjs [--top 30]   -> writes public/data/species.next.json
+// Then:  node scripts/check-data.mjs public/data/species.next.json && mv public/data/species.next.json public/data/species.json
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 
@@ -150,7 +150,7 @@ function pickNames(e) {
 // ---------- 3. Wikipedia: intro, habitat, lookalike links ----------
 const HABITAT = { en: /habitat|ecology|distribution/i, fr: /habitat|écologie|répartition/i, de: /vorkommen|ökologie|verbreitung|standort/i };
 const SIMILAR = { en: /similar|lookalike|look-alike|confus/i, fr: /confusion|similaires|proches|risque/i, de: /verwechs|ähnlich/i };
-const sentences = (s, n) => (s.replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]+(\s|$)/g) || [s]).slice(0, n).join("").trim();
+const sentences = (s, n) => (s.replace(/\s+/g, " ").replace(/\s+([,.;:])/g, "$1").trim().match(/[^.!?]+[.!?]+(\s|$)/g) || [s]).slice(0, n).join("").trim();
 
 async function wikipedia(e) {
   e.text = {}; e.lookalikeTitles = [];
@@ -294,6 +294,6 @@ const out = {
   species: [...core.map((e, i) => ({ no: i + 1, extra: false, ...e })), ...keptExtras.map((e, i) => ({ no: null, ex: i + 1, extra: true, ...e }))]
     .map(({ lookalikeCandidates, commonNames, inatNames, sites, ...e }) => e),
 };
-await mkdir("data", { recursive: true });
-await writeFile("data/species.next.json", JSON.stringify(out, null, 1));
-console.log(`\nwrote data/species.next.json: ${core.length} core + ${keptExtras.length} lookalike-only`);
+await mkdir("public/data", { recursive: true });
+await writeFile("public/data/species.next.json", JSON.stringify(out, null, 1));
+console.log(`\nwrote public/data/species.next.json: ${core.length} core + ${keptExtras.length} lookalike-only`);
