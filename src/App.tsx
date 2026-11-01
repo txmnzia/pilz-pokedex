@@ -23,7 +23,6 @@ export default function App() {
   const [cur, setCur] = useState<number>(0);
   const [stack, setStack] = useState<number[]>([]);
   const [page, setPage] = useState<0 | 1>(0);
-  const [sel, setSel] = useState(0);
   const [filter, setFilter] = useState<Filter>("all");
   const [edf, setEdf] = useState<Edibility | null>(null);
   const [finds, setFindsState] = useState<Find[]>(loadFinds);
@@ -100,20 +99,18 @@ export default function App() {
     setStack([]); setCur(group[(i + d + group.length) % group.length].inat); setPage(0);
   };
   const flashLed = (msg: string) => { setToast(msg); setFlash(x => x + 1); setTimeout(() => setToast(null), 1400); };
-  const cycleFilter = (d: number) => { const f: Filter[] = ["all", "got", "missing"]; setFilter(f[(f.indexOf(filter) + d + 3) % 3]); setSel(0); };
   const scrollBy = (dy: number) => entryScroll.current?.scrollBy({ top: dy, behavior: "smooth" }) ?? document.querySelector(".lcd .scroll")?.scrollBy({ top: dy, behavior: "smooth" });
-  const cols = mode === "grid" ? 3 : 1;
 
   const hw: Hardware = {
-    up: () => effectiveView === "index" ? setSel(s => Math.max(0, s - cols)) : scrollBy(-90),
-    down: () => effectiveView === "index" ? setSel(s => Math.min(visible.length - 1, s + cols)) : scrollBy(90),
-    left: () => effectiveView === "entry" ? step(-1) : effectiveView === "index" ? (mode === "grid" ? setSel(s => Math.max(0, s - 1)) : cycleFilter(-1)) : undefined,
-    right: () => effectiveView === "entry" ? step(1) : effectiveView === "index" ? (mode === "grid" ? setSel(s => Math.min(visible.length - 1, s + 1)) : cycleFilter(1)) : undefined,
-    ok: () => { if (effectiveView === "index" && visible[sel]) open(visible[sel]); else if (effectiveView === "entry") setPage(p => (p ? 0 : 1)); },
+    // touch-first: arrows scroll; in an entry, left/right step to the previous/next species
+    up: () => scrollBy(-180),
+    down: () => scrollBy(180),
+    left: () => { if (effectiveView === "entry") step(-1); },
+    right: () => { if (effectiveView === "entry") step(1); },
+    ok: () => { if (effectiveView === "entry") setPage(p => (p ? 0 : 1)); },
     a: () => {
       if (effectiveView === "login" || !all.length) return;
-      if (effectiveView === "index" && visible[sel]) setCur(visible[sel].inat);
-      else if (effectiveView !== "entry") setCur(c => c || core[0].inat);
+      if (effectiveView !== "entry") setCur(c => c || core[0].inat);
       go("catch");
     },
     b: () => {
@@ -174,8 +171,8 @@ export default function App() {
       catch { return t("badBackup"); }
     }}
     onSignOut={async () => { if (supabase) await supabase.auth.signOut(); setOffline(false); store.set("pz.offline", false); setView("index"); }} />;
-  else screen = <Dex ctx={ctx} list={visible} extras={filter === "all" && !edf ? extras : []} sel={sel} mode={mode} filter={filter} edf={edf}
-    setMode={setMode} setFilter={f => { setFilter(f); setSel(0); }} setEdf={e => { setEdf(e); setSel(0); }} open={sp => open(sp)} />;
+  else screen = <Dex ctx={ctx} list={visible} extras={filter === "all" && !edf ? extras : []} mode={mode} filter={filter} edf={edf}
+    setMode={setMode} setFilter={setFilter} setEdf={setEdf} open={sp => open(sp)} />;
 
   const status = !user ? (offline ? t("localOnly") : "") : syncState === "syncing" ? t("syncing") : dirty ? t("localOnly") : t("synced");
   return (

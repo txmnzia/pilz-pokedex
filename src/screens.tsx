@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
@@ -71,27 +71,24 @@ export function Login({ ctx, configured, onSend, onOffline }: { ctx: Ctx; config
 
 // ---------------------------------------------------------------- dex
 interface DexProps {
-  ctx: Ctx; list: Species[]; extras: Species[]; sel: number; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
+  ctx: Ctx; list: Species[]; extras: Species[]; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
   setMode(m: "grid" | "list"): void; setFilter(f: Filter): void; setEdf(e: Edibility | null): void; open(sp: Species): void;
 }
 export function Dex(p: DexProps) {
   const { ctx } = p;
-  const selRef = useRef<HTMLElement | null>(null);
-  useEffect(() => { selRef.current?.scrollIntoView({ block: "nearest" }); }, [p.sel, p.mode]);
   const core = ctx.all.filter(s => !s.extra);
   const n = core.filter(s => ctx.caught.has(s.inat)).length;
-  const item = (sp: Species, i: number | null) => {
-    const sel = i === p.sel, got = ctx.caught.has(sp.inat);
-    const ref = sel ? (el: HTMLElement | null) => { selRef.current = el; } : undefined;
+  const item = (sp: Species) => {
+    const got = ctx.caught.has(sp.inat);
     return p.mode === "grid" ? (
-      <button key={sp.inat} ref={ref} className={`tile${sel ? " sel" : ""}${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
+      <button key={sp.inat} className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="tn">{shortNo(sp)}</span><span className="ted"><EdIcon ed={sp.edibility} /></span>
         <span className="tart"><Picture sp={sp} ctx={ctx} small /></span>
         <span className="tname">{name(sp, ctx.lang)}</span>
         {got && <span className="ball on tb" />}
       </button>
     ) : (
-      <li key={sp.inat} ref={ref} className={`row${sel ? " sel" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
+      <li key={sp.inat} className={`row${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="num">{shortNo(sp)}</span><span className="thumb"><Picture sp={sp} ctx={ctx} small /></span>
         <span className="nm">{name(sp, ctx.lang)}</span><span className="ed"><EdIcon ed={sp.edibility} /></span>
         <span className={`ball${got ? " on" : ""}`} />
@@ -114,8 +111,8 @@ export function Dex(p: DexProps) {
             <button key={e} className="chip" aria-pressed={p.edf === e} title={ctx.t(e)} onClick={() => p.setEdf(p.edf === e ? null : e)}><span className="ed"><EdIcon ed={e} /></span></button>
           ))}
         </div>
-        {wrap(p.list.map((sp, i) => item(sp, i)))}
-        {p.extras.length > 0 && <><h3 className="exhead">{ctx.t("exHead")} ({p.extras.length})</h3>{wrap(p.extras.map(sp => item(sp, null)))}</>}
+        {wrap(p.list.map(sp => item(sp)))}
+        {p.extras.length > 0 && <><h3 className="exhead">{ctx.t("exHead")} ({p.extras.length})</h3>{wrap(p.extras.map(sp => item(sp)))}</>}
       </div>
     </>
   );
@@ -142,7 +139,7 @@ export function Entry({ ctx, sp, page, open, onDelete, scrollRef }: { ctx: Ctx; 
       </>
     );
   }
-  const season = seasonLabel(sp.season.months);
+  const season = seasonLabel(sp.season.months, ctx.lang);
   const max = Math.max(1, ...sp.season.histogram);
   const hab = habitatFor(sp, ctx.lang);
   const looks = lookalikesOf(sp, ctx.all);
@@ -161,7 +158,7 @@ export function Entry({ ctx, sp, page, open, onDelete, scrollRef }: { ctx: Ctx; 
         <div className="box"><h3>{ctx.t("where")}</h3>
           <div className="chips tight">
             {(["berlin", "grenoble"] as const).map(r => (
-              <span key={r} className={`chip ${sp.regions[r] >= REGION_MIN_OBS ? "on" : "off"}`}>{r === "berlin" ? "Berlin" : "Grenoble"} · {sp.regions[r]} {ctx.t("obs")}</span>
+              <span key={r} className={`chip ${sp.regions[r] >= REGION_MIN_OBS ? "on" : "off"}`}>{r === "berlin" ? "Berlin" : "Grenoble"}</span>
             ))}
           </div>
           {hab && <>{hab.text}{hab.lang !== ctx.lang && <span className="sub"> ({ctx.t("textIn")} {hab.lang.toUpperCase()})</span>}</>}
