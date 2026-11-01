@@ -19,7 +19,7 @@ const MAX_LOOKALIKES = 4;
 
 // ---------- fetch with disk cache, per-host throttle, 429 backoff ----------
 const last = {};
-async function get(url, { text = false } = {}) {
+async function get(url, { text = false, encoding = "utf-8" } = {}) {
   const key = createHash("sha1").update(url).digest("hex");
   const file = `${CACHE}/${key}.json`;
   try { return JSON.parse(await readFile(file, "utf8")); } catch {}
@@ -38,7 +38,7 @@ async function get(url, { text = false } = {}) {
       continue;
     }
     if (!res.ok) throw new Error(`${res.status} ${url}`);
-    const body = text ? await res.text() : await res.json();
+    const body = text ? new TextDecoder(encoding).decode(await res.arrayBuffer()) : await res.json();
     await mkdir(CACHE, { recursive: true });
     await writeFile(file, JSON.stringify(body));
     return body;
@@ -225,8 +225,38 @@ async function season(e) {
 }
 
 // ---------- main ----------
+// ---------- mycodb.fr: tie-breaker only when Wikidata edibility conflicts or is missing ----------
+const MYCODB = { "comestible": "edible", "bon comestible": "edible", "excellent comestible": "edible",
+  "sans intérêt": "none", "non comestible": "none", "toxique": "toxic", "mortel": "deadly" };
+async function mycodbEdibility(latin) {
+  const [genre, espece] = latin.split(" ");
+  const url = `https://www.mycodb.fr/fiche.php?${qs({ genre, espece })}`;
+  const page = await get(url, { text: true, encoding: "latin1" });
+  const m = page.match(/Comestibilit[\s\S]*?<\/div>\s*<p class="cdesc">([\s\S]*?)<\/p>/);
+  if (!m) return null;
+  const raw = m[1].replace(/<[^>]+>/g, "").trim();
+  return { raw, edibility: MYCODB[raw.toLowerCase()] ?? null, url };
+}
+async function synonyms(qid) {
+  const rows = await sparql(`SELECT ?n WHERE { wd:${qid} wdt:P1420 ?s . ?s wdt:P225 ?n . }`);
+  return rows.map(r => r.n.value).filter(n => n.split(" ").length === 2);
+}
+async function mycodb(entries) {
+  for (const e of entries.filter(x => !x.edibility && !x.edibilityOverride)) {
+    const names = [e.latin, ...(e.wikidata ? await synonyms(e.wikidata) : [])];
+    for (const n of names) {
+      const r = await mycodbEdibility(n);
+      if (!r) continue;
+      e.edibilityMycodb = { name: n, value: r.raw, url: r.url };
+      if (r.edibility) e.edibility = r.edibility;
+      break;
+    }
+  }
+}
+
 async function enrich(entries) {
   await wikidata(entries);
+  await mycodb(entries);
   for (const e of entries) { await inatNames(e); pickNames(e); await wikipedia(e); await season(e); process.stdout.write("."); }
   await regions(entries);
 }
@@ -288,7 +318,7 @@ const out = {
   sources: {
     ranking: "iNaturalist research-grade observations (Germany + France, Agaricomycetes + Pezizomycetes) x number of Wikipedia language editions (Wikidata sitelinks)",
     regions: `iNaturalist research-grade observations within ${RADIUS_KM} km of Berlin / Grenoble`,
-    names_edibility_morphology: "Wikidata (CC0)",
+    names_edibility_morphology: "Wikidata (CC0); edibility conflicts resolved with mycodb.fr",
     text: "Wikipedia FR/EN/DE (CC BY-SA 4.0), see text.<lang>.url",
   },
   species: [...core.map((e, i) => ({ no: i + 1, extra: false, ...e })), ...keptExtras.map((e, i) => ({ no: null, ex: i + 1, extra: true, ...e }))]

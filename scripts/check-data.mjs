@@ -14,7 +14,7 @@ for (const s of species) {
   if (!s.inat || !s.latin) errors.push(`${tag}: missing inat id or latin name`);
   for (const l of LANGS) if (!s.names?.[l]) errors.push(`${tag}: no ${l} name`);
   for (const l of LANGS) if (s.nameSource?.[l] === "latin") review.push(`${tag}: ${l} name fell back to Latin`);
-  if (!s.edibility) review.push(`${tag}: edibility ${s.edibilityConflict ? "CONFLICT" : "missing"} on Wikidata (${s.edibilitySource?.join(", ") || "none"})`);
+  if (!s.edibility) review.push(`${tag}: edibility ${s.edibilityConflict ? "CONFLICT" : "missing"} on Wikidata (${s.edibilitySource?.join(", ") || "none"}), mycodb: ${s.edibilityMycodb?.value ?? "no page"}`);
   if (s.edibility === "caution") review.push(`${tag}: edibility "caution", decide edible or toxic`);
   for (const l of LANGS) if (!s.text?.[l]?.intro) review.push(`${tag}: no ${l} Wikipedia intro`);
   if (!LANGS.some(l => s.text?.[l]?.habitat)) review.push(`${tag}: no habitat text in any language`);
