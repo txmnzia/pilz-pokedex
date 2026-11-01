@@ -5,7 +5,7 @@ A Pokédex for the mushrooms I find around Berlin and Grenoble. Live: https://tx
 - 30 species ranked by iNaturalist research-grade observations in Germany + France × number of Wikipedia language editions
 - Each species: FR/EN/DE names, edibility (edible / no interest / toxic / deadly, or unverified), season from observations,
   morphology, Berlin/Grenoble presence, Wikipedia text, and lookalikes that get their own page
-- Catch: take a photo, pick the species, GPS + place + note. Local-first, synced to Supabase when signed in (magic link)
+- Catch: take a photo or pick one from the library (date + GPS read from the photo EXIF), pick the species, place + note. Local-first, synced to Supabase when signed in (magic link)
 - Photo suggestions on the phone, offline, no account: MobileNetV2 fungi model (species-classifiers by M. Graham,
   Apache-2.0, iNaturalist 2021), European species only. Measured 74.6% top-1 / 85.8% top-3 on 232 recent photos. Suggestion only.
 - Grid or list view, FR / EN / DE (set in Settings, kept per account)

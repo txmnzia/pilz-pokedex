@@ -206,3 +206,11 @@ ul.list{list-style:none;margin:0;padding:0}
 .guess .gname{overflow-wrap:anywhere}.guess .gname small{display:block;font-size:15px}
 .guess b{font-weight:400;font-variant-numeric:tabular-nums}
 .guess .ed svg{width:18px;height:18px}
+
+.shot{cursor:default}
+.srcrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.srcbtn{position:relative;display:block;text-align:center;cursor:pointer;overflow:hidden}
+.srcbtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.srcbtn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;margin:0}
+.srcbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;flex:none}
+.srcrow .cta.ghost{margin-bottom:0}
