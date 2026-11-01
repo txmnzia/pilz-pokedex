@@ -1,9 +1,9 @@
 // Validates scraped species data and prints what needs a human look.
 // Exit code 1 on hard errors (broken structure), 0 otherwise. Review items are warnings.
-// Usage: node scripts/check-data.mjs data/species.next.json
+// Usage: node scripts/check-data.mjs public/data/species.next.json
 import { readFile } from "node:fs/promises";
 
-const file = process.argv[2] || "data/species.json";
+const file = process.argv[2] || "public/data/species.json";
 const { species } = JSON.parse(await readFile(file, "utf8"));
 const LANGS = ["fr", "en", "de"];
 const errors = [], review = [];

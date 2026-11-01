@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-01T14:51:10.718Z",
+ "generatedAt": "2026-11-01T15:00:04.129Z",
  "sources": {
   "ranking": "iNaturalist research-grade observations (Germany + France, Agaricomycetes + Pezizomycetes) x number of Wikipedia language editions (Wikidata sitelinks)",
   "regions": "iNaturalist research-grade observations within 50 km of Berlin / Grenoble",
@@ -97,12 +97,12 @@
      "url": "https://fr.wikipedia.org/wiki/Amanite_tue-mouches"
     },
     "en": {
-     "intro": "Amanita muscaria, commonly known as the fly agaric or fly amanita or simply red toadstool, is a basidiomycete fungus of the genus Amanita. Its name may come from its historical use to kill flies or from the effects it causes . It is a distinctive, large, white-gilled mushroom typically featuring a bright red cap covered with white warts.",
+     "intro": "Amanita muscaria, commonly known as the fly agaric or fly amanita or simply red toadstool, is a basidiomycete fungus of the genus Amanita. Its name may come from its historical use to kill flies or from the effects it causes. It is a distinctive, large, white-gilled mushroom typically featuring a bright red cap covered with white warts.",
      "habitat": "A. muscaria is a cosmopolitan mushroom, native to conifer and deciduous woodlands throughout the temperate and boreal regions of the Northern Hemisphere, including higher elevations of warmer latitudes in regions such as Hindu Kush, the Mediterranean and also Central America.",
      "url": "https://en.wikipedia.org/wiki/Amanita_muscaria"
     },
     "de": {
-     "intro": "Der Fliegenpilz , auch Roter Fliegenpilz genannt, ist eine giftige Pilzart aus der Familie der Wulstlingsverwandten. Die Fruchtkörper erscheinen in Mitteleuropa von Juni bis zum Beginn des Winters, hauptsächlich von Juli bis Oktober. Die Giftwirkung des Fliegenpilzes wird wie bei verwandten Arten wie dem giftigeren Pantherpilz vor allem auf die toxische Wirkung der Ibotensäure und Muscimol zurückgeführt.",
+     "intro": "Der Fliegenpilz, auch Roter Fliegenpilz genannt, ist eine giftige Pilzart aus der Familie der Wulstlingsverwandten. Die Fruchtkörper erscheinen in Mitteleuropa von Juni bis zum Beginn des Winters, hauptsächlich von Juli bis Oktober. Die Giftwirkung des Fliegenpilzes wird wie bei verwandten Arten wie dem giftigeren Pantherpilz vor allem auf die toxische Wirkung der Ibotensäure und Muscimol zurückgeführt.",
      "habitat": "Der Fliegenpilz kommt vom Sommer bis zum Herbst verbreitet in Nadel- und Laubwäldern vor und ist stellenweise häufig, besonders in der Nähe von Birken, mit denen er eine Mykorrhiza-Symbiose bildet. Er wächst in dichten wie lichten Wäldern sowie an Waldrändern.",
      "url": "https://de.wikipedia.org/wiki/Fliegenpilz"
     }
@@ -231,7 +231,7 @@
      "url": "https://en.wikipedia.org/wiki/Coprinus_comatus"
     },
     "de": {
-     "intro": "Der Schopf-Tintling , auch Spargelpilz, Porzellantintling oder Tintenpilz genannt, ist eine Pilzart aus der Familie der Champignonverwandten. Er ist in Europa heimisch, häufig und jung ein ausgezeichneter, wenngleich nicht sehr haltbarer Speisepilz, denn alte Exemplare zerfließen nach der Reife zu einer tintenartigen Flüssigkeit. Die Art ist kultivierbar, im Handel wird beispielsweise Körnerbrut angeboten, die vom Pilzgeflecht durchwachsen ist.",
+     "intro": "Der Schopf-Tintling, auch Spargelpilz, Porzellantintling oder Tintenpilz genannt, ist eine Pilzart aus der Familie der Champignonverwandten. Er ist in Europa heimisch, häufig und jung ein ausgezeichneter, wenngleich nicht sehr haltbarer Speisepilz, denn alte Exemplare zerfließen nach der Reife zu einer tintenartigen Flüssigkeit. Die Art ist kultivierbar, im Handel wird beispielsweise Körnerbrut angeboten, die vom Pilzgeflecht durchwachsen ist.",
      "habitat": "Der Schopf-Tintling kommt an Wegrändern und auf Wiesen vor. Im Lebensraum Stadt ist er einer der charakteristischsten Pilze, der oft in großen Gruppen auf gedüngten Rasenflächen mitten in Wohnsiedlungen wächst.",
      "url": "https://de.wikipedia.org/wiki/Schopf-Tintling"
     }
@@ -347,7 +347,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Boletus edulis, le Cèpe de Bordeaux, est une espèce de champignons basidiomycètes de la famille des Boletaceae que l'on rencontre dans l'hémisphère nord. Il fait partie, avec Boletus aereus, Boletus reticulatus et Boletus pinophilus, des quatre espèces de bolets nobles : les Cèpes. Cet excellent champignon comestible très recherché, est commercialisé et cuisiné mondialement sous diverses formes.",
+     "intro": "Boletus edulis, le Cèpe de Bordeaux, est une espèce de champignons basidiomycètes de la famille des Boletaceae que l'on rencontre dans l'hémisphère nord. Il fait partie, avec Boletus aereus, Boletus reticulatus et Boletus pinophilus, des quatre espèces de bolets nobles: les Cèpes. Cet excellent champignon comestible très recherché, est commercialisé et cuisiné mondialement sous diverses formes.",
      "habitat": "Le Cèpe de Bordeaux est une espèce commune et très largement répartie. Il pousse sous une large gamme de feuillus et de conifères.",
      "url": "https://fr.wikipedia.org/wiki/Boletus_edulis"
     },
@@ -357,7 +357,7 @@
      "url": "https://en.wikipedia.org/wiki/Boletus_edulis"
     },
     "de": {
-     "intro": "Der Gemeine Steinpilz , auch Fichten-Steinpilz, Herrenpilz, Edelpilz oder in Ostbayern und Böhmen Dobernickel genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten und Typusspezies der Gattung Steinpilze. Die Fruchtkörper haben meist einen bräunlichen Hut, weiße bis olivgelbliche Poren, eine helle Netzzeichnung am Stiel und weißes, nur sehr selten auf Druck oder bei Verletzung blauendes Fleisch. Der Pilz bildet mit zahlreichen Laub- und Nadelbäumen eine Mykorrhiza, häufig lebt er mit Fichten in Symbiose.",
+     "intro": "Der Gemeine Steinpilz, auch Fichten-Steinpilz, Herrenpilz, Edelpilz oder in Ostbayern und Böhmen Dobernickel genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten und Typusspezies der Gattung Steinpilze. Die Fruchtkörper haben meist einen bräunlichen Hut, weiße bis olivgelbliche Poren, eine helle Netzzeichnung am Stiel und weißes, nur sehr selten auf Druck oder bei Verletzung blauendes Fleisch. Der Pilz bildet mit zahlreichen Laub- und Nadelbäumen eine Mykorrhiza, häufig lebt er mit Fichten in Symbiose.",
      "habitat": "",
      "url": "https://de.wikipedia.org/wiki/Gemeiner_Steinpilz"
     }
@@ -474,12 +474,12 @@
    },
    "text": {
     "fr": {
-     "intro": "Laetiporus sulphureus, le Polypore soufré, est une espèce de champignons basidiomycètes de la famille des Fomitopsidaceae. Ce champignon comestible se rencontre du printemps à l'automne, sur le tronc de nombreuses espèces de feuillus .",
+     "intro": "Laetiporus sulphureus, le Polypore soufré, est une espèce de champignons basidiomycètes de la famille des Fomitopsidaceae. Ce champignon comestible se rencontre du printemps à l'automne, sur le tronc de nombreuses espèces de feuillus.",
      "habitat": "",
      "url": "https://fr.wikipedia.org/wiki/Polypore_soufr%C3%A9"
     },
     "en": {
-     "intro": "Laetiporus sulphureus is a species of bracket fungus . Its common names include sulphur polypore, sulphur shelf, and chicken-of-the-woods. Its fruit bodies grow as striking golden-yellow shelf-like structures on tree trunks and branches.",
+     "intro": "Laetiporus sulphureus is a species of bracket fungus. Its common names include sulphur polypore, sulphur shelf, and chicken-of-the-woods. Its fruit bodies grow as striking golden-yellow shelf-like structures on tree trunks and branches.",
      "habitat": "Laetiporus sulphureus is widely distributed across Europe (April to November) and North America, although its range may be restricted to areas east of the Rockies. It grows on dead or mature hardwoods and has been reported from a very wide variety of host trees, such as Quercus, Prunus, Pyrus, Populus, Salix, Robinia, and Fagus, occasionally also from conifers, from August to October or later, sometimes as early as June.",
      "url": "https://en.wikipedia.org/wiki/Laetiporus_sulphureus"
     },
@@ -603,7 +603,7 @@
      "url": "https://en.wikipedia.org/wiki/Trametes_versicolor"
     },
     "de": {
-     "intro": "Die Schmetterlings-Tramete , auch bekannt als Bunte Tramete oder Schmetterlingsporling, ist eine häufige holzbewohnende Pilzart aus der Familie der Stielporlingsverwandten.",
+     "intro": "Die Schmetterlings-Tramete, auch bekannt als Bunte Tramete oder Schmetterlingsporling, ist eine häufige holzbewohnende Pilzart aus der Familie der Stielporlingsverwandten.",
      "habitat": "Die Schmetterlings-Tramete ist ein häufiger saprobiontischer Holzbewohner oder Schwächeparasit, ihr Hauptsubstrat ist in Mitteleuropa die Rotbuche, seltener wächst sie an Eiche, Birke, Gemeiner Hasel und Weide. Daneben kann die Schmetterlings-Tramete an vielen weiteren Laubhölzern, nicht selten auch an Nadelholz vorkommen.",
      "url": "https://de.wikipedia.org/wiki/Schmetterlings-Tramete"
     }
@@ -782,7 +782,7 @@
    "text": {
     "fr": {
      "intro": "Fomes fomentarius, l'amadouvier, aussi polypore allume-feu ou fomes allume-feu, est une espèce de champignons basidiomycètes lignicoles de la famille des Polyporaceae.",
-     "habitat": "C'est un redoutable parasite de divers feuillus : hêtre, platane, frêne, bouleau, peuplier, chêne, marronnier, copalme et autres. Il se fixe sur des arbres faibles ou blessés, produit une pourriture blanche et finit en quelques années par tuer son hôte.",
+     "habitat": "C'est un redoutable parasite de divers feuillus: hêtre, platane, frêne, bouleau, peuplier, chêne, marronnier, copalme et autres. Il se fixe sur des arbres faibles ou blessés, produit une pourriture blanche et finit en quelques années par tuer son hôte.",
      "url": "https://fr.wikipedia.org/wiki/Amadouvier"
     },
     "en": {
@@ -791,7 +791,7 @@
      "url": "https://en.wikipedia.org/wiki/Fomes_fomentarius"
     },
     "de": {
-     "intro": "Der Zunderschwamm ist eine Pilzart aus der Familie der Stielporlingsverwandten . Er befällt geschwächte Laubbäume, vor allem Buchen und Birken , und bildet an den Stämmen dicke, invers konsolenförmige Fruchtkörper. Die mehrjährigen Gebilde können im Durchmesser bis zu 40 cm erreichen.",
+     "intro": "Der Zunderschwamm ist eine Pilzart aus der Familie der Stielporlingsverwandten. Er befällt geschwächte Laubbäume, vor allem Buchen und Birken, und bildet an den Stämmen dicke, invers konsolenförmige Fruchtkörper. Die mehrjährigen Gebilde können im Durchmesser bis zu 40 cm erreichen.",
      "habitat": "Der Zunderschwamm ist ein Schwächeparasit und Saprobiont an Laubhölzern, sehr selten auch an Nadelbäumen. Hauptsubstrat des Zunderschwammes in Mitteleuropa ist die Rotbuche, daneben werden Birken und Pappeln besiedelt, er kann aber auch an anderen Laubgehölzen vorkommen.",
      "url": "https://de.wikipedia.org/wiki/Zunderschwamm"
     }
@@ -1050,7 +1050,7 @@
      "url": "https://en.wikipedia.org/wiki/Macrolepiota_procera"
     },
     "de": {
-     "intro": "Der Gemeine Riesenschirmling, Parasol oder Riesenschirmpilz ist eine Pilzart aus der Familie der Champignonverwandten .",
+     "intro": "Der Gemeine Riesenschirmling, Parasol oder Riesenschirmpilz ist eine Pilzart aus der Familie der Champignonverwandten.",
      "habitat": "Der Gemeine Riesenschirmling ist in fast allen mesophilen Waldgesellschaften sowie auf offenem Grasland auf lehmigen, frischen Böden anzutreffen. Dabei werden lichte Buchen-, Eichen- und Eichen-Hainbuchen-Wälder auf nährstoffreichem Untergrund sowie entsprechende Fichtenforste als auch Wiesen und Weiden, Parks, Weg- und Waldränder bevorzugt.",
      "url": "https://de.wikipedia.org/wiki/Gemeiner_Riesenschirmling"
     }
@@ -1293,7 +1293,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Hypholoma fasciculare , l’Hypholome en touffe, Géophile, Nématolome en touffes[réf. nécessaire], est une espèce de champignons basidiomycètes de la famille des Strophariaceae. Son épithète spécifique, dérivée du latin fasces, « faisceau », fait référence aux bouquets réunis par la base qu'il forme.",
+     "intro": "Hypholoma fasciculare, l’Hypholome en touffe, Géophile, Nématolome en touffes[réf. nécessaire], est une espèce de champignons basidiomycètes de la famille des Strophariaceae. Son épithète spécifique, dérivée du latin fasces, « faisceau », fait référence aux bouquets réunis par la base qu'il forme.",
      "habitat": "L'hypholome pousse pratiquement toute l'année, sur les souches ou les racines de feuillus (hêtres) ou de conifères (épicéas, pins). Il forme, comme son nom l'indique, des touffes de plusieurs individus soudés entre eux par le pied.",
      "url": "https://fr.wikipedia.org/wiki/Hypholoma_fasciculare"
     },
@@ -1434,7 +1434,7 @@
      "url": "https://en.wikipedia.org/wiki/Schizophyllum_commune"
     },
     "de": {
-     "intro": "Der Gemeine Spaltblättling ist eine Pilzart aus der Gattung der Spaltblättlinge .",
+     "intro": "Der Gemeine Spaltblättling ist eine Pilzart aus der Gattung der Spaltblättlinge.",
      "habitat": "Der Gemeine Spaltblättling wächst als Saprobiont (Weißfäuleerreger) und Wundparasit an verschiedenen Laub- und Nadelhölzern. ) die Rotbuche gefolgt von der Fichte angegeben.",
      "url": "https://de.wikipedia.org/wiki/Gemeiner_Spaltbl%C3%A4ttling"
     }
@@ -1552,7 +1552,7 @@
      "url": "https://fr.wikipedia.org/wiki/Polypore_du_bouleau"
     },
     "en": {
-     "intro": "Fomitopsis betulina , commonly known as the birch polypore, birch bracket, or razor strop, is a common bracket fungus and, as the name suggests, grows almost exclusively on birch trees. The brackets burst out from the bark of the tree, and these fruit bodies can last for more than a year.",
+     "intro": "Fomitopsis betulina, commonly known as the birch polypore, birch bracket, or razor strop, is a common bracket fungus and, as the name suggests, grows almost exclusively on birch trees. The brackets burst out from the bark of the tree, and these fruit bodies can last for more than a year.",
      "habitat": "Fomitopsis betulina is one of the most common species of brown rot fungi. The geographic distribution of F.",
      "url": "https://en.wikipedia.org/wiki/Fomitopsis_betulina"
     },
@@ -1678,12 +1678,12 @@
      "url": "https://fr.wikipedia.org/wiki/Amanite_citrine"
     },
     "en": {
-     "intro": "Amanita citrina , commonly known as the false death cap or citron amanita, is a basidiomycotic mushroom. It grows in silicate soil in the summer and autumn months. It bears a pale yellow or sometimes white cap, with white stem, ring and volva.",
+     "intro": "Amanita citrina, commonly known as the false death cap or citron amanita, is a basidiomycotic mushroom. It grows in silicate soil in the summer and autumn months. It bears a pale yellow or sometimes white cap, with white stem, ring and volva.",
      "habitat": "The false death cap is found in deciduous and coniferous woodlands in autumn in Europe. It also occurs in North America, South Africa, Australia, Russia, Costa Rica, the UK, and in parts of Asia.",
      "url": "https://en.wikipedia.org/wiki/Amanita_citrina"
     },
     "de": {
-     "intro": "Der Gelbe Knollenblätterpilz , auch als Zitronengelber Knollenblätterpilz, Gelblicher Knollenblätterpilz oder Gelber Wulstling bekannt, ist eine Pilzart aus der Familie der Wulstlingsverwandten.",
+     "intro": "Der Gelbe Knollenblätterpilz, auch als Zitronengelber Knollenblätterpilz, Gelblicher Knollenblätterpilz oder Gelber Wulstling bekannt, ist eine Pilzart aus der Familie der Wulstlingsverwandten.",
      "habitat": "Der Gelbe Knollenblätterpilz ist ein Mykorrhiza-Pilz, der mit verschiedenen Nadel- und Laubbäumen vergesellschaftet sein kann. Hauptbaumpartner in Mitteleuropa ist die Gemeine Fichte, mit Abstand gefolgt von der Rotbuche, daneben Kiefern, Eichenarten, Birke und andere.",
      "url": "https://de.wikipedia.org/wiki/Gelber_Knollenbl%C3%A4tterpilz"
     }
@@ -2025,7 +2025,7 @@
      "url": "https://en.wikipedia.org/wiki/Lycoperdon_perlatum"
     },
     "de": {
-     "intro": "Der Flaschen-Stäubling , im Volksmund oft auch inkorrekt als Flaschenbovist bezeichnet, ist einer der häufigsten Stäublinge. Lange Zeit wurde diese Art den Bauchpilzen zugeordnet, doch neuere phylogenetische Erkenntnisse lassen dieses Taxon nicht mehr gelten. Der Flaschen-Stäubling und seine Verwandten zählen jetzt zu den Champignonverwandten , die neben Blätterpilzen auch Arten umfassen, die keine Fruchtkörper mit Lamellen ausbilden.",
+     "intro": "Der Flaschen-Stäubling, im Volksmund oft auch inkorrekt als Flaschenbovist bezeichnet, ist einer der häufigsten Stäublinge. Lange Zeit wurde diese Art den Bauchpilzen zugeordnet, doch neuere phylogenetische Erkenntnisse lassen dieses Taxon nicht mehr gelten. Der Flaschen-Stäubling und seine Verwandten zählen jetzt zu den Champignonverwandten, die neben Blätterpilzen auch Arten umfassen, die keine Fruchtkörper mit Lamellen ausbilden.",
      "habitat": "Der Flaschenstäubling ist ein häufiger Pilz in Laub- und Nadelwäldern, der oftmals in Gruppen anzutreffen ist. Als Saprobiont zersetzt er totes organisches Material.",
      "url": "https://de.wikipedia.org/wiki/Flaschen-St%C3%A4ubling"
     }
@@ -2146,12 +2146,12 @@
      "url": "https://fr.wikipedia.org/wiki/Bolet_bai"
     },
     "en": {
-     "intro": "Imleria badia, commonly known as the bay bolete, is a species of pored mushroom. First described scientifically by Elias Fries in 1818, the bay bolete was reclassified as Xerocomus badius in 1931, and it is still listed thus in several sources. Modern molecular phylogenetic studies show Xerocomus to be polyphyletic , and the bay bolete is not particularly closely related to species in that genus.",
+     "intro": "Imleria badia, commonly known as the bay bolete, is a species of pored mushroom. First described scientifically by Elias Fries in 1818, the bay bolete was reclassified as Xerocomus badius in 1931, and it is still listed thus in several sources. Modern molecular phylogenetic studies show Xerocomus to be polyphyletic, and the bay bolete is not particularly closely related to species in that genus.",
      "habitat": "The bay bolete is common in coniferous and less commonly mixed woodlands in Europe, from the British Isles, where it is abundant throughout from August to November, east to the Black Sea Region in Turkey. In Asia, the species has been recorded from Jordan mainland China, and Taiwan.",
      "url": "https://en.wikipedia.org/wiki/Imleria_badia"
     },
     "de": {
-     "intro": "Der Maronen-Röhrling ist eine Pilzart aus der Familie der Steinpilzverwandten . Im Volksmund wird er auch Marone genannt, weil der halbkugelige bis gewölbte, dunkelbraune Hut der Fruchtkörper an Esskastanien erinnert. Ein weiterer Name, der sich ebenfalls auf den Hut bezieht, ist Braunkappe – die Bezeichnung wird seit einigen Jahren auch im Handel für den Riesen-Träuschling gebraucht.",
+     "intro": "Der Maronen-Röhrling ist eine Pilzart aus der Familie der Steinpilzverwandten. Im Volksmund wird er auch Marone genannt, weil der halbkugelige bis gewölbte, dunkelbraune Hut der Fruchtkörper an Esskastanien erinnert. Ein weiterer Name, der sich ebenfalls auf den Hut bezieht, ist Braunkappe – die Bezeichnung wird seit einigen Jahren auch im Handel für den Riesen-Träuschling gebraucht.",
      "habitat": "Der Maronen-Röhrling ist in Mitteleuropa weit verbreitet und kommt von der Küste bis in die Alpen vor. Er wächst hauptsächlich im Nadelwald, vor allem in alten Fichtenwäldern oder unter Lärchen (oft zwischen den Wurzelausläufern), und kommt in feuchten Sommern bereits im Juni/Juli vor.",
      "url": "https://de.wikipedia.org/wiki/Maronen-R%C3%B6hrling"
     }
@@ -2266,12 +2266,12 @@
    },
    "text": {
     "fr": {
-     "intro": "L'Amanite phalloïde , également connue sous les noms vernaculaires d'Oronge verte, de Calice de la mort, d'Agaric bulbeux, d'Oronge ciguë, ou de Lera verda picotada, est une espèce de champignons vénéneux de la famille des Amanitaceae et du genre des amanites. Largement distribuée en Europe, Amanita phalloides est trouvée en association avec différents feuillus ou conifères. Cette espèce dotée d'une grande capacité d'adaptation a été introduite dans d'autres pays et continents, transportée sur des chênes, châtaigniers ou pins.",
+     "intro": "L'Amanite phalloïde, également connue sous les noms vernaculaires d'Oronge verte, de Calice de la mort, d'Agaric bulbeux, d'Oronge ciguë, ou de Lera verda picotada, est une espèce de champignons vénéneux de la famille des Amanitaceae et du genre des amanites. Largement distribuée en Europe, Amanita phalloides est trouvée en association avec différents feuillus ou conifères. Cette espèce dotée d'une grande capacité d'adaptation a été introduite dans d'autres pays et continents, transportée sur des chênes, châtaigniers ou pins.",
      "habitat": "L'amanite phalloïde est originaire d'Europe, où elle est largement répandue. On la trouve au nord, en Scandinavie, dans les Pays baltes, à l'ouest jusqu'en Irlande, à l'est en Pologne et en Russie, et au sud par les Balkans jusqu'en Italie, Espagne, Maroc et Algérie en Afrique du Nord.",
      "url": "https://fr.wikipedia.org/wiki/Amanite_phallo%C3%AFde"
     },
     "en": {
-     "intro": "Amanita phalloides , commonly known as the death cap, is a deadly poisonous basidiomycete fungus and mushroom, one of many in the genus Amanita. Originating in Europe but later introduced to other parts of the world since the late twentieth century, A. phalloides forms ectomycorrhizae with various broadleaved trees.",
+     "intro": "Amanita phalloides, commonly known as the death cap, is a deadly poisonous basidiomycete fungus and mushroom, one of many in the genus Amanita. Originating in Europe but later introduced to other parts of the world since the late twentieth century, A. phalloides forms ectomycorrhizae with various broadleaved trees.",
      "habitat": "The death cap is native to Europe, where it is widespread. It is found from the southern coastal regions of Scandinavia in the north, to Ireland in the west, east to Poland and western Russia, and south throughout the Balkans, in Greece, Italy, Spain, and Portugal in the Mediterranean basin, and in Morocco and Algeria in north Africa.",
      "url": "https://en.wikipedia.org/wiki/Amanita_phalloides"
     },
@@ -2379,7 +2379,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Phallus impudicus, le satyre puant ou phallus impudique, parfois nommé morille du diable , fausse morille ou œuf du Diable à l'état jeune, est une espèce de champignons basidiomycètes de la famille des phallacées. À l'état adulte, il a une forme phallique, d'où son nom— inchangé depuis Linné, ce qui est rarissime en mycologie — et, comme la plupart des Phallales, dégage une odeur putride de cadavre en putréfaction , ce mimétisme olfactif lui permettant d'attirer les insectes nécrophages qui dispersent ses spores principalement par zoochorie.",
+     "intro": "Phallus impudicus, le satyre puant ou phallus impudique, parfois nommé morille du diable, fausse morille ou œuf du Diable à l'état jeune, est une espèce de champignons basidiomycètes de la famille des phallacées. À l'état adulte, il a une forme phallique, d'où son nom— inchangé depuis Linné, ce qui est rarissime en mycologie — et, comme la plupart des Phallales, dégage une odeur putride de cadavre en putréfaction, ce mimétisme olfactif lui permettant d'attirer les insectes nécrophages qui dispersent ses spores principalement par zoochorie.",
      "habitat": "Commun dans tout l'hémisphère nord, Phallus impudicus se développe en Europe et en Amérique du Nord, de la fin du printemps à l'automne, tant dans les bois de feuillus que de résineux, le plus souvent aux alentours des vieilles souches mais aussi, exceptionnellement sur vieilles souches ou troncs en décomposition.",
      "url": "https://fr.wikipedia.org/wiki/Satyre_puant"
     },
@@ -2636,12 +2636,12 @@
      "url": "https://fr.wikipedia.org/wiki/Polypore_g%C3%A9ant"
     },
     "en": {
-     "intro": "Meripilus giganteus is a polypore fungus in the family Meripilaceae. It causes a white rot in various types of broadleaved trees, particularly beech , but also Abies, Picea, Pinus, Quercus and Ulmus species. This bracket fungus, commonly known as the giant polypore or black-staining polypore, is often found in large clumps at the base of trees, although fruiting bodies are sometimes found some distance away from the trunk, parasitizing the roots.",
+     "intro": "Meripilus giganteus is a polypore fungus in the family Meripilaceae. It causes a white rot in various types of broadleaved trees, particularly beech, but also Abies, Picea, Pinus, Quercus and Ulmus species. This bracket fungus, commonly known as the giant polypore or black-staining polypore, is often found in large clumps at the base of trees, although fruiting bodies are sometimes found some distance away from the trunk, parasitizing the roots.",
      "habitat": "M. giganteus has a circumboreal distribution in the northern hemisphere.",
      "url": "https://en.wikipedia.org/wiki/Meripilus_giganteus"
     },
     "de": {
-     "intro": "Der Riesenporling ist eine Pilzart aus der Familie der Riesenporlingsverwandten .",
+     "intro": "Der Riesenporling ist eine Pilzart aus der Familie der Riesenporlingsverwandten.",
      "habitat": "Das Myzel des Riesenporlings lebt als Weißfäule erzeugender Wurzelparasit in den unterirdischen Bereichen von Buchen, Eichen, Linden, Rosskastanien, Birken oder anderen Laubbäumen, sehr selten auch von Nadelbäumen. Ein Befall durch diesen Schwächeparasit bleibt oft jahrelang unentdeckt.",
      "url": "https://de.wikipedia.org/wiki/Riesenporling"
     }
@@ -2754,16 +2754,16 @@
    "text": {
     "fr": {
      "intro": "Cantharellus cibarius, la Girolle ou Chanterelle, est une espèce de champignons basidiomycètes de la famille des Cantharellaceae. Cette espèce, très commune dans tout l'hémisphère nord, est un comestible réputé, parmi les plus connus et les plus recherchés des champignons comestibles. Elle est caractérisée par ses teintes jaunes, son hyménophore constitué de plis en formes de lames fourchus irrégulièrement et son odeur très fruitée.",
-     "habitat": "La Girolle pousse dans les contrées tempérées, sous les arbres feuillus (bouleau) comme sous résineux, plutôt sur terrain acide, du tout début de l'été à la fin de l'automne selon les régions : de la mi-juillet à mi-septembre au Québec, de la fin du mois d'août à la fin d'octobre dans les Ardennes. Elle disparaît aux premières gelées mais peut se récolter à Noël près de la Méditerranée.",
+     "habitat": "La Girolle pousse dans les contrées tempérées, sous les arbres feuillus (bouleau) comme sous résineux, plutôt sur terrain acide, du tout début de l'été à la fin de l'automne selon les régions: de la mi-juillet à mi-septembre au Québec, de la fin du mois d'août à la fin d'octobre dans les Ardennes. Elle disparaît aux premières gelées mais peut se récolter à Noël près de la Méditerranée.",
      "url": "https://fr.wikipedia.org/wiki/Cantharellus_cibarius"
     },
     "en": {
-     "intro": "Cantharellus cibarius is the golden chanterelle, the type species of the chanterelle genus Cantharellus. It is also known as girolle . Despite its characteristic features, C.",
+     "intro": "Cantharellus cibarius is the golden chanterelle, the type species of the chanterelle genus Cantharellus. It is also known as girolle. Despite its characteristic features, C.",
      "habitat": "The species grows in Europe from Scandinavia to the Mediterranean Basin, mainly in deciduous and coniferous forests and typically from June to December.",
      "url": "https://en.wikipedia.org/wiki/Cantharellus_cibarius"
     },
     "de": {
-     "intro": "Der Echte Pfifferling, Eierschwamm oder Rehling , auch Eierschwämmchen, in Österreich und Bayern Eierschwammerl und Reherl, in Franken Gelberle, in Sachsen Gelchen, in der Schweiz auch Eierschwämmli genannt, ist ein als Marktpilz gehandelter Speisepilz aus der Familie der Stoppelpilzverwandten .",
+     "intro": "Der Echte Pfifferling, Eierschwamm oder Rehling, auch Eierschwämmchen, in Österreich und Bayern Eierschwammerl und Reherl, in Franken Gelberle, in Sachsen Gelchen, in der Schweiz auch Eierschwämmli genannt, ist ein als Marktpilz gehandelter Speisepilz aus der Familie der Stoppelpilzverwandten.",
      "habitat": "Der Echte Pfifferling ist ein Mykorrhizapilz, der mit diversen Nadel- und Laubbäumen Symbiosen eingeht. In Mitteleuropa ist der bevorzugte Baumpartner die Gemeine Fichte, gefolgt von der Rotbuche.",
      "url": "https://de.wikipedia.org/wiki/Echter_Pfifferling"
     }
@@ -2885,12 +2885,12 @@
      "url": "https://fr.wikipedia.org/wiki/Amanite_panth%C3%A8re"
     },
     "en": {
-     "intro": "Amanita pantherina, also known as the panther cap, false blusher, and the panther amanita due to its similarity to the true blusher , is a species of fungus found in Eurasia, Africa, North America, and South America with poisonous and psychoactive properties.",
+     "intro": "Amanita pantherina, also known as the panther cap, false blusher, and the panther amanita due to its similarity to the true blusher, is a species of fungus found in Eurasia, Africa, North America, and South America with poisonous and psychoactive properties.",
      "habitat": "The panther cap is an uncommon mushroom, found in both deciduous, especially beech and, less frequently, coniferous woodland and rarely meadows throughout Europe, western Asia in late summer and autumn. It has also been recorded from South Africa, where it is thought to have been accidentally introduced with trees imported from Europe and Asia.",
      "url": "https://en.wikipedia.org/wiki/Amanita_pantherina"
     },
     "de": {
-     "intro": "Der Pantherpilz ist eine Pilzart aus der Familie der Wulstlingsverwandten . Die Fruchtkörper des Pantherpilzes zeigen typische Wulstlingsmerkmale: braune, mit weißen Flocken besetzte Hüte, beringte weiße Stiele mit verdickter Knolle am unteren Ende und helle, dicht stehende Lamellen. Der Pantherpilz ist stark giftig.",
+     "intro": "Der Pantherpilz ist eine Pilzart aus der Familie der Wulstlingsverwandten. Die Fruchtkörper des Pantherpilzes zeigen typische Wulstlingsmerkmale: braune, mit weißen Flocken besetzte Hüte, beringte weiße Stiele mit verdickter Knolle am unteren Ende und helle, dicht stehende Lamellen. Der Pantherpilz ist stark giftig.",
      "habitat": "Pantherpilze sind Mykorrhizapartner von Laub- und Nadelbäumen und kommen in einer Vielzahl verschiedener Waldformen vor. Die Fruchtkörper erscheinen zwischen Juni und November.",
      "url": "https://de.wikipedia.org/wiki/Pantherpilz"
     }
@@ -3015,7 +3015,7 @@
      "url": "https://en.wikipedia.org/wiki/Fistulina_hepatica"
     },
     "de": {
-     "intro": "Der Eichen-Leberreischling , oft nur Leberreischling, auch Leberpilz oder Ochsenzunge genannt, ist ein Porling aus der Familie der Leberreischlingsverwandten .",
+     "intro": "Der Eichen-Leberreischling, oft nur Leberreischling, auch Leberpilz oder Ochsenzunge genannt, ist ein Porling aus der Familie der Leberreischlingsverwandten.",
      "habitat": "Der Eichen-Leberreischling ist ein Xylobiont und lebt als Schwächeparasit fast ausschließlich an Eichen, selten auch an Edelkastanien oder noch seltener an anderen Laubgehölzen wie Walnuss oder Esche. Verletzungen der Baumrinde dienen den Sporen als Eintrittspforte.",
      "url": "https://de.wikipedia.org/wiki/Eichen-Leberreischling"
     }
@@ -3138,7 +3138,7 @@
      "url": "https://en.wikipedia.org/wiki/Coprinopsis_picacea"
     },
     "de": {
-     "intro": "Der Specht- oder Elstern-Tintling ist eine Pilzart aus der Familie der Mürblingsverwandten .",
+     "intro": "Der Specht- oder Elstern-Tintling ist eine Pilzart aus der Familie der Mürblingsverwandten.",
      "habitat": "Der Specht-Tintling kommt vor allem in mesophilen Buchenwäldern vor. Daneben ist er in wärmebegünstigten Eichen- und Eichen-Hainbuchen-Wäldern zu finden.",
      "url": "https://de.wikipedia.org/wiki/Specht-Tintling"
     }
@@ -3250,7 +3250,7 @@
    "text": {
     "fr": {
      "intro": "Helvella crispa, l'Helvelle crépue, est une espèce de champignons ascomycètes de la famille des Helvellacées caractérisée par ses teintes blanchâtres, son chapeau crépu plus ou moins en forme de selle ou de mitre et son pied lacuneux.",
-     "habitat": "C'est une espèce qui pousse en petits groupes ou en colonies dans les bois humides de feuillus ; chênes (Quercus), peuplier (Populus), bouleaux (Betula), hêtre (Fagus sylvatica) et aussi dans les bois mixtes et sous conifères ; pins (Pinus) et sapins (Abies), le long des sentiers, au bord des fossés, dans les zones perturbées et retournées, dans les clairières, dans l’herbe, les haies et les talus des prairies, parfois à l'intérieur même des bois, sur les sols alcalins, sur des substrats humides ou sableux comme les plaines fluviales. On la trouve de la fin de l’été jusqu’à la fin de l’automne, rarement au printemps.",
+     "habitat": "C'est une espèce qui pousse en petits groupes ou en colonies dans les bois humides de feuillus; chênes (Quercus), peuplier (Populus), bouleaux (Betula), hêtre (Fagus sylvatica) et aussi dans les bois mixtes et sous conifères; pins (Pinus) et sapins (Abies), le long des sentiers, au bord des fossés, dans les zones perturbées et retournées, dans les clairières, dans l’herbe, les haies et les talus des prairies, parfois à l'intérieur même des bois, sur les sols alcalins, sur des substrats humides ou sableux comme les plaines fluviales. On la trouve de la fin de l’été jusqu’à la fin de l’automne, rarement au printemps.",
      "url": "https://fr.wikipedia.org/wiki/Helvelle_cr%C3%A9pue"
     },
     "en": {
@@ -3548,7 +3548,7 @@
    },
    "text": {
     "fr": {
-     "intro": "L'Anthurus d'Archer, Clathrus archeri , est une espèce de champignons basidiomycètes de l'ordre des Phallales et de la famille des phallacées. Originaire d'Australasie, cette espèce est considérée comme invasive en Europe et en Amériques.",
+     "intro": "L'Anthurus d'Archer, Clathrus archeri, est une espèce de champignons basidiomycètes de l'ordre des Phallales et de la famille des phallacées. Originaire d'Australasie, cette espèce est considérée comme invasive en Europe et en Amériques.",
      "habitat": "On trouve ce champignon l'été et l'automne dans les bois clairs de feuillus, plus rarement dans des forêts de conifères, et parfois dans les prairies humides.",
      "url": "https://fr.wikipedia.org/wiki/Anthurus_d%27Archer"
     },
@@ -3558,7 +3558,7 @@
      "url": "https://en.wikipedia.org/wiki/Clathrus_archeri"
     },
     "de": {
-     "intro": "Der Tintenfischpilz , auch Tintenfisch-Gitterling, Krakenpilz oder Krakenarmpilz genannt, ist eine Pilzart aus der Gattung der Gitterlinge und ein enger Verwandter des Roten Gitterlings. Der um 1900 in Mitteleuropa eingeschleppte Pilz ist in Australien, Neuseeland und Malaysia heimisch und zählt zu den bodenbewohnenden Saprophyten.",
+     "intro": "Der Tintenfischpilz, auch Tintenfisch-Gitterling, Krakenpilz oder Krakenarmpilz genannt, ist eine Pilzart aus der Gattung der Gitterlinge und ein enger Verwandter des Roten Gitterlings. Der um 1900 in Mitteleuropa eingeschleppte Pilz ist in Australien, Neuseeland und Malaysia heimisch und zählt zu den bodenbewohnenden Saprophyten.",
      "habitat": "In Mitteleuropa wächst der Tintenfischpilz als bodenbewohnender Saprophyt (auch als Saprobiont oder Destruent bezeichnet), da er sich von totem organischem Material ernährt. Seine fadenförmigen Mycele durchziehen den Boden, wo sie gelöste Nährstoffe aufnehmen.",
      "url": "https://de.wikipedia.org/wiki/Tintenfischpilz"
     }
@@ -3669,7 +3669,7 @@
    "text": {
     "fr": {
      "intro": "Amanita caesarea, l'Amanite des Césars, plus familièrement l'Oronge, est une espèce de champignon appartenant aux basidiomycètes de la famille des Amanitaceae. Espèce à tendance méditerranéenne caractérisée par son chapeau orange vif, ses lames et pied jaune et son épaisse volve blanche, il s'agit d'un champignon très recherché avec une réputation d'excellent comestible.",
-     "habitat": "L'Oronge pousse sur sol acide, neutre, calcaire ou argileux, dès le mois de juillet et jusqu'à à la mi-novembre, sous les feuillus, notamment les chênes (caduques ; le chêne pubescent (Quercus pubescens), le chêne sessile (Quercus petraea), le chêne pédonculé (Quercus robur), le chêne chevelu (Quercus cerris), le chêne de Hongrie (Quercus frainetto), le chêne de Sicile (Quercus gussonei) et sempervirents ; le chêne vert (Quercus ilex) et le chêne-liège (Quercus suber)) mais aussi le châtaignier (Castanea sativa) et le hêtre (Fagus sylvatica), et ce également parfois en forêt mixte avec des conifères, particulièrement les pins (Pinus). Elle fructifie seule ou en groupes en forêt de plaine ou collinéenne, dans les taillis, les bords de chemin et les clairières.",
+     "habitat": "L'Oronge pousse sur sol acide, neutre, calcaire ou argileux, dès le mois de juillet et jusqu'à à la mi-novembre, sous les feuillus, notamment les chênes (caduques; le chêne pubescent (Quercus pubescens), le chêne sessile (Quercus petraea), le chêne pédonculé (Quercus robur), le chêne chevelu (Quercus cerris), le chêne de Hongrie (Quercus frainetto), le chêne de Sicile (Quercus gussonei) et sempervirents; le chêne vert (Quercus ilex) et le chêne-liège (Quercus suber)) mais aussi le châtaignier (Castanea sativa) et le hêtre (Fagus sylvatica), et ce également parfois en forêt mixte avec des conifères, particulièrement les pins (Pinus). Elle fructifie seule ou en groupes en forêt de plaine ou collinéenne, dans les taillis, les bords de chemin et les clairières.",
      "url": "https://fr.wikipedia.org/wiki/Oronge"
     },
     "en": {
@@ -3678,7 +3678,7 @@
      "url": "https://en.wikipedia.org/wiki/Amanita_caesarea"
     },
     "de": {
-     "intro": "Der Kaiserling , auch Kaiserpilz oder Orangegelber Wulstling genannt, ist eine Pilzart aus der Familie der Wulstlingsverwandten , der schon seit der Antike den Ruf eines außergewöhnlich wohlschmeckenden Speisepilzes genießt.",
+     "intro": "Der Kaiserling, auch Kaiserpilz oder Orangegelber Wulstling genannt, ist eine Pilzart aus der Familie der Wulstlingsverwandten, der schon seit der Antike den Ruf eines außergewöhnlich wohlschmeckenden Speisepilzes genießt.",
      "habitat": "Der Kaiserling ist ein Mykorrhizapilz, der mit Eichen, Buchen, Kiefern und Esskastanien vergesellschaftet sein kann. Er ist stark wärmeliebend und wächst in lichten Wäldern und Gebüschen.",
      "url": "https://de.wikipedia.org/wiki/Kaiserling"
     }
@@ -4134,12 +4134,12 @@
    },
    "text": {
     "fr": {
-     "intro": "Chlorophyllum molybdites, la Lépiote de Morgan, fausse coulemelle, coulemelle à spores vertes ou Lépiote à lames vertes est un champignon basidiomycète saprophyte de l'ordre des agaricales assez commun localement hors d'Europe, notamment en région tropicale. Sa consommation provoque de sévères syndromes gastro-intestinaux . Il s'agit du champignon vénéneux le plus couramment consommé en Amérique du Nord et du principal responsable d'intoxication chez les Européens d'Outremer ou vivant en région tropicale.",
+     "intro": "Chlorophyllum molybdites, la Lépiote de Morgan, fausse coulemelle, coulemelle à spores vertes ou Lépiote à lames vertes est un champignon basidiomycète saprophyte de l'ordre des agaricales assez commun localement hors d'Europe, notamment en région tropicale. Sa consommation provoque de sévères syndromes gastro-intestinaux. Il s'agit du champignon vénéneux le plus couramment consommé en Amérique du Nord et du principal responsable d'intoxication chez les Européens d'Outremer ou vivant en région tropicale.",
      "habitat": "), rarement en Europe et uniquement en serre en jardins botaniques ou en pots de fleurs dans de nombreuses régions tempérées. Les carpophores apparaissent généralement après l'été et les pluies d'automne ou la mousson de juin au Japon.",
      "url": "https://fr.wikipedia.org/wiki/Chlorophyllum_molybdites"
     },
     "en": {
-     "intro": "Chlorophyllum molybdites, commonly known as the green-spored parasol, green-gill parasol, false parasol, green-spored lepiota and vomiter, is a common species of mushroom found in temperate and subtropical meadows and lawns. The species is poisonous and causes potentially serious vomiting and diarrhea. It is the most commonly consumed poisonous mushroom in North America, often being misidentified as edible species like Chlorophyllum rhacodes and Macrolepiota procera .",
+     "intro": "Chlorophyllum molybdites, commonly known as the green-spored parasol, green-gill parasol, false parasol, green-spored lepiota and vomiter, is a common species of mushroom found in temperate and subtropical meadows and lawns. The species is poisonous and causes potentially serious vomiting and diarrhea. It is the most commonly consumed poisonous mushroom in North America, often being misidentified as edible species like Chlorophyllum rhacodes and Macrolepiota procera.",
      "habitat": "Chlorophyllum molybdites grows in meadows, lawns and parks across eastern North America, as well as temperate and subtropical regions around the world. Fruiting bodies generally appear after summer and autumn rains.",
      "url": "https://en.wikipedia.org/wiki/Chlorophyllum_molybdites"
     },
@@ -4276,7 +4276,7 @@
      "url": "https://en.wikipedia.org/wiki/Coprinopsis_atramentaria"
     },
     "de": {
-     "intro": "Der Gemeine/Graue Falten-Tintling oder kurz Falten-Tintling , aufgrund der knotigen Verdickung am unteren Stielende auch Knoten-Tintling genannt, ist eine Pilzart aus der Familie der Mürblingsverwandten . Der häufige Blätterpilz kommt in Parkanlagen, an Wegrändern sowie in Laubwäldern vor und ist in Europa weit verbreitet. Die Fruchtkörper sind vor dem tintenartigen Zerfließen des Huts und der Lamellen essbar, verursachen aber bei in kurzem zeitlichen Abstand zur Pilzmahlzeit stattfindendem Konsum von Alkohol eine Vergiftung .",
+     "intro": "Der Gemeine/Graue Falten-Tintling oder kurz Falten-Tintling, aufgrund der knotigen Verdickung am unteren Stielende auch Knoten-Tintling genannt, ist eine Pilzart aus der Familie der Mürblingsverwandten. Der häufige Blätterpilz kommt in Parkanlagen, an Wegrändern sowie in Laubwäldern vor und ist in Europa weit verbreitet. Die Fruchtkörper sind vor dem tintenartigen Zerfließen des Huts und der Lamellen essbar, verursachen aber bei in kurzem zeitlichen Abstand zur Pilzmahlzeit stattfindendem Konsum von Alkohol eine Vergiftung.",
      "habitat": "Die häufige Art kommt meistens in Parkanlagen, an Wegen und in Laubwäldern in ganz Europa vor. Der Falten-Tintling fruchtet von April bis November.",
      "url": "https://de.wikipedia.org/wiki/Falten-Tintling"
     }
@@ -4430,7 +4430,7 @@
      "url": "https://en.wikipedia.org/wiki/Rubroboletus_satanas"
     },
     "de": {
-     "intro": "Der Satans-Röhrling , auch Satanspilz genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten . Er ist ein Giftpilz.",
+     "intro": "Der Satans-Röhrling, auch Satanspilz genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten. Er ist ein Giftpilz.",
      "habitat": "Der Satans-Röhrling kommt in der gesamten gemäßigten Zone vor, doch weist er in Europa eine deutlich südliche Verbreitung auf. Er wächst als Mykorrhizapilz in Laubwäldern, bevorzugt auf kalkhaltigen Böden, und erscheint dort etwa von Juni bis September.",
      "url": "https://de.wikipedia.org/wiki/Satans-R%C3%B6hrling"
     }
@@ -4911,7 +4911,7 @@
      "url": "https://en.wikipedia.org/wiki/Gyroporus_castaneus"
     },
     "de": {
-     "intro": "Der Hasen-Röhrling , auch Zimt-Röhrling, ist eine seltene Pilzart aus der Familie der Blasssporröhrlingsverwandten. Innerhalb der Gattung der Blasssporröhrlinge ist er Teil eines Artenaggregats, dem mehrere unbeschriebene kryptische europäische Arten angehören.",
+     "intro": "Der Hasen-Röhrling, auch Zimt-Röhrling, ist eine seltene Pilzart aus der Familie der Blasssporröhrlingsverwandten. Innerhalb der Gattung der Blasssporröhrlinge ist er Teil eines Artenaggregats, dem mehrere unbeschriebene kryptische europäische Arten angehören.",
      "habitat": "Der Hasen-Röhrling ist ein Mykorrhizapilz, der mit verschiedenen Laubbäumen, in Mitteleuropa vor allem mit der Rotbuche und mit Eichenarten, eine Symbiose bildet. Hierbei kommt er sowohl auf sauren als auch auf basischen Böden vor.",
      "url": "https://de.wikipedia.org/wiki/Hasen-R%C3%B6hrling"
     }
@@ -5088,7 +5088,7 @@
      "url": "https://en.wikipedia.org/wiki/Caloboletus_radicans"
     },
     "de": {
-     "intro": "Der Wurzelnde Bitter-Röhrling oder Bitterschwamm ist eine Pilzart aus der Familie der Steinpilzverwandten .",
+     "intro": "Der Wurzelnde Bitter-Röhrling oder Bitterschwamm ist eine Pilzart aus der Familie der Steinpilzverwandten.",
      "habitat": "Der Wurzelnde Bitter-Röhrling kommt in Laubwäldern in Europa vor und benötigt kalkreiche Böden. Er ist ein Mykorrhizapilz, der besonders in Gesellschaft mit Eichen, aber auch bei Buchen, Birken, Linden und Hainbuchen zu finden ist.",
      "url": "https://de.wikipedia.org/wiki/Wurzelnder_Bitter-R%C3%B6hrling"
     }
@@ -5467,7 +5467,7 @@
      "url": "https://en.wikipedia.org/wiki/Bjerkandera_adusta"
     },
     "de": {
-     "intro": "Der Angebrannte Rauchporling oder Rauchgraue Porling ist eine Pilzart aus der Familie der Fältlingsverwandten . Der Weißfäuleerreger ist ein sehr häufiger Pilz. Seine Hüte überwachsen häufig dachziegelig-rasig und in großen Scharen Buchenstümpfe.",
+     "intro": "Der Angebrannte Rauchporling oder Rauchgraue Porling ist eine Pilzart aus der Familie der Fältlingsverwandten. Der Weißfäuleerreger ist ein sehr häufiger Pilz. Seine Hüte überwachsen häufig dachziegelig-rasig und in großen Scharen Buchenstümpfe.",
      "habitat": "Der Angebrannte Rauchporling kommt in allen heimischen Wald- und Forstgesellschaften vor. Besonders häufig findet man ihn in mesophilen Rotbuchen- und den entsprechenden Hainbuchen-Eichenwäldern.",
      "url": "https://de.wikipedia.org/wiki/Angebrannter_Rauchporling"
     }
@@ -5555,12 +5555,12 @@
      "url": "https://fr.wikipedia.org/wiki/Faux_amadouvier"
     },
     "en": {
-     "intro": "Phellinus igniarius , commonly known as the willow bracket, fire sponge, false tinder polypore, punk ash polypore, or false tinder conk, is a fungus of the family Hymenochaetaceae. Like other members of the genus of Phellinus, it lives by saprotrophic nutrition, in which the lignin and cellulose of a host tree is degraded and is a cause of white rot. The fungus forms perennial fruiting bodies that rise as woody-hard, hoof or disc-shaped brackets from the bark of the infested living tree or dead log.",
+     "intro": "Phellinus igniarius, commonly known as the willow bracket, fire sponge, false tinder polypore, punk ash polypore, or false tinder conk, is a fungus of the family Hymenochaetaceae. Like other members of the genus of Phellinus, it lives by saprotrophic nutrition, in which the lignin and cellulose of a host tree is degraded and is a cause of white rot. The fungus forms perennial fruiting bodies that rise as woody-hard, hoof or disc-shaped brackets from the bark of the infested living tree or dead log.",
      "habitat": "The species is a polypore, with pores on the underside that bear basidiospores. The species causes a white rot that leads to the tree to decay.",
      "url": "https://en.wikipedia.org/wiki/Phellinus_igniarius"
     },
     "de": {
-     "intro": "Der Gemeine Feuerschwamm ist ein Pilz aus der Familie der Borstenscheiblingsverwandten . Wie auch andere Vertreter der Gattung Phellinus lebt er als Saprobiont, der das Lignin und die Zellulose des Wirtsholzes abbaut und so Weißfäule verursacht. Der Gemeine Feuerschwamm bildet das ganze Jahr über mehrjährige Fruchtkörper aus, die als holzig-harte, huf- oder scheibenförmige Vorsprünge aus der Rinde des befallenen Baumes ragen.",
+     "intro": "Der Gemeine Feuerschwamm ist ein Pilz aus der Familie der Borstenscheiblingsverwandten. Wie auch andere Vertreter der Gattung Phellinus lebt er als Saprobiont, der das Lignin und die Zellulose des Wirtsholzes abbaut und so Weißfäule verursacht. Der Gemeine Feuerschwamm bildet das ganze Jahr über mehrjährige Fruchtkörper aus, die als holzig-harte, huf- oder scheibenförmige Vorsprünge aus der Rinde des befallenen Baumes ragen.",
      "habitat": "Der Gemeine Feuerschwamm befällt vor allem Pappeln, Weiden oder Apfelbäume. Natürliche Standorte der Art sind Bachuferfluren, nährstoff- und basenreiche Auwälder, Erlenbruchwälder, Ränder von Mooren sowie Ränder von Rotbuchen- und Hainbuchen-Eichenwäldern und lichte Stellen in Edellaubholzwäldern, daneben kommt er in degradierten montanen Fichtenwäldern vor.",
      "url": "https://de.wikipedia.org/wiki/Gemeiner_Feuerschwamm"
     }
@@ -5717,7 +5717,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Amanita franchetii, l'Amanite à voile jaune, est une espèce de la famille des Amanitaceae. Elle est rare, très semblable à l'Amanite rougissante à la différence près qu'elle ne rougit pas, n'a pas de teintes vineuses et que son voile général est jaune, c'est-à-dire que les plaques sur son chapeau et son anneau sont entièrement jaunes. Comme l'Amanite rougissante, elle est comestible bien cuite, mais sa rareté devrait inciter à ne pas la consommer.",
+     "intro": "Amanita franchetii, l'Amanite à voile jaune, est une espèce de la famille des Amanitaceae. Elle est rare, très semblable à l'Amanite rougissante à la différence près qu'elle ne rougit pas, n'a pas de teintes vineuses et que son voile général est jaune, c'est-à-dire que les plaques sur son chapeau et son anneau sont entièrement jaunes. Comme l'Amanite rougissante, elle est comestible bien cuite, mais sa rareté devrait inciter à ne pas la consommer..",
      "habitat": "",
      "url": "https://fr.wikipedia.org/wiki/Amanita_franchetii"
     },
@@ -5851,7 +5851,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Amanita ceciliae, l'Amanite impériale ou Amanite étranglée, est un champignon basidiomycète du genre Amanita et de la famille des Amanitaceae. Peu commune, elle peut éventuellement faire penser à l'Amanite rougissante, cependant, elle ne rougit pas et n'a pas de teintes vineuses, elle possède un chapeau aux bords striés avec des plaques grises à gris noir, n'a pas d'anneau, a un pied zébré et possède une volve engainante. Comestible cuite.",
+     "intro": "Amanita ceciliae, l'Amanite impériale ou Amanite étranglée, est un champignon basidiomycète du genre Amanita et de la famille des Amanitaceae. Peu commune, elle peut éventuellement faire penser à l'Amanite rougissante, cependant, elle ne rougit pas et n'a pas de teintes vineuses, elle possède un chapeau aux bords striés avec des plaques grises à gris noir, n'a pas d'anneau, a un pied zébré et possède une volve engainante. Comestible cuite..",
      "habitat": "",
      "url": "https://fr.wikipedia.org/wiki/Amanita_ceciliae"
     },
@@ -5861,7 +5861,7 @@
      "url": "https://en.wikipedia.org/wiki/Amanita_ceciliae"
     },
     "de": {
-     "intro": "Der Riesen- oder Doppeltbescheidete Scheidenstreifling ist ein Ständerpilz aus der Familie der Wulstlingsverwandten . Er ist gekennzeichnet durch große Fruchtkörper mit braunem Hut, ringlosem Stiel und grauer Gesamthülle. Die Art gilt als selten und kommt in europäischen sowie nordamerikanischen Wäldern vor.",
+     "intro": "Der Riesen- oder Doppeltbescheidete Scheidenstreifling ist ein Ständerpilz aus der Familie der Wulstlingsverwandten. Er ist gekennzeichnet durch große Fruchtkörper mit braunem Hut, ringlosem Stiel und grauer Gesamthülle. Die Art gilt als selten und kommt in europäischen sowie nordamerikanischen Wäldern vor.",
      "habitat": "In Europa ist Amanita ceciliae von Osten bis Westen und Norden bis Süden weit verbreitet, aber selten anzutreffen. Er bewohnt oft Laubwälder mit Hainbuchen (Carpinus), Eichen (Quercus), Buchen (Fagus) und Birken (Betula), aber er kann selten auch mit Nadelbäumen vorkommen: Kiefern (Pinus), Tannen (Abies), Fichten (Picea) und Zedern (Cedrus).",
      "url": "https://de.wikipedia.org/wiki/Riesen-Scheidenstreifling"
     }
@@ -5969,7 +5969,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Macrolepiota mastoidea, la Lépiote mammelonnée, est une espèce de champignons de la famille des Agaricaceae .",
+     "intro": "Macrolepiota mastoidea, la Lépiote mammelonnée, est une espèce de champignons de la famille des Agaricaceae.",
      "habitat": "",
      "url": "https://fr.wikipedia.org/wiki/Macrolepiota_mastoidea"
     },
@@ -5979,7 +5979,7 @@
      "url": "https://en.wikipedia.org/wiki/Macrolepiota_mastoidea"
     },
     "de": {
-     "intro": "Der Zitzen-Riesenschirmling ist eine Pilzart aus der Gattung der Riesenschirmlinge . Weitere deutsche Namen sind Spitzbuckliger Schirmling, Warzenschirmling, Warzen-Schirmpilz, Zitzen- oder Zitzenwarziger Riesenschirmpilz.",
+     "intro": "Der Zitzen-Riesenschirmling ist eine Pilzart aus der Gattung der Riesenschirmlinge. Weitere deutsche Namen sind Spitzbuckliger Schirmling, Warzenschirmling, Warzen-Schirmpilz, Zitzen- oder Zitzenwarziger Riesenschirmpilz.",
      "habitat": "Wie die anderen Arten der Gattung Riesenschirmlinge sind auch die Zitzen-Riesenschirmlinge saprobiontische Bodenbewohner.",
      "url": "https://de.wikipedia.org/wiki/Zitzen-Riesenschirmling"
     }
@@ -6223,7 +6223,7 @@
      "url": "https://en.wikipedia.org/wiki/Ganoderma_lucidum"
     },
     "de": {
-     "intro": "Der Glänzende Lackporling ist ein Pilz aus der Familie der Lackporlingsverwandten .",
+     "intro": "Der Glänzende Lackporling ist ein Pilz aus der Familie der Lackporlingsverwandten.",
      "habitat": "Der Glänzende Lackporling galt früher als nahezu weltweit verbreitet. Die meisten außereuropäischen Funde wurden aber inzwischen anderen Arten zugeordnet.",
      "url": "https://de.wikipedia.org/wiki/Gl%C3%A4nzender_Lackporling"
     }
@@ -6331,7 +6331,7 @@
      "url": "https://en.wikipedia.org/wiki/Laricifomes_officinalis"
     },
     "de": {
-     "intro": "Der Lärchenschwamm oder Apothekerschwamm, auch Lärchen-Baumschwamm, Bitterer Lärchen-Baumschwamm, Lärchenporling ist eine Baumpilzart aus der Ordnung der Stielporlingsartigen . Seinem Namen entsprechend wächst er in Europa fast nur an Lärchen. Sein Verbreitungsgebiet in Europa beschränkt sich überwiegend auf den Alpenraum.",
+     "intro": "Der Lärchenschwamm oder Apothekerschwamm, auch Lärchen-Baumschwamm, Bitterer Lärchen-Baumschwamm, Lärchenporling ist eine Baumpilzart aus der Ordnung der Stielporlingsartigen. Seinem Namen entsprechend wächst er in Europa fast nur an Lärchen. Sein Verbreitungsgebiet in Europa beschränkt sich überwiegend auf den Alpenraum.",
      "habitat": "Der Lärchenschwamm wächst an liegenden und stehenden Stämmen lebender oder abgestorbener Lärchen, in den Alpen an der Europäischen Lärche Larix decidua. Fruchtkörper sitzen von Bodennähe bis in mehrere Meter Höhe an.",
      "url": "https://de.wikipedia.org/wiki/L%C3%A4rchenschwamm"
     }
@@ -6572,7 +6572,7 @@
      "url": "https://en.wikipedia.org/wiki/Hypholoma_capnoides"
     },
     "de": {
-     "intro": "Der Graublättrige oder Rauchblättrige Schwefelkopf , auch Honigköpfchen, ist eine Pilzart aus der Familie der Träuschlingsverwandten. Er wächst meist auf Nadelholz.",
+     "intro": "Der Graublättrige oder Rauchblättrige Schwefelkopf, auch Honigköpfchen, ist eine Pilzart aus der Familie der Träuschlingsverwandten. Er wächst meist auf Nadelholz.",
      "habitat": "Der Graublättrige Schwefelkopf wächst in fast allen Waldgesellschaften, wobei er am häufigsten in Buchen- und Buchen-Tannen- sowie in Fichtenwäldern vorkommt. Er lebt als Saprobiont auf morschen Stümpfen und Wurzeln; seltener ist der Pilz auch an liegenden Stämmen zu finden.",
      "url": "https://de.wikipedia.org/wiki/Graubl%C3%A4ttriger_Schwefelkopf"
     }
@@ -6710,7 +6710,7 @@
    "text": {
     "fr": {
      "intro": "Hypholoma sublateritium, de son nom vernaculaire Hypholome couleur de brique, est un champignon basidiomycète du genre Hypholoma dans la famille des Strophariaceae. Il est non comestible, saprophyte, grégaire et fasciculé.",
-     "habitat": "Saprophyte, forme des touffes sur les feuillus en décomposition et les souches ; automne ; largement distribué dans l'hémisphère nord.",
+     "habitat": "Saprophyte, forme des touffes sur les feuillus en décomposition et les souches; automne; largement distribué dans l'hémisphère nord.",
      "url": "https://fr.wikipedia.org/wiki/Hypholoma_sublateritium"
     },
     "en": {
@@ -6799,7 +6799,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Gymnopus fusipes, autrefois Collybia fusipes, la collybie à pied en fuseau ou souchette, est une espèce de champignons basidiomycètes de la famille des Tricholomatacées , caractérisé par la forme de son stipe en forme de fuseau.",
+     "intro": "Gymnopus fusipes, autrefois Collybia fusipes, la collybie à pied en fuseau ou souchette, est une espèce de champignons basidiomycètes de la famille des Tricholomatacées, caractérisé par la forme de son stipe en forme de fuseau.",
      "habitat": "En Europe, ce champignon vient de l'été à l'automne sur les souches de feuillus et particulièrement des chênes. Il pousse en une ou plusieurs touffes de sporophores accolés mais non soudés, qui se désolidarisent une fois cueillis.",
      "url": "https://fr.wikipedia.org/wiki/Gymnopus_fusipes"
     },
@@ -6809,7 +6809,7 @@
      "url": "https://en.wikipedia.org/wiki/Gymnopus_fusipes"
     },
     "de": {
-     "intro": "Der Spindelige Rübling ist eine Pilzart aus der Familie der Omphalotaceae und die Typusart der Gattung der Blasssporrüblinge . Markant sind die freudig braunen Hüte und die blasser gefärbten, spindelig wurzelnden Stiele. Die Fruchtkörper riechen unangenehm und sind ungenießbar.",
+     "intro": "Der Spindelige Rübling ist eine Pilzart aus der Familie der Omphalotaceae und die Typusart der Gattung der Blasssporrüblinge. Markant sind die freudig braunen Hüte und die blasser gefärbten, spindelig wurzelnden Stiele. Die Fruchtkörper riechen unangenehm und sind ungenießbar.",
      "habitat": "Der Spindelige Rübling kommt immer in Verbindung mit Holz vor, auch wenn er scheinbar am Boden wächst, liegt das Myzel an in der Erde vergrabenem Holz oder reicht bis an höher liegende Hauptwurzeln seines Wirtsbaumes. Zumeist wächst er an Eichenstümpfen oder an den Füßen größerer, gesunder und lebender Eichen.",
      "url": "https://de.wikipedia.org/wiki/Spindeliger_R%C3%BCbling"
     }
@@ -7105,7 +7105,7 @@
      "url": "https://fr.wikipedia.org/wiki/Amanite_printani%C3%A8re"
     },
     "en": {
-     "intro": "Amanita verna, commonly known as the fool's mushroom or the spring destroying angel , is a deadly poisonous basidiomycete fungus, one of many in the genus Amanita. Occurring in Europe in spring, A. verna associates with various deciduous and coniferous trees.",
+     "intro": "Amanita verna, commonly known as the fool's mushroom or the spring destroying angel, is a deadly poisonous basidiomycete fungus, one of many in the genus Amanita. Occurring in Europe in spring, A. verna associates with various deciduous and coniferous trees.",
      "habitat": "The fool's mushroom grows in European woodlands and hardwood forests in springtime as the fungus' Latin name (Amanita verna or spring destroying angel) suggests. Unlike various closely related poisonous amanitas, this mushroom is not known to occur in North America.",
      "url": "https://en.wikipedia.org/wiki/Amanita_verna"
     },
@@ -7471,7 +7471,7 @@
      "url": "https://en.wikipedia.org/wiki/Hygrophorus_agathosmus"
     },
     "de": {
-     "intro": ") ist eine essbare Pilzart aus der Familie der Schnecklingsverwandten . Es ist eine weitverbreitete Art, die in Nordamerika, Europa, Afrika und Asien vorkommt. In Mitteleuropa findet man sie vorwiegend in Bergnadelwäldern unter Fichten und Kiefern.",
+     "intro": ") ist eine essbare Pilzart aus der Familie der Schnecklingsverwandten. Es ist eine weitverbreitete Art, die in Nordamerika, Europa, Afrika und Asien vorkommt. In Mitteleuropa findet man sie vorwiegend in Bergnadelwäldern unter Fichten und Kiefern.",
      "habitat": "Der Wohlriechende Schneckling ist ein Ektomykorrhiza-Pilz, der hauptsächlich mit Fichten in Symbiose lebt. Er wurde isoliert, gezüchtet und in Reinkultur als vegetativ vermehrtes Inokulum gehalten für das künstliche Mykorrhizieren des Pflanzgutes von Forstbaumschulen.",
      "url": "https://de.wikipedia.org/wiki/Wohlriechender_Schneckling"
     }
@@ -7737,7 +7737,7 @@
      "url": "https://en.wikipedia.org/wiki/Tricholoma_saponaceum"
     },
     "de": {
-     "intro": "Der Seifen-Ritterling ist eine Pilzart aus der Familie der Ritterlingsverwandten . Er gehört zu einem Artenaggregat, das durch seifenartigen Geruch und zumindest in der Stielbasis rötendes Fleisch gekennzeichnet ist. Die Fruchtkörper erscheinen zwischen August und November im Laub- und Nadelwald.",
+     "intro": "Der Seifen-Ritterling ist eine Pilzart aus der Familie der Ritterlingsverwandten. Er gehört zu einem Artenaggregat, das durch seifenartigen Geruch und zumindest in der Stielbasis rötendes Fleisch gekennzeichnet ist. Die Fruchtkörper erscheinen zwischen August und November im Laub- und Nadelwald.",
      "habitat": "Der Seifen-Ritterling ist ein Ektomykorrhizapilz verschiedener Laubbäume wie z. B.",
      "url": "https://de.wikipedia.org/wiki/Seifen-Ritterling"
     }
@@ -7893,7 +7893,7 @@
      "url": "https://en.wikipedia.org/wiki/Lycoperdon_marginatum"
     },
     "de": {
-     "intro": "Der Abblätternde Stäubling , auch Gi'-i-Wa bzw. Gi'i-Sa-Wa genannt, ist eine Pilzart aus der Familie der Champignonverwandten . Der Pilz kommt in Nordamerika und Mexiko vor.",
+     "intro": "Der Abblätternde Stäubling, auch Gi'-i-Wa bzw. Gi'i-Sa-Wa genannt, ist eine Pilzart aus der Familie der Champignonverwandten. Der Pilz kommt in Nordamerika und Mexiko vor.",
      "habitat": "",
      "url": "https://de.wikipedia.org/wiki/Abbl%C3%A4tternder_St%C3%A4ubling"
     }
@@ -8004,7 +8004,7 @@
      "url": "https://en.wikipedia.org/wiki/Lycoperdon_umbrinum"
     },
     "de": {
-     "intro": "Der Bräunliche Stäubling ist ein Pilz aus der Familie der Champignonverwandten .",
+     "intro": "Der Bräunliche Stäubling ist ein Pilz aus der Familie der Champignonverwandten.",
      "habitat": "Die Art ist in Mitteleuropa heimisch. Sie kommt besonders in Nadelwäldern unter Fichten, besonders im Gebirge, vor.",
      "url": "https://de.wikipedia.org/wiki/Br%C3%A4unlicher_St%C3%A4ubling"
     }
@@ -8068,7 +8068,7 @@
    "text": {
     "fr": {
      "intro": "Xerocomellus pruinatus, le Bolet pruineux, anciennement Boletus pruinatus, est une espèce de champignons de la famille des Boletaceae du genre Xerocomellus. Il est caractérisé par sa chair jaunâtre lentement bleuissante à la coupe vers le bas du pied.",
-     "habitat": "Il s'agit un champignon ectomycorhizien, surtout automnal, fructifiant généralement entre septembre et novembre, venant sous conifères ; Sapins (Abies sp), Épicéa (Picea abies) et Pins (Pinus sp), et sous feuillus, surtout sous Hêtre (Fagus sylvatica) et plus rarement sous Chênes (Quercus sp). Il est de tendance montagnarde, venant surtout sur sols acides.",
+     "habitat": "Il s'agit un champignon ectomycorhizien, surtout automnal, fructifiant généralement entre septembre et novembre, venant sous conifères; Sapins (Abies sp), Épicéa (Picea abies) et Pins (Pinus sp), et sous feuillus, surtout sous Hêtre (Fagus sylvatica) et plus rarement sous Chênes (Quercus sp). Il est de tendance montagnarde, venant surtout sur sols acides.",
      "url": "https://fr.wikipedia.org/wiki/Bolet_pruineux"
     },
     "en": {
@@ -8218,7 +8218,7 @@
      "url": "https://en.wikipedia.org/wiki/Xerocomellus_chrysenteron"
     },
     "de": {
-     "intro": "Der Gemeine oder Echte Rotfußröhrling , bisweilen auch Rotfüßchen genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten. Bis vor wenigen Jahren wurde er in der Gattung Filzröhrlinge geführt, die aber aufgrund molekularbiologischer Erkenntnisse auf den Verwandtschaftskreis der Ziegenlippe reduziert wurde.",
+     "intro": "Der Gemeine oder Echte Rotfußröhrling, bisweilen auch Rotfüßchen genannt, ist eine Pilzart aus der Familie der Steinpilzverwandten. Bis vor wenigen Jahren wurde er in der Gattung Filzröhrlinge geführt, die aber aufgrund molekularbiologischer Erkenntnisse auf den Verwandtschaftskreis der Ziegenlippe reduziert wurde.",
      "habitat": "Der Gemeine Rotfußröhrling ist im Laub- und Nadelwald anzutreffen und stellt keine besonderen Bodenansprüche. Er ist ein häufiger Pilz, der von Juli bis November gefunden werden kann.",
      "url": "https://de.wikipedia.org/wiki/Gemeiner_Rotfu%C3%9Fr%C3%B6hrling"
     }
@@ -8464,7 +8464,7 @@
      "url": "https://en.wikipedia.org/wiki/Xerocomus_subtomentosus"
     },
     "de": {
-     "intro": "Die Ziegenlippe oder der Filzige Röhrling ist ein essbarer Pilz aus der Familie der Steinpilzverwandten .",
+     "intro": "Die Ziegenlippe oder der Filzige Röhrling ist ein essbarer Pilz aus der Familie der Steinpilzverwandten.",
      "habitat": "Die Ziegenlippe ist ein Mykorrhiza-Pilz von Laubbäumen, der bevorzugt in verschiedenen Rotbuchenwäldern, vor allem Hainsimsen- und Waldmeister-Buchenwälder, anzutreffen ist. Seltener kommt sie in Eichen-Hainbuchenwäldern sowie in Parks, Gärten und ähnlichen Biotopen vor.",
      "url": "https://de.wikipedia.org/wiki/Ziegenlippe"
     }
@@ -8686,7 +8686,7 @@
      "url": "https://en.wikipedia.org/wiki/Chalciporus_piperatus"
     },
     "de": {
-     "intro": "Der Pfeffer-Röhrling oder Pfeffrige Zwergröhrling ist eine Pilzart aus der Familie der Steinpilzverwandten . Der gelb-braune Pilz ist in Nadelwäldern häufig zu finden und gilt als mäßig guter Speisepilz.",
+     "intro": "Der Pfeffer-Röhrling oder Pfeffrige Zwergröhrling ist eine Pilzart aus der Familie der Steinpilzverwandten. Der gelb-braune Pilz ist in Nadelwäldern häufig zu finden und gilt als mäßig guter Speisepilz.",
      "habitat": "Der Pfeffer-Röhrling erscheint von Juli bis Oktober im Nadelwald, seltener im Laubwald, gerne unter Fichten und Birken, bevorzugt auf sauren Böden. Die Art ist in Europa und Nordamerika verbreitet; sie wurde aber auch schon in Tasmanien gefunden, wo sie unter der Tasmanischen Scheinbuche (Nothofagus cunninghamii) wuchs.",
      "url": "https://de.wikipedia.org/wiki/Pfeffer-R%C3%B6hrling"
     }
@@ -8828,7 +8828,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Tricholoma equestre, le tricholome équestre, Chevalier, également nommé tricholome chevalier, tricholome des chevaliers, Bidaou , Canari ou encore Jaunet, est une espèce de champignons basidiomycètes, non comestibles, du genre Tricholoma, de la famille des Tricholomataceae. Son qualificatif viendrait de ce qu'il était servi à la table des chevaliers, contrairement au bolet des bouviers par exemple. Ses autres noms vernaculaires se réfèrent à sa couleur jaune.",
+     "intro": "Tricholoma equestre, le tricholome équestre, Chevalier, également nommé tricholome chevalier, tricholome des chevaliers, Bidaou, Canari ou encore Jaunet, est une espèce de champignons basidiomycètes, non comestibles, du genre Tricholoma, de la famille des Tricholomataceae. Son qualificatif viendrait de ce qu'il était servi à la table des chevaliers, contrairement au bolet des bouviers par exemple. Ses autres noms vernaculaires se réfèrent à sa couleur jaune.",
      "habitat": "Il vient sous les feuillus comme sous les conifères, appréciant la couverture des pins et épicéas, plutôt en terrain siliceux, acides et sableux, de l'automne à l'hiver. Plus rarement sous les feuillus.",
      "url": "https://fr.wikipedia.org/wiki/Tricholoma_equestre"
     },
@@ -8838,7 +8838,7 @@
      "url": "https://en.wikipedia.org/wiki/Tricholoma_equestre"
     },
     "de": {
-     "intro": "Der Grünling ist eine Pilzart aus der Familie der Ritterlingsverwandten , der früher oft als Speisepilz gesammelt und auf den Märkten angeboten wurde. Nachdem der Pilz in Frankreich über einen Zeitraum von mehreren Jahren bei insgesamt 12 Personen eine Muskelschwäche teils mit tödlichem Ausgang verursacht hatte, wird vom Verzehr abgeraten. Hierbei muss jedoch darauf hingewiesen werden, dass alle erkrankten Personen ausnahmslos über mehrere Tage hinweg täglich üppige Grünlingsmahlzeiten zu sich genommen hatten.",
+     "intro": "Der Grünling ist eine Pilzart aus der Familie der Ritterlingsverwandten, der früher oft als Speisepilz gesammelt und auf den Märkten angeboten wurde. Nachdem der Pilz in Frankreich über einen Zeitraum von mehreren Jahren bei insgesamt 12 Personen eine Muskelschwäche teils mit tödlichem Ausgang verursacht hatte, wird vom Verzehr abgeraten. Hierbei muss jedoch darauf hingewiesen werden, dass alle erkrankten Personen ausnahmslos über mehrere Tage hinweg täglich üppige Grünlingsmahlzeiten zu sich genommen hatten.",
      "habitat": "Der Grünling im engen Sinn ist vorwiegend auf sehr nährstoffarmen Böden bei Kiefern anzutreffen. Der Grünling ist in Europa weit verbreitet und kann im passenden Habitat lokal häufig auftreten.",
      "url": "https://de.wikipedia.org/wiki/Gr%C3%BCnling_(Pilz)"
     }
@@ -9032,7 +9032,7 @@
      "url": "https://en.wikipedia.org/wiki/Russula_heterophylla"
     },
     "de": {
-     "intro": "Der Grüne oder Grünliche Speise-Täubling ist eine Pilzart aus der Familie der Täublingsverwandten . Er wird auch Violettgrauer Täubling genannt.",
+     "intro": "Der Grüne oder Grünliche Speise-Täubling ist eine Pilzart aus der Familie der Täublingsverwandten. Er wird auch Violettgrauer Täubling genannt.",
      "habitat": "Der Grüne Speise-Täubling ist ein Mykorrhizapilz, der mit verschiedenen Laubbäumen eine Symbiose eingehen kann. Sein bevorzugter Mykorrhizapartner ist die Rotbuche, gefolgt von Trauben- und Stieleiche.",
      "url": "https://de.wikipedia.org/wiki/Gr%C3%BCner_Speise-T%C3%A4ubling"
     }
@@ -9169,7 +9169,7 @@
      "url": "https://en.wikipedia.org/wiki/Russula_aeruginea"
     },
     "de": {
-     "intro": "Der Grasgrüne Täubling , auch Grasgrüner Birken-Täubling genannt, ist ein Pilz aus der Familie der Täublingsverwandten. Der recht häufige Pilz hat einen hellgrünen bis graugrünen, feucht glänzenden Hut und cremefarbene, leicht schärflich schmeckende Lamellen. Er ist essbar und wächst typischerweise unter Birken.",
+     "intro": "Der Grasgrüne Täubling, auch Grasgrüner Birken-Täubling genannt, ist ein Pilz aus der Familie der Täublingsverwandten. Der recht häufige Pilz hat einen hellgrünen bis graugrünen, feucht glänzenden Hut und cremefarbene, leicht schärflich schmeckende Lamellen. Er ist essbar und wächst typischerweise unter Birken.",
      "habitat": "Wie alle Täublinge, ist auch der Grasgrüne Täubling ein Mykorrhizabildner, Hauptpartner sind Arten aus der Gattung der Birken, besonders Sandbirke und Moorbirke (daher der alternative Name Grasgrüner Birken-Täubling), seltener Fichten. Darüber hinaus wird selten über Funde unter Kiefern, Linden, Lärchen und Hemlocktannen berichtet.",
      "url": "https://de.wikipedia.org/wiki/Grasgr%C3%BCner_T%C3%A4ubling"
     }
@@ -9307,12 +9307,12 @@
      "url": "https://fr.wikipedia.org/wiki/Russule_verdoyante"
     },
     "en": {
-     "intro": "Russula virescens is a basidiomycete mushroom of the genus Russula, and is commonly known as the green-cracking russula, the quilted green russula, or \"green brittlegill\" . The species was described as new to science in 1774 by Jacob Christian Schaeffer. It can be recognized by its distinctive pale green cap that measures up to 15 cm in diameter, the surface of which is covered with darker green angular patches.",
+     "intro": "Russula virescens is a basidiomycete mushroom of the genus Russula, and is commonly known as the green-cracking russula, the quilted green russula, or \"green brittlegill\". The species was described as new to science in 1774 by Jacob Christian Schaeffer. It can be recognized by its distinctive pale green cap that measures up to 15 cm in diameter, the surface of which is covered with darker green angular patches.",
      "habitat": "The distribution of R. virescens in North America is subject to debate, where a number of similar species such as R.",
      "url": "https://en.wikipedia.org/wiki/Russula_virescens"
     },
     "de": {
-     "intro": "Der Grüngefelderte Täubling oder Gefelderte Täubling ist ein Pilz aus der Familie der Täublingsverwandten . Es ist ein mittelgroßer Täubling mit weißem Sporenpulver und meist spangrüner, feldrig aufreißender Huthaut. Er hat einen milden Geschmack und wird als Speisepilz sehr geschätzt.",
+     "intro": "Der Grüngefelderte Täubling oder Gefelderte Täubling ist ein Pilz aus der Familie der Täublingsverwandten. Es ist ein mittelgroßer Täubling mit weißem Sporenpulver und meist spangrüner, feldrig aufreißender Huthaut. Er hat einen milden Geschmack und wird als Speisepilz sehr geschätzt.",
      "habitat": "Der Grüngefelderte Täubling kann sowohl in Laubwäldern als auch in Mischwäldern gefunden werden, da er mit verschiedenen Bäumen eine Ektomykorrhiza ausbilden kann. In Deutschland findet man ihn meist in lichten Buchenwäldern, seltener in entsprechenden Hainbuchen-Eichen- oder Fichten- und Tannenwäldern.",
      "url": "https://de.wikipedia.org/wiki/Gr%C3%BCngefelderter_T%C3%A4ubling"
     }
@@ -9494,12 +9494,12 @@
      "url": "https://fr.wikipedia.org/wiki/Phallus_hadriani"
     },
     "en": {
-     "intro": "Phallus hadriani, commonly known as the dune stinkhorn, Hadrian's stinkhorn or the sand stinkhorn, is a species of fungus in the Phallaceae family. The stalk of the fruit body reaches up to 20 cm tall by 4 cm thick, and is spongy, fragile, and hollow. At the top of the stem is a ridged and pitted, thimble-like cap over which is spread olive-colored spore slime .",
+     "intro": "Phallus hadriani, commonly known as the dune stinkhorn, Hadrian's stinkhorn or the sand stinkhorn, is a species of fungus in the Phallaceae family. The stalk of the fruit body reaches up to 20 cm tall by 4 cm thick, and is spongy, fragile, and hollow. At the top of the stem is a ridged and pitted, thimble-like cap over which is spread olive-colored spore slime.",
      "habitat": "Phallus hadriani is known to be in Australia (where it is thought to be an introduced species imported on woodchip mulch used in gardening and landscaping), North America, Europe (including Denmark, Ireland, Latvia, The Netherlands, Norway, Poland, Slovakia, Sweden, Ukraine, and Wales) Turkey (Iğdır Province), Japan, and China (Jilin Province). Phallus hadriani is a saprobic species, and thus obtains nutrients by decomposing organic matter.",
      "url": "https://en.wikipedia.org/wiki/Phallus_hadriani"
     },
     "de": {
-     "intro": "Die Dünen-Stinkmorchel ist eine Pilzart aus der Familie der Stinkmorchelverwandten .",
+     "intro": "Die Dünen-Stinkmorchel ist eine Pilzart aus der Familie der Stinkmorchelverwandten.",
      "habitat": "Die Dünen-Stinkmorchel wächst auf Sandtrockenrasen, in Gebüschen und lichten Kiefernforsten auf kalkhaltigen Flugsanden, wo sie offenbar saprobiontisch lebt. Daneben kann sie unbeständig auf sandigen Böden in Gärten, Feldern und Weinbergen vorkommen.",
      "url": "https://de.wikipedia.org/wiki/D%C3%BCnen-Stinkmorchel"
     }
@@ -9613,7 +9613,7 @@
    },
    "text": {
     "fr": {
-     "intro": "Mutinus caninus, de ses noms vernaculaires, Phalle ou Phallus de chien, ou Satyre du chien est un champignon agaricomycète du genre Mutinus et de la famille des Phallaceae. Contrairement au genre Phallus , les espèces du genre Mutinus sont beaucoup plus grêles et n'ont pas de \"chapeau\" séparable, la gléba recouvrant plus ou moins la partie supérieure du stipe.",
+     "intro": "Mutinus caninus, de ses noms vernaculaires, Phalle ou Phallus de chien, ou Satyre du chien est un champignon agaricomycète du genre Mutinus et de la famille des Phallaceae. Contrairement au genre Phallus, les espèces du genre Mutinus sont beaucoup plus grêles et n'ont pas de \"chapeau\" séparable, la gléba recouvrant plus ou moins la partie supérieure du stipe.",
      "habitat": "",
      "url": "https://fr.wikipedia.org/wiki/Phallus_de_chien"
     },
@@ -9623,7 +9623,7 @@
      "url": "https://en.wikipedia.org/wiki/Mutinus_caninus"
     },
     "de": {
-     "intro": "Die Gemeine Hundsrute ist eine Pilzart aus der Familie der Stinkmorchelverwandten . Der lateinische Name des Pilzes Mutinus caninus bedeutet übersetzt „Kleiner Hundepenis“ und nimmt auf das ähnliche Aussehen des Fruchtkörpers mit dem Penis der Hunde Bezug. Auch das Wort „Rute“ ist ein älteres Synonym für „Penis“.",
+     "intro": "Die Gemeine Hundsrute ist eine Pilzart aus der Familie der Stinkmorchelverwandten. Der lateinische Name des Pilzes Mutinus caninus bedeutet übersetzt „Kleiner Hundepenis“ und nimmt auf das ähnliche Aussehen des Fruchtkörpers mit dem Penis der Hunde Bezug. Auch das Wort „Rute“ ist ein älteres Synonym für „Penis“.",
      "habitat": "Die Gemeine Hundsrute ist ein saprobiontischer Boden- und Holzbewohner, der in Mitteleuropa in verschiedenen Laub- und Nadelwäldern, Parkanlagen und Gärten auf frischen bis feuchten, humusreichen Böden, Holzabfällen oder morschen Baumstümpfen gefunden werden kann. In Mitteleuropa erscheinen die Fruchtkörper meist gesellig im Sommer und Herbst.",
      "url": "https://de.wikipedia.org/wiki/Gemeine_Hundsrute"
     }
@@ -9895,7 +9895,7 @@
      "url": "https://en.wikipedia.org/wiki/Pleurotus_cornucopiae"
     },
     "de": {
-     "intro": "Der Rillstielige Seitling ist ein Pilz aus der Gattung der Seitlinge .",
+     "intro": "Der Rillstielige Seitling ist ein Pilz aus der Gattung der Seitlinge.",
      "habitat": "Der Rillstielige Seitling ist ein Schwächeparasit und Saprobiont an Laubbäumen, besonders Pappel und Ulme, neben diesen Arten werden weitere Laubhölzer befallen. Er kommt vor allem in naturnahen Auwäldern, in Pappelpflanzungen, in Parkanlagen und an Straßenbäumen in Innenstädten vor.",
      "url": "https://de.wikipedia.org/wiki/Rillstieliger_Seitling"
     }
@@ -10044,7 +10044,7 @@
      "url": "https://en.wikipedia.org/wiki/Pleurotus_pulmonarius"
     },
     "de": {
-     "intro": "Der Lungen-Seitling , auch Löffelförmiger Seitling oder Sommeraustern-Seitling, ist eine Pilzart aus der Familie der Seitlingsartigen. Er ist nahe mit dem Austern-Seitling verwandt; durch Kreuzungsexperimente konnte nachgewiesen werden, dass der Lungen-Seitling eine eigenständige Art darstellt.",
+     "intro": "Der Lungen-Seitling, auch Löffelförmiger Seitling oder Sommeraustern-Seitling, ist eine Pilzart aus der Familie der Seitlingsartigen. Er ist nahe mit dem Austern-Seitling verwandt; durch Kreuzungsexperimente konnte nachgewiesen werden, dass der Lungen-Seitling eine eigenständige Art darstellt.",
      "habitat": "Der Lungen-Seitling ist ein Saprobiont und Schwächeparasit an verschiedenen Laubhölzern; als Substrate werden Buche, Esche, Pappel, Birken, Walnuss und Sorbus-Arten aufgeführt. Er bewohnt wie der Austern-Seitling boden- und luftfeuchte Wälder, kommt aber auch außerhalb von Wäldern an entsprechendem Substrat vor.",
      "url": "https://de.wikipedia.org/wiki/Lungen-Seitling"
     }
@@ -10429,7 +10429,7 @@
      "url": "https://en.wikipedia.org/wiki/Omphalotus_olearius"
     },
     "de": {
-     "intro": "Der Dunkle Ölbaumtrichterling oder Dunkle Ölbaumpilz ist ein Ständerpilz aus der Familie der Omphalotaceae. Der wissenschaftliche Name bedeutet „genabelter Ohrling“ auf „Ölbaum wachsend“ . Der Dunkle Ölbaumpilz ist ein stark wirksamer Giftpilz.",
+     "intro": "Der Dunkle Ölbaumtrichterling oder Dunkle Ölbaumpilz ist ein Ständerpilz aus der Familie der Omphalotaceae. Der wissenschaftliche Name bedeutet „genabelter Ohrling“ auf „Ölbaum wachsend“. Der Dunkle Ölbaumpilz ist ein stark wirksamer Giftpilz.",
      "habitat": "Der Dunkle Ölbaumtrichterling lebt parasitisch oder saprobiontisch an Laubbäumen. Er wächst meist büschelig an Ölbäumen, manchmal auch an Eichen oder Edelkastanien.",
      "url": "https://de.wikipedia.org/wiki/Dunkler_%C3%96lbaumtrichterling"
     }
@@ -10798,7 +10798,7 @@
      "url": "https://en.wikipedia.org/wiki/Cantharellus_amethysteus"
     },
     "de": {
-     "intro": "Der Violettschuppige oder Amethyst-Pfifferling ist ein Speisepilz aus der Familie der Stoppelpilzverwandten , deren Fruchtkörper dem Echten Pfifferling sehr ähneln. Charakteristisch sind die violetten Schüppchen auf der Hutoberseite und entsprechende Farbtöne am Hutrand.",
+     "intro": "Der Violettschuppige oder Amethyst-Pfifferling ist ein Speisepilz aus der Familie der Stoppelpilzverwandten, deren Fruchtkörper dem Echten Pfifferling sehr ähneln. Charakteristisch sind die violetten Schüppchen auf der Hutoberseite und entsprechende Farbtöne am Hutrand.",
      "habitat": "Beim Violettschuppigen Pfifferling handelt es sich um eine kalkfliehende Art bodensaurer Buchen-, Tannen- und Fichtenwälder. Er wächst auf frischen, ausgeprägt basen- und nährstoffarmen Roh-, Ranker-, Sand- und Lehmböden über Silikatgestein und Sandstein.",
      "url": "https://de.wikipedia.org/wiki/Violettschuppiger_Pfifferling"
     }
@@ -10946,7 +10946,7 @@
      "url": "https://en.wikipedia.org/wiki/Cantharellus_friesii"
     },
     "de": {
-     "intro": "Der Samtige, Samt- oder Fries’sche Pfifferling ist eine Pilzart aus der Familie der Stoppelpilzverwandten .",
+     "intro": "Der Samtige, Samt- oder Fries’sche Pfifferling ist eine Pilzart aus der Familie der Stoppelpilzverwandten.",
      "habitat": "Der Samtige Pfifferling ist, wie die anderen Pfifferlinge ein Mykorrhizabildner, der mit verschiedenen Laub- und Nadelbäumen zusammen vorkommen kann. Er tritt in Buchen-, Tannen-Buchen und Fichten-Tannen- bis hin zu reinen Fichtenwäldern auf, wo er bevorzugt an kahlen, von krautigen Pflanzen möglichst freien Standorten hervortritt.",
      "url": "https://de.wikipedia.org/wiki/Samtiger_Pfifferling"
     }
