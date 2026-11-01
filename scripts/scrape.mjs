@@ -23,14 +23,18 @@ async function get(url, { text = false } = {}) {
   const key = createHash("sha1").update(url).digest("hex");
   const file = `${CACHE}/${key}.json`;
   try { return JSON.parse(await readFile(file, "utf8")); } catch {}
-  const host = new URL(url).host;
-  for (let attempt = 0; attempt < 6; attempt++) {
-    const wait = (last[host] || 0) + 1100 - Date.now();
+  const h = new URL(url).host;
+  const host = h.endsWith("wikipedia.org") ? "wikipedia" : h; // one shared budget for all wikis
+  const gap = host === "wikipedia" ? 2500 : 1100;
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const wait = (last[host] || 0) + gap - Date.now();
     if (wait > 0) await new Promise(r => setTimeout(r, wait));
     last[host] = Date.now();
     const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "application/json" } });
     if (res.status === 429 || res.status >= 500) {
-      await new Promise(r => setTimeout(r, 2000 * 2 ** attempt));
+      const ra = Number(res.headers.get("retry-after")) || 2 * 2 ** Math.min(attempt, 5);
+      process.stdout.write(`[${res.status} ${host} wait ${ra}s]`);
+      await new Promise(r => setTimeout(r, (ra + 1) * 1000));
       continue;
     }
     if (!res.ok) throw new Error(`${res.status} ${url}`);
@@ -145,19 +149,23 @@ async function wikipedia(e) {
   e.text = {}; e.lookalikeTitles = [];
   for (const l of LANGS) {
     const site = e.sites?.[l]; if (!site) continue;
-    const ex = await wiki(l, { action: "query", prop: "extracts", explaintext: 1, exsectionformat: "wiki", redirects: 1, titles: site.title });
-    const full = ex.query.pages[0]?.extract || "";
+    const q = await wiki(l, { action: "query", prop: "extracts|revisions", explaintext: 1, exsectionformat: "wiki", rvprop: "content", rvslots: "main", redirects: 1, titles: site.title });
+    const page = q.query.pages[0] || {};
+    const full = page.extract || "";
     const parts = full.split(/\n(={2,})\s*(.+?)\s*\1\n/);
     const intro = sentences(parts[0].replace(/\(.*?\)/g, ""), 3);
     let habitat = "";
     for (let i = 1; i < parts.length; i += 3) if (HABITAT[l].test(parts[i + 1]) && parts[i + 2]?.trim()) { habitat = sentences(parts[i + 2], 2); break; }
     e.text[l] = { intro, habitat, url: site.url };
-    // lookalike section links
-    const secs = await wiki(l, { action: "parse", page: site.title, prop: "sections", redirects: 1 });
-    for (const s of secs.parse?.sections || []) {
-      if (!SIMILAR[l].test(s.line)) continue;
-      const links = await wiki(l, { action: "parse", page: site.title, prop: "links", section: s.index, redirects: 1 });
-      for (const k of links.parse?.links || []) if (k.ns === 0 && k.exists) e.lookalikeTitles.push([l, k.title]);
+    // lookalikes: [[links]] inside "similar species" sections of the wikitext
+    const wt = page.revisions?.[0]?.slots?.main?.content || "";
+    const secs = wt.split(/^(={2,})\s*(.+?)\s*\1\s*$/m);
+    for (let i = 1; i < secs.length; i += 3) {
+      if (!SIMILAR[l].test(secs[i + 1])) continue;
+      for (const m of (secs[i + 2] || "").matchAll(/\[\[([^\]|#]+)/g)) {
+        const t = m[1].trim(); if (!t || t.includes(":")) continue;
+        e.lookalikeTitles.push([l, t.charAt(0).toUpperCase() + t.slice(1)]);
+      }
     }
   }
 }
