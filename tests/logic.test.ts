@@ -117,3 +117,37 @@ describe("prefs", () => {
     expect(newerPrefs(base, null)).toBe(base);
   });
 });
+
+import { cropBox, rankGuesses } from "../src/lib/rank";
+describe("photo identifier post-processing", () => {
+  const labels = [{ latin: "A a", common: "", eu: true }, { latin: "B b", common: "", eu: false }, { latin: "C c", common: "", eu: true }];
+  it("drops non-European classes and renormalises", () => {
+    const g = rankGuesses([64, 128, 64], labels);
+    expect(g.map(x => x.latin)).toEqual(["A a", "C c"]);
+    expect(g[0].p).toBeCloseTo(0.5);
+  });
+  it("empty when nothing European scores", () => expect(rankGuesses([0, 255, 0], labels)).toEqual([]));
+  it("centre crop matches the model card (183 -> 160)", () => {
+    expect(cropBox(4000, 3000)).toMatchObject({ sh: 183, sw: 244, x: 42, y: 11, size: 160 });
+  });
+  it("labels file covers the dex", async () => {
+    const { readFileSync } = await import("node:fs");
+    const lab = JSON.parse(readFileSync("public/models/fungi-labels.json", "utf8"));
+    const latin = new Set(lab.map((l: { latin: string }) => l.latin));
+    const core = data.species.filter(s => !s.extra);
+    expect(core.filter(s => latin.has(s.latin)).length).toBeGreaterThanOrEqual(29);
+  });
+});
+
+import { resampleRGB } from "../src/lib/resample";
+describe("resampleRGB (Pillow-style bilinear)", () => {
+  it("averages when halving", () => {
+    // 2x1 RGB: black + white -> 1x1 mid grey
+    expect([...resampleRGB([0, 0, 0, 255, 255, 255], 2, 1, 3, 1, 1)]).toEqual([128, 128, 128]);
+  });
+  it("keeps a flat colour and drops alpha", () => {
+    const src = new Uint8Array(8 * 8 * 4).map((_, i) => (i % 4 === 3 ? 255 : 77));
+    expect(new Set(resampleRGB(src, 8, 8, 4, 3, 3))).toEqual(new Set([77]));
+  });
+  it("output size", () => expect(resampleRGB(new Uint8Array(10 * 6 * 3), 10, 6, 3, 5, 3).length).toBe(45));
+});

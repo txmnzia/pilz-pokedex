@@ -19,6 +19,10 @@ const fr = {
   swipe: "glisse ou PAGE", del: "Supprimer", confirmDel: "Supprimer cette trouvaille ?", yes: "Oui", no: "Non",
   syncing: "synchro…", synced: "synchronisé", localOnly: "local", loading: "Chargement…",
   unknownHint: "Sources contradictoires, à vérifier.",
+  suggestion: "Suggestion", analysing: "Analyse de la photo…", probably: "Probablement :", notSure: "Pas sûr. Possibilités :",
+  notInDex: "hors Pilzdex", idFailed: "Analyse impossible sur cet appareil.",
+  idDisclaimer: "Suggestion automatique, souvent fausse. Vérifie toi-même.",
+  idCredit: "Suggestions photo : modèle « species-classifiers » fungi (M. Graham, Apache-2.0), entraîné sur iNaturalist 2021",
 };
 type Dict = typeof fr;
 
@@ -41,6 +45,10 @@ const en: Dict = {
   swipe: "swipe or PAGE", del: "Delete", confirmDel: "Delete this find?", yes: "Yes", no: "No",
   syncing: "syncing…", synced: "synced", localOnly: "local", loading: "Loading…",
   unknownHint: "Sources disagree, needs checking.",
+  suggestion: "Suggestion", analysing: "Analysing photo…", probably: "Probably:", notSure: "Not sure. Could be:",
+  notInDex: "not in Pilzdex", idFailed: "Photo analysis is not available on this device.",
+  idDisclaimer: "Automatic suggestion, often wrong. Check it yourself.",
+  idCredit: "Photo suggestions: species-classifiers fungi model (M. Graham, Apache-2.0), trained on iNaturalist 2021",
 };
 
 const de: Dict = {
@@ -62,6 +70,10 @@ const de: Dict = {
   swipe: "wischen oder SEITE", del: "Löschen", confirmDel: "Diesen Fund löschen?", yes: "Ja", no: "Nein",
   syncing: "Sync…", synced: "synchronisiert", localOnly: "lokal", loading: "Lädt…",
   unknownHint: "Quellen widersprechen sich, muss geprüft werden.",
+  suggestion: "Vorschlag", analysing: "Foto wird analysiert…", probably: "Wahrscheinlich:", notSure: "Unsicher. Möglich:",
+  notInDex: "nicht im Pilzdex", idFailed: "Fotoanalyse auf diesem Gerät nicht verfügbar.",
+  idDisclaimer: "Automatischer Vorschlag, oft falsch. Selbst prüfen.",
+  idCredit: "Fotovorschläge: species-classifiers-Pilzmodell (M. Graham, Apache-2.0), trainiert mit iNaturalist 2021",
 };
 
 export const STRINGS: Record<Lang, Dict> = { fr, en, de };

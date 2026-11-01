@@ -26,9 +26,11 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globIgnores: ["**/data/**"],
+        globIgnores: ["**/data/**", "**/models/**", "**/litert/**"],
         runtimeCaching: [
           { urlPattern: /\/data\/.*\.json$/, handler: "NetworkFirst", options: { cacheName: "data", networkTimeoutSeconds: 5 } },
+          // photo identifier: big, rarely changes, only fetched when first used, then works offline
+          { urlPattern: /\/(models|litert)\/.*$/, handler: "CacheFirst", options: { cacheName: "identifier", expiration: { maxEntries: 10 } } },
           { urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\//, handler: "CacheFirst", options: { cacheName: "fonts" } },
         ],
       },

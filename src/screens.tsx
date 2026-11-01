@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
+import { CONFIDENT, type Guess } from "./lib/rank";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, Lang, MorphKey, Species } from "./lib/types";
 
@@ -195,7 +196,20 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
   const [note, setNote] = useState("");
   const [pos, setPos] = useState<{ lat: number; lng: number } | null>(null);
   const [msg, setMsg] = useState("");
+  const [ident, setIdent] = useState<"idle" | "busy" | "done" | "error">("idle");
+  const [guesses, setGuesses] = useState<Guess[]>([]);
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
+  const byLatin = new Map(ctx.all.map(s => [s.latin, s]));
+  const runIdentify = async (f: Blob) => {
+    setIdent("busy"); setGuesses([]);
+    try {
+      const { identify } = await import("./lib/identify");
+      const g = await identify(f);
+      setGuesses(g); setIdent("done");
+      const top = g[0] && byLatin.get(g[0].latin);
+      if (top && g[0].p >= CONFIDENT) setSpecies(top.inat); // only preselect when confident
+    } catch (e) { console.warn("identify failed", e); setIdent("error"); }
+  };
   const locate = () => navigator.geolocation?.getCurrentPosition(
     p => { setPos({ lat: p.coords.latitude, lng: p.coords.longitude }); setMsg(ctx.t("gpsOk")); },
     () => setMsg(ctx.t("gpsFail")), { enableHighAccuracy: true, timeout: 15000 });
@@ -213,9 +227,31 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
             {preview ? <img src={preview} alt="" /> : <><span className="cam">📷</span><span>{ctx.t("photo")}</span></>}
             <input id="ph" type="file" accept="image/*" capture="environment" onChange={e => {
               const f = e.target.files?.[0]; if (!f) return;
-              setFile(f); setPreview(URL.createObjectURL(f)); if (!pos) locate();
+              setFile(f); setPreview(URL.createObjectURL(f)); if (!pos) locate(); runIdentify(f);
             }} />
           </label>
+          {ident !== "idle" && (
+            <div className="box ident" aria-live="polite" ref={el => { if (el && ident === "done") el.scrollIntoView({ block: "nearest", behavior: "smooth" }); }}>
+              <h3>{ctx.t("suggestion")}</h3>
+              {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
+              {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
+              {ident === "done" && (guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
+                <p className="m0">{guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}</p>
+                <div className="guesses">
+                  {guesses.map(g => {
+                    const sp = byLatin.get(g.latin);
+                    const pct = `${Math.round(g.p * 100)}%`;
+                    return sp
+                      ? <button type="button" key={g.latin} className="guess" aria-pressed={species === sp.inat} onClick={() => setSpecies(sp.inat)}>
+                          <span className="ed"><EdIcon ed={sp.edibility} /></span><span className="gname">{name(sp, ctx.lang)}</span><b>{pct}</b></button>
+                      : <div key={g.latin} className="guess off">
+                          <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{pct}</b></div>;
+                  })}
+                </div>
+                <p className="note">{ctx.t("idDisclaimer")}</p>
+              </>)}
+            </div>
+          )}
           <div className="field"><label htmlFor="spc">{ctx.t("species")}</label>
             <select id="spc" value={species} onChange={e => setSpecies(Number(e.target.value))}>
               {sorted.map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
@@ -258,7 +294,7 @@ export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExpo
             setMsg(await onRestore(await f.text()));
           }} /></label>{msg && <p className="note">{msg}</p>}</div>
         <div className="box"><h3>{ctx.t("credits")}</h3>
-          <ul className="credits">{Object.entries(sources).map(([k, v]) => <li key={k}>{v}</li>)}</ul></div>
+          <ul className="credits">{Object.entries(sources).map(([k, v]) => <li key={k}>{v}</li>)}<li>{ctx.t("idCredit")}</li></ul></div>
         <p className="note">{ctx.t("disclaimer")}</p>
       </div>
     </>
