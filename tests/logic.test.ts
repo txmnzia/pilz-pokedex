@@ -102,3 +102,18 @@ describe("backup", () => {
     expect(r.find(f => f.id === backup.id)?.synced).toBe(false);
   });
 });
+
+import { normalizePrefs, newerPrefs, type Prefs } from "../src/lib/prefs";
+describe("prefs", () => {
+  const base: Prefs = { lang: "en", mode: "grid", updated_at: "2026-01-01T00:00:00.000Z" };
+  it("rejects unknown values", () => {
+    expect(normalizePrefs({ lang: "xx" as never, mode: "list" }, base)).toEqual({ ...base, mode: "list" });
+  });
+  it("newer account prefs win, older lose, tie keeps device", () => {
+    const remoteNew = { ...base, lang: "de" as const, updated_at: "2026-02-01T00:00:00.000Z" };
+    expect(newerPrefs(base, remoteNew).lang).toBe("de");
+    expect(newerPrefs({ ...base, updated_at: "2026-03-01T00:00:00.000Z" }, remoteNew).lang).toBe("en");
+    expect(newerPrefs(base, { ...base, lang: "fr" })).toBe(base);
+    expect(newerPrefs(base, null)).toBe(base);
+  });
+});

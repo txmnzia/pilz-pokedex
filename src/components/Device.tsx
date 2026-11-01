@@ -2,12 +2,12 @@ import type { ReactNode } from "react";
 
 export interface Hardware {
   up(): void; down(): void; left(): void; right(): void; ok(): void;
-  a(): void; b(): void; page(): void; lang(): void; menu(): void;
+  a(): void; b(): void; page(): void; menu(): void;
 }
 
 interface Props {
   hw: Hardware;
-  labels: { a: string; b: string; page: string; lang: string; counter: string; counterSub: string };
+  labels: { a: string; b: string; page: string; counter: string; counterSub: string };
   pageEnabled: boolean;
   ledFlash: number;
   status: string;
@@ -51,7 +51,6 @@ export function Device({ hw, labels, pageEnabled, ledFlash, status, children }: 
           </div>
           <div className="pillrow">
             <button className="pill red" onClick={hw.page} disabled={!pageEnabled}>{labels.page}</button>
-            <button className="pill navy" onClick={hw.lang}>{labels.lang}</button>
           </div>
         </div>
         <div className="dpad" role="group" aria-label="D-pad">

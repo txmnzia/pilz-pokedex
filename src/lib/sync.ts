@@ -3,6 +3,7 @@ import { supabase, BUCKET } from "./supabase";
 import { getPhoto } from "./local";
 import { mergeFinds } from "./finds";
 import type { Find } from "./types";
+import { normalizePrefs, type Prefs } from "./prefs";
 
 const COLS = "id,species,observed_on,place,lat,lng,note,photo_path,created_at,updated_at,deleted";
 
@@ -40,4 +41,18 @@ export async function photoUrl(f: Find): Promise<string | null> {
   const { data } = await supabase.storage.from(BUCKET).createSignedUrl(f.photo_path, 3600);
   if (data?.signedUrl) urlCache.set(f.photo_path, data.signedUrl);
   return data?.signedUrl ?? null;
+}
+
+// ---------- preferences (table pilz_pokedex.settings, one row per user) ----------
+
+/** Remote prefs, or null if none / table missing / offline. */
+export async function pullPrefs(fallback: Prefs): Promise<Prefs | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase.from("settings").select("lang,mode,updated_at").maybeSingle();
+  return error || !data ? null : normalizePrefs(data as Partial<Prefs>, fallback);
+}
+export async function pushPrefs(p: Prefs): Promise<boolean> {
+  if (!supabase) return false;
+  const { error } = await supabase.from("settings").upsert({ lang: p.lang, mode: p.mode, updated_at: p.updated_at });
+  return !error;
 }
