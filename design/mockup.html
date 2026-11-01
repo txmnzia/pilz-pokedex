@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilzdex UX Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one handheld Pokedex half at phone size, the LCD is the only screen, hardware buttons drive navigation. */
+:root{
+  --red:#d9262b; --red-dark:#8f1117; --ink:#160b0b;
+  --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
+  --bezel:#eceae3; --blue:#3d9ce6; --blue-dark:#1d5f9c;
+  --ed:#2f8a3b; --none:#6d6d6d; --tox:#e08a12; --dead:#111;
+  --font-lcd:'VT323', ui-monospace, Menlo, monospace;
+  --font-label:'Press Start 2P', ui-monospace, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(160deg,#1c5864,#6fbcad 55%,#d5efbd);font-family:var(--font-lcd);color:var(--ink);display:flex;justify-content:center;align-items:center;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,label:focus-within{outline:3px solid #ffe14d;outline-offset:2px}
+
+#device{width:min(100%,430px);height:100%;max-height:920px;background:var(--red);border:3px solid var(--ink);border-radius:20px;display:grid;grid-template-rows:auto 1fr auto;gap:10px;padding:12px 14px 16px;box-shadow:inset -6px -6px 0 var(--red-dark),0 18px 40px rgba(0,0,0,.35);position:relative}
+@media (max-width:440px){#device{border-radius:0;max-height:none;border-width:0}}
+
+/* top */
+.top{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:3px solid var(--ink)}
+.lens{width:52px;height:52px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 35%,#bfe6ff 0 12%,var(--blue) 30%,var(--blue-dark) 100%);box-shadow:0 0 0 4px #fff,0 0 0 7px var(--ink);margin:6px}
+.leds{display:flex;gap:7px;align-self:flex-start;margin-top:6px}
+.led{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink)}
+.led.r{background:#ff5146}.led.y{background:#ffd34d}.led.g{background:#5fd068}
+.led.flash{animation:flash .25s 6 alternate}
+@keyframes flash{to{background:#eaffea;box-shadow:0 0 10px #9f9}}
+.top .spacer{flex:1}
+.tag{font-family:var(--font-label);font-size:7px;color:#ffe3e3;line-height:1.6;text-align:right}
+.tag b{display:inline-block;background:#ffd34d;color:var(--ink);padding:2px 4px;border-radius:3px}
+.iconbtn{width:38px;height:38px;border-radius:50%;border:3px solid var(--ink);background:#2a2a2a;color:#fff;display:grid;place-items:center;font-size:22px}
+
+/* screen */
+.bezel{background:var(--bezel);border:3px solid var(--ink);border-radius:8px 8px 8px 36px;padding:10px 12px 28px;min-height:0;display:flex;flex-direction:column;position:relative}
+.bezel-dots{display:flex;gap:10px;justify-content:center;margin-bottom:8px}
+.bezel-dots i{width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--ink)}
+.bezel-foot{position:absolute;left:16px;right:16px;bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.bezel-foot .dot{width:14px;height:14px;border-radius:50%;background:var(--red);border:2px solid var(--ink)}
+.bezel-foot .grill{width:22px;height:12px;background:repeating-linear-gradient(var(--ink) 0 2px,transparent 2px 5px)}
+.lcd{flex:1;min-height:0;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;color:var(--lcd-ink);font-size:21px;line-height:1.05;position:relative;display:flex;flex-direction:column;overflow:hidden}
+.lcd::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.28) 0 18%,transparent 18% 100%)}
+.scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px 10px 10px}
+
+/* controls */
+.controls{display:grid;grid-template-columns:1fr 126px;gap:10px;align-items:center}
+.cl{display:grid;gap:10px}
+.btnrow{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
+.hw{display:grid;justify-items:center;gap:4px;background:none;border:0;padding:0}
+.hw small{font-family:var(--font-label);font-size:7px;color:#ffe3e3}
+.round{width:58px;height:58px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark));box-shadow:0 4px 0 var(--red-dark);display:grid;place-items:center}
+.round svg{width:24px;height:24px}
+.hw:active .round{transform:translateY(3px);box-shadow:0 1px 0 var(--red-dark)}
+.counter{background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;text-align:center;font-size:24px;color:var(--lcd-ink);padding:4px 2px;font-variant-numeric:tabular-nums}
+.counter small{display:block;font-size:14px;color:var(--lcd-dim)}
+.pillrow{display:flex;gap:10px}
+.pill{flex:1;height:30px;border-radius:15px;border:3px solid var(--ink);font-family:var(--font-label);font-size:8px;color:#fff;box-shadow:0 3px 0 var(--red-dark)}
+.pill.red{background:#ff4b3f}.pill.navy{background:#38407a}
+.pill:disabled{opacity:.45;cursor:default}
+.dpad{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,40px);justify-content:center}
+.dpad button{background:#262626;border:0;color:#eee;font-size:16px;display:grid;place-items:center}
+.dpad .u{grid-area:1/2;border-radius:6px 6px 0 0}.dpad .l{grid-area:2/1;border-radius:6px 0 0 6px}
+.dpad .c{grid-area:2/2;font-family:var(--font-label);font-size:7px}.dpad .r{grid-area:2/3;border-radius:0 6px 6px 0}
+.dpad .d{grid-area:3/2;border-radius:0 0 6px 6px}
+.dpad button:active{background:#000}
+
+/* LCD content */
+.titlebar{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid var(--lcd-ink);padding:6px 10px;font-family:var(--font-label);font-size:10px;line-height:1.5}
+.titlebar .name{text-wrap:balance}
+.sub{color:var(--lcd-dim);font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.chip{border:2px solid var(--lcd-ink);background:transparent;border-radius:3px;padding:0 7px;font-size:18px;line-height:1.3;color:var(--lcd-ink);display:inline-flex;align-items:center;gap:4px}
+.chip[aria-pressed="true"],.chip.on{background:var(--lcd-ink);color:var(--lcd)}
+.chip.off{opacity:.4}
+ul.list{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:40px 34px 1fr 20px 14px;gap:8px;align-items:center;padding:3px 4px;border-radius:3px;cursor:pointer}
+.row .num{font-variant-numeric:tabular-nums;color:var(--lcd-dim)}
+.row .thumb{width:34px;height:34px}
+.row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.sel{background:var(--lcd-ink);color:var(--lcd)}
+.row.sel .num{color:var(--lcd-2)}
+.ball{width:12px;height:12px;border-radius:50%;border:2px solid currentColor}
+.ball.on{background:radial-gradient(circle,#fff 0 25%,#d9262b 30%)}
+.more{margin-top:10px;font-size:17px;color:var(--lcd-dim);border-top:2px dashed var(--lcd-dim);padding-top:6px}
+
+.ed{display:inline-grid;place-items:center;width:20px;height:20px}
+.ed svg{width:20px;height:20px}
+.edpill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:4px;padding:1px 8px;color:#fff;font-family:var(--font-label);font-size:8px;line-height:2}
+.edpill.edible{background:var(--ed)}.edpill.none{background:var(--none)}.edpill.toxic{background:var(--tox)}.edpill.deadly{background:var(--dead)}
+.edpill svg{width:16px;height:16px}
+
+.pic{position:relative;aspect-ratio:1/1;max-height:34vh;margin:0 auto 8px;width:100%;border:2px solid var(--lcd-ink);border-radius:3px;background:#dfe8c8;display:grid;place-items:center;overflow:hidden}
+.pic.photo{background:linear-gradient(170deg,#7e9a5a,#3e5a2c 60%,#2a3a1c)}
+.pic svg{width:72%;height:72%}
+.pic img{width:100%;height:100%;object-fit:cover}
+.pic .stamp{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.55);color:#fff;font-size:16px;padding:0 6px;border-radius:3px}
+.pic .lock{position:absolute;right:6px;top:4px;font-size:17px;color:var(--lcd-dim)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-bottom:8px}
+.latin{font-style:italic;color:var(--lcd-dim);font-size:19px}
+.box{border:2px solid var(--lcd-ink);border-radius:3px;padding:6px 8px;margin-bottom:8px;background:rgba(255,255,255,.18)}
+.box h3{margin:0 0 4px;font-family:var(--font-label);font-size:8px;line-height:1.6;font-weight:400}
+.dots{display:flex;gap:6px;justify-content:center;align-items:center;font-size:16px;color:var(--lcd-dim);padding:4px 0 6px}
+.dots i{width:9px;height:9px;border-radius:50%;border:2px solid var(--lcd-ink)}
+.dots i.on{background:var(--lcd-ink)}
+.stat{display:flex;gap:4px}
+.stat span:nth-child(2){flex:1;border-bottom:2px dotted var(--lcd-dim);margin-bottom:5px}
+.stat b{font-weight:400;font-variant-numeric:tabular-nums}
+.look{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.lk{background:rgba(255,255,255,.25);border:2px solid var(--lcd-ink);border-radius:3px;padding:4px;display:grid;justify-items:center;gap:2px;text-align:center;font-size:16px;line-height:1}
+.lk svg.art{width:44px;height:44px}
+.find{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;padding:4px 0;border-bottom:1px dashed var(--lcd-dim)}
+.find .t{width:48px;height:48px;border-radius:3px;overflow:hidden;background:linear-gradient(170deg,#7e9a5a,#2a3a1c);display:grid;place-items:center}
+.find .t svg{width:80%;height:80%}.find .t img{width:100%;height:100%;object-fit:cover}
+.find small{display:block;color:var(--lcd-dim);font-size:17px}
+.empty{color:var(--lcd-dim);font-size:18px}
+
+/* forms */
+.field{display:grid;gap:2px;margin-bottom:8px;font-size:18px}
+.field input,.field select,.field textarea{font:inherit;font-size:20px;background:rgba(255,255,255,.45);border:2px solid var(--lcd-ink);border-radius:3px;padding:4px 6px;color:var(--lcd-ink);width:100%}
+.shot{display:grid;place-items:center;gap:6px;aspect-ratio:4/3;max-height:30vh;width:100%;border:3px dashed var(--lcd-ink);border-radius:4px;cursor:pointer;margin-bottom:8px;text-align:center;overflow:hidden;position:relative}
+.shot input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.shot img{width:100%;height:100%;object-fit:cover}
+.cta{width:100%;font-family:var(--font-label);font-size:10px;background:var(--lcd-ink);color:var(--lcd);border:0;border-radius:3px;padding:10px;line-height:1.5}
+.seg{display:flex;gap:0;border:2px solid var(--lcd-ink);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.seg button{flex:1;background:transparent;border:0;padding:4px;font-size:20px;color:var(--lcd-ink)}
+.seg button[aria-pressed="true"]{background:var(--lcd-ink);color:var(--lcd)}
+.logo{font-family:var(--font-label);font-size:20px;text-align:center;margin:14px 0 4px;letter-spacing:1px}
+.toast{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);background:var(--lcd-ink);color:var(--lcd);font-family:var(--font-label);font-size:11px;padding:12px 16px;border-radius:4px;z-index:5;white-space:nowrap}
+.note{font-size:16px;color:var(--lcd-dim);margin-top:6px}
+@media (prefers-reduced-motion:reduce){.led.flash{animation:none}}
+</style>
+</head>
+<body>
+<div id="device">
+  <header class="top">
+    <div class="lens" aria-hidden="true"></div>
+    <div class="leds" aria-hidden="true"><i class="led r"></i><i class="led y"></i><i class="led g" id="ledG"></i></div>
+    <div class="spacer"></div>
+    <div class="tag"><b>MOCK DATA</b><br>v0.0 design</div>
+    <button class="iconbtn" id="menuBtn" aria-label="Settings">&#8801;</button>
+  </header>
+
+  <section class="bezel">
+    <div class="bezel-dots" aria-hidden="true"><i></i><i></i></div>
+    <div class="lcd" id="lcd"></div>
+    <div class="bezel-foot" aria-hidden="true"><span class="dot"></span><span class="grill"></span></div>
+  </section>
+
+  <footer class="controls">
+    <div class="cl">
+      <div class="btnrow">
+        <button class="hw" id="btnA"><span class="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.4" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><small id="lblA">CATCH</small></button>
+        <div class="counter" id="counter">3/8<small>caught</small></div>
+        <button class="hw" id="btnB"><span class="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6M4 12h16"/></svg></span><small id="lblB">BACK</small></button>
+      </div>
+      <div class="pillrow">
+        <button class="pill red" id="pillPage">PAGE</button>
+        <button class="pill navy" id="pillLang">FR</button>
+      </div>
+    </div>
+    <div class="dpad" role="group" aria-label="D-pad">
+      <button class="u" id="dU" aria-label="Up">&#9650;</button>
+      <button class="l" id="dL" aria-label="Previous">&#9664;</button>
+      <button class="c" id="dC" aria-label="OK">OK</button>
+      <button class="r" id="dR" aria-label="Next">&#9654;</button>
+      <button class="d" id="dD" aria-label="Down">&#9660;</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ---------- i18n ---------- */
+const T={
+fr:{dex:"PILZDEX",caught:"attrapés",all:"Tous",got:"Attrapés",missing:"Manquants",catch:"ATTRAPER",back:"RETOUR",page:"PAGE",season:"Saison",cap:"Chapeau",spores:"Sporée",where:"Où le trouver",look:"Sosies dangereux",finds:"Mes trouvailles",noFinds:"Pas encore trouvé. Appuie sur ATTRAPER quand tu le vois.",settings:"Réglages",language:"Langue",account:"Compte",signout:"Se déconnecter",export:"Exporter ma collection (JSON)",copy:"Copier",copied:"Copié",disclaimer:"Collection personnelle, pas un guide d'identification. Ne mange jamais un champignon sur la foi de cette app.",loginTitle:"Connexion par lien magique",email:"E-mail",send:"Envoyer le lien",inbox:"Lien envoyé. Ouvre ton e-mail sur ce téléphone.",openMock:"(maquette) Continuer",photo:"Prendre une photo",species:"Espèce",date:"Date",place:"Lieu",placeHint:"GPS auto dans l'app",note:"Note",save:"ENREGISTRER",gotcha:"ATTRAPÉ !",edible:"Comestible",none:"Sans intérêt",toxic:"Toxique",deadly:"Mortel",swipe:"glisse ou PAGE",more:"+22 espèces après le scraping des données (30 au total)",notIn:"hors Pilzdex",yours:"Ta photo",allYear:"toute l'année",filterEd:"Comestibilité",ok:"OK",menu:"MENU",photoNeeded:"Ajoute une photo d'abord"},
+en:{dex:"PILZDEX",caught:"caught",all:"All",got:"Caught",missing:"Missing",catch:"CATCH",back:"BACK",page:"PAGE",season:"Season",cap:"Cap",spores:"Spore print",where:"Where to find",look:"Dangerous lookalikes",finds:"My finds",noFinds:"Not found yet. Press CATCH when you spot it.",settings:"Settings",language:"Language",account:"Account",signout:"Sign out",export:"Export my collection (JSON)",copy:"Copy",copied:"Copied",disclaimer:"Personal collection, not an identification guide. Never eat a mushroom based on this app.",loginTitle:"Sign in with a magic link",email:"Email",send:"Send link",inbox:"Link sent. Open the email on this phone.",openMock:"(mockup) Continue",photo:"Take a photo",species:"Species",date:"Date",place:"Place",placeHint:"auto GPS in the app",note:"Note",save:"SAVE",gotcha:"GOTCHA!",edible:"Edible",none:"No interest",toxic:"Toxic",deadly:"Deadly",swipe:"swipe or PAGE",more:"+22 species once the data is scraped (30 total)",notIn:"not in Pilzdex",yours:"Your photo",allYear:"all year",filterEd:"Edibility",ok:"OK",menu:"MENU",photoNeeded:"Add a photo first"},
+de:{dex:"PILZDEX",caught:"gefangen",all:"Alle",got:"Gefangen",missing:"Fehlend",catch:"FANGEN",back:"ZURÜCK",page:"SEITE",season:"Saison",cap:"Hut",spores:"Sporenpulver",where:"Fundort",look:"Gefährliche Doppelgänger",finds:"Meine Funde",noFinds:"Noch nicht gefunden. Drück FANGEN, wenn du ihn siehst.",settings:"Einstellungen",language:"Sprache",account:"Konto",signout:"Abmelden",export:"Sammlung exportieren (JSON)",copy:"Kopieren",copied:"Kopiert",disclaimer:"Persönliche Sammlung, kein Bestimmungsbuch. Iss nie einen Pilz auf Grundlage dieser App.",loginTitle:"Anmelden per Magic Link",email:"E-Mail",send:"Link senden",inbox:"Link gesendet. Öffne die Mail auf diesem Handy.",openMock:"(Mockup) Weiter",photo:"Foto aufnehmen",species:"Art",date:"Datum",place:"Ort",placeHint:"GPS automatisch in der App",note:"Notiz",save:"SPEICHERN",gotcha:"GEFANGEN!",edible:"Essbar",none:"Ohne Wert",toxic:"Giftig",deadly:"Tödlich",swipe:"wischen oder SEITE",more:"+22 Arten nach dem Daten-Scraping (30 insgesamt)",notIn:"nicht im Pilzdex",yours:"Dein Foto",allYear:"ganzjährig",filterEd:"Essbarkeit",ok:"OK",menu:"MENÜ",photoNeeded:"Erst ein Foto hinzufügen"}
+};
+
+/* ---------- MOCK data: placeholder text for UX only, real data will be scraped ---------- */
+const D=[
+{id:1,latin:"Amanita muscaria",n:{fr:"Amanite tue-mouches",en:"Fly agaric",de:"Fliegenpilz"},ed:"toxic",shape:"amanita",c:["#d42a1f","#f6f1e4"],season:"VIII–XI",cap:"8–20 cm",spores:{fr:"blanche",en:"white",de:"weiß"},reg:["BER","GRE"],how:{fr:"Sous bouleaux et épicéas, sol acide.",en:"Under birch and spruce, acidic soil.",de:"Unter Birken und Fichten, saurer Boden."},look:[4,{n:"Amanita caesarea",ed:"edible"}],desc:{fr:"MAQUETTE. Le champignon des contes : chapeau rouge à flocons blancs.",en:"MOCK. The fairy-tale mushroom: red cap with white flakes.",de:"MOCKUP. Der Märchenpilz: roter Hut mit weißen Flocken."}},
+{id:2,latin:"Boletus edulis",n:{fr:"Cèpe de Bordeaux",en:"Penny bun",de:"Steinpilz"},ed:"edible",shape:"bolete",c:["#7a4a23","#efe3c8"],season:"VI–XI",cap:"8–25 cm",spores:{fr:"brun olive",en:"olive brown",de:"olivbraun"},reg:["BER","GRE"],how:{fr:"Sous épicéas, hêtres et chênes, souvent près des tue-mouches.",en:"Under spruce, beech and oak, often near fly agaric.",de:"Unter Fichten, Buchen und Eichen, oft neben Fliegenpilzen."},look:[{n:"Tylopilus felleus",ed:"none"},{n:"Rubroboletus satanas",ed:"toxic"}],desc:{fr:"MAQUETTE. Gros pied ventru, pores blancs puis jaune-vert.",en:"MOCK. Fat bulbous stem, pores white then yellow-green.",de:"MOCKUP. Dicker bauchiger Stiel, Poren weiß, später gelbgrün."}},
+{id:3,latin:"Cantharellus cibarius",n:{fr:"Girolle",en:"Chanterelle",de:"Pfifferling"},ed:"edible",shape:"funnel",c:["#f0ad1c","#f3c75a"],season:"VI–X",cap:"3–10 cm",spores:{fr:"jaune pâle",en:"pale yellow",de:"blassgelb"},reg:["BER","GRE"],how:{fr:"Dans la mousse sous hêtres, chênes et épicéas.",en:"In moss under beech, oak and spruce.",de:"Im Moos unter Buchen, Eichen und Fichten."},look:[{n:"Hygrophoropsis aurantiaca",ed:"none"},{n:"Omphalotus olearius",ed:"toxic"}],desc:{fr:"MAQUETTE. Plis fourchus sous le chapeau, odeur d'abricot.",en:"MOCK. Forked ridges under the cap, smells of apricot.",de:"MOCKUP. Gegabelte Leisten unter dem Hut, riecht nach Aprikose."}},
+{id:4,latin:"Amanita phalloides",n:{fr:"Amanite phalloïde",en:"Death cap",de:"Grüner Knollenblätterpilz"},ed:"deadly",shape:"amanita",c:["#a3a65c","#f4f2e6"],plain:true,season:"VII–X",cap:"5–15 cm",spores:{fr:"blanche",en:"white",de:"weiß"},reg:["BER","GRE"],how:{fr:"Sous chênes et hêtres, aussi dans les parcs.",en:"Under oak and beech, also in parks.",de:"Unter Eichen und Buchen, auch in Parks."},look:[6,{n:"Russula virescens",ed:"edible"}],desc:{fr:"MAQUETTE. Volve en sac à la base. Responsable de la plupart des décès.",en:"MOCK. Sac-like volva at the base. Causes most fatal poisonings.",de:"MOCKUP. Sackartige Knolle an der Basis. Verursacht die meisten Todesfälle."}},
+{id:5,latin:"Morchella esculenta",n:{fr:"Morille commune",en:"Common morel",de:"Speise-Morchel"},ed:"edible",shape:"morel",c:["#c49b5e","#efe4cc"],season:"III–V",cap:"4–10 cm",spores:{fr:"crème",en:"cream",de:"cremefarben"},reg:["GRE"],how:{fr:"Au printemps sous frênes, bords de rivière, sols calcaires.",en:"Spring, under ash, riverbanks, chalky soil.",de:"Im Frühling unter Eschen, an Flussufern, kalkiger Boden."},look:[{n:"Gyromitra esculenta",ed:"deadly"}],desc:{fr:"MAQUETTE. Chapeau alvéolé en nid d'abeille, entièrement creux.",en:"MOCK. Honeycomb cap, completely hollow inside.",de:"MOCKUP. Wabenartiger Hut, innen vollständig hohl."}},
+{id:6,latin:"Macrolepiota procera",n:{fr:"Coulemelle",en:"Parasol",de:"Parasol"},ed:"edible",shape:"parasol",c:["#b8956c","#efe7d6"],season:"VII–X",cap:"10–30 cm",spores:{fr:"blanche",en:"white",de:"weiß"},reg:["BER","GRE"],how:{fr:"Lisières, clairières et prés ensoleillés.",en:"Forest edges, clearings and sunny meadows.",de:"Waldränder, Lichtungen und sonnige Wiesen."},look:[4,{n:"Lepiota brunneoincarnata",ed:"deadly"}],desc:{fr:"MAQUETTE. Pied chiné, anneau coulissant, chapeau immense.",en:"MOCK. Snakeskin stem, sliding ring, huge cap.",de:"MOCKUP. Genatterter Stiel, verschiebbarer Ring, riesiger Hut."}},
+{id:7,latin:"Hypholoma fasciculare",n:{fr:"Hypholome en touffe",en:"Sulphur tuft",de:"Grünblättriger Schwefelkopf"},ed:"toxic",shape:"tuft",c:["#e3be36","#d9cf6a"],season:"I–XII",cap:"2–7 cm",spores:{fr:"brun violacé",en:"purple brown",de:"purpurbraun"},reg:["BER","GRE"],how:{fr:"En touffes denses sur souches pourries.",en:"Dense clusters on rotting stumps.",de:"In dichten Büscheln auf morschen Stümpfen."},look:[{n:"Kuehneromyces mutabilis",ed:"edible"},{n:"Galerina marginata",ed:"deadly"}],desc:{fr:"MAQUETTE. Lames vert soufre, goût très amer.",en:"MOCK. Sulphur-green gills, very bitter taste.",de:"MOCKUP. Schwefelgrüne Lamellen, sehr bitter."}},
+{id:8,latin:"Trametes versicolor",n:{fr:"Tramète versicolore",en:"Turkey tail",de:"Schmetterlings-Tramete"},ed:"none",shape:"bracket",c:["#5b5f7a","#c9b38c"],season:"I–XII",cap:"3–8 cm",spores:{fr:"blanche",en:"white",de:"weiß"},reg:["BER","GRE"],how:{fr:"En étagères sur bois mort de feuillus.",en:"Shelves on dead hardwood logs and stumps.",de:"Konsolen auf totem Laubholz."},look:[],desc:{fr:"MAQUETTE. Zones concentriques colorées, dessous à pores blancs.",en:"MOCK. Banded colour zones, white pores underneath.",de:"MOCKUP. Bunte konzentrische Zonen, unten weiße Poren."}}
+];
+
+/* ---------- art: simple vector stand-ins, silhouette = all black ---------- */
+function art(shape,c,sil,plain){
+  const cap=sil?"#0f1a0a":c[0], st=sil?"#0f1a0a":c[1], dot=sil?null:"#fff", line=sil?"#0f1a0a":"#2b1a0e";
+  const o=`stroke="${line}" stroke-width="2.5" stroke-linejoin="round"`;
+  let g="";
+  switch(shape){
+    case"amanita":g=`<path d="M40 52 L37 84 Q50 90 63 84 L60 52Z" fill="${st}" ${o}/><path d="M32 86 Q50 74 68 86 Q50 94 32 86Z" fill="${st}" ${o}/><path d="M36 64 Q50 70 64 64 L63 68 Q50 74 37 68Z" fill="${st}" ${o}/><path d="M12 54 Q16 16 50 14 Q84 16 88 54 Q50 60 12 54Z" fill="${cap}" ${o}/>`+(dot&&!plain?`<g fill="${dot}"><circle cx="34" cy="30" r="4"/><circle cx="52" cy="24" r="3.5"/><circle cx="68" cy="34" r="4"/><circle cx="44" cy="42" r="3"/><circle cx="26" cy="46" r="3"/><circle cx="76" cy="47" r="3"/></g>`:"");break;
+    case"bolete":g=`<path d="M36 52 Q26 80 40 90 L62 90 Q76 80 64 52Z" fill="${st}" ${o}/><path d="M10 54 Q12 14 50 12 Q88 14 90 54 Q50 62 10 54Z" fill="${cap}" ${o}/>`;break;
+    case"funnel":g=`<path d="M12 28 Q50 44 88 28 Q80 52 60 62 L58 90 L42 90 L40 62 Q20 52 12 28Z" fill="${cap}" ${o}/>`+(sil?"":`<path d="M30 44 L44 62 M50 46 L50 64 M70 44 L56 62" stroke="${c[1]}" stroke-width="2"/>`);break;
+    case"morel":g=`<rect x="40" y="62" width="20" height="28" rx="6" fill="${st}" ${o}/><path d="M50 10 Q76 24 72 54 Q70 66 50 66 Q30 66 28 54 Q24 24 50 10Z" fill="${cap}" ${o}/>`+(sil?"":`<g fill="#5a3a18"><ellipse cx="42" cy="30" rx="4" ry="6"/><ellipse cx="56" cy="28" rx="4" ry="6"/><ellipse cx="38" cy="48" rx="4" ry="6"/><ellipse cx="51" cy="45" rx="4" ry="6"/><ellipse cx="63" cy="48" rx="4" ry="6"/></g>`);break;
+    case"parasol":g=`<rect x="45" y="34" width="10" height="56" rx="3" fill="${st}" ${o}/><path d="M38 56 L62 56 L60 61 L40 61Z" fill="${st}" ${o}/><path d="M4 40 Q20 18 50 16 Q80 18 96 40 Q50 44 4 40Z" fill="${cap}" ${o}/>`+(sil?"":`<g fill="#5a3a1c"><circle cx="50" cy="21" r="4"/><rect x="26" y="30" width="5" height="3"/><rect x="66" y="30" width="5" height="3"/><rect x="40" y="33" width="5" height="3"/><rect x="56" y="34" width="5" height="3"/></g>`);break;
+    case"tuft":g=[[30,40,1],[56,30,1.1],[72,50,.9]].map(([x,y,s])=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-4" y="6" width="8" height="40" rx="3" fill="${st}" ${o}/><path d="M-16 8 Q-14 -10 0 -10 Q14 -10 16 8 Q0 12 -16 8Z" fill="${cap}" ${o}/></g>`).join("")+`<rect x="14" y="86" width="72" height="8" rx="3" fill="${sil?cap:"#6b4a2a"}" ${o}/>`;break;
+    case"bracket":g=`<rect x="8" y="10" width="14" height="82" fill="${sil?cap:"#6b4a2a"}" ${o}/>`+[[30,0],[52,0],[74,0]].map(([y],i)=>`<path d="M22 ${y+20} Q72 ${y+8} 82 ${y+22} Q62 ${y+30} 22 ${y+30}Z" fill="${sil?cap:(i%2?c[1]:c[0])}" ${o}/>`).join("");break;
+  }
+  return `<svg class="art" viewBox="0 0 100 100" aria-hidden="true">${g}</svg>`;
+}
+const ED={edible:`<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#2f8a3b" stroke="#111" stroke-width="1.5"/><path d="M5.5 10.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+none:`<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#8a8a8a" stroke="#111" stroke-width="1.5"/><path d="M5.5 10h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>`,
+toxic:`<svg viewBox="0 0 20 20"><path d="M10 1.5L19 18H1z" fill="#e08a12" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 7v5" stroke="#111" stroke-width="2.4" stroke-linecap="round"/><circle cx="10" cy="15" r="1.3" fill="#111"/></svg>`,
+deadly:`<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#111" stroke="#d9262b" stroke-width="1.5"/><path d="M5 9a5 5 0 0 1 10 0c0 2-1 3-2 3.5V15H7v-2.5C6 12 5 11 5 9z" fill="#fff"/><circle cx="8" cy="9" r="1.4" fill="#111"/><circle cx="12" cy="9" r="1.4" fill="#111"/><path d="M9 15v-1.5M11 15v-1.5" stroke="#111" stroke-width="1"/></svg>`};
+
+/* ---------- state ---------- */
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const S={lang:store.get("pz.lang","fr"),view:"login",sent:false,sel:0,cur:1,page:0,filter:"all",edf:null,prev:"index",
+  finds:store.get("pz.finds",{2:[{date:"2026-09-14",place:"Grunewald, Berlin",note:""}],3:[{date:"2026-07-22",place:"Chartreuse, Isère",note:"sous les hêtres"},{date:"2026-08-30",place:"Vercors, Isère",note:""}],7:[{date:"2026-10-03",place:"Tegeler Forst, Berlin",note:""}]})};
+const t=k=>T[S.lang][k]??k;
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const caught=id=>(S.finds[id]||[]).length>0;
+const nm=sp=>sp.n[S.lang];
+const no=id=>"No. "+String(id).padStart(3,"0");
+const byId=id=>D.find(x=>x.id===id);
+const visible=()=>D.filter(sp=>(S.filter==="all"||(S.filter==="got"?caught(sp.id):!caught(sp.id)))&&(!S.edf||sp.ed===S.edf));
+const $=id=>document.getElementById(id);
+const lcd=$("lcd");
+
+function pic(sp,big){
+  const f=(S.finds[sp.id]||[])[0];
+  if(f&&f.img) return `<div class="pic"><img src="${esc(f.img)}" alt=""><span class="stamp">${esc(t("yours"))} · ${esc(f.date)}</span></div>`;
+  if(caught(sp.id)) return `<div class="pic photo">${art(sp.shape,sp.c,false,sp.plain)}${big?`<span class="stamp">${esc(t("yours"))} · ${esc(f.date)}</span>`:""}</div>`;
+  return `<div class="pic">${art(sp.shape,sp.c,true)}<span class="lock">???</span></div>`;
+}
+const edPill=ed=>`<span class="edpill ${ed}">${ED[ed]}${esc(t(ed))}</span>`;
+
+/* ---------- views ---------- */
+const V={
+login(){return `<div class="scroll"><div class="logo">PILZDEX</div><p class="sub" style="text-align:center;margin:0 0 14px">Berlin · Grenoble</p>
+  <div class="box"><h3>${esc(t("loginTitle"))}</h3>
+  ${S.sent?`<p style="margin:4px 0 10px">${esc(t("inbox"))}</p><button class="cta" data-act="enter">${esc(t("openMock"))}</button>`:
+  `<form id="loginForm"><div class="field"><label for="em">${esc(t("email"))}</label><input id="em" type="email" value="sam@example.com" autocomplete="email"></div><button class="cta" type="submit">${esc(t("send"))}</button></form>`}</div>
+  <p class="note">${esc(t("disclaimer"))}</p></div>`},
+index(){
+  const list=visible(); if(S.sel>=list.length)S.sel=Math.max(0,list.length-1);
+  return `<div class="titlebar"><span>${t("dex")}</span><span>${D.filter(x=>caught(x.id)).length}/${D.length}</span></div>
+  <div class="scroll" id="sc">
+  <div class="chips">${["all","got","missing"].map(f=>`<button class="chip" data-filter="${f}" aria-pressed="${S.filter===f}">${esc(t(f))}</button>`).join("")}</div>
+  <div class="chips" aria-label="${esc(t("filterEd"))}">${["edible","none","toxic","deadly"].map(e=>`<button class="chip" data-edf="${e}" aria-pressed="${S.edf===e}" title="${esc(t(e))}"><span class="ed">${ED[e]}</span></button>`).join("")}</div>
+  <ul class="list">${list.map((sp,i)=>`<li class="row ${i===S.sel?"sel":""}" data-open="${sp.id}"><span class="num">${String(sp.id).padStart(3,"0")}</span><span class="thumb">${art(sp.shape,sp.c,!caught(sp.id),sp.plain)}</span><span class="nm">${esc(nm(sp))}</span><span class="ed">${ED[sp.ed]}</span><span class="ball ${caught(sp.id)?"on":""}"></span></li>`).join("")}</ul>
+  <p class="more">${esc(t("more"))}</p></div>`},
+entry(){
+  const sp=byId(S.cur), fs=S.finds[sp.id]||[];
+  const head=`<div class="titlebar"><span class="name">${esc(nm(sp))}</span><span>${no(sp.id)}</span></div>`;
+  const dots=`<div class="dots"><i class="${S.page?"":"on"}"></i><i class="${S.page?"on":""}"></i>&nbsp;${esc(t("swipe"))}</div>`;
+  if(!S.page) return head+`<div class="scroll" id="sc">${pic(sp,true)}
+    <div class="meta">${edPill(sp.ed)}<span class="latin">${esc(sp.latin)}</span></div>
+    <div class="box">${esc(sp.desc[S.lang])}</div></div>`+dots;
+  const looks=sp.look.map(l=>{const x=typeof l==="number"?byId(l):null;
+    return x?`<button class="lk" data-open="${x.id}">${art(x.shape,x.c,!caught(x.id),x.plain)}<span>${esc(nm(x))}</span><span class="ed">${ED[x.ed]}</span></button>`
+            :`<div class="lk">${art("amanita",["#000","#000"],true)}<span><i>${esc(l.n)}</i></span><span class="ed">${ED[l.ed]}</span></div>`}).join("");
+  return head+`<div class="scroll" id="sc">
+    <div class="box"><div class="stat"><span>${esc(t("season"))}</span><span></span><b>${esc(sp.season==="I–XII"?t("allYear"):sp.season)}</b></div>
+    <div class="stat"><span>${esc(t("cap"))}</span><span></span><b>${esc(sp.cap)}</b></div>
+    <div class="stat"><span>${esc(t("spores"))}</span><span></span><b>${esc(sp.spores[S.lang])}</b></div></div>
+    <div class="box"><h3>${esc(t("where"))}</h3><div class="chips" style="margin:2px 0 4px">${["BER","GRE"].map(r=>`<span class="chip ${sp.reg.includes(r)?"on":"off"}">${r==="BER"?"Berlin":"Grenoble"}</span>`).join("")}</div>${esc(sp.how[S.lang])}</div>
+    ${sp.look.length?`<div class="box"><h3>${esc(t("look"))}</h3><div class="look">${looks}</div></div>`:""}
+    <div class="box"><h3>${esc(t("finds"))} (${fs.length})</h3>${fs.length?fs.map(f=>`<div class="find"><span class="t">${f.img?`<img src="${esc(f.img)}" alt="">`:art(sp.shape,sp.c,false,sp.plain)}</span><span>${esc(f.date)}<small>${esc(f.place||"–")}${f.note?" · "+esc(f.note):""}</small></span></div>`).join(""):`<p class="empty">${esc(t("noFinds"))}</p>`}</div>
+  </div>`+dots},
+catch(){
+  return `<div class="titlebar"><span>${esc(t("catch"))}</span><span>${no(S.cur)}</span></div><div class="scroll"><form id="catchForm">
+  <label class="shot" for="ph">${S.draft?`<img src="${esc(S.draft)}" alt="">`:`<span style="font-size:40px">&#128247;</span><span>${esc(t("photo"))}</span>`}<input id="ph" type="file" accept="image/*" capture="environment"></label>
+  <div class="field"><label for="spc">${esc(t("species"))}</label><select id="spc">${D.map(sp=>`<option value="${sp.id}" ${sp.id===S.cur?"selected":""}>${no(sp.id)} ${esc(nm(sp))}</option>`).join("")}</select></div>
+  <div class="field"><label for="dt">${esc(t("date"))}</label><input id="dt" type="date" value="2026-11-01"></div>
+  <div class="field"><label for="pl">${esc(t("place"))}</label><input id="pl" placeholder="${esc(t("placeHint"))}"></div>
+  <div class="field"><label for="nt">${esc(t("note"))}</label><input id="nt"></div>
+  <button class="cta" type="submit">${esc(t("save"))}</button><p class="note" id="catchMsg"></p></form></div>`},
+settings(){
+  const json=JSON.stringify(S.finds);
+  return `<div class="titlebar"><span>${esc(t("settings"))}</span><span>v0.0</span></div><div class="scroll">
+  <div class="box"><h3>${esc(t("language"))}</h3><div class="seg">${["fr","en","de"].map(l=>`<button data-lang="${l}" aria-pressed="${S.lang===l}">${l.toUpperCase()}</button>`).join("")}</div></div>
+  <div class="box"><h3>${esc(t("account"))}</h3><p style="margin:0 0 8px">sam@example.com</p><button class="cta" data-act="signout">${esc(t("signout"))}</button></div>
+  <div class="box"><h3>${esc(t("export"))}</h3><button class="cta" data-act="copy">${esc(t("copy"))} (${json.length} B)</button></div>
+  <p class="note">${esc(t("disclaimer"))}</p></div>`}
+};
+
+function render(){
+  lcd.innerHTML=V[S.view]();
+  document.documentElement.lang=S.lang;
+  const n=D.filter(x=>caught(x.id)).length;
+  $("counter").innerHTML=`${n}/${D.length}<small>${esc(t("caught"))}</small>`;
+  $("lblA").textContent=t("catch"); $("lblB").textContent=t("back");
+  $("pillPage").textContent=t("page"); $("pillPage").disabled=S.view!=="entry";
+  $("pillLang").textContent=S.lang.toUpperCase();
+  const sel=lcd.querySelector(".row.sel"); if(sel) sel.scrollIntoView({block:"nearest"});
+}
+function go(view,extra={}){ if(view!==S.view&&S.view!=="catch"&&S.view!=="settings")S.prev=S.view; Object.assign(S,extra,{view}); render(); }
+function toast(msg){const el=document.createElement("div");el.className="toast";el.textContent=msg;lcd.appendChild(el);$("ledG").classList.remove("flash");void $("ledG").offsetWidth;$("ledG").classList.add("flash");setTimeout(()=>el.remove(),1400)}
+function step(d){const ids=D.map(x=>x.id);const i=ids.indexOf(S.cur);S.cur=ids[(i+d+ids.length)%ids.length];render()}
+
+/* ---------- hardware ---------- */
+const H={
+up(){ if(S.view==="index"){S.sel=Math.max(0,S.sel-1);render()} else {const sc=$("sc");sc&&sc.scrollBy({top:-80,behavior:"smooth"})} },
+down(){ if(S.view==="index"){S.sel=Math.min(visible().length-1,S.sel+1);render()} else {const sc=$("sc");sc&&sc.scrollBy({top:80,behavior:"smooth"})} },
+left(){ if(S.view==="entry")step(-1); else if(S.view==="index"){const f=["all","got","missing"];S.filter=f[(f.indexOf(S.filter)+2)%3];S.sel=0;render()} },
+right(){ if(S.view==="entry")step(1); else if(S.view==="index"){const f=["all","got","missing"];S.filter=f[(f.indexOf(S.filter)+1)%3];S.sel=0;render()} },
+ok(){ if(S.view==="index"){const sp=visible()[S.sel]; if(sp)go("entry",{cur:sp.id,page:0})} else if(S.view==="entry"){S.page^=1;render()} },
+a(){ if(S.view==="login")return; if(S.view==="index"){const sp=visible()[S.sel]; if(sp)S.cur=sp.id} S.draft=null; go("catch") },
+b(){ if(S.view==="entry")go("index"); else if(S.view==="catch"||S.view==="settings")go(S.prev==="login"?"index":S.prev); }
+};
+$("dU").onclick=H.up;$("dD").onclick=H.down;$("dL").onclick=H.left;$("dR").onclick=H.right;$("dC").onclick=H.ok;
+$("btnA").onclick=H.a;$("btnB").onclick=H.b;
+$("pillPage").onclick=()=>{if(S.view==="entry"){S.page^=1;render()}};
+$("pillLang").onclick=()=>{const L=["fr","en","de"];S.lang=L[(L.indexOf(S.lang)+1)%3];store.set("pz.lang",S.lang);render()};
+$("menuBtn").onclick=()=>{if(S.view!=="login")go("settings")};
+document.addEventListener("keydown",e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;
+  const m={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",Enter:"ok",Escape:"b",c:"a"}[e.key]; if(m){e.preventDefault();H[m]()}});
+
+lcd.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"); if(o){go("entry",{cur:+o.dataset.open,page:0});return}
+  const f=e.target.closest("[data-filter]"); if(f){S.filter=f.dataset.filter;S.sel=0;render();return}
+  const ef=e.target.closest("[data-edf]"); if(ef){S.edf=S.edf===ef.dataset.edf?null:ef.dataset.edf;S.sel=0;render();return}
+  const l=e.target.closest("[data-lang]"); if(l){S.lang=l.dataset.lang;store.set("pz.lang",S.lang);render();return}
+  const a=e.target.closest("[data-act]"); if(!a)return;
+  if(a.dataset.act==="enter")go("index");
+  if(a.dataset.act==="signout"){S.sent=false;go("login")}
+  if(a.dataset.act==="copy"){navigator.clipboard?.writeText(JSON.stringify(S.finds,null,2)).then(()=>{a.textContent=t("copied")}).catch(()=>{})}
+});
+lcd.addEventListener("submit",e=>{e.preventDefault();
+  if(e.target.id==="loginForm"){S.sent=true;render()}
+  if(e.target.id==="catchForm"){
+    if(!S.draft){$("catchMsg").textContent=t("photoNeeded");return}
+    const id=+$("spc").value; (S.finds[id]=S.finds[id]||[]).unshift({date:$("dt").value,place:$("pl").value,note:$("nt").value,img:S.draft});
+    store.set("pz.finds",Object.fromEntries(Object.entries(S.finds).map(([k,v])=>[k,v.map(({img,...r})=>r)])));
+    S.draft=null; go("entry",{cur:id,page:0}); toast(t("gotcha"));
+  }
+});
+lcd.addEventListener("change",e=>{if(e.target.id==="ph"&&e.target.files[0]){S.draft=URL.createObjectURL(e.target.files[0]);S.cur=+$("spc").value;render()}});
+let tx=null;
+lcd.addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
+lcd.addEventListener("touchend",e=>{if(tx==null||S.view!=="entry")return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>50){S.page=dx<0?1:0;render()}});
+
+render();
+</script>
+</body>
+</html>
