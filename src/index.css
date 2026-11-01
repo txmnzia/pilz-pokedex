@@ -175,3 +175,4 @@ ul.list{list-style:none;margin:0;padding:0}
 .cam{font-size:40px}
 .credits{margin:0;padding-left:18px;font-size:16px}
 .tag{max-width:120px}
+.filebtn{display:block;text-align:center;margin-top:8px;position:relative;cursor:pointer}.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}

@@ -1,7 +1,9 @@
--- Pilzdex: schema on the shared Supabase project. Paste in the SQL editor, then add
--- "pilz_pokedex" under Settings > Data API > Exposed schemas.
+-- Pilzdex: own schema on the shared txmnzia-dbs project.
+-- Run once in the Supabase SQL editor. Safe to re-run.
+-- Then: Project Settings > Data API > Exposed schemas > ADD pilz_pokedex (keep the others).
 create schema if not exists pilz_pokedex;
-grant usage on schema pilz_pokedex to anon, authenticated;
+comment on schema pilz_pokedex is 'txmnzia/pilz-pokedex';
+grant usage on schema pilz_pokedex to anon, authenticated, service_role;
 alter default privileges in schema pilz_pokedex
   grant select, insert, update, delete on tables to authenticated;
 
@@ -27,6 +29,7 @@ create policy "own rows" on pilz_pokedex.finds
   for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 grant select, insert, update, delete on all tables in schema pilz_pokedex to authenticated;
+grant all on all tables in schema pilz_pokedex to service_role;
 
 -- Photos: private bucket, each user only touches their own folder "<user_id>/..."
 insert into storage.buckets (id, name, public) values ('pilz_pokedex', 'pilz_pokedex', false)

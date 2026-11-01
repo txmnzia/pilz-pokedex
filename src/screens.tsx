@@ -241,10 +241,11 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
 }
 
 // ---------------------------------------------------------------- settings
-export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExport, sources }: {
+export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExport, onRestore, sources }: {
   ctx: Ctx; email: string | null; mode: "grid" | "list"; setLang(l: Lang): void; setMode(m: "grid" | "list"): void;
-  onSignOut(): void; onExport(): void; sources: Record<string, string>;
+  onSignOut(): void; onExport(): void; onRestore(json: string): Promise<string>; sources: Record<string, string>;
 }) {
+  const [msg, setMsg] = useState("");
   return (
     <>
       <div className="titlebar"><span>{ctx.t("settings")}</span></div>
@@ -258,7 +259,11 @@ export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExpo
         <div className="box"><h3>{ctx.t("account")}</h3>
           <p className="m0">{email ?? ctx.t("localOnly")}</p>
           <button className="cta" onClick={onSignOut}>{ctx.t("signout")}</button></div>
-        <div className="box"><h3>{ctx.t("export")}</h3><button className="cta" onClick={onExport}>{ctx.t("download")}</button></div>
+        <div className="box"><h3>{ctx.t("export")}</h3><button className="cta" onClick={onExport}>{ctx.t("download")}</button>
+          <label className="cta ghost filebtn">{ctx.t("restore")}<input type="file" accept="application/json,.json" onChange={async e => {
+            const f = e.target.files?.[0]; e.target.value = ""; if (!f) return;
+            setMsg(await onRestore(await f.text()));
+          }} /></label>{msg && <p className="note">{msg}</p>}</div>
         <div className="box"><h3>{ctx.t("credits")}</h3>
           <ul className="credits">{Object.entries(sources).map(([k, v]) => <li key={k}>{v}</li>)}</ul></div>
         <p className="note">{ctx.t("disclaimer")}</p>
