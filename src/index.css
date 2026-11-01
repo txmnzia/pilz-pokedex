@@ -198,3 +198,11 @@ ul.list{list-style:none;margin:0;padding:0}
   .tname{font-size:14px}.tart,.tart svg,.tart img{width:46px;height:46px}
   .lens{width:42px;height:42px}
 }
+.guesses{display:grid;gap:4px;margin:6px 0 2px}
+.guess{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;text-align:left;
+  border:2px solid var(--lcd-ink);border-radius:3px;background:transparent;color:var(--lcd-ink);font-size:19px;padding:3px 8px;line-height:1.1}
+.guess[aria-pressed="true"]{background:var(--lcd-ink);color:var(--lcd)}
+.guess.off{opacity:.55;border-style:dashed}
+.guess .gname{overflow-wrap:anywhere}.guess .gname small{display:block;font-size:15px}
+.guess b{font-weight:400;font-variant-numeric:tabular-nums}
+.guess .ed svg{width:18px;height:18px}

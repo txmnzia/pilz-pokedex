@@ -26,6 +26,9 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/local.ts` | localStorage + IndexedDB photo store, image compression |
 | `src/lib/sync.ts` | Supabase upload/upsert/pull, signed photo URLs, prefs pull/push |
 | `src/lib/prefs.ts` | Pure-ish: language + grid/list prefs, local-first, newer `updated_at` wins per account |
+| `src/lib/identify.ts` | On-device photo identifier: lazy LiteRT.js (wasm), Pillow-equivalent preprocessing, model in `public/models/` |
+| `src/lib/rank.ts`, `src/lib/resample.ts` | Pure: European-only ranking + confidence threshold; anti-aliased bilinear resize (matches Pillow, worth ~5 pts top-1) |
+| `scripts/model-labels.mjs`, `scripts/fix-model-batch.py`, `scripts/copy-litert.mjs` | Model prep: European flags per label (iNat), fix dynamic batch for LiteRT.js, copy wasm runtime to `public/litert/` (gitignored) |
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings |
 | `src/App.tsx` | State, hardware buttons (D-pad scrolls / steps species, A=catch, B=back, PAGE), auth, sync |
 | `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings) |
@@ -39,6 +42,9 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 - Tests + lint + check-data before merging.
 - Species data is scraped, never hand-written. Human edibility decisions go in `data/edibility-overrides.json` with a reason.
 - Finds: every mutation mirrors to localStorage; remote merges never drop local finds; deletes are soft.
+- Photo identifier: suggestion only, user confirms; preselect only when p >= CONFIDENT (0.5). Measured on 232 post-2023
+  European iNat photos of 29 dex species in Chromium: top-1 74.6%, top-3 85.8%; "Probably" shown for 78%, right 84%.
+  Re-measure after any preprocessing or model change (browser resize alone once cost 5 points).
 
 ## Skills
 | Skill | When |

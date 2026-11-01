@@ -1,7 +1,7 @@
 {
   "name": "pilz-pokedex",
   "private": true,
-  "version": "0.1.4",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,9 +10,12 @@
     "preview": "vite preview",
     "test": "vitest run",
     "check-data": "node scripts/check-data.mjs",
-    "scrape": "NODE_USE_ENV_PROXY=1 node scripts/scrape.mjs"
+    "scrape": "NODE_USE_ENV_PROXY=1 node scripts/scrape.mjs",
+    "predev": "node scripts/copy-litert.mjs",
+    "prebuild": "node scripts/copy-litert.mjs"
   },
   "dependencies": {
+    "@litertjs/core": "^2.6.0",
     "@supabase/supabase-js": "^2.118.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
