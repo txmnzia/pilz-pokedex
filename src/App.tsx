@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
 import { Catch, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, defaultLang, type StringKey } from "./lib/i18n";
-import { deleteFind, findsBySpecies, newFind } from "./lib/finds";
+import { deleteFind, findsBySpecies, newFind, parseBackup, restoreInto } from "./lib/finds";
 import { compress, loadFinds, putPhoto, saveFinds, store } from "./lib/local";
 import { supabase } from "./lib/supabase";
 import { sync } from "./lib/sync";
@@ -169,6 +169,10 @@ export default function App() {
   else if (effectiveView === "catch") screen = <Catch ctx={ctx} initial={cur || core[0].inat} onSave={save} />;
   else if (effectiveView === "settings") screen = <Settings ctx={ctx} email={user?.email ?? null} mode={mode} setLang={setLang} setMode={setMode}
     sources={data.sources} onExport={exportJson}
+    onRestore={async json => {
+      try { const b = parseBackup(json); setFinds(x => restoreInto(x, b)); return `${b.length} ${t("restored")}`; }
+      catch { return t("badBackup"); }
+    }}
     onSignOut={async () => { if (supabase) await supabase.auth.signOut(); setOffline(false); store.set("pz.offline", false); setView("index"); }} />;
   else screen = <Dex ctx={ctx} list={visible} extras={filter === "all" && !edf ? extras : []} sel={sel} mode={mode} filter={filter} edf={edf}
     setMode={setMode} setFilter={f => { setFilter(f); setSel(0); }} setEdf={e => { setEdf(e); setSel(0); }} open={sp => open(sp)} />;

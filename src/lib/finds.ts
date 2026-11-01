@@ -32,3 +32,25 @@ export function newFind(species: number, fields: Partial<Find> = {}, now = new D
 
 /** Soft delete so the deletion syncs to other devices. */
 export const deleteFind = (f: Find, now = new Date()): Find => ({ ...f, deleted: true, synced: false, updated_at: now.toISOString() });
+
+/** Parse an exported backup (array of finds). Invalid entries are skipped; restored finds re-sync. */
+export function parseBackup(json: string): Find[] {
+  const raw: unknown = JSON.parse(json);
+  if (!Array.isArray(raw)) throw new Error("not a Pilzdex backup");
+  return raw
+    .filter((f): f is Partial<Find> & Pick<Find, "id" | "species" | "observed_on"> => !!f && typeof f === "object" && typeof f.id === "string" && typeof f.species === "number" && typeof f.observed_on === "string")
+    .map((f): Find => ({
+      place: "", note: "", lat: null, lng: null, photo_path: null, deleted: false,
+      created_at: f.observed_on, updated_at: f.observed_on, ...f, synced: false,
+    }));
+}
+
+/** Restore: add backup finds that are missing or newer locally, flagged unsynced so they upload. */
+export function restoreInto(local: Find[], backup: Find[]): Find[] {
+  const byId = new Map(local.map(f => [f.id, f]));
+  for (const b of backup) {
+    const l = byId.get(b.id);
+    if (!l || b.updated_at > l.updated_at) byId.set(b.id, { ...b, synced: false });
+  }
+  return [...byId.values()].sort((a, b) => b.observed_on.localeCompare(a.observed_on));
+}

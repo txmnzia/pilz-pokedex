@@ -84,3 +84,21 @@ describe("i18n", () => {
     expect(defaultLang(["es"])).toBe("en");
   });
 });
+
+import { parseBackup, restoreInto } from "../src/lib/finds";
+describe("backup", () => {
+  it("round-trips and skips junk", () => {
+    const a = newFind(9, { place: "X" });
+    const parsed = parseBackup(JSON.stringify([a, { nope: 1 }, null]));
+    expect(parsed.length).toBe(1);
+    expect(parsed[0].place).toBe("X");
+    expect(parsed[0].synced).toBe(false);
+  });
+  it("rejects non-arrays", () => expect(() => parseBackup("{}")).toThrow());
+  it("restore merges, never drops", () => {
+    const local = newFind(1), backup = newFind(2);
+    const r = restoreInto([local], parseBackup(JSON.stringify([backup])));
+    expect(r.length).toBe(2);
+    expect(r.find(f => f.id === backup.id)?.synced).toBe(false);
+  });
+});

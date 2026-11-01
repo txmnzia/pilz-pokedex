@@ -16,7 +16,7 @@ Regenerate with `npm run scrape` (writes `public/data/species.next.json`), check
 Sources: iNaturalist API, Wikidata (CC0), Wikipedia FR/EN/DE (CC BY-SA 4.0, link kept per entry).
 
 ## Setup
-1. Supabase SQL editor: run `supabase/migrations/0001_init.sql`, then add `pilz_pokedex` to Settings > Data API > Exposed schemas.
+1. Supabase SQL editor: run `supabase/migrations/0001_pilz_pokedex.sql`, then add `pilz_pokedex` to Settings > Data API > Exposed schemas.
 2. Supabase Auth > URL configuration: add `https://txmnzia.github.io/pilz-pokedex/` to Redirect URLs.
 3. Repo Settings > Secrets and variables > Actions > Variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 4. Repo Settings > Pages > Source: GitHub Actions.
