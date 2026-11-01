@@ -37,9 +37,14 @@ export function shapeOf(sp: Pick<Species, "latin" | "morph">): Shape {
   return "gilled";
 }
 
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
-/** [9,10,11] -> "IX–XI"; wraps around the year: [1,2,11,12] -> "XI–II"; all 12 -> null (all year). */
-export function seasonLabel(months: number[]): string | null {
+const MONTHS: Record<Lang, string[]> = {
+  fr: ["JANV", "FÉVR", "MARS", "AVR", "MAI", "JUIN", "JUIL", "AOÛT", "SEPT", "OCT", "NOV", "DÉC"],
+  en: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+  de: ["JAN", "FEB", "MÄR", "APR", "MAI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEZ"],
+};
+/** [9,10,11] -> "SEP–NOV"; wraps around the year: [1,2,11,12] -> "NOV–FEB"; all 12 -> null (all year). */
+export function seasonLabel(months: number[], lang: Lang = "en"): string | null {
+  const M = MONTHS[lang];
   if (!months.length) return "";
   if (months.length === 12) return null;
   const set = new Set(months);
@@ -51,7 +56,7 @@ export function seasonLabel(months: number[]): string | null {
     if (runs.length && runs[runs.length - 1][1] === prev) runs[runs.length - 1][1] = m;
     else runs.push([m, m]);
   }
-  return runs.map(([a, b]) => (a === b ? ROMAN[a - 1] : `${ROMAN[a - 1]}–${ROMAN[b - 1]}`)).join(", ");
+  return runs.map(([a, b]) => (a === b ? M[a - 1] : `${M[a - 1]}–${M[b - 1]}`)).join(", ");
 }
 
 export const dexLabel = (sp: Pick<Species, "no" | "ex">) =>

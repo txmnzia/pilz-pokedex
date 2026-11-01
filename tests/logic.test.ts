@@ -9,10 +9,10 @@ const data: SpeciesFile = JSON.parse(readFileSync("public/data/species.json", "u
 const bySpecies = (latin: string) => data.species.find(s => s.latin === latin)!;
 
 describe("seasonLabel", () => {
-  it("formats a single run", () => expect(seasonLabel([9, 10, 11])).toBe("IX–XI"));
-  it("wraps across new year", () => expect(seasonLabel([1, 2, 11, 12])).toBe("XI–II"));
-  it("handles gaps", () => expect(seasonLabel([3, 4, 9, 10])).toBe("III–IV, IX–X"));
-  it("single month", () => expect(seasonLabel([5])).toBe("V"));
+  it("formats a single run", () => expect(seasonLabel([9, 10, 11])).toBe("SEP–NOV"));
+  it("wraps across new year", () => expect(seasonLabel([1, 2, 11, 12])).toBe("NOV–FEB"));
+  it("handles gaps", () => expect(seasonLabel([3, 4, 9, 10], "de")).toBe("MÄR–APR, SEP–OKT"));
+  it("single month", () => expect(seasonLabel([6], "fr")).toBe("JUIN"));
   it("all year is null", () => expect(seasonLabel([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])).toBeNull());
 });
 
