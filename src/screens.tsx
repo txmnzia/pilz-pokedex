@@ -72,7 +72,7 @@ export function Login({ ctx, configured, onSend, onOffline }: { ctx: Ctx; config
 // ---------------------------------------------------------------- dex
 interface DexProps {
   ctx: Ctx; list: Species[]; extras: Species[]; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
-  setMode(m: "grid" | "list"): void; setFilter(f: Filter): void; setEdf(e: Edibility | null): void; open(sp: Species): void;
+  setFilter(f: Filter): void; setEdf(e: Edibility | null): void; open(sp: Species): void;
 }
 export function Dex(p: DexProps) {
   const { ctx } = p;
@@ -101,9 +101,6 @@ export function Dex(p: DexProps) {
       <div className="titlebar"><span>{ctx.t("dex")}</span><span>{n}/{core.length}</span></div>
       <div className="scroll">
         <div className="chips">
-          <span className="seg mini">
-            {(["grid", "list"] as const).map(m => <button key={m} aria-pressed={p.mode === m} title={ctx.t(m)} onClick={() => p.setMode(m)}>{m === "grid" ? "▦" : "☰"}</button>)}
-          </span>
           {(["all", "got", "missing"] as const).map(f => <button key={f} className="chip" aria-pressed={p.filter === f} onClick={() => p.setFilter(f)}>{ctx.t(f)}</button>)}
         </div>
         <div className="chips">

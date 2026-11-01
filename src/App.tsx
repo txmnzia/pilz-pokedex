@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
 import { Catch, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
-import { STRINGS, defaultLang, type StringKey } from "./lib/i18n";
+import { STRINGS, type StringKey } from "./lib/i18n";
 import { deleteFind, findsBySpecies, newFind, parseBackup, restoreInto } from "./lib/finds";
 import { compress, loadFinds, putPhoto, saveFinds, store } from "./lib/local";
 import { supabase } from "./lib/supabase";
-import { sync } from "./lib/sync";
+import { pullPrefs, pushPrefs, sync } from "./lib/sync";
+import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
 import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
 
 type View = "login" | "index" | "entry" | "catch" | "settings";
@@ -13,8 +14,8 @@ type Mode = "grid" | "list";
 
 export default function App() {
   const [data, setData] = useState<SpeciesFile | null>(null);
-  const [lang, setLangState] = useState<Lang>(() => store.get("pz.lang", defaultLang()));
-  const [mode, setModeState] = useState<Mode>(() => store.get("pz.mode", "grid"));
+  const [prefs, setPrefsState] = useState<Prefs>(loadPrefs);
+  const { lang, mode } = prefs;
   const [user, setUser] = useState<{ id: string; email: string | null } | null>(null);
   const [offline, setOffline] = useState<boolean>(() => !supabase && store.get("pz.offline", false));
   const [authReady, setAuthReady] = useState(!supabase);
@@ -32,8 +33,14 @@ export default function App() {
   const entryScroll = useRef<HTMLDivElement | null>(null);
 
   const t = useCallback((k: StringKey) => STRINGS[lang][k], [lang]);
-  const setLang = (l: Lang) => { setLangState(l); store.set("pz.lang", l); };
-  const setMode = (m: Mode) => { setModeState(m); store.set("pz.mode", m); };
+  // a user change: stamp it, keep it on the device, push it to the account
+  const changePrefs = (patch: Partial<Prefs>) => {
+    const next = { ...prefs, ...patch, updated_at: new Date().toISOString() };
+    setPrefsState(next); savePrefs(next);
+    if (user) pushPrefs(next);
+  };
+  const setLang = (l: Lang) => changePrefs({ lang: l });
+  const setMode = (m: Mode) => changePrefs({ mode: m });
   // every mutation is mirrored to localStorage immediately
   const setFinds = useCallback((f: Find[] | ((x: Find[]) => Find[])) => {
     setFindsState(old => { const n = typeof f === "function" ? f(old) : f; saveFinds(n); return n; });
@@ -53,6 +60,19 @@ export default function App() {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setUser(s?.user ? { id: s.user.id, email: s.user.email ?? null } : null));
     return () => sub.subscription.unsubscribe();
   }, []);
+
+  // preferences follow the account: on sign-in take the newer of device and account
+  useEffect(() => {
+    if (!user) return;
+    let alive = true;
+    pullPrefs(loadPrefs()).then(remote => {
+      if (!alive) return;
+      const local = loadPrefs();
+      const winner = newerPrefs(local, remote);
+      if (winner !== local) { setPrefsState(winner); savePrefs(winner); } else pushPrefs(local);
+    });
+    return () => { alive = false; };
+  }, [user]);
 
   // sync on login, when coming back online, and after local changes (debounced)
   const syncing = useRef(false);
@@ -119,7 +139,6 @@ export default function App() {
       } else if (effectiveView === "catch" || effectiveView === "settings") setView(prev === "login" ? "index" : prev);
     },
     page: () => setPage(p => (p ? 0 : 1)),
-    lang: () => { const L: Lang[] = ["fr", "en", "de"]; setLang(L[(L.indexOf(lang) + 1) % 3]); },
     menu: () => { if (signedIn) go("settings"); },
   };
 
@@ -172,13 +191,13 @@ export default function App() {
     }}
     onSignOut={async () => { if (supabase) await supabase.auth.signOut(); setOffline(false); store.set("pz.offline", false); setView("index"); }} />;
   else screen = <Dex ctx={ctx} list={visible} extras={filter === "all" && !edf ? extras : []} mode={mode} filter={filter} edf={edf}
-    setMode={setMode} setFilter={setFilter} setEdf={setEdf} open={sp => open(sp)} />;
+    setFilter={setFilter} setEdf={setEdf} open={sp => open(sp)} />;
 
   const status = !user ? (offline ? t("localOnly") : "") : syncState === "syncing" ? t("syncing") : dirty ? t("localOnly") : t("synced");
   return (
     <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className="app">
       <Device hw={hw} ledFlash={flash} status={status} pageEnabled={effectiveView === "entry"}
-        labels={{ a: t("catch"), b: t("back"), page: t("page"), lang: lang.toUpperCase(), counter: `${core.filter(s => caught.has(s.inat)).length}/${core.length || 30}`, counterSub: t("caught") }}>
+        labels={{ a: t("catch"), b: t("back"), page: t("page"), counter: `${core.filter(s => caught.has(s.inat)).length}/${core.length || 30}`, counterSub: t("caught") }}>
         {screen}
         {toast && <div className="toast">{toast}</div>}
       </Device>

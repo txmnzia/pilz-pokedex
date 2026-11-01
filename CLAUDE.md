@@ -24,10 +24,11 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/finds.ts` | Pure: merge (never drops), soft delete, grouping |
 | `src/lib/i18n.ts` | All UI strings FR/EN/DE |
 | `src/lib/local.ts` | localStorage + IndexedDB photo store, image compression |
-| `src/lib/sync.ts` | Supabase upload/upsert/pull, signed photo URLs |
+| `src/lib/sync.ts` | Supabase upload/upsert/pull, signed photo URLs, prefs pull/push |
+| `src/lib/prefs.ts` | Pure-ish: language + grid/list prefs, local-first, newer `updated_at` wins per account |
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings |
-| `src/App.tsx` | State, hardware buttons (D-pad, A=catch, B=back, PAGE, LANG), auth, sync |
-| `supabase/migrations/` | SQL to paste in the Supabase SQL editor |
+| `src/App.tsx` | State, hardware buttons (D-pad scrolls / steps species, A=catch, B=back, PAGE), auth, sync |
+| `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings) |
 | `design/mockup.html` | Original UX mockup (mock data) |
 
 ## Hard rules
