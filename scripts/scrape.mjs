@@ -76,6 +76,8 @@ const EDIBILITY = { // worst value wins
   Q4317894: "none",
 };
 const RANK = ["deadly", "toxic", "caution", "edible", "none"];
+// human decisions for conflicting or missing Wikidata edibility, see data/edibility-overrides.json
+const OVERRIDES = await readFile("data/edibility-overrides.json", "utf8").then(JSON.parse).catch(() => ({}));
 const MORPH = { P783: "hymenium", P784: "cap", P785: "attachment", P786: "stipe", P787: "spores", P788: "ecology" };
 
 async function wikidata(entries) {
@@ -108,7 +110,12 @@ async function wikidata(entries) {
   for (const e of entries) {
     const c = e.claims || {};
     const eds = [...(c.P789 || [])].map(q => EDIBILITY[q]).filter(Boolean);
-    e.edibility = RANK.find(r => eds.includes(r)) || null;
+    // contradictory sources (edible + poisonous, edible + inedible) are not resolved by a rule: a human decides
+    const edibleish = eds.includes("edible"), bad = eds.some(x => x === "toxic" || x === "deadly");
+    e.edibilityConflict = (edibleish && (bad || eds.includes("none"))) || eds.includes("caution");
+    e.edibility = e.edibilityConflict ? null : RANK.find(r => eds.includes(r)) || null;
+    const o = OVERRIDES[e.latin];
+    if (o) { e.edibility = o.edibility; e.edibilityOverride = o.reason; }
     e.edibilitySource = [...(c.P789 || [])].map(q => labels[q]?.en || q);
     e.morph = {};
     for (const [p, k] of Object.entries(MORPH)) if (c[p]) e.morph[k] = [...c[p]].map(q => ({ qid: q, ...labels[q] }));
@@ -239,6 +246,22 @@ const core = ranked.slice(0, TOP);
 core.forEach((e, i) => console.log(String(i + 1).padStart(3), e.latin.padEnd(28), e.obs.DE + e.obs.FR, e.wikiLangs));
 await enrich(core);
 await resolveLookalikes(core);
+
+// lookalikes must be fungi actually present in Europe (Wikipedia links also hit trees and other continents)
+async function keepEuropeanFungi(cands) {
+  const ok = new Set();
+  for (const part of chunk(cands, 30)) {
+    const t = await inat(`taxa/${part.join(",")}`, {});
+    const fungi = t.results.filter(x => x.iconic_taxon_name === "Fungi").map(x => x.id);
+    if (!fungi.length) continue;
+    const r = await inat("observations/species_counts", { place_id: 97391, taxon_id: fungi.join(","), quality_grade: "research", per_page: 500 });
+    for (const { count, taxon } of r.results) if (count >= 10) ok.add(taxon.id);
+  }
+  return ok;
+}
+const allCands = [...new Set(core.flatMap(e => e.lookalikeCandidates.map(c => c.inat)))];
+const european = await keepEuropeanFungi(allCands);
+for (const e of core) e.lookalikeCandidates = e.lookalikeCandidates.filter(c => european.has(c.inat));
 
 // extras: lookalikes outside the core list get their own pages
 const coreIds = new Set(core.map(e => e.inat));
