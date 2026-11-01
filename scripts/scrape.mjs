@@ -1,0 +1,268 @@
+// Scrapes the Pilzdex species list from open sources. Nothing here is hand-written data.
+//   Ranking, regions, season: iNaturalist (research-grade observations)
+//   Names, edibility, morphology: Wikidata
+//   Description, habitat, lookalikes: Wikipedia FR/EN/DE (CC BY-SA, source URL kept per entry)
+// Usage: node scripts/scrape.mjs [--top 30]   -> writes data/species.next.json
+// Then:  node scripts/check-data.mjs data/species.next.json && mv data/species.next.json data/species.json
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+
+const TOP = Number(process.argv[process.argv.indexOf("--top") + 1]) || 30;
+const LANGS = ["fr", "en", "de"];
+const UA = "pilz-pokedex/0.1 (https://github.com/txmnzia/pilz-pokedex)";
+const CACHE = ".cache";
+const PLACES = { DE: 7207, FR: 6753 };
+const AREAS = { berlin: [52.52, 13.405], grenoble: [45.188, 5.724] }; // radius below
+const RADIUS_KM = 50;
+const TAXA = "50814,152032"; // Agaricomycetes, Pezizomycetes: mushroom-forming fungi, no lichens
+const MAX_LOOKALIKES = 4;
+
+// ---------- fetch with disk cache, per-host throttle, 429 backoff ----------
+const last = {};
+async function get(url, { text = false } = {}) {
+  const key = createHash("sha1").update(url).digest("hex");
+  const file = `${CACHE}/${key}.json`;
+  try { return JSON.parse(await readFile(file, "utf8")); } catch {}
+  const host = new URL(url).host;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const wait = (last[host] || 0) + 1100 - Date.now();
+    if (wait > 0) await new Promise(r => setTimeout(r, wait));
+    last[host] = Date.now();
+    const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "application/json" } });
+    if (res.status === 429 || res.status >= 500) {
+      await new Promise(r => setTimeout(r, 2000 * 2 ** attempt));
+      continue;
+    }
+    if (!res.ok) throw new Error(`${res.status} ${url}`);
+    const body = text ? await res.text() : await res.json();
+    await mkdir(CACHE, { recursive: true });
+    await writeFile(file, JSON.stringify(body));
+    return body;
+  }
+  throw new Error(`gave up after retries: ${url}`);
+}
+const qs = o => new URLSearchParams(o).toString();
+const inat = (path, params) => get(`https://api.inaturalist.org/v1/${path}?${qs(params)}`);
+const sparql = q => get(`https://query.wikidata.org/sparql?${qs({ query: q, format: "json" })}`).then(r => r.results.bindings);
+const wiki = (lang, params) => get(`https://${lang}.wikipedia.org/w/api.php?${qs({ format: "json", formatversion: 2, ...params })}`);
+const chunk = (a, n) => Array.from({ length: Math.ceil(a.length / n) }, (_, i) => a.slice(i * n, i * n + n));
+const qid = uri => uri.split("/").pop();
+
+// ---------- 1. ranking: research-grade observations in DE + FR ----------
+async function ranking() {
+  const total = new Map();
+  for (const [cc, place] of Object.entries(PLACES)) {
+    const r = await inat("observations/species_counts", { place_id: place, taxon_id: TAXA, quality_grade: "research", per_page: 500 });
+    for (const { count, taxon } of r.results) {
+      if (taxon.rank !== "species") continue;
+      const e = total.get(taxon.id) || { inat: taxon.id, latin: taxon.name, obs: { DE: 0, FR: 0 } };
+      e.obs[cc] = count;
+      total.set(taxon.id, e);
+    }
+  }
+  return [...total.values()].sort((a, b) => (b.obs.DE + b.obs.FR) - (a.obs.DE + a.obs.FR));
+}
+
+// ---------- 2. Wikidata: names, edibility, morphology, sitelinks ----------
+const EDIBILITY = { // worst value wins
+  Q19888591: "deadly",
+  Q359511: "toxic", Q1169875: "toxic", Q19888579: "toxic",
+  Q19888537: "caution",
+  Q654236: "edible", Q19888517: "edible", Q62102033: "edible",
+  Q4317894: "none",
+};
+const RANK = ["deadly", "toxic", "caution", "edible", "none"];
+const MORPH = { P783: "hymenium", P784: "cap", P785: "attachment", P786: "stipe", P787: "spores", P788: "ecology" };
+
+async function wikidata(entries) {
+  const byInat = new Map(entries.map(e => [String(e.inat), e]));
+  for (const part of chunk(entries, 40)) {
+    const values = part.map(e => `"${e.inat}"`).join(" ");
+    const rows = await sparql(`SELECT ?item ?inat ?p ?v ?cn ?site WHERE {
+      VALUES ?inat { ${values} } ?item wdt:P3151 ?inat .
+      { VALUES ?p { wdt:P789 ${Object.keys(MORPH).map(p => "wdt:" + p).join(" ")} } ?item ?p ?v }
+      UNION { ?item p:P1843 ?st . ?st ps:P1843 ?cn . MINUS { ?st wikibase:rank wikibase:DeprecatedRank } FILTER(lang(?cn) IN ("fr","en","de")) }
+      UNION { ?site schema:about ?item ; schema:isPartOf ?w . VALUES ?w { <https://fr.wikipedia.org/> <https://en.wikipedia.org/> <https://de.wikipedia.org/> } }
+    }`);
+    for (const e of part) { e.claims = {}; e.commonNames = {}; e.sites = {}; }
+    for (const r of rows) {
+      const e = byInat.get(r.inat.value);
+      e.wikidata = qid(r.item.value);
+      e.claims ||= {}; e.commonNames ||= {}; e.sites ||= {};
+      if (r.p) (e.claims[qid(r.p.value)] ||= new Set()).add(qid(r.v.value));
+      if (r.cn) (e.commonNames[r.cn["xml:lang"]] ||= []).push(r.cn.value);
+      if (r.site) { const u = new URL(r.site.value); e.sites[u.host.split(".")[0]] = { url: r.site.value, title: decodeURIComponent(u.pathname.slice(6)).replace(/_/g, " ") }; }
+    }
+  }
+  // labels for every value QID used
+  const vals = [...new Set(entries.flatMap(e => Object.values(e.claims || {}).flatMap(s => [...s])))];
+  const labels = {};
+  for (const part of chunk(vals, 100)) {
+    const rows = await sparql(`SELECT ?v ?l WHERE { VALUES ?v { ${part.map(q => "wd:" + q).join(" ")} } ?v rdfs:label ?l FILTER(lang(?l) IN ("fr","en","de")) }`);
+    for (const r of rows) (labels[qid(r.v.value)] ||= {})[r.l["xml:lang"]] = r.l.value;
+  }
+  for (const e of entries) {
+    const c = e.claims || {};
+    const eds = [...(c.P789 || [])].map(q => EDIBILITY[q]).filter(Boolean);
+    e.edibility = RANK.find(r => eds.includes(r)) || null;
+    e.edibilitySource = [...(c.P789 || [])].map(q => labels[q]?.en || q);
+    e.morph = {};
+    for (const [p, k] of Object.entries(MORPH)) if (c[p]) e.morph[k] = [...c[p]].map(q => ({ qid: q, ...labels[q] }));
+    delete e.claims;
+  }
+}
+
+// iNaturalist localized common names, used when Wikidata has none
+async function inatNames(e) {
+  e.inatNames = {};
+  for (const l of LANGS) {
+    const r = await inat(`taxa/${e.inat}`, { locale: l });
+    const n = r.results[0]?.preferred_common_name;
+    if (n) e.inatNames[l] = n;
+  }
+}
+function pickNames(e) {
+  e.names = {}; e.nameSource = {};
+  for (const l of LANGS) {
+    const site = e.sites?.[l]?.title;
+    const cands = [
+      ["wikidata", e.commonNames?.[l]?.[0]],
+      ["inaturalist", e.inatNames?.[l]],
+      ["wikipedia", site && site !== e.latin ? site.replace(/ \(.*\)$/, "") : null],
+    ];
+    const [src, name] = cands.find(([, n]) => n) || ["latin", e.latin];
+    e.names[l] = name.charAt(0).toUpperCase() + name.slice(1);
+    e.nameSource[l] = src;
+  }
+}
+
+// ---------- 3. Wikipedia: intro, habitat, lookalike links ----------
+const HABITAT = { en: /habitat|ecology|distribution/i, fr: /habitat|écologie|répartition/i, de: /vorkommen|ökologie|verbreitung|standort/i };
+const SIMILAR = { en: /similar|lookalike|look-alike|confus/i, fr: /confusion|similaires|proches|risque/i, de: /verwechs|ähnlich/i };
+const sentences = (s, n) => (s.replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]+(\s|$)/g) || [s]).slice(0, n).join("").trim();
+
+async function wikipedia(e) {
+  e.text = {}; e.lookalikeTitles = [];
+  for (const l of LANGS) {
+    const site = e.sites?.[l]; if (!site) continue;
+    const ex = await wiki(l, { action: "query", prop: "extracts", explaintext: 1, exsectionformat: "wiki", redirects: 1, titles: site.title });
+    const full = ex.query.pages[0]?.extract || "";
+    const parts = full.split(/\n(={2,})\s*(.+?)\s*\1\n/);
+    const intro = sentences(parts[0].replace(/\(.*?\)/g, ""), 3);
+    let habitat = "";
+    for (let i = 1; i < parts.length; i += 3) if (HABITAT[l].test(parts[i + 1]) && parts[i + 2]?.trim()) { habitat = sentences(parts[i + 2], 2); break; }
+    e.text[l] = { intro, habitat, url: site.url };
+    // lookalike section links
+    const secs = await wiki(l, { action: "parse", page: site.title, prop: "sections", redirects: 1 });
+    for (const s of secs.parse?.sections || []) {
+      if (!SIMILAR[l].test(s.line)) continue;
+      const links = await wiki(l, { action: "parse", page: site.title, prop: "links", section: s.index, redirects: 1 });
+      for (const k of links.parse?.links || []) if (k.ns === 0 && k.exists) e.lookalikeTitles.push([l, k.title]);
+    }
+  }
+}
+
+// resolve Wikipedia titles -> Wikidata species with an iNaturalist id
+async function resolveLookalikes(entries) {
+  const byLang = {};
+  for (const e of entries) for (const [l, t] of e.lookalikeTitles) (byLang[l] ||= new Set()).add(t);
+  const titleQ = {};
+  for (const [l, set] of Object.entries(byLang)) for (const part of chunk([...set], 50)) {
+    const r = await wiki(l, { action: "query", prop: "pageprops", ppprop: "wikibase_item", redirects: 1, titles: part.join("|") });
+    const redir = Object.fromEntries((r.query.redirects || []).concat(r.query.normalized || []).map(x => [x.to, x.from]));
+    for (const p of r.query.pages || []) if (p.pageprops?.wikibase_item) {
+      let t = p.title; titleQ[`${l}:${t}`] = p.pageprops.wikibase_item;
+      while (redir[t]) { t = redir[t]; titleQ[`${l}:${t}`] = p.pageprops.wikibase_item; }
+    }
+  }
+  const qs_ = [...new Set(Object.values(titleQ))];
+  const species = {};
+  for (const part of chunk(qs_, 80)) {
+    const rows = await sparql(`SELECT ?item ?inat ?name WHERE { VALUES ?item { ${part.map(q => "wd:" + q).join(" ")} }
+      ?item wdt:P105 wd:Q7432 ; wdt:P3151 ?inat ; wdt:P225 ?name . }`);
+    for (const r of rows) species[qid(r.item.value)] = { inat: Number(r.inat.value), latin: r.name.value };
+  }
+  for (const e of entries) {
+    const seen = new Map();
+    for (const [l, t] of e.lookalikeTitles) {
+      const s = species[titleQ[`${l}:${t}`]];
+      if (s && s.inat !== e.inat) { const v = seen.get(s.inat) || { ...s, langs: new Set() }; v.langs.add(l); seen.set(s.inat, v); }
+    }
+    e.lookalikeCandidates = [...seen.values()].map(v => ({ inat: v.inat, latin: v.latin, langs: v.langs.size }));
+    delete e.lookalikeTitles;
+  }
+}
+
+// ---------- 4. regions + season from iNaturalist ----------
+async function regions(entries) {
+  const ids = entries.map(e => e.inat);
+  for (const e of entries) e.regions = { berlin: 0, grenoble: 0 };
+  for (const [area, [lat, lng]] of Object.entries(AREAS)) for (const part of chunk(ids, 100)) {
+    const r = await inat("observations/species_counts", { lat, lng, radius: RADIUS_KM, taxon_id: part.join(","), quality_grade: "research", per_page: 500 });
+    for (const { count, taxon } of r.results) { const e = entries.find(x => x.inat === taxon.id); if (e) e.regions[area] = count; }
+  }
+}
+async function season(e) {
+  const r = await inat("observations/histogram", { taxon_id: e.inat, place_id: Object.values(PLACES).join(","), quality_grade: "research", interval: "month_of_year", date_field: "observed" });
+  const h = Object.values(r.results.month_of_year);
+  const max = Math.max(...h);
+  e.season = { histogram: h, months: h.map((v, i) => (v >= max * 0.15 ? i + 1 : 0)).filter(Boolean) };
+}
+
+// ---------- main ----------
+async function enrich(entries) {
+  await wikidata(entries);
+  for (const e of entries) { await inatNames(e); pickNames(e); await wikipedia(e); await season(e); process.stdout.write("."); }
+  await regions(entries);
+}
+
+// score = observations x number of Wikipedia language editions (fame, not seasonal)
+async function fame(pool) {
+  for (const part of chunk(pool, 60)) {
+    const rows = await sparql(`SELECT ?inat ?n WHERE { VALUES ?inat { ${part.map(e => `"${e.inat}"`).join(" ")} } ?item wdt:P3151 ?inat ; wikibase:sitelinks ?n . }`);
+    for (const r of rows) { const e = part.find(x => String(x.inat) === r.inat.value); e.wikiLangs = Math.max(e.wikiLangs || 0, Number(r.n.value)); }
+  }
+  for (const e of pool) e.score = (e.obs.DE + e.obs.FR) * (e.wikiLangs || 0);
+  return pool.sort((a, b) => b.score - a.score);
+}
+const ranked = await fame((await ranking()).slice(0, 250));
+console.log(`top ${TOP} of ${ranked.length} by observations x wikipedia languages:`);
+const core = ranked.slice(0, TOP);
+core.forEach((e, i) => console.log(String(i + 1).padStart(3), e.latin.padEnd(28), e.obs.DE + e.obs.FR, e.wikiLangs));
+await enrich(core);
+await resolveLookalikes(core);
+
+// extras: lookalikes outside the core list get their own pages
+const coreIds = new Set(core.map(e => e.inat));
+const extraMap = new Map();
+for (const e of core) for (const c of e.lookalikeCandidates) if (!coreIds.has(c.inat)) extraMap.set(c.inat, { inat: c.inat, latin: c.latin, obs: { DE: 0, FR: 0 } });
+const extras = [...extraMap.values()];
+console.log(`\nenriching ${extras.length} lookalike-only species`);
+await enrich(extras);
+const all = [...core, ...extras];
+const danger = { deadly: 0, toxic: 1, caution: 2, none: 3, edible: 4, null: 5 };
+const byId = new Map(all.map(e => [e.inat, e]));
+for (const e of core) {
+  e.lookalikes = e.lookalikeCandidates
+    .sort((a, b) => danger[byId.get(a.inat)?.edibility] - danger[byId.get(b.inat)?.edibility] || b.langs - a.langs)
+    .slice(0, MAX_LOOKALIKES).map(c => c.inat);
+}
+// keep only extras actually referenced after the cap
+const used = new Set(core.flatMap(e => e.lookalikes));
+const keptExtras = extras.filter(e => used.has(e.inat));
+for (const e of keptExtras) e.lookalikes = core.filter(c => c.lookalikes.includes(e.inat)).map(c => c.inat); // link back
+
+const out = {
+  generatedAt: new Date().toISOString(),
+  sources: {
+    ranking: "iNaturalist research-grade observations (Germany + France, Agaricomycetes + Pezizomycetes) x number of Wikipedia language editions (Wikidata sitelinks)",
+    regions: `iNaturalist research-grade observations within ${RADIUS_KM} km of Berlin / Grenoble`,
+    names_edibility_morphology: "Wikidata (CC0)",
+    text: "Wikipedia FR/EN/DE (CC BY-SA 4.0), see text.<lang>.url",
+  },
+  species: [...core.map((e, i) => ({ no: i + 1, extra: false, ...e })), ...keptExtras.map((e, i) => ({ no: null, ex: i + 1, extra: true, ...e }))]
+    .map(({ lookalikeCandidates, commonNames, inatNames, sites, ...e }) => e),
+};
+await mkdir("data", { recursive: true });
+await writeFile("data/species.next.json", JSON.stringify(out, null, 1));
+console.log(`\nwrote data/species.next.json: ${core.length} core + ${keptExtras.length} lookalike-only`);
