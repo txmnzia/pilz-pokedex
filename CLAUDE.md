@@ -30,10 +30,17 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/exif.ts` | Pure: JPEG EXIF date taken + GPS for library imports (tests use `tests/fixtures/*.jpg`, fake data) |
 | `src/lib/rank.ts`, `src/lib/resample.ts` | Pure: European-only ranking + confidence threshold; anti-aliased bilinear resize (matches Pillow, worth ~5 pts top-1) |
 | `scripts/model-labels.mjs`, `scripts/fix-model-batch.py`, `scripts/copy-litert.mjs` | Model prep: European flags per label (iNat), fix dynamic batch for LiteRT.js, copy wasm runtime to `public/litert/` (gitignored) |
-| `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings |
+| `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings. Each screen sends its right-side part to `ctx.right` via a portal (`ToRight`) on the web |
+| `src/components/RightPanel.tsx` | Web only (>= 900px): second Pokédex panel: LCD (portal target), 10 finds keys, yellow PREV/NEXT |
 | `src/App.tsx` | State, hardware buttons (big yellow CATCH = photo picker, D-pad scrolls / steps species, B=back, PAGE), auth, sync, re-crop |
 | `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings) |
 | `design/mockup.html` | Original UX mockup (mock data) |
+
+## Web two-panel layout (>= 900px, v0.5.0)
+Left = the device (dex grid only / species page 1 / catch photo); right panel = filters + progress / page 2 details +
+finds list / catch form + suggestions / settings. Right panel top is measured to sit on the line under the left header
+(`--rtop`), hinge stays inside both panels. PAGE pill hidden, D-pad OK does not flip pages. Phones are unchanged.
+Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9KcsPvGqQFGh28YGdQ).
 
 ## Hard rules
 - Author and committer `txmnzia <14270570+txmnzia@users.noreply.github.com>`; no Co-Authored-By / session / "Generated with" trailers.

@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
+import { RightPanel, type KeyItem } from "./components/RightPanel";
 import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
 import { deleteFind, findsBySpecies, newFind, parseBackup, restoreInto } from "./lib/finds";
@@ -8,6 +9,7 @@ import { supabase } from "./lib/supabase";
 import { photoUrl, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
 import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
+import { shortNo } from "./lib/species";
 
 type View = "login" | "index" | "entry" | "catch" | "settings";
 type Mode = "grid" | "list";
@@ -35,6 +37,23 @@ export default function App() {
   const [flash, setFlash] = useState(0);
   const [syncState, setSyncState] = useState<"idle" | "syncing" | "ok">("idle");
   const entryScroll = useRef<HTMLDivElement | null>(null);
+  // Web two-panel layout from 900 px: the right panel's screen is a portal target for the current view
+  const [wide, setWide] = useState(() => matchMedia("(min-width: 900px)").matches);
+  useEffect(() => {
+    const mq = matchMedia("(min-width: 900px)"), on = () => setWide(mq.matches);
+    mq.addEventListener("change", on); return () => mq.removeEventListener("change", on);
+  }, []);
+  const [rightEl, setRightEl] = useState<HTMLDivElement | null>(null);
+  const bookRef = useRef<HTMLDivElement | null>(null);
+  // the right panel starts on the line under the left header, so the halves look like they fold together
+  useLayoutEffect(() => {
+    const book = bookRef.current; if (!book || !wide) return;
+    const run = () => {
+      const dev = book.querySelector("#device"), top = book.querySelector("#device .top");
+      if (dev && top) book.style.setProperty("--rtop", `${top.getBoundingClientRect().bottom - dev.getBoundingClientRect().top - 3}px`);
+    };
+    run(); addEventListener("resize", run); return () => removeEventListener("resize", run);
+  }, [wide]);
 
   const t = useCallback((k: StringKey) => STRINGS[lang][k], [lang]);
   // a user change: stamp it, keep it on the device, push it to the account
@@ -102,7 +121,7 @@ export default function App() {
   const core = useMemo(() => all.filter(s => !s.extra), [all]);
   const extras = useMemo(() => all.filter(s => s.extra), [all]);
   const caught = useMemo(() => findsBySpecies(finds), [finds]);
-  const ctx: Ctx = { t, lang, all, caught };
+  const ctx: Ctx = { t, lang, all, caught, right: wide ? rightEl : null };
   const visible = core.filter(s =>
     (filter === "all" || (filter === "got" ? caught.has(s.inat) : !caught.has(s.inat))) && (!edf || s.edibility === edf));
   const byId = (id: number) => all.find(s => s.inat === id);
@@ -131,7 +150,7 @@ export default function App() {
     down: () => scrollBy(180),
     left: () => { if (effectiveView === "entry") step(-1); },
     right: () => { if (effectiveView === "entry") step(1); },
-    ok: () => { if (effectiveView === "entry") setPage(p => (p ? 0 : 1)); },
+    ok: () => { if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
     b: () => {
       if (effectiveView === "entry") {
         if (stack.length) { setCur(stack[stack.length - 1]); setStack(s => s.slice(0, -1)); setPage(1); } else go("index");
@@ -203,19 +222,27 @@ export default function App() {
     onCatchFile={f => startCatch(f, curSp.inat)} onRecrop={openRecrop}
     open={sp => open(sp, true)} onDelete={f => setFinds(x => x.map(y => (y.id === f.id ? deleteFind(y) : y)))} />;
   else if (effectiveView === "catch") screen = <Catch key={catchKey} ctx={ctx} initial={catchFor} startFile={catchFile} onSave={save} onCancelEmpty={() => setView(prev === "login" ? "index" : prev)} />;
-  else if (effectiveView === "settings") screen = <Settings ctx={ctx} email={user?.email ?? null} mode={mode} setLang={setLang} setMode={setMode}
+  else if (effectiveView === "settings") screen = <>{wide && dexScreen()}<Settings ctx={ctx} email={user?.email ?? null} mode={mode} setLang={setLang} setMode={setMode}
     sources={data.sources} onExport={exportJson}
     onRestore={async json => {
       try { const b = parseBackup(json); setFinds(x => restoreInto(x, b)); return `${b.length} ${t("restored")}`; }
       catch { return t("badBackup"); }
     }}
-    onSignOut={async () => { if (supabase) await supabase.auth.signOut(); setOffline(false); store.set("pz.offline", false); setView("index"); }} />;
-  else screen = <Dex ctx={ctx} list={visible} extras={filter === "all" && !edf ? extras : []} mode={mode} filter={filter} edf={edf}
-    setFilter={setFilter} setEdf={setEdf} open={sp => open(sp)} />;
+    onSignOut={async () => { if (supabase) await supabase.auth.signOut(); setOffline(false); store.set("pz.offline", false); setView("index"); }} /></>;
+  else screen = dexScreen();
+  function dexScreen() {
+    return <Dex ctx={wide && effectiveView === "settings" ? { ...ctx, right: null } : ctx} gridOnly={wide && effectiveView === "settings"} list={visible} extras={filter === "all" && !edf ? extras : []}
+      mode={mode} filter={filter} edf={edf} setFilter={setFilter} setEdf={setEdf} open={sp => open(sp)} />;
+  }
+  // right panel keys: this species' finds on a species page, otherwise the latest catches
+  const keyItems: KeyItem[] = (effectiveView === "entry" && curSp ? (caught.get(curSp.inat) ?? []) : finds.filter(f => !f.deleted)
+    .slice().sort((a, b) => b.observed_on.localeCompare(a.observed_on) || b.created_at.localeCompare(a.created_at)))
+    .map(f => ({ find: f, sp: byId(f.species)! })).filter(k => k.sp);
 
   const status = !user ? (offline ? t("localOnly") : "") : syncState === "syncing" ? t("syncing") : dirty ? t("localOnly") : t("synced");
   return (
     <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className="app">
+     <div className={`book${wide ? " wide" : ""}`} ref={bookRef}>
       <Device hw={hw} ledFlash={flash} status={status} pageEnabled={effectiveView === "entry"}
         catchEnabled={signedIn && all.length > 0}
         onCatchFile={f => startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null)}
@@ -224,6 +251,14 @@ export default function App() {
         {recrop && <Cropper ctx={ctx} src={recrop.url} onDone={finishRecrop} onCancel={closeRecrop} />}
         {toast && <div className="toast">{toast}</div>}
       </Device>
+      {wide && <>
+        <div className="hinge" aria-hidden="true"><i /><i /><i /></div>
+        <RightPanel label={effectiveView === "settings" ? t("settings").toUpperCase() : t("info")} setScreen={setRightEl}
+          keysTitle={effectiveView === "entry" ? t("finds").toUpperCase() : t("recent")} keys={signedIn ? keyItems : []}
+          onOpen={sp => open(sp, effectiveView === "entry")} number={effectiveView === "entry" && curSp ? shortNo(curSp) : "–"}
+          stepEnabled={effectiveView === "entry"} prevLabel={t("prev")} nextLabel={t("next")} onPrev={() => step(-1)} onNext={() => step(1)} />
+      </>}
+     </div>
     </div>
   );
 }
