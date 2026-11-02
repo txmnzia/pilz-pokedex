@@ -98,3 +98,9 @@ export const labelIn = (l: { fr?: string; en?: string; de?: string }, lang: Lang
 
 /** Observations within 50 km below this are treated as "not really found there". */
 export const REGION_MIN_OBS = 3;
+
+/** A to Z by the name in the UI language (accents and case ignored). Returns a new array. */
+export function sortByName<T extends Pick<Species, "names">>(list: readonly T[], lang: Lang): T[] {
+  const c = new Intl.Collator(lang, { sensitivity: "base", numeric: true });
+  return [...list].sort((a, b) => c.compare(a.names[lang], b.names[lang]));
+}

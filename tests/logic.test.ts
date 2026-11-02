@@ -186,3 +186,14 @@ describe("are-you-sure check", () => {
   it("silent for species the model never learned", () =>
     expect(mismatch(g(["Suillus luteus", 0.95]), "Oudemansiella mucida", known)).toBeNull());
 });
+
+import { sortByName } from "../src/lib/species";
+describe("sortByName", () => {
+  const mk = (fr: string, en: string) => ({ names: { fr, en, de: en } }) as Pick<Species, "names">;
+  it("sorts A to Z in the UI language, ignoring accents and case", () => {
+    const l = [mk("Pied-bleu", "blewit"), mk("Écailleux", "Zebra"), mk("amanite", "Apple")];
+    expect(sortByName(l, "fr").map(s => s.names.fr)).toEqual(["amanite", "Écailleux", "Pied-bleu"]);
+    expect(sortByName(l, "en").map(s => s.names.en)).toEqual(["Apple", "blewit", "Zebra"]);
+    expect(l[0].names.fr).toBe("Pied-bleu"); // input untouched
+  });
+});

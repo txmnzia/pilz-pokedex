@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { Shape } from "../lib/species";
 import type { Edibility } from "../lib/types";
 
@@ -28,17 +29,58 @@ export function Silhouette({ shape, className = "art" }: { shape: Shape; classNa
   );
 }
 
+// Edibility "LED" icons: coloured lamp, soft highlight, white 12x12 pixel glyph (v0.7.0).
+const BITMAPS: Record<string, string[]> = {
+  fork: ["............", "..x.x.x...x.", "..x.x.x..xx.", "..x.x.x..xx.", "..xxxxx..xx.", "...xxx...xx.", "....x....xx.", "....x.....x.", "....x.....x.", "....x.....x.", "....x.....x.", "............"],
+  plate: ["............", "...xxxxxx...", "..x......x..", ".x..xxxx..x.", ".x.x....x.x.", ".x.x....x.x.", ".x.x....x.x.", ".x.x....x.x.", ".x..xxxx..x.", "..x......x..", "...xxxxxx...", "............"],
+  bang: [".....xx.....", ".....xx.....", ".....xx.....", ".....xx.....", ".....xx.....", ".....xx.....", ".....xx.....", "............", "............", ".....xx.....", ".....xx.....", "............"],
+  skull: ["...xxxxxx...", "..xxxxxxxx..", ".xxxxxxxxxx.", ".xx..xx..xx.", ".xx..xx..xx.", ".xxxxxxxxxx.", "..xxx..xxx..", "...xxxxxx...", "...x.xx.x...", "...xxxxxx...", "............", "............"],
+  ask: ["............", "....xxxx....", "...xx..xx...", ".......xx...", "......xx....", ".....xx.....", ".....xx.....", "............", ".....xx.....", ".....xx.....", "............", "............"],
+};
+// One path per bitmap: a 1x1 square per lit pixel, offset so the 12x12 glyph sits centred in a 22x22 lamp.
+const GLYPH: Record<string, string> = Object.fromEntries(Object.entries(BITMAPS).map(([k, rows]) =>
+  [k, rows.flatMap((r, y) => [...r].map((c, x) => c === "x" ? `M${x + 5} ${y + 5}h1v1h-1z` : "")).join("")]));
+const LED: Record<string, { fill: string; glyph: string; ink: string }> = {
+  edible: { fill: "#4caf50", glyph: "fork", ink: "#fff" },
+  none: { fill: "#9e9e8e", glyph: "plate", ink: "#fff" },
+  toxic: { fill: "#9a4fb0", glyph: "bang", ink: "#fff" },
+  deadly: { fill: "#2a2a2a", glyph: "skull", ink: "#fff" },
+  unknown: { fill: "#d8d8c8", glyph: "ask", ink: "#111" },
+};
+
 export function EdIcon({ ed }: { ed: Edibility | null }) {
-  switch (ed) {
-    case "edible":
-      return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#2f8a3b" stroke="#111" strokeWidth="1.5" /><g fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round"><path d="M6.5 4.5v4.2M8 4.5v4.2M9.5 4.5v4.2M6.5 8.7q1.5 1.6 3 0M8 9.4v6.1" /><path d="M13.2 15.5V4.6q-2 1.3-2 4.6h2" /></g></svg>;
-    case "none":
-      return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#8a8a8a" stroke="#111" strokeWidth="1.5" /><path d="M5.5 10h9" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" /></svg>;
-    case "toxic":
-      return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5L19 18H1z" fill="#e08a12" stroke="#111" strokeWidth="1.5" strokeLinejoin="round" /><path d="M10 7v5" stroke="#111" strokeWidth="2.4" strokeLinecap="round" /><circle cx="10" cy="15" r="1.3" fill="#111" /></svg>;
-    case "deadly":
-      return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#111" stroke="#d9262b" strokeWidth="1.5" /><path d="M5 9a5 5 0 0 1 10 0c0 2-1 3-2 3.5V15H7v-2.5C6 12 5 11 5 9z" fill="#fff" /><circle cx="8" cy="9" r="1.4" fill="#111" /><circle cx="12" cy="9" r="1.4" fill="#111" /></svg>;
-    default:
-      return <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1.5" y="1.5" width="17" height="17" rx="3" fill="#d8d8c8" stroke="#111" strokeWidth="1.5" strokeDasharray="3 2" /><text x="10" y="14.5" textAnchor="middle" fontSize="12" fontWeight="700" fill="#111">?</text></svg>;
-  }
+  const l = LED[ed ?? "unknown"];
+  return (
+    <svg viewBox="0 0 22 22" aria-hidden="true">
+      <circle cx="11" cy="11" r="10" fill={l.fill} stroke="#111" strokeWidth="1.8" />
+      {/* subtle shine: small, faint, top-left, under the glyph so the glyph stays crisp */}
+      <ellipse cx="6.6" cy="5.6" rx="2.6" ry="1.6" fill="#fff" opacity=".28" />
+      <path d={GLYPH[l.glyph]} fill={l.ink} shapeRendering="crispEdges" />
+    </svg>
+  );
+}
+
+/** Capture ball: glossy red/white when caught, a faint dashed "ghost" outline when not. */
+export function CaughtBall({ caught, className = "cball" }: { caught: boolean; className?: string }) {
+  const id = useId();
+  if (!caught) return (
+    <svg className={`${className} ghost`} viewBox="0 0 24 24" aria-hidden="true">
+      <g fill="none" stroke="currentColor" strokeWidth="1.6" opacity=".38">
+        <circle cx="12" cy="12" r="9.5" strokeDasharray="2.6 2" />
+        <path d="M2.5 12h6M15 12h6.5" />
+        <circle cx="12" cy="12" r="3" />
+      </g>
+    </svg>
+  );
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
+      <defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ff6b5e" /><stop offset="1" stopColor="#c81e22" /></linearGradient></defs>
+      <path d="M2.5 12a9.5 9.5 0 0 1 19 0z" fill={`url(#${id})`} />
+      <path d="M2.5 12a9.5 9.5 0 0 0 19 0z" fill="#fff" />
+      <circle cx="12" cy="12" r="9.5" fill="none" stroke="#160b0b" strokeWidth="1.8" />
+      <path d="M2.5 12h19" stroke="#160b0b" strokeWidth="2" />
+      <circle cx="12" cy="12" r="3" fill="#fff" stroke="#160b0b" strokeWidth="1.8" />
+      <ellipse cx="8.5" cy="7" rx="2.4" ry="1.4" fill="#fff" opacity=".6" />
+    </svg>
+  );
 }

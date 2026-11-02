@@ -5,7 +5,7 @@
   --red:#d9262b; --red-dark:#8f1117; --ink:#160b0b;
   --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
   --bezel:#eceae3; --blue:#3d9ce6; --blue-dark:#1d5f9c;
-  --ed:#2f8a3b; --none:#6d6d6d; --tox:#e08a12; --dead:#111;
+  --ed:#3d9a41; --none:#8a8a7a; --tox:#9a4fb0; --dead:#2a2a2a;
   --font-lcd:'VT323', ui-monospace, Menlo, monospace;
   --font-label:'Press Start 2P', ui-monospace, monospace;
   color-scheme:light;
@@ -76,14 +76,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .chip[aria-pressed="true"],.chip.on{background:var(--lcd-ink);color:var(--lcd)}
 .chip.off{opacity:.4}
 ul.list{list-style:none;margin:0;padding:0}
-.row{display:grid;grid-template-columns:40px 34px 1fr 20px 14px;gap:8px;align-items:center;padding:3px 4px;border-radius:3px;cursor:pointer}
+.row{display:grid;grid-template-columns:40px 34px 1fr 20px 18px;gap:8px;align-items:center;padding:3px 4px;border-radius:3px;cursor:pointer}
 .row .num{font-variant-numeric:tabular-nums;color:var(--lcd-dim)}
 .row .thumb{width:34px;height:34px}
 .row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row.sel{background:var(--lcd-ink);color:var(--lcd)}
 .row.sel .num{color:var(--lcd-2)}
-.ball{width:12px;height:12px;border-radius:50%;border:2px solid currentColor}
-.ball.on{background:#ffd84a;border-color:var(--ink)}
 .more{margin-top:10px;font-size:17px;color:var(--lcd-dim);border-top:2px dashed var(--lcd-dim);padding-top:6px}
 
 .ed{display:inline-grid;place-items:center;width:20px;height:20px}
@@ -342,3 +340,10 @@ ul.list{list-style:none;margin:0;padding:0}
   .chips.one .chip.icon{border-color:transparent;padding:0 1px}.chips.one .chip.icon[aria-pressed="true"]{border-color:var(--lcd-ink)}
   .chips.one .ed,.chips.one .ed svg{width:15px;height:15px}.chips.one .sep{display:none}
 }
+
+/* v0.7.0: capture ball (list column + caught tile corner) */
+.cball{width:18px;height:18px;display:block}
+.cball.ghost{color:var(--lcd-ink)}
+.tile .tart{position:relative}
+.tile .tart .cball.corner{position:absolute;left:3px;bottom:3px;width:20px;height:20px;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35))}
+.tile.sel .cball.ghost{color:var(--lcd)}

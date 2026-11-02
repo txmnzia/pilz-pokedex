@@ -9,7 +9,7 @@ import { supabase } from "./lib/supabase";
 import { photoUrl, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
 import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
-import { shortNo } from "./lib/species";
+import { shortNo, sortByName } from "./lib/species";
 
 type View = "login" | "index" | "entry" | "catch" | "settings";
 type Mode = "grid" | "list";
@@ -118,8 +118,9 @@ export default function App() {
   useEffect(() => { if (dirty) { const h = setTimeout(runSync, 1500); return () => clearTimeout(h); } }, [dirty, finds, runSync]);
 
   const all = data?.species ?? [];
-  const core = useMemo(() => all.filter(s => !s.extra), [all]);
-  const extras = useMemo(() => all.filter(s => s.extra), [all]);
+  // Always A to Z in the UI language (Sam's choice, v0.7.0); PREV/NEXT follow the same order.
+  const core = useMemo(() => sortByName(all.filter(s => !s.extra), lang), [all, lang]);
+  const extras = useMemo(() => sortByName(all.filter(s => s.extra), lang), [all, lang]);
   const caught = useMemo(() => findsBySpecies(finds), [finds]);
   const ctx: Ctx = { t, lang, all, caught, right: wide ? rightEl : null };
   const visible = core.filter(s =>
