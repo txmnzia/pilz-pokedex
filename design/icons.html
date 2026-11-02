@@ -67,7 +67,7 @@ footer{color:#ffd9d9;font-size:16px}
 <div class="wrap">
   <header>
     <h1>PILZDEX ICON STYLES</h1>
-    <p>Each option is drawn on the real Pilzdex surfaces: filter bar, two grid tiles (one caught, one not), list rows and the species badge. Pick one edibility style (1 to 5) and one caught marker (A to G).</p>
+    <p>Each option is drawn on the real Pilzdex surfaces: filter bar, two grid tiles (one caught, one not), list rows and the species badge. Pick one edibility style (1 to 5) and one caught marker (A to H).</p>
   </header>
 
   <section>
@@ -102,6 +102,13 @@ check:["............","............","..........xx",".........xx.","........xx..
 };
 const px=(name,color,size=16)=>{const rows=BM[name];let r="";rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c==="x")r+=`<rect x="${x}" y="${y}" width="1" height="1"/>`}));
   return `<svg viewBox="0 0 12 12" width="${size}" height="${size}" shape-rendering="crispEdges" fill="${color}" aria-hidden="true">${r}</svg>`;};
+
+/* multi-colour pixel art: k=outline r=red w=white, '.'=transparent */
+const BALL=["....kkkk....","..kkrrrrkk..",".krrrrrrrrk.",".krrrrrrrrk.","krrrrkkrrrrk","kkkkkwwkkkkk","kwwwwkkwwwwk",".kwwwwwwwwk.",".kwwwwwwwwk.","..kkwwwwkk..","....kkkk....","............"];
+const pxc=(rows,pal,size=16)=>{let r="";rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(pal[c])r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[c]}"/>`}));
+  return `<svg viewBox="0 0 12 12" width="${size}" height="${size}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;};
+const ball=(s)=>pxc(BALL,{k:"#160b0b",r:"#e3262b",w:"#ffffff"},s);
+const ballEmpty=(s)=>pxc(BALL,{k:"#5d7240"},s);
 
 /* ---------- fine line icons (24 grid) ---------- */
 const LN={
@@ -164,6 +171,8 @@ const CAUGHTS=[
   c:{list:()=>px("check","#b3201f"),tile:()=>`<span class="stamp">PRIS</span>`}},
  {k:"E",name:"Tiny mushroom",note:"A small yellow mushroom cap marks caught species. On-theme and friendly.",c:{list:()=>px("cap","#b98500"),tile:()=>`<span class="corner">${px("cap","#ffd84a",16)}</span>`}},
  {k:"F",name:"Yellow dot (current)",note:"What the app has today: a yellow dot when caught, an empty ring when not. Kept here as the baseline.",c:CAUGHT.dot},
+ {k:"H",name:"Capture ball (homage)",note:"The real thing, as in the games: a small red and white ball next to every caught species, an empty outline ball for the rest. Note: the app is public on GitHub Pages, and the ball is a trademark.",
+  c:{list:()=>ball(15),empty:()=>ballEmpty(15),tile:()=>`<span class="corner">${ball(18)}</span>`}},
  {k:"G",name:"Nothing in the grid",note:"The photo already says 'caught' in the grid, so no marker there; the list keeps the basket from A. The quietest grid.",
   c:{list:()=>px("basket","#7a4a10")}},
 ];
