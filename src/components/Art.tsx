@@ -29,7 +29,8 @@ export function Silhouette({ shape, className = "art" }: { shape: Shape; classNa
   );
 }
 
-// Edibility "LED" icons: coloured lamp, soft highlight, white 12x12 pixel glyph (v0.7.0).
+// Edibility as Pokédex "type" badges (v0.8.0, design/badges.html option C): bevelled, fixed width.
+// EdIcon = glyph badge (24px, 20px on small phones), EdBadge = word badge (60px, or 84px large on the species page).
 const BITMAPS: Record<string, string[]> = {
   fork: ["............", "..x.x.x...x.", "..x.x.x..xx.", "..x.x.x..xx.", "..xxxxx..xx.", "...xxx...xx.", "....x....xx.", "....x.....x.", "....x.....x.", "....x.....x.", "....x.....x.", "............"],
   plate: ["............", "...xxxxxx...", "..x......x..", ".x..xxxx..x.", ".x.x....x.x.", ".x.x....x.x.", ".x.x....x.x.", ".x.x....x.x.", ".x..xxxx..x.", "..x......x..", "...xxxxxx...", "............"],
@@ -37,27 +38,21 @@ const BITMAPS: Record<string, string[]> = {
   skull: ["...xxxxxx...", "..xxxxxxxx..", ".xxxxxxxxxx.", ".xx..xx..xx.", ".xx..xx..xx.", ".xxxxxxxxxx.", "..xxx..xxx..", "...xxxxxx...", "...x.xx.x...", "...xxxxxx...", "............", "............"],
   ask: ["............", "....xxxx....", "...xx..xx...", ".......xx...", "......xx....", ".....xx.....", ".....xx.....", "............", ".....xx.....", ".....xx.....", "............", "............"],
 };
-// One path per bitmap: a 1x1 square per lit pixel, offset so the 12x12 glyph sits centred in a 22x22 lamp.
 const GLYPH: Record<string, string> = Object.fromEntries(Object.entries(BITMAPS).map(([k, rows]) =>
-  [k, rows.flatMap((r, y) => [...r].map((c, x) => c === "x" ? `M${x + 5} ${y + 5}h1v1h-1z` : "")).join("")]));
-const LED: Record<string, { fill: string; glyph: string; ink: string }> = {
-  edible: { fill: "#4caf50", glyph: "fork", ink: "#fff" },
-  none: { fill: "#9e9e8e", glyph: "plate", ink: "#fff" },
-  toxic: { fill: "#d83a2e", glyph: "bang", ink: "#fff" },
-  deadly: { fill: "#2a2a2a", glyph: "skull", ink: "#fff" },
-  unknown: { fill: "#d8d8c8", glyph: "ask", ink: "#111" },
-};
+  [k, rows.flatMap((r, y) => [...r].map((c, x) => c === "x" ? `M${x} ${y}h1v1h-1z` : "")).join("")]));
+const GL: Record<string, string> = { edible: "fork", none: "plate", toxic: "bang", deadly: "skull", unknown: "ask" };
+const tone = (ed: Edibility | null) => ed ?? "unknown";
 
 export function EdIcon({ ed }: { ed: Edibility | null }) {
-  const l = LED[ed ?? "unknown"];
   return (
-    <svg viewBox="0 0 22 22" aria-hidden="true">
-      <circle cx="11" cy="11" r="10" fill={l.fill} stroke="#111" strokeWidth="1.8" />
-      {/* subtle shine: small, faint, top-left, under the glyph so the glyph stays crisp */}
-      <ellipse cx="6.6" cy="5.6" rx="2.6" ry="1.6" fill="#fff" opacity=".28" />
-      <path d={GLYPH[l.glyph]} fill={l.ink} shapeRendering="crispEdges" />
-    </svg>
+    <span className={`bdg g t-${tone(ed)}`} aria-hidden="true">
+      <svg className="bglyph" viewBox="0 0 12 12" shapeRendering="crispEdges"><path d={GLYPH[GL[tone(ed)]]} fill="#fff" /></svg>
+    </span>
   );
+}
+
+export function EdBadge({ ed, label, large, title }: { ed: Edibility | null; label: string; large?: boolean; title?: string }) {
+  return <span className={`bdg w t-${tone(ed)}${large ? " lg" : ""}`} title={title}>{label}</span>;
 }
 
 /** Capture ball: glossy red/white when caught, a faint dashed "ghost" outline when not. */

@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { CaughtBall, EdIcon, Silhouette } from "./components/Art";
+import { CaughtBall, EdBadge, EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
 import { CONFIDENT, mismatch, type Guess } from "./lib/rank";
@@ -24,6 +24,9 @@ export type Filter = "all" | "got" | "missing";
 
 const name = (sp: Species, lang: Lang) => sp.names[lang];
 const edKey = (ed: Edibility | null): StringKey => ed ?? "unknown";
+const BADGE: Record<string, StringKey> = { edible: "bEdible", none: "bNone", toxic: "bToxic", deadly: "bDeadly", unknown: "bUnknown" };
+const badge = (ctx: Ctx, ed: Edibility | null, large?: boolean) =>
+  <EdBadge ed={ed} label={ctx.t(BADGE[ed ?? "unknown"])} large={large} title={ed ? ctx.t(edKey(ed)) : `${ctx.t("unknown")}: ${ctx.t("unknownHint")}`} />;
 
 export function Photo({ find, className }: { find: Find; className?: string }) {
   const [url, setUrl] = useState<string | null>(null);
@@ -45,7 +48,7 @@ function Picture({ sp, ctx, small, hint }: { sp: Species; ctx: Ctx; small?: bool
 }
 
 const EdPill = ({ ed, ctx }: { ed: Edibility | null; ctx: Ctx }) => (
-  <span className={`edpill ${ed ?? "unknown"}`} title={ed ? undefined : ctx.t("unknownHint")}><EdIcon ed={ed} />{ctx.t(edKey(ed))}</span>
+  badge(ctx, ed, true)
 );
 
 // ---------------------------------------------------------------- login
@@ -116,14 +119,14 @@ export function Dex(p: DexProps) {
     const got = ctx.caught.has(sp.inat);
     return p.mode === "grid" ? (
       <button key={sp.inat} className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
-        <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted"><EdIcon ed={sp.edibility} /></span></span>
+        <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted">{badge(ctx, sp.edibility)}</span></span>
         <span className="tart"><Picture sp={sp} ctx={ctx} small />{got && <CaughtBall caught className="cball corner" />}</span>
         <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <Fragment key={i}>{i ? " " : ""}<span className="w">{w}</span></Fragment>)}</span>
       </button>
     ) : (
       <li key={sp.inat} className={`row${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="num">{shortNo(sp)}</span><span className="thumb"><Picture sp={sp} ctx={ctx} small /></span>
-        <span className="nm">{name(sp, ctx.lang)}</span><span className="ed"><EdIcon ed={sp.edibility} /></span>
+        <span className="nm">{name(sp, ctx.lang)}</span><span className="ed rowed"><span className="wide">{badge(ctx, sp.edibility)}</span><span className="narrow"><EdIcon ed={sp.edibility} /></span></span>
         <CaughtBall caught={got} />
       </li>
     );
