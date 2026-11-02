@@ -2,13 +2,14 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { CaughtBall, EdBadge, EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
-import { photoUrl } from "./lib/sync";
-import { CONFIDENT, mismatch, type Guess } from "./lib/rank";
+import { photoUrlOf } from "./lib/sync";
+import { MAX_PHOTOS, photosOf } from "./lib/finds";
+import { combineGuesses, CONFIDENT, mismatch, type Guess } from "./lib/rank";
 import type { Identification } from "./lib/identify";
 import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
 import type { StringKey } from "./lib/i18n";
-import type { Edibility, Find, Lang, MorphKey, Species } from "./lib/types";
+import type { Edibility, Find, FindPhoto, Lang, MorphKey, Species } from "./lib/types";
 
 export interface Ctx {
   t: (k: StringKey) => string;
@@ -28,13 +29,15 @@ const BADGE: Record<string, StringKey> = { edible: "bEdible", none: "bNone", tox
 const badge = (ctx: Ctx, ed: Edibility | null, large?: boolean) =>
   <EdBadge ed={ed} label={ctx.t(BADGE[ed ?? "unknown"])} large={large} title={ed ? ctx.t(edKey(ed)) : `${ctx.t("unknown")}: ${ctx.t("unknownHint")}`} />;
 
-export function Photo({ find, className }: { find: Find; className?: string }) {
+/** One photo of a find (default: its cover). */
+export function Photo({ find, photo, className }: { find: Find; photo?: FindPhoto; className?: string }) {
   const [url, setUrl] = useState<string | null>(null);
+  const p = photo ?? photosOf(find)[0];
   useEffect(() => {
     let alive = true, made: string | null = null;
-    photoUrl(find).then(u => { if (!alive) return; if (u?.startsWith("blob:")) made = u; setUrl(u); });
+    photoUrlOf(p).then(u => { if (!alive) return; if (u?.startsWith("blob:")) made = u; setUrl(u); });
     return () => { alive = false; if (made) URL.revokeObjectURL(made); };
-  }, [find.id, find.photo_path, find.updated_at]);
+  }, [p.id, p.path, find.updated_at]);
   return url ? <img className={className} src={url} alt="" /> : <span className="photo-wait" />;
 }
 
@@ -45,6 +48,30 @@ function Picture({ sp, ctx, small, hint }: { sp: Species; ctx: Ctx; small?: bool
     <div className="pic photo"><Photo find={f} /><span className="stamp">{f.observed_on}{f.place ? ` · ${f.place}` : ""}</span></div>
   );
   return small ? <Silhouette shape={shapeOf(sp)} /> : <div className="pic"><Silhouette shape={shapeOf(sp)} />{hint ? <span className="stamp">{hint}</span> : <span className="lock">???</span>}</div>;
+}
+
+/** Species page: every photo of every find (newest find first, its cover first). Swipe on the photo or use the
+ *  arrows to browse (the swipe does not flip the page); tap to re-crop the photo shown. */
+function Gallery({ finds, ctx, onRecrop }: { finds: Find[]; ctx: Ctx; onRecrop(f: Find, photoId: string): void }) {
+  const items = finds.flatMap(f => photosOf(f).map(p => ({ f, p })));
+  const [i, setI] = useState(0);
+  const k = Math.min(i, items.length - 1);
+  const x0 = useRef<number | null>(null);
+  if (!items.length) return null;
+  const { f, p } = items[k];
+  const go = (d: number) => setI((k + d + items.length) % items.length);
+  return (
+    <div className="pic photo gallery"
+      onTouchStart={e => { x0.current = e.touches[0].clientX; e.stopPropagation(); }}
+      onTouchEnd={e => { e.stopPropagation(); const dx = e.changedTouches[0].clientX - (x0.current ?? e.changedTouches[0].clientX); x0.current = null; if (items.length > 1 && Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); }}>
+      <button type="button" className="gimg" onClick={() => onRecrop(f, p.id)} aria-label={ctx.t("crop")}><Photo find={f} photo={p} /></button>
+      <span className="stamp">{f.observed_on}{items.length > 1 ? ` · ${k + 1}/${items.length}` : ""}</span>
+      {items.length > 1 && <>
+        <button type="button" className="garr l" aria-label={ctx.t("prev")} onClick={() => go(-1)}>‹</button>
+        <button type="button" className="garr r" aria-label={ctx.t("next")} onClick={() => go(1)}>›</button>
+      </>}
+    </div>
+  );
 }
 
 const EdPill = ({ ed, ctx }: { ed: Edibility | null; ctx: Ctx }) => (
@@ -185,7 +212,7 @@ export function Dex(p: DexProps) {
 // ---------------------------------------------------------------- entry
 const MORPH_ROWS: [MorphKey, StringKey][] = [["spores", "spores"], ["cap", "cap"], ["hymenium", "hymenium"], ["stipe", "stipe"], ["ecology", "ecology"]];
 
-export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, scrollRef }: { ctx: Ctx; sp: Species; page: 0 | 1; open(sp: Species): void; onDelete(f: Find): void; onCatchFile(f: File): void; onRecrop(f: Find): void; scrollRef: React.RefObject<HTMLDivElement | null> }) {
+export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, scrollRef }: { ctx: Ctx; sp: Species; page: 0 | 1; open(sp: Species): void; onDelete(f: Find): void; onCatchFile(f: File): void; onRecrop(f: Find, photoId?: string): void; scrollRef: React.RefObject<HTMLDivElement | null> }) {
   const finds = ctx.caught.get(sp.inat) || [];
   const [confirm, setConfirm] = useState<string | null>(null);
   const head = <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span>{dexLabel(sp)}</span></div>;
@@ -203,7 +230,7 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
         </ToRight>}
         <div className="scroll" ref={scrollRef}>
           {finds.length
-            ? <button type="button" className="picbtn" onClick={() => onRecrop(finds[0])} aria-label={ctx.t("crop")}><Picture sp={sp} ctx={ctx} /></button>
+            ? <Gallery key={sp.inat} finds={finds} ctx={ctx} onRecrop={onRecrop} />
             : <label className="picbtn"><Picture sp={sp} ctx={ctx} hint={ctx.t("tapToCatch")} />
                 <input type="file" accept="image/*" aria-label={ctx.t("catch")} onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onCatchFile(f); }} /></label>}
           <div className="meta"><EdPill ed={sp.edibility} ctx={ctx} />{sp.extra && <span className="chip">{ctx.t("exTag")}</span>}<span className="latin">{sp.latin}</span></div>
@@ -246,7 +273,9 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
           {finds.length ? finds.map(f => (
             <div className="find" key={f.id}>
               <span className="t"><Photo find={f} /></span>
-              <span>{f.observed_on}<small>{f.place || (f.lat != null ? `${f.lat.toFixed(3)}, ${f.lng!.toFixed(3)}` : "–")}{f.note ? ` · ${f.note}` : ""}</small></span>
+              <span>{f.observed_on}<small>{f.place || (f.lat != null ? `${f.lat.toFixed(3)}, ${f.lng!.toFixed(3)}` : "–")}{f.note ? ` · ${f.note}` : ""}</small>
+                {photosOf(f).length > 1 && <span className="fthumbs">{photosOf(f).slice(1).map(p => (
+                  <button type="button" key={p.id} aria-label={ctx.t("crop")} onClick={() => onRecrop(f, p.id)}><Photo find={f} photo={p} /></button>))}</span>}</span>
               {confirm === f.id
                 ? <span className="confirm">{ctx.t("confirmDel")} <button onClick={() => { onDelete(f); setConfirm(null); }}>{ctx.t("yes")}</button><button onClick={() => setConfirm(null)}>{ctx.t("no")}</button></span>
                 : <span className="findbtns">
@@ -261,7 +290,7 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
 }
 
 // ---------------------------------------------------------------- catch
-export interface CatchDraft { file: Blob; species: number; observed_on: string; place: string; note: string; lat: number | null; lng: number | null }
+export interface CatchDraft { files: Blob[]; species: number; observed_on: string; place: string; note: string; lat: number | null; lng: number | null }
 
 const localToday = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
 const fill = (tpl: string, v: Record<string, string>) => tpl.replace(/\{(\w+)\}/g, (_, k) => v[k] ?? "");
@@ -300,63 +329,99 @@ export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src
 /** One photo button (the OS offers camera or library), crop, then identification:
  *  opened from a species page = verify silently and only warn on a likely mix-up;
  *  opened from the list = suggest the top 3. */
+/** One photo in the catch form: the original (for re-cropping), the crop, and its own identification. */
+interface Shot { key: number; orig: File; origUrl: string; blob: Blob | null; url: string | null; guesses: Guess[] | null }
+
 export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx: Ctx; initial: number | null; startFile: File | null; onSave(d: CatchDraft): void; onCancelEmpty(): void }) {
-  const [orig, setOrig] = useState<File | null>(null);
-  const [origUrl, setOrigUrl] = useState<string | null>(null);
-  const [cropping, setCropping] = useState(false);
-  const [file, setFile] = useState<Blob | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [shots, setShots] = useState<Shot[]>([]);
+  const [cropKey, setCropKey] = useState<number | null>(null); // shot being cropped
   const [species, setSpecies] = useState<number | null>(initial);
   const [date, setDate] = useState(localToday);
   const place = "";
   const note = "";
   const [pos, setPos] = useState<{ lat: number; lng: number } | null>(null);
   const [msg, setMsg] = useState("");
-  const [ident, setIdent] = useState<"idle" | "busy" | "done" | "error">("idle");
-  const [result, setResult] = useState<Identification | null>(null);
+  const [identErr, setIdentErr] = useState(false);
+  const [known, setKnown] = useState<ReadonlySet<string> | null>(null);
   const [dismissed, setDismissed] = useState<string | null>(null);
   const verify = initial != null;
-  useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
-  useEffect(() => () => { if (origUrl) URL.revokeObjectURL(origUrl); }, [origUrl]);
+  const nextKey = useRef(1);
+  const shotsRef = useRef(shots); shotsRef.current = shots;
+  useEffect(() => () => { for (const x of shotsRef.current) { URL.revokeObjectURL(x.origUrl); if (x.url) URL.revokeObjectURL(x.url); } }, []);
   const byLatin = new Map(ctx.all.map(s => [s.latin, s]));
   const byId = new Map(ctx.all.map(s => [s.inat, s]));
   const spName = (g: Guess) => { const s = byLatin.get(g.latin); return s ? name(s, ctx.lang) : g.common ? `${g.latin} (${g.common})` : g.latin; };
 
-  const runIdentify = async (f: Blob) => {
-    setIdent("busy"); setResult(null); setDismissed(null);
+  // identification: each cropped photo on its own, then combined (geometric mean, see combineGuesses)
+  const done = shots.filter(x => x.guesses);
+  const busy = shots.some(x => x.blob && !x.guesses) && !identErr;
+  const guesses = combineGuesses(done.map(x => x.guesses!));
+  const ident: "idle" | "busy" | "done" | "error" = identErr && !done.length ? "error" : busy ? "busy" : done.length ? "done" : "idle";
+  const result: Identification | null = done.length && known ? { guesses, known } : null;
+  const runIdentify = async (key: number, f: Blob) => {
+    setDismissed(null);
     try {
       const { identify } = await import("./lib/identify");
       const r = await identify(f);
-      setResult(r); setIdent("done");
-      const top = r.guesses[0] && byLatin.get(r.guesses[0].latin);
-      if (!verify && top && r.guesses[0].p >= CONFIDENT) setSpecies(s => s ?? top.inat); // suggest mode: preselect when confident
-    } catch (e) { console.warn("identify failed", e); setIdent("error"); }
+      setKnown(r.known);
+      setShots(xs => {
+        const next = xs.map(x => (x.key === key ? { ...x, guesses: r.guesses } : x));
+        const all = combineGuesses(next.filter(x => x.guesses).map(x => x.guesses!));
+        const top = all[0] && byLatin.get(all[0].latin);
+        if (!verify && top && all[0].p >= CONFIDENT) setSpecies(s => s ?? top.inat); // suggest mode: preselect when confident
+        return next;
+      });
+    } catch (e) { console.warn("identify failed", e); setIdentErr(true); }
   };
   const locate = () => navigator.geolocation?.getCurrentPosition(
     p => { setPos({ lat: p.coords.latitude, lng: p.coords.longitude }); setMsg(ctx.t("gpsOk")); },
     () => setMsg(ctx.t("gpsFail")), { enableHighAccuracy: true, timeout: 15000 });
 
-  // The OS decides camera or library, so the photo's own metadata decides date/place:
+  // The OS decides camera or library, so the FIRST photo's own metadata decides date/place:
   // an older photo keeps its date and stored place (never today's GPS); a fresh one gets today + current GPS.
-  const pick = async (f: File | undefined) => {
-    if (!f) return;
-    setOrig(f); setOrigUrl(URL.createObjectURL(f)); setCropping(true);
+  const readMeta = async (f: File) => {
     const meta = readExif(await f.arrayBuffer());
     const gps = meta.lat != null && meta.lng != null ? { lat: meta.lat, lng: meta.lng } : null;
-    if (meta.date && meta.date !== localToday()) {
-      setDate(meta.date); setPos(gps);
-    } else {
-      setDate(localToday()); setMsg("");
-      if (gps) setPos(gps); else { setPos(null); locate(); }
+    if (meta.date && meta.date !== localToday()) { setDate(meta.date); setPos(gps); }
+    else { setDate(localToday()); setMsg(""); if (gps) setPos(gps); else { setPos(null); locate(); } }
+  };
+  /** New photo (replace = re-pick the original of an existing shot from the cropper's "Other photo"). */
+  const pick = async (f: File | undefined, replace?: number) => {
+    if (!f) return;
+    if (replace != null) {
+      setShots(xs => xs.map(x => { if (x.key !== replace) return x; URL.revokeObjectURL(x.origUrl); return { ...x, orig: f, origUrl: URL.createObjectURL(f) }; }));
+      if (shotsRef.current[0]?.key === replace) readMeta(f);
+      return;
     }
+    if (shotsRef.current.length >= MAX_PHOTOS) return;
+    const key = nextKey.current++;
+    const first = shotsRef.current.length === 0;
+    setShots(xs => [...xs, { key, orig: f, origUrl: URL.createObjectURL(f), blob: null, url: null, guesses: null }]);
+    setCropKey(key);
+    if (first) readMeta(f);
   };
   const started = useRef(false);
   useEffect(() => { if (startFile && !started.current) { started.current = true; pick(startFile); } });
+  const cropping = shots.find(x => x.key === cropKey) ?? null;
   const finishCrop = async (a: Area) => {
-    setCropping(false);
-    const blob = await cropToBlob(orig!, a);
-    setFile(blob); setPreview(URL.createObjectURL(blob)); runIdentify(blob);
+    const shot = cropping; setCropKey(null);
+    if (!shot) return;
+    const blob = await cropToBlob(shot.orig, a);
+    setShots(xs => xs.map(x => { if (x.key !== shot.key) return x; if (x.url) URL.revokeObjectURL(x.url); return { ...x, blob, url: URL.createObjectURL(blob), guesses: null }; }));
+    runIdentify(shot.key, blob);
   };
+  const cancelCrop = () => {
+    const shot = cropping; setCropKey(null);
+    if (shot && !shot.blob) { // a photo that was never cropped is dropped
+      URL.revokeObjectURL(shot.origUrl);
+      const rest = shotsRef.current.filter(x => x.key !== shot.key);
+      setShots(rest);
+      if (!rest.length) onCancelEmpty();
+    }
+  };
+  const remove = (key: number) => setShots(xs => { const x = xs.find(y => y.key === key); if (x) { URL.revokeObjectURL(x.origUrl); if (x.url) URL.revokeObjectURL(x.url); } return xs.filter(y => y.key !== key); });
+  const makeCover = (key: number) => setShots(xs => [...xs.filter(x => x.key === key), ...xs.filter(x => x.key !== key)]);
+  const ready = shots.filter(x => x.blob);
 
   const sel = species != null ? byId.get(species) : undefined;
   const warn = ident === "done" && result && sel && verify ? mismatch(result.guesses, sel.latin, result.known) : null;
@@ -364,9 +429,9 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const warnSp = warn ? byLatin.get(warn.latin) : undefined;
   const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex!) - (b.no ?? b.ex!) : a.extra ? 1 : -1));
   const submit = () => {
-    if (!file) { setMsg(ctx.t("photoNeeded")); return; }
+    if (!ready.length) { setMsg(ctx.t("photoNeeded")); return; }
     if (species == null) { setMsg(ctx.t("pickSpecies")); return; }
-    onSave({ file, species, observed_on: date, place, note, lat: pos?.lat ?? null, lng: pos?.lng ?? null });
+    onSave({ files: ready.map(x => x.blob!), species, observed_on: date, place, note, lat: pos?.lat ?? null, lng: pos?.lng ?? null });
   };
 
   const warnBox = verify && warn && warnKey !== dismissed && (
@@ -381,14 +446,27 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
     </div>
   );
 
+  const cover = ready[0];
+  const addLabel = (cls: string, content: React.ReactNode) => (
+    <label className={cls}>{content}
+      <input type="file" accept="image/*" aria-label={ctx.t("addPhoto")} onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>);
+  const camera = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>;
   const photoPart = <>
-    {preview
-      ? <button type="button" className="shot" onClick={() => setCropping(true)} aria-label={ctx.t("crop")}>
-          <img src={preview} alt="" /><span className="stamp">{ctx.t("tapToChange")}</span></button>
-      : <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-          {ctx.t("addPhoto")}
-          <input id="ph" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>}
-    {preview && <p className="note autometa">{date} · GPS {pos ? "✓" : "–"}</p>}
+    {cover
+      ? <button type="button" className="shot" onClick={() => setCropKey(cover.key)} aria-label={ctx.t("crop")}>
+          <img src={cover.url!} alt="" /><span className="stamp">{ctx.t("tapToChange")}</span></button>
+      : addLabel("cta srcbtn", <>{camera}{ctx.t("addPhoto")}</>)}
+    {cover && <div className="shots" aria-label={ctx.t("photos")}>
+      {ready.map((x, i) => (
+        <div key={x.key} className={`sh${i === 0 ? " cover" : ""}`}>
+          <button type="button" className="shimg" onClick={() => setCropKey(x.key)} aria-label={ctx.t("crop")}><img src={x.url!} alt="" /></button>
+          {i === 0 ? <span className="shtag">★ {ctx.t("cover")}</span>
+            : <button type="button" className="shstar" aria-label={ctx.t("setCover")} title={ctx.t("setCover")} onClick={() => makeCover(x.key)}>☆</button>}
+          <button type="button" className="shx" aria-label={ctx.t("removePhoto")} onClick={() => remove(x.key)}>✕</button>
+        </div>))}
+      {shots.length < MAX_PHOTOS && addLabel("sh add", <><span aria-hidden="true">+</span><small>{ctx.t("addPhoto")}</small></>)}
+    </div>}
+    {cover && <p className="note autometa">{date} · GPS {pos ? "✓" : "–"}{ready.length < MAX_PHOTOS ? ` · ${ctx.t("morePhotos")}` : ""}</p>}
   </>;
 
   const formPart = <>
@@ -398,7 +476,7 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
         {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
         {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
         {ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
-          <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}</p>
+          <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}{done.length > 1 ? <small> ({fill(ctx.t("fromPhotos"), { n: String(done.length) })})</small> : null}</p>
           <div className="guesses">
             {result.guesses.slice(0, 3).map(g => {
               const sp = byLatin.get(g.latin);
@@ -437,7 +515,7 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
         <div className="titlebar"><span>{ctx.t(verify ? "species" : "suggestion")}</span></div>
         <div className="scroll">{warnBox}{formPart}</div>
       </ToRight>
-      {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onOther={f => pick(f)} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); onCancelEmpty(); } }} />}
+      {cropping && <Cropper key={cropping.key + cropping.origUrl} ctx={ctx} src={cropping.origUrl} onDone={finishCrop} onOther={f => pick(f, cropping.key)} onCancel={cancelCrop} />}
     </>
   );
 }

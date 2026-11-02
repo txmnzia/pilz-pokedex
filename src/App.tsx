@@ -3,10 +3,10 @@ import { Device, type Hardware } from "./components/Device";
 import { RightPanel, type KeyItem } from "./components/RightPanel";
 import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
-import { deleteFind, findsBySpecies, newFind, parseBackup, restoreInto } from "./lib/finds";
+import { deleteFind, findsBySpecies, newFind, parseBackup, photosOf, restoreInto, touchPhoto } from "./lib/finds";
 import { compress, getPhoto, loadFinds, putPhoto, saveFinds, store } from "./lib/local";
 import { supabase } from "./lib/supabase";
-import { photoUrl, pullPrefs, pushPrefs, sync } from "./lib/sync";
+import { photoUrlOf, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
 import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
 import { shortNo, sortByName } from "./lib/species";
@@ -28,7 +28,7 @@ export default function App() {
   const [catchFor, setCatchFor] = useState<number | null>(null);
   const [catchFile, setCatchFile] = useState<File | null>(null);
   const [catchKey, setCatchKey] = useState(0);
-  const [recrop, setRecrop] = useState<{ find: Find; blob: Blob; url: string } | null>(null);
+  const [recrop, setRecrop] = useState<{ find: Find; photoId: string; blob: Blob; url: string } | null>(null);
   const [page, setPage] = useState<0 | 1>(0);
   const [filter, setFilter] = useState<Filter>("all");
   const [edf, setEdf] = useState<Edibility | null>(null);
@@ -184,24 +184,28 @@ export default function App() {
     setCatchFor(forSpecies); setCatchFile(f); setCatchKey(k => k + 1); go("catch");
   };
   // Re-crop an existing find's photo: replaces the stored image and re-syncs it
-  const openRecrop = async (f: Find) => {
-    let blob = await getPhoto(f.id);
-    if (!blob) { const u = await photoUrl(f); if (u) blob = await fetch(u).then(r => r.blob()).catch(() => undefined); }
-    if (blob) setRecrop({ find: f, blob, url: URL.createObjectURL(blob) });
+  const openRecrop = async (f: Find, photoId?: string) => {
+    const p = photosOf(f).find(x => x.id === photoId) ?? photosOf(f)[0];
+    let blob = await getPhoto(p.id);
+    if (!blob) { const u = await photoUrlOf(p); if (u) blob = await fetch(u).then(r => r.blob()).catch(() => undefined); }
+    if (blob) setRecrop({ find: f, photoId: p.id, blob, url: URL.createObjectURL(blob) });
   };
   const closeRecrop = () => { if (recrop) URL.revokeObjectURL(recrop.url); setRecrop(null); };
   const finishRecrop = async (a: Parameters<typeof cropToBlob>[1]) => {
     if (!recrop) return;
     const out = await cropToBlob(recrop.blob, a);
-    await putPhoto(recrop.find.id, out);
-    const id = recrop.find.id;
-    setFinds(x => x.map(y => (y.id === id ? { ...y, photo_path: null, synced: false, updated_at: new Date().toISOString() } : y)));
+    await putPhoto(recrop.photoId, out);
+    const { find: { id }, photoId } = recrop;
+    setFinds(x => x.map(y => (y.id === id ? touchPhoto(y, photoId) : y)));
     closeRecrop();
   };
 
   const save = async (d: CatchDraft) => {
-    const f = newFind(d.species, { observed_on: d.observed_on, place: d.place, note: d.note, lat: d.lat, lng: d.lng });
-    await putPhoto(f.id, await compress(d.file));
+    // the cover keeps the find id as its photo key (same as single-photo finds); extra photos get their own ids
+    const ids = d.files.map((_, i) => (i === 0 ? "" : crypto.randomUUID()));
+    const f0 = newFind(d.species, { observed_on: d.observed_on, place: d.place, note: d.note, lat: d.lat, lng: d.lng });
+    const f = { ...f0, photos: ids.map(id => ({ id: id || f0.id, path: null })) };
+    for (const [i, file] of d.files.entries()) await putPhoto(f.photos[i].id, await compress(file));
     setFinds(x => [f, ...x]);
     setCur(d.species); setPage(0); setStack([]); setView("entry");
     flashLed(t("gotcha"));

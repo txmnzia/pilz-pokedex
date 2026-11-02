@@ -36,7 +36,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings. Each screen sends its right-side part to `ctx.right` via a portal (`ToRight`) on the web |
 | `src/components/RightPanel.tsx` | Web only (>= 900px): second Pokédex panel: LCD (portal target), 10 finds keys, yellow PREV/NEXT |
 | `src/App.tsx` | State, hardware buttons (big yellow CATCH = photo picker, D-pad scrolls / steps species, B=back, PAGE), auth, sync, re-crop |
-| `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings) |
+| `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings, 0003 photos column) |
 | `design/mockup.html` | Original UX mockup (mock data) |
 
 ## Web two-panel layout (>= 900px, v0.5.0)
@@ -60,6 +60,12 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   or library), then a square finger-only crop (react-easy-crop, no slider), then
   identification on the crop. From a species page it is silent unless `mismatch()` fires (top >= 0.5 and selected < 0.1:
   measured 7.3% false alarms, catches 70% of lookalike mix-ups); from the list it suggests the top 3.
+- Several photos per find (v0.9.0, issue #1): up to 4 (`MAX_PHOTOS`), first = cover. `Find.photos` = [{id, path}];
+  the cover keeps the find id as its IndexedDB key and `photo_path` mirrors it (old finds and old app versions keep
+  working). Each photo is cropped and identified on its own, then `combineGuesses` takes the geometric mean (measured
+  on pairs of the same species: 74% -> 91% top-1 with 2 photos, 95% with 3; mean of p 89%, max 87%). Without
+  migration 0003 sync silently falls back to cover only. Species page = gallery of all photos (swipe on the photo or
+  arrows; that swipe does not flip the page); finds list shows the extra photos, tap = re-crop that photo.
 - Re-crop: tapping a caught photo or a find's crop button re-crops the stored (already cropped) image; storage paths
   are versioned (`<user>/<find>-<updated_at ms>.jpg`) so other devices never see a cached old crop.
 

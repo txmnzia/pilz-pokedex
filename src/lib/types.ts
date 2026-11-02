@@ -30,6 +30,9 @@ export interface SpeciesFile {
   species: Species[];
 }
 
+/** One photo of a find. id = IndexedDB key of the local blob (the cover keeps the find id, as before v0.9). */
+export interface FindPhoto { id: string; path: string | null }
+
 /** One photographed find. Local-first: mirrored to localStorage, synced to Supabase. */
 export interface Find {
   id: string;
@@ -39,7 +42,8 @@ export interface Find {
   lat: number | null;
   lng: number | null;
   note: string;
-  photo_path: string | null; // storage path once uploaded
+  photo_path: string | null; // storage path of the cover once uploaded (kept for older app versions)
+  photos?: FindPhoto[]; // all photos, cover first, max MAX_PHOTOS; absent on finds made before v0.9
   created_at: string;
   updated_at: string;
   deleted: boolean;
