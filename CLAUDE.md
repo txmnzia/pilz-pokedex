@@ -85,7 +85,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   "type" badges, Gen 4 bevelled, FIXED widths (Sam: all the same length). `EdBadge` = word badge 60px (84px large on the
   species page), labels i18n `bEdible..bUnknown` max 7 chars (BLAND/FADE/FADE for no interest, ??? for unverified);
   `EdIcon` = glyph badge 24px (20px under 380px) with the 12x12 pixel glyph (fork, plate, !, skull, ?). Tiles + species
-  page use the word, filters/progress/suggestions the glyph, list rows the word (glyph under 360px). Colours: grass
+  page use the word, filters/progress/suggestions the glyph, list rows the word (glyph under 360px). List row (v0.8.1): number column 28px, gaps 6px, badge in a flex wrapper so it is centred with the ball. Colours: grass
   green, normal beige, red, dark, ??? teal. Measured: no overflow at 320/360/375/web in fr/en/de.
 - Caught marker (option 2H): `CaughtBall`, glossy red/white capture ball when caught, a faint dashed "ghost" outline when
   not (must read as empty, not as a grey ball). List rows show it for every species; grid tiles only for caught ones
