@@ -8,6 +8,7 @@ import { combineGuesses, CONFIDENT, mismatch, type Guess } from "./lib/rank";
 import type { Identification } from "./lib/identify";
 import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
+import { shortMorph, SPORE_COLOR } from "./lib/morph";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, FindPhoto, Lang, MorphKey, Species } from "./lib/types";
 
@@ -254,9 +255,15 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
           <div className="bars" aria-hidden="true">
             {sp.season.histogram.map((v, i) => <i key={i} className={sp.season.months.includes(i + 1) ? "on" : ""} style={{ height: `${Math.max(4, (v / max) * 100)}%` }} />)}
           </div>
-          {MORPH_ROWS.filter(([k]) => sp.morph[k]?.length).map(([k, label]) => (
-            <div className="stat" key={k}><span>{ctx.t(label)}</span><span /><b>{sp.morph[k]!.map(l => labelIn(l, ctx.lang)).join(", ")}</b></div>
-          ))}
+          {MORPH_ROWS.filter(([k]) => sp.morph[k]?.length).map(([k, label]) => {
+            // one badge per characteristic, the first (main) value; the spore print gets its real colour
+            const v = sp.morph[k]![0];
+            return (
+              <div className="mrow" key={k}><span>{ctx.t(label)}</span>
+                <span className="mchip" title={sp.morph[k]!.map(l => labelIn(l, ctx.lang)).join(", ")}>
+                  {k === "spores" && SPORE_COLOR[v.qid] && <i style={{ background: SPORE_COLOR[v.qid] }} />}{shortMorph(v, ctx.lang)}</span></div>
+            );
+          })}
         </div>
         <div className="box"><h3>{ctx.t("where")}</h3>
           <div className="chips tight">

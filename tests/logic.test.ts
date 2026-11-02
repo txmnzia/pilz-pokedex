@@ -244,3 +244,20 @@ describe("multi-photo finds (issue #1)", () => {
     expect(mergeFinds([f], [remote as typeof f])[0].photos).toEqual(f.photos);
   });
 });
+
+import { knownMorph, shortMorph } from "../src/lib/morph";
+describe("characteristic badges (v0.11.0)", () => {
+  it("every morphology value in the data has a short word, in each language, without accented capitals", () => {
+    const shown = ["spores", "cap", "hymenium", "stipe", "ecology"] as const;
+    const vals = data.species.flatMap(s => shown.flatMap(k => s.morph[k] ?? []));
+    expect(vals.filter(v => !knownMorph(v.qid)).map(v => v.qid)).toEqual([]);
+    for (const v of vals) for (const l of ["fr", "en", "de"] as const) {
+      const w = shortMorph(v, l);
+      expect(w.length).toBeLessThanOrEqual(13);
+      expect(w).not.toMatch(/[ÉÈÊËÀÂÎÏÔÛÇÄÖÜ]/);
+    }
+  });
+  it("unknown values fall back to the label, never dropped", () => {
+    expect(shortMorph({ qid: "Q0", fr: "chapeau étrange" }, "fr")).toBe("CHAPEAU ETRANGE");
+  });
+});
