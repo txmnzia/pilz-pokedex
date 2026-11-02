@@ -36,7 +36,7 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
 - Several photos per catch (v0.9.0, issue #1): up to 4, each cropped, first = cover (no label: drag thumbnails to
   reorder, v0.9.1, Sam; tap = crop, arrow keys move),
   identification combines all photos (geometric mean). Species page 1 is a gallery of every photo of every find.
-  Needs migration `0003_photos.sql` in Supabase for the extra photos to sync; without it only covers sync.
+  Migration `0003_photos.sql` has been run in Supabase (Sam, 2026-11-02), so all photos sync.
 - On-device identifier (LiteRT.js wasm, MobileNetV2 fungi model, Apache-2.0): suggestion only, European species only,
   preselect only when p >= 0.5. From a species page it stays silent unless the photo clearly looks like another species
   (`mismatch()`); from the list it suggests the top 3. Measured 74.6% top-1 / 85.8% top-3; re-measure after any
@@ -119,8 +119,8 @@ Design artifacts (all in `design/`, published as claude.ai artifacts)
 ## 5. Backlog / open points
 
 Data
-- [ ] Decide edibility for the 8 "???" species (list in section 3) in `data/edibility-overrides.json` with a reason,
-      then re-scrape. Ask Sam, do not guess.
+- [x] The 8 "???" species (list in section 3) stay "???" on purpose (Sam, 2026-11-02). Do not ask again; only revisit
+      if a source (Wikidata, mycodb) starts giving a value after a re-scrape.
 - [ ] The photo model knows 75 of the 120 dex species (101 of 256 with lookalikes); the others can't be suggested.
 
 UI
