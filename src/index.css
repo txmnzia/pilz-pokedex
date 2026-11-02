@@ -244,3 +244,6 @@ ul.list{list-style:none;margin:0;padding:0}
 .findbtns{display:flex;gap:2px}
 .find .del svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 @media (max-width:380px){.biground{width:64px;height:64px;font-size:8px}.round{width:40px;height:40px}}
+.biground{letter-spacing:0;text-align:center}
+.biground.mid{font-size:8px}.biground.long{font-size:7px}
+@media (max-width:380px){.biground.mid{font-size:7px}.biground.long{font-size:6px}}
