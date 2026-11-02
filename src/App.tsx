@@ -4,7 +4,7 @@ import { RightPanel, type KeyItem } from "./components/RightPanel";
 import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
 import { deleteFind, findsBySpecies, newFind, parseBackup, photosOf, restoreInto, touchPhoto } from "./lib/finds";
-import { compress, getPhoto, loadFinds, putPhoto, saveFinds, store } from "./lib/local";
+import { compress, getPhoto, loadFinds, makeThumb, putPhoto, saveFinds, store, thumbKey } from "./lib/local";
 import { supabase } from "./lib/supabase";
 import { photoUrlOf, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
@@ -195,6 +195,7 @@ export default function App() {
     if (!recrop) return;
     const out = await cropToBlob(recrop.blob, a);
     await putPhoto(recrop.photoId, out);
+    const t = await makeThumb(out); if (t) await putPhoto(thumbKey(recrop.photoId, null), t); // path resets to null below
     const { find: { id }, photoId } = recrop;
     setFinds(x => x.map(y => (y.id === id ? touchPhoto(y, photoId) : y)));
     closeRecrop();
@@ -205,7 +206,11 @@ export default function App() {
     const ids = d.files.map((_, i) => (i === 0 ? "" : crypto.randomUUID()));
     const f0 = newFind(d.species, { observed_on: d.observed_on, place: d.place, note: d.note, lat: d.lat, lng: d.lng });
     const f = { ...f0, photos: ids.map(id => ({ id: id || f0.id, path: null })) };
-    for (const [i, file] of d.files.entries()) await putPhoto(f.photos[i].id, await compress(file));
+    for (const [i, file] of d.files.entries()) {
+      const full = await compress(file);
+      await putPhoto(f.photos[i].id, full);
+      const t = await makeThumb(full); if (t) await putPhoto(thumbKey(f.photos[i].id, null), t);
+    }
     setFinds(x => [f, ...x]);
     setCur(d.species); setPage(0); setStack([]); setView("entry");
     flashLed(t("gotcha"));

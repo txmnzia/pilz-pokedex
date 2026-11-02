@@ -2,7 +2,7 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { CaughtBall, EdBadge, EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
-import { photoUrlOf } from "./lib/sync";
+import { photoUrlOf, thumbUrlOf } from "./lib/sync";
 import { MAX_PHOTOS, photosOf } from "./lib/finds";
 import { combineGuesses, CONFIDENT, mismatch, type Guess } from "./lib/rank";
 import type { Identification } from "./lib/identify";
@@ -30,21 +30,21 @@ const badge = (ctx: Ctx, ed: Edibility | null, large?: boolean) =>
   <EdBadge ed={ed} label={ctx.t(BADGE[ed ?? "unknown"])} large={large} title={ed ? ctx.t(edKey(ed)) : `${ctx.t("unknown")}: ${ctx.t("unknownHint")}`} />;
 
 /** One photo of a find (default: its cover). */
-export function Photo({ find, photo, className }: { find: Find; photo?: FindPhoto; className?: string }) {
+export function Photo({ find, photo, className, thumb }: { find: Find; photo?: FindPhoto; className?: string; thumb?: boolean }) {
   const [url, setUrl] = useState<string | null>(null);
   const p = photo ?? photosOf(find)[0];
   useEffect(() => {
     let alive = true, made: string | null = null;
-    photoUrlOf(p).then(u => { if (!alive) return; if (u?.startsWith("blob:")) made = u; setUrl(u); });
+    (thumb ? thumbUrlOf(p) : photoUrlOf(p)).then(u => { if (!alive) return; if (u?.startsWith("blob:")) made = u; setUrl(u); });
     return () => { alive = false; if (made) URL.revokeObjectURL(made); };
-  }, [p.id, p.path, find.updated_at]);
+  }, [p.id, p.path, find.updated_at, thumb]);
   return url ? <img className={className} src={url} alt="" /> : <span className="photo-wait" />;
 }
 
 /** Caught: your latest photo. Not caught: black silhouette. */
 function Picture({ sp, ctx, small, hint }: { sp: Species; ctx: Ctx; small?: boolean; hint?: string }) {
   const f = ctx.caught.get(sp.inat)?.[0];
-  if (f) return small ? <Photo find={f} className="thumbimg" /> : (
+  if (f) return small ? <Photo find={f} className="thumbimg" thumb /> : (
     <div className="pic photo"><Photo find={f} /><span className="stamp">{f.observed_on}{f.place ? ` · ${f.place}` : ""}</span></div>
   );
   return small ? <Silhouette shape={shapeOf(sp)} /> : <div className="pic"><Silhouette shape={shapeOf(sp)} />{hint ? <span className="stamp">{hint}</span> : <span className="lock">???</span>}</div>;
@@ -272,10 +272,10 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
         <div className="box"><h3>{ctx.t("finds")} ({finds.length})</h3>
           {finds.length ? finds.map(f => (
             <div className="find" key={f.id}>
-              <span className="t"><Photo find={f} /></span>
+              <span className="t"><Photo find={f} thumb /></span>
               <span>{f.observed_on}<small>{f.place || (f.lat != null ? `${f.lat.toFixed(3)}, ${f.lng!.toFixed(3)}` : "–")}{f.note ? ` · ${f.note}` : ""}</small>
                 {photosOf(f).length > 1 && <span className="fthumbs">{photosOf(f).slice(1).map(p => (
-                  <button type="button" key={p.id} aria-label={ctx.t("crop")} onClick={() => onRecrop(f, p.id)}><Photo find={f} photo={p} /></button>))}</span>}</span>
+                  <button type="button" key={p.id} aria-label={ctx.t("crop")} onClick={() => onRecrop(f, p.id)}><Photo find={f} photo={p} thumb /></button>))}</span>}</span>
               {confirm === f.id
                 ? <span className="confirm">{ctx.t("confirmDel")} <button onClick={() => { onDelete(f); setConfirm(null); }}>{ctx.t("yes")}</button><button onClick={() => setConfirm(null)}>{ctx.t("no")}</button></span>
                 : <span className="findbtns">
