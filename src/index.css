@@ -83,7 +83,7 @@ ul.list{list-style:none;margin:0;padding:0}
 .row.sel{background:var(--lcd-ink);color:var(--lcd)}
 .row.sel .num{color:var(--lcd-2)}
 .ball{width:12px;height:12px;border-radius:50%;border:2px solid currentColor}
-.ball.on{background:radial-gradient(circle,#fff 0 25%,#d9262b 30%)}
+.ball.on{background:#ffd84a;border-color:var(--ink)}
 .more{margin-top:10px;font-size:17px;color:var(--lcd-dim);border-top:2px dashed var(--lcd-dim);padding-top:6px}
 
 .ed{display:inline-grid;place-items:center;width:20px;height:20px}
@@ -331,3 +331,14 @@ ul.list{list-style:none;margin:0;padding:0}
 .prog{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;font-size:18px}
 .prog .bar{height:10px;border:2px solid var(--lcd-ink);border-radius:2px;position:relative;background:rgba(255,255,255,.3)}
 .prog .bar i{position:absolute;inset:0 auto 0 0;background:var(--lcd-ink)}
+.srcrow.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.srcrow .filebtn{margin-top:0;display:grid;place-items:center}
+.autometa{text-align:center;margin:-2px 0 8px}
+/* one-line filters on phones (measured to fit iPhone SE / 13 / Galaxy S22 in fr, en, de) */
+.chips.one{gap:3px}.chips.one .chip{font-size:15px;padding:0 4px}.chips.one .chip.icon{padding:0 2px}
+.chips.one .ed,.chips.one .ed svg{width:16px;height:16px}
+@media (max-width:380px){
+  .chips.one{gap:2px}.chips.one .chip{font-size:13px;padding:0 3px}
+  .chips.one .chip.icon{border-color:transparent;padding:0 1px}.chips.one .chip.icon[aria-pressed="true"]{border-color:var(--lcd-ink)}
+  .chips.one .ed,.chips.one .ed svg{width:15px;height:15px}.chips.one .sep{display:none}
+}
