@@ -46,6 +46,9 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 - Photo identifier: suggestion only, user confirms; preselect only when p >= CONFIDENT (0.5). Measured on 232 post-2023
   European iNat photos of 29 dex species in Chromium: top-1 74.6%, top-3 85.8%; "Probably" shown for 78%, right 84%.
   Re-measure after any preprocessing or model change (browser resize alone once cost 5 points).
+- Catch: one photo input without `capture` (the OS offers camera or library), square crop (react-easy-crop), then
+  identification on the crop. From a species page it is silent unless `mismatch()` fires (top >= 0.5 and selected < 0.1:
+  measured 7.3% false alarms, catches 70% of lookalike mix-ups); from the list it suggests the top 3.
 
 ## Skills
 | Skill | When |

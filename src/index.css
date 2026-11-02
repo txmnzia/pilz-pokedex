@@ -214,3 +214,18 @@ ul.list{list-style:none;margin:0;padding:0}
 .srcbtn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;margin:0}
 .srcbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round;flex:none}
 .srcrow .cta.ghost{margin-bottom:0}
+/* catch: single photo button, cropper, warning */
+.shot{border:2px solid var(--lcd-ink);padding:0;background:none;position:relative;display:block;width:100%;aspect-ratio:1/1;max-height:none}
+.shot .stamp{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.55);color:#fff;font-size:15px;padding:0 6px;border-radius:3px}
+.cta.srcbtn{margin-bottom:8px}
+.cropper{position:absolute;inset:0;z-index:6;background:#0d130a;display:flex;flex-direction:column;gap:8px;padding:8px}
+.croparea{position:relative;flex:1;min-height:0;border:2px solid var(--lcd);border-radius:3px;overflow:hidden}
+.crophint{margin:0;color:var(--lcd);font-size:16px;text-align:center}
+.zoom{width:100%;accent-color:var(--lcd)}
+.cropper .cta.ghost{color:var(--lcd);border-color:var(--lcd)}
+.warnbox{background:#f6d27a;border-color:#7a4a00}
+.warnbox p{font-size:19px}
+.warnbox .srcrow{margin:8px 0 0}
+.shot{width:min(100%,260px);margin:0 auto 8px}
+.cropper .cta:not(.ghost){background:var(--lcd);color:var(--lcd-ink)}
+.cropper .cta:disabled{opacity:.5}

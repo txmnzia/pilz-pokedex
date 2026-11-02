@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
-import { CONFIDENT, type Guess } from "./lib/rank";
+import { CONFIDENT, mismatch, type Guess } from "./lib/rank";
+import type { Identification } from "./lib/identify";
+import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, Lang, MorphKey, Species } from "./lib/types";
@@ -188,68 +190,142 @@ export function Entry({ ctx, sp, page, open, onDelete, scrollRef }: { ctx: Ctx; 
 
 // ---------------------------------------------------------------- catch
 export interface CatchDraft { file: Blob; species: number; observed_on: string; place: string; note: string; lat: number | null; lng: number | null }
-export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onSave(d: CatchDraft): void }) {
+
+const localToday = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+const fill = (tpl: string, v: Record<string, string>) => tpl.replace(/\{(\w+)\}/g, (_, k) => v[k] ?? "");
+
+/** Square crop of the original photo, max 1600 px, as JPEG. */
+async function cropToBlob(src: Blob, a: Area): Promise<Blob> {
+  const bmp = await createImageBitmap(src);
+  const size = Math.min(1600, Math.round(a.width));
+  const c = document.createElement("canvas"); c.width = c.height = size;
+  const g = c.getContext("2d")!; g.imageSmoothingQuality = "high";
+  g.drawImage(bmp, a.x, a.y, a.width, a.height, 0, 0, size, size); bmp.close();
+  return new Promise<Blob>((res, rej) => c.toBlob(b => (b ? res(b) : rej(new Error("crop failed"))), "image/jpeg", 0.9));
+}
+
+function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string; onDone(a: Area): void; onCancel(): void }) {
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [area, setArea] = useState<Area | null>(null);
+  return (
+    <div className="cropper" role="dialog" aria-label={ctx.t("crop")}>
+      <div className="croparea">
+        <EasyCrop image={src} crop={crop} zoom={zoom} maxZoom={6} aspect={1} objectFit="cover" zoomSpeed={0.4}
+          onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={(_, px) => setArea(px)} />
+      </div>
+      <p className="crophint">{ctx.t("cropHint")}</p>
+      <input className="zoom" type="range" min={1} max={6} step={0.01} value={zoom} aria-label="Zoom" onChange={e => setZoom(Number(e.target.value))} />
+      <div className="srcrow">
+        <button type="button" className="cta ghost" onClick={onCancel}>{ctx.t("cancel")}</button>
+        <button type="button" className="cta" disabled={!area} onClick={() => area && onDone(area)}>{ctx.t("useCrop")}</button>
+      </div>
+    </div>
+  );
+}
+
+/** One photo button (the OS offers camera or library), crop, then identification:
+ *  opened from a species page = verify silently and only warn on a likely mix-up;
+ *  opened from the list = suggest the top 3. */
+export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number | null; onSave(d: CatchDraft): void }) {
+  const [orig, setOrig] = useState<File | null>(null);
+  const [origUrl, setOrigUrl] = useState<string | null>(null);
+  const [cropping, setCropping] = useState(false);
   const [file, setFile] = useState<Blob | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [species, setSpecies] = useState(initial);
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [species, setSpecies] = useState<number | null>(initial);
+  const [date, setDate] = useState(localToday);
   const [place, setPlace] = useState("");
   const [note, setNote] = useState("");
   const [pos, setPos] = useState<{ lat: number; lng: number } | null>(null);
   const [msg, setMsg] = useState("");
   const [ident, setIdent] = useState<"idle" | "busy" | "done" | "error">("idle");
-  const [guesses, setGuesses] = useState<Guess[]>([]);
+  const [result, setResult] = useState<Identification | null>(null);
+  const [dismissed, setDismissed] = useState<string | null>(null);
+  const verify = initial != null;
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
+  useEffect(() => () => { if (origUrl) URL.revokeObjectURL(origUrl); }, [origUrl]);
   const byLatin = new Map(ctx.all.map(s => [s.latin, s]));
+  const byId = new Map(ctx.all.map(s => [s.inat, s]));
+  const spName = (g: Guess) => { const s = byLatin.get(g.latin); return s ? name(s, ctx.lang) : g.common ? `${g.latin} (${g.common})` : g.latin; };
+
   const runIdentify = async (f: Blob) => {
-    setIdent("busy"); setGuesses([]);
+    setIdent("busy"); setResult(null); setDismissed(null);
     try {
       const { identify } = await import("./lib/identify");
-      const g = await identify(f);
-      setGuesses(g); setIdent("done");
-      const top = g[0] && byLatin.get(g[0].latin);
-      if (top && g[0].p >= CONFIDENT) setSpecies(top.inat); // only preselect when confident
+      const r = await identify(f);
+      setResult(r); setIdent("done");
+      const top = r.guesses[0] && byLatin.get(r.guesses[0].latin);
+      if (!verify && top && r.guesses[0].p >= CONFIDENT) setSpecies(s => s ?? top.inat); // suggest mode: preselect when confident
     } catch (e) { console.warn("identify failed", e); setIdent("error"); }
   };
   const locate = () => navigator.geolocation?.getCurrentPosition(
     p => { setPos({ lat: p.coords.latitude, lng: p.coords.longitude }); setMsg(ctx.t("gpsOk")); },
     () => setMsg(ctx.t("gpsFail")), { enableHighAccuracy: true, timeout: 15000 });
-  // camera: now + here. library: the photo's own date/place (EXIF); never today's GPS for an old photo
-  const pick = async (f: File | undefined, source: "camera" | "library") => {
+
+  // The OS decides camera or library, so the photo's own metadata decides date/place:
+  // an older photo keeps its date and stored place (never today's GPS); a fresh one gets today + current GPS.
+  const pick = async (f: File | undefined) => {
     if (!f) return;
-    setFile(f); setPreview(URL.createObjectURL(f)); runIdentify(f);
-    if (source === "camera") { setDate(new Date().toISOString().slice(0, 10)); setPos(null); locate(); return; }
+    setOrig(f); setOrigUrl(URL.createObjectURL(f)); setCropping(true);
     const meta = readExif(await f.arrayBuffer());
-    setDate(meta.date ?? new Date().toISOString().slice(0, 10));
-    setPos(meta.lat != null && meta.lng != null ? { lat: meta.lat, lng: meta.lng } : null);
-    setMsg(meta.date && meta.lat != null ? ctx.t("fromPhotoMeta") : meta.date ? ctx.t("fromPhotoDate") : ctx.t("noPhotoMeta"));
+    const gps = meta.lat != null && meta.lng != null ? { lat: meta.lat, lng: meta.lng } : null;
+    if (meta.date && meta.date !== localToday()) {
+      setDate(meta.date); setPos(gps);
+      setMsg(gps ? ctx.t("fromPhotoMeta") : ctx.t("fromPhotoDate"));
+    } else {
+      setDate(localToday()); setMsg("");
+      if (gps) { setPos(gps); setMsg(ctx.t("fromPhotoMeta")); } else { setPos(null); locate(); }
+    }
   };
+  const finishCrop = async (a: Area) => {
+    setCropping(false);
+    const blob = await cropToBlob(orig!, a);
+    setFile(blob); setPreview(URL.createObjectURL(blob)); runIdentify(blob);
+  };
+
+  const sel = species != null ? byId.get(species) : undefined;
+  const warn = ident === "done" && result && sel && verify ? mismatch(result.guesses, sel.latin, result.known) : null;
+  const warnKey = warn && sel ? `${sel.inat}:${warn.latin}` : null;
+  const warnSp = warn ? byLatin.get(warn.latin) : undefined;
   const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex!) - (b.no ?? b.ex!) : a.extra ? 1 : -1));
   return (
     <>
-      <div className="titlebar"><span>{ctx.t("catch")}</span></div>
+      <div className="titlebar"><span>{ctx.t("catch")}</span>{sel && verify && <span className="name">{name(sel, ctx.lang)}</span>}</div>
       <div className="scroll">
         <form onSubmit={e => {
           e.preventDefault();
           if (!file) { setMsg(ctx.t("photoNeeded")); return; }
+          if (species == null) { setMsg(ctx.t("pickSpecies")); return; }
           onSave({ file, species, observed_on: date, place, note, lat: pos?.lat ?? null, lng: pos?.lng ?? null });
         }}>
-          {preview && <div className="shot"><img src={preview} alt="" /></div>}
-          <div className="srcrow">
-            <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>{ctx.t("takePhoto")}
-              <input id="ph" type="file" accept="image/*" capture="environment" onChange={e => { pick(e.target.files?.[0], "camera"); e.target.value = ""; }} /></label>
-            <label className="cta ghost srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="10" r="1.8" /><path d="M4 18l5-5 4 4 3-3 4 4" /></svg>{ctx.t("fromLibrary")}
-              <input id="phlib" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0], "library"); e.target.value = ""; }} /></label>
-          </div>
-          {ident !== "idle" && (
-            <div className="box ident" aria-live="polite" ref={el => { if (el && ident === "done") el.scrollIntoView({ block: "nearest", behavior: "smooth" }); }}>
+          {verify && warn && warnKey !== dismissed && (
+            <div className="box warnbox" role="alert" ref={el => el?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
+              <p className="m0">{fill(ctx.t("areYouSure"), { x: sel ? name(sel, ctx.lang) : "", y: spName(warn), p: `${Math.round(warn.p * 100)}%` })}</p>
+              <div className="srcrow">
+                {warnSp
+                  ? <button type="button" className="cta" onClick={() => setSpecies(warnSp.inat)}>{fill(ctx.t("switchTo"), { y: name(warnSp, ctx.lang) })}</button>
+                  : <span className="note">{ctx.t("notInDex")}</span>}
+                <button type="button" className="cta ghost" onClick={() => setDismissed(warnKey)}>{fill(ctx.t("keep"), { x: sel ? name(sel, ctx.lang) : "" })}</button>
+              </div>
+            </div>
+          )}
+
+          {preview && <button type="button" className="shot" onClick={() => setCropping(true)} aria-label={ctx.t("crop")}>
+            <img src={preview} alt="" /><span className="stamp">{ctx.t("tapToCrop")}</span></button>}
+          <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+            {preview ? ctx.t("otherPhoto") : ctx.t("addPhoto")}
+            <input id="ph" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>
+
+          {!verify && ident !== "idle" && (
+            <div className="box ident" aria-live="polite">
               <h3>{ctx.t("suggestion")}</h3>
               {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
               {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
-              {ident === "done" && (guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
-                <p className="m0">{guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}</p>
+              {ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
+                <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}</p>
                 <div className="guesses">
-                  {guesses.map(g => {
+                  {result.guesses.slice(0, 3).map(g => {
                     const sp = byLatin.get(g.latin);
                     const pct = `${Math.round(g.p * 100)}%`;
                     return sp
@@ -263,8 +339,10 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
               </>)}
             </div>
           )}
+
           <div className="field"><label htmlFor="spc">{ctx.t("species")}</label>
-            <select id="spc" value={species} onChange={e => setSpecies(Number(e.target.value))}>
+            <select id="spc" value={species ?? ""} onChange={e => setSpecies(e.target.value ? Number(e.target.value) : null)}>
+              {species == null && <option value="">{ctx.t("choose")}</option>}
               {sorted.map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
             </select></div>
           <div className="field"><label htmlFor="dt">{ctx.t("date")}</label><input id="dt" type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
@@ -276,6 +354,7 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number; onS
           <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
         </form>
       </div>
+      {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); } }} />}
     </>
   );
 }

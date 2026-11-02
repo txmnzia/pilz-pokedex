@@ -23,6 +23,7 @@ export default function App() {
   const [prev, setPrev] = useState<View>("index");
   const [cur, setCur] = useState<number>(0);
   const [stack, setStack] = useState<number[]>([]);
+  const [catchFor, setCatchFor] = useState<number | null>(null);
   const [page, setPage] = useState<0 | 1>(0);
   const [filter, setFilter] = useState<Filter>("all");
   const [edf, setEdf] = useState<Edibility | null>(null);
@@ -130,7 +131,7 @@ export default function App() {
     ok: () => { if (effectiveView === "entry") setPage(p => (p ? 0 : 1)); },
     a: () => {
       if (effectiveView === "login" || !all.length) return;
-      if (effectiveView !== "entry") setCur(c => c || core[0].inat);
+      setCatchFor(effectiveView === "entry" ? cur : null); // from a species page: verify that species
       go("catch");
     },
     b: () => {
@@ -182,7 +183,7 @@ export default function App() {
     onOffline={() => { setOffline(true); store.set("pz.offline", true); }} />;
   else if (effectiveView === "entry" && curSp) screen = <Entry ctx={ctx} sp={curSp} page={page} scrollRef={entryScroll}
     open={sp => open(sp, true)} onDelete={f => setFinds(x => x.map(y => (y.id === f.id ? deleteFind(y) : y)))} />;
-  else if (effectiveView === "catch") screen = <Catch ctx={ctx} initial={cur || core[0].inat} onSave={save} />;
+  else if (effectiveView === "catch") screen = <Catch ctx={ctx} initial={catchFor} onSave={save} />;
   else if (effectiveView === "settings") screen = <Settings ctx={ctx} email={user?.email ?? null} mode={mode} setLang={setLang} setMode={setMode}
     sources={data.sources} onExport={exportJson}
     onRestore={async json => {
