@@ -1,204 +1,276 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pilzdex UX Mockup</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
-/* Layout idea: one handheld Pokedex half at phone size, the LCD is the only screen, hardware buttons drive navigation. */
+/* Layout idea: web = an open two-panel Pokédex (left: the device with a debloated screen, right: a context panel
+   with its own LCD, finds keys and stepping buttons); phone = the single device as shipped today. One visual world,
+   deliberately single-theme (device red on teal), so every colour is set explicitly. */
 :root{
-  --red:#d9262b; --red-dark:#8f1117; --ink:#160b0b;
+  --red:#d9262b; --red-dark:#8f1117; --red-deep:#b81c21; --ink:#160b0b;
   --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
-  --bezel:#eceae3; --blue:#3d9ce6; --blue-dark:#1d5f9c;
+  --bezel:#eceae3; --blue:#3d9ce6; --blue-dark:#1d5f9c; --key:#2f6fd6; --key-dark:#1c4a99;
+  --yellow:#ffd84a; --yellow-dark:#b97800;
   --ed:#2f8a3b; --none:#6d6d6d; --tox:#e08a12; --dead:#111;
+  --stage:#1c5864;
   --font-lcd:'VT323', ui-monospace, Menlo, monospace;
   --font-label:'Press Start 2P', ui-monospace, monospace;
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{background:linear-gradient(160deg,#1c5864,#6fbcad 55%,#d5efbd);font-family:var(--font-lcd);color:var(--ink);display:flex;justify-content:center;align-items:center;overflow:hidden}
-button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,label:focus-within{outline:3px solid #ffe14d;outline-offset:2px}
+html,body{height:100%}
+body{margin:0;background:linear-gradient(160deg,var(--stage),#6fbcad 55%,#d5efbd);font-family:var(--font-lcd);color:var(--ink);overflow:hidden}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible,label:focus-within{outline:3px solid #ffe14d;outline-offset:2px}
 
-#device{width:min(100%,430px);height:100%;max-height:920px;background:var(--red);border:3px solid var(--ink);border-radius:20px;display:grid;grid-template-rows:auto 1fr auto;gap:10px;padding:12px 14px 16px;box-shadow:inset -6px -6px 0 var(--red-dark),0 18px 40px rgba(0,0,0,.35);position:relative}
-@media (max-width:440px){#device{border-radius:0;max-height:none;border-width:0}}
+.stage{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.viewbar{display:flex;gap:8px;align-items:center;font-family:var(--font-label);font-size:8px;color:#eaf6f2}
+.viewbar .seg{display:flex;border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:#0f3a42}
+.viewbar .seg button{border:0;background:transparent;color:#cfe;padding:6px 12px;font-family:var(--font-label);font-size:8px}
+.viewbar .seg button[aria-pressed="true"]{background:var(--yellow);color:var(--ink)}
+.viewbar .seg button:disabled{opacity:.4;cursor:default}
+.viewbar .hint{opacity:.85}
 
-/* top */
+/* ---------- the book ---------- */
+.book{display:flex;align-items:stretch;height:min(100%,760px);min-height:0;flex:1 1 auto;max-height:760px}
+.dev{grid-template-columns:minmax(0,1fr);background:var(--red);border:3px solid var(--ink);display:grid;gap:10px;padding:12px 14px 16px;position:relative;min-width:0;min-height:0}
+.left{width:min(100%,430px);border-radius:20px;grid-template-rows:auto 1fr auto;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.hinge,.right{display:none}
+.book.wide .left{width:430px;border-radius:20px 6px 6px 20px;border-right-width:2px}
+.book.wide .hinge{display:flex;flex-direction:column;width:26px;background:linear-gradient(90deg,var(--red-dark),var(--red) 45%,var(--red-dark));
+  border-block:3px solid var(--ink);margin-block:18px}
+.hinge i{flex:1;border-bottom:3px solid var(--ink)}.hinge i:last-child{border-bottom:0}
+.book.wide .right{display:grid;width:430px;border-radius:6px 20px 20px 6px;border-left-width:2px;margin-top:38px;
+  grid-template-rows:auto 1fr auto auto;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+
+/* ---------- left device ---------- */
 .top{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:3px solid var(--ink)}
 .lens{width:52px;height:52px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 35%,#bfe6ff 0 12%,var(--blue) 30%,var(--blue-dark) 100%);box-shadow:0 0 0 4px #fff,0 0 0 7px var(--ink);margin:6px}
 .leds{display:flex;gap:7px;align-self:flex-start;margin-top:6px}
 .led{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink)}
 .led.r{background:#ff5146}.led.y{background:#ffd34d}.led.g{background:#5fd068}
-.led.flash{animation:flash .25s 6 alternate}
-@keyframes flash{to{background:#eaffea;box-shadow:0 0 10px #9f9}}
-.top .spacer{flex:1}
-.tag{font-family:var(--font-label);font-size:7px;color:#ffe3e3;line-height:1.6;text-align:right}
-.tag b{display:inline-block;background:#ffd34d;color:var(--ink);padding:2px 4px;border-radius:3px}
+.spacer{flex:1}
+.tag{font-family:var(--font-label);font-size:7px;color:#ffe3e3;line-height:1.7;text-align:right}
+.tag b{display:inline-block;background:var(--yellow);color:var(--ink);padding:2px 4px;border-radius:3px;font-weight:400}
 .iconbtn{width:38px;height:38px;border-radius:50%;border:3px solid var(--ink);background:#2a2a2a;color:#fff;display:grid;place-items:center;font-size:22px}
-
-/* screen */
 .bezel{background:var(--bezel);border:3px solid var(--ink);border-radius:8px 8px 8px 36px;padding:10px 12px 28px;min-height:0;display:flex;flex-direction:column;position:relative}
 .bezel-dots{display:flex;gap:10px;justify-content:center;margin-bottom:8px}
 .bezel-dots i{width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--ink)}
 .bezel-foot{position:absolute;left:16px;right:16px;bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .bezel-foot .dot{width:14px;height:14px;border-radius:50%;background:var(--red);border:2px solid var(--ink)}
 .bezel-foot .grill{width:22px;height:12px;background:repeating-linear-gradient(var(--ink) 0 2px,transparent 2px 5px)}
-.lcd{flex:1;min-height:0;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;color:var(--lcd-ink);font-size:21px;line-height:1.05;position:relative;display:flex;flex-direction:column;overflow:hidden}
-.lcd::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.28) 0 18%,transparent 18% 100%)}
+.lcd{flex:1;min-height:0;min-width:0;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;color:var(--lcd-ink);font-size:20px;line-height:1.1;position:relative;display:flex;flex-direction:column;overflow:hidden}
+.lcd::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.26) 0 16%,transparent 16% 100%)}
 .scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px 10px 10px}
-
-/* controls */
 .controls{display:grid;grid-template-columns:1fr 126px;gap:10px;align-items:center}
 .cl{display:grid;gap:10px}
-.btnrow{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
-.hw{display:grid;justify-items:center;gap:4px;background:none;border:0;padding:0}
+.btnrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px}
+.hw{display:grid;justify-items:center;gap:4px;background:none;border:0;padding:0;position:relative}
 .hw small{font-family:var(--font-label);font-size:7px;color:#ffe3e3}
-.round{width:58px;height:58px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark));box-shadow:0 4px 0 var(--red-dark);display:grid;place-items:center}
-.round svg{width:24px;height:24px}
-.hw:active .round{transform:translateY(3px);box-shadow:0 1px 0 var(--red-dark)}
-.counter{background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;text-align:center;font-size:24px;color:var(--lcd-ink);padding:4px 2px;font-variant-numeric:tabular-nums}
+.catchbtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.biground{width:78px;height:78px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;text-align:center;
+  background:radial-gradient(circle at 35% 28%,#fff8cf 0 9%,var(--yellow) 30%,#f5ad00 72%,var(--yellow-dark));box-shadow:0 5px 0 var(--red-dark);font-family:var(--font-label);font-size:9px;color:var(--ink)}
+.biground.long{font-size:7px}
+.round{width:46px;height:46px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark));box-shadow:0 4px 0 var(--red-dark);display:grid;place-items:center}
+.round svg{width:20px;height:20px}
+.counter{background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;text-align:center;font-size:24px;color:var(--lcd-ink);padding:4px 2px;font-variant-numeric:tabular-nums;min-width:0}
 .counter small{display:block;font-size:14px;color:var(--lcd-dim)}
-.pillrow{display:flex;gap:10px}
-.pill{flex:1;height:30px;border-radius:15px;border:3px solid var(--ink);font-family:var(--font-label);font-size:8px;color:#fff;box-shadow:0 3px 0 var(--red-dark)}
-.pill.red{background:#ff4b3f}.pill.navy{background:#38407a}
+.pill{width:100%;height:30px;border-radius:15px;border:3px solid var(--ink);font-family:var(--font-label);font-size:8px;color:#fff;box-shadow:0 3px 0 var(--red-dark);background:#ff4b3f}
 .pill:disabled{opacity:.45;cursor:default}
+.book.wide .pill{visibility:hidden}
 .dpad{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,40px);justify-content:center}
 .dpad button{background:#262626;border:0;color:#eee;font-size:16px;display:grid;place-items:center}
 .dpad .u{grid-area:1/2;border-radius:6px 6px 0 0}.dpad .l{grid-area:2/1;border-radius:6px 0 0 6px}
 .dpad .c{grid-area:2/2;font-family:var(--font-label);font-size:7px}.dpad .r{grid-area:2/3;border-radius:0 6px 6px 0}
 .dpad .d{grid-area:3/2;border-radius:0 0 6px 6px}
-.dpad button:active{background:#000}
 
-/* LCD content */
+/* ---------- right panel ---------- */
+.rtop{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:3px solid var(--ink)}
+.rtop .leds{margin:0;align-self:center}
+.rtop .label{font-family:var(--font-label);font-size:8px;color:#ffe3e3;letter-spacing:.5px}
+.rlcd{min-width:0;border:3px solid var(--ink);border-radius:6px;background:var(--bezel);padding:8px;min-height:0;display:flex}
+.keys{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.key{aspect-ratio:1/1;border:3px solid var(--ink);border-radius:4px;background:linear-gradient(160deg,#5aa0ff,var(--key) 45%,var(--key-dark));padding:0;overflow:hidden;position:relative;display:grid;place-items:center}
+.key svg{width:85%;height:85%}
+.key.photo{background:linear-gradient(170deg,#7e9a5a,#2a3a1c)}
+.key .kd{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);color:#fff;font-size:12px;line-height:1.3;text-align:center}
+.key:disabled{cursor:default}
+.keyslabel{display:flex;justify-content:space-between;font-family:var(--font-label);font-size:7px;color:#ffe3e3;margin-bottom:6px}
+.rbottom{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.ybtn{height:44px;border:3px solid var(--ink);border-radius:8px;background:linear-gradient(180deg,#ffe57a,#f5b400);box-shadow:0 4px 0 var(--red-dark);font-family:var(--font-label);font-size:8px;color:var(--ink)}
+.ybtn:disabled{opacity:.45;cursor:default}
+.rnum{min-width:84px;text-align:center;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;padding:4px 8px;font-size:22px;color:var(--lcd-ink);font-variant-numeric:tabular-nums}
+
+/* ---------- LCD content ---------- */
 .titlebar{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid var(--lcd-ink);padding:6px 10px;font-family:var(--font-label);font-size:10px;line-height:1.5}
-.titlebar .name{text-wrap:balance}
-.sub{color:var(--lcd-dim);font-size:18px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
-.chip{border:2px solid var(--lcd-ink);background:transparent;border-radius:3px;padding:0 7px;font-size:18px;line-height:1.3;color:var(--lcd-ink);display:inline-flex;align-items:center;gap:4px}
+.titlebar .name{min-width:0;overflow-wrap:break-word}
+.sub{color:var(--lcd-dim);font-size:17px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px;align-items:center}
+.chips.one{flex-wrap:nowrap;overflow-x:auto}
+.chip{border:2px solid var(--lcd-ink);background:transparent;border-radius:3px;padding:0 7px;font-size:18px;line-height:1.3;color:var(--lcd-ink);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
 .chip[aria-pressed="true"],.chip.on{background:var(--lcd-ink);color:var(--lcd)}
 .chip.off{opacity:.4}
-ul.list{list-style:none;margin:0;padding:0}
-.row{display:grid;grid-template-columns:40px 34px 1fr 20px 14px;gap:8px;align-items:center;padding:3px 4px;border-radius:3px;cursor:pointer}
-.row .num{font-variant-numeric:tabular-nums;color:var(--lcd-dim)}
-.row .thumb{width:34px;height:34px}
-.row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row.sel{background:var(--lcd-ink);color:var(--lcd)}
-.row.sel .num{color:var(--lcd-2)}
-.ball{width:12px;height:12px;border-radius:50%;border:2px solid currentColor}
-.ball.on{background:radial-gradient(circle,#fff 0 25%,#d9262b 30%)}
-.more{margin-top:10px;font-size:17px;color:var(--lcd-dim);border-top:2px dashed var(--lcd-dim);padding-top:6px}
-
-.ed{display:inline-grid;place-items:center;width:20px;height:20px}
-.ed svg{width:20px;height:20px}
+.chip.icon{padding:0 4px}
+.sep{width:2px;align-self:stretch;background:var(--lcd-dim);opacity:.5}
+.ed{display:inline-grid;place-items:center;width:20px;height:20px}.ed svg{width:20px;height:20px}
 .edpill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:4px;padding:1px 8px;color:#fff;font-family:var(--font-label);font-size:8px;line-height:2}
 .edpill.edible{background:var(--ed)}.edpill.none{background:var(--none)}.edpill.toxic{background:var(--tox)}.edpill.deadly{background:var(--dead)}
 .edpill svg{width:16px;height:16px}
-
-.pic{position:relative;aspect-ratio:1/1;max-height:34vh;margin:0 auto 8px;width:100%;border:2px solid var(--lcd-ink);border-radius:3px;background:#dfe8c8;display:grid;place-items:center;overflow:hidden}
+.edpill.big{font-size:10px;padding:4px 10px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.book.wide .grid.dex{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tile{display:grid;gap:4px;padding:6px;background:rgba(255,255,255,.22);border:2px solid var(--lcd-ink);border-radius:4px;color:var(--lcd-ink);text-align:center;min-width:0}
+.tile.got{background:rgba(255,255,255,.5)}
+.tile.x{border-style:dashed}
+.thead{display:flex;justify-content:space-between;align-items:center;font-size:15px;color:var(--lcd-dim)}
+.thead .ed svg{width:18px;height:18px}
+.tart{aspect-ratio:1/1;display:grid;place-items:center;border-radius:3px;overflow:hidden}
+.tart svg{width:82%;height:82%}
+.tile.got .tart{background:linear-gradient(170deg,#7e9a5a,#2a3a1c)}
+.tname{font-size:15px;line-height:1.1;height:2.2em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.exhead{font-family:var(--font-label);font-size:8px;font-weight:400;line-height:1.6;margin:12px 0 6px}
+.pic{position:relative;aspect-ratio:1/1;margin:0 auto 8px;width:100%;max-width:340px;border:2px solid var(--lcd-ink);border-radius:3px;background:#dfe8c8;display:grid;place-items:center;overflow:hidden}
 .pic.photo{background:linear-gradient(170deg,#7e9a5a,#3e5a2c 60%,#2a3a1c)}
-.pic svg{width:72%;height:72%}
-.pic img{width:100%;height:100%;object-fit:cover}
-.pic .stamp{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.55);color:#fff;font-size:16px;padding:0 6px;border-radius:3px}
-.pic .lock{position:absolute;right:6px;top:4px;font-size:17px;color:var(--lcd-dim)}
+.pic svg{width:72%;height:72%}.pic img{width:100%;height:100%;object-fit:cover}
+.pic .stamp{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.55);color:#fff;font-size:15px;padding:0 6px;border-radius:3px}
 .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-bottom:8px}
 .latin{font-style:italic;color:var(--lcd-dim);font-size:19px}
 .box{border:2px solid var(--lcd-ink);border-radius:3px;padding:6px 8px;margin-bottom:8px;background:rgba(255,255,255,.18)}
 .box h3{margin:0 0 4px;font-family:var(--font-label);font-size:8px;line-height:1.6;font-weight:400}
-.dots{display:flex;gap:6px;justify-content:center;align-items:center;font-size:16px;color:var(--lcd-dim);padding:4px 0 6px}
-.dots i{width:9px;height:9px;border-radius:50%;border:2px solid var(--lcd-ink)}
-.dots i.on{background:var(--lcd-ink)}
 .stat{display:flex;gap:4px}
 .stat span:nth-child(2){flex:1;border-bottom:2px dotted var(--lcd-dim);margin-bottom:5px}
-.stat b{font-weight:400;font-variant-numeric:tabular-nums}
-.look{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.lk{background:rgba(255,255,255,.25);border:2px solid var(--lcd-ink);border-radius:3px;padding:4px;display:grid;justify-items:center;gap:2px;text-align:center;font-size:16px;line-height:1}
-.lk svg.art{width:44px;height:44px}
-.find{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;padding:4px 0;border-bottom:1px dashed var(--lcd-dim)}
-.find .t{width:48px;height:48px;border-radius:3px;overflow:hidden;background:linear-gradient(170deg,#7e9a5a,#2a3a1c);display:grid;place-items:center}
-.find .t svg{width:80%;height:80%}.find .t img{width:100%;height:100%;object-fit:cover}
-.find small{display:block;color:var(--lcd-dim);font-size:17px}
-.empty{color:var(--lcd-dim);font-size:18px}
-
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.tile{position:relative;display:grid;justify-items:center;gap:2px;padding:16px 4px 6px;background:rgba(255,255,255,.22);border:2px solid var(--lcd-ink);border-radius:4px;color:var(--lcd-ink);text-align:center;line-height:1}
-.tile.got{background:rgba(255,255,255,.5)}
-.tile.sel{outline:3px solid var(--lcd-ink);outline-offset:1px;background:var(--lcd-ink);color:var(--lcd)}
-.tile.sel .tn{color:var(--lcd-2)}
-.tile.x{border-style:dashed}
-.tn{position:absolute;left:4px;top:2px;font-size:15px;color:var(--lcd-dim);font-variant-numeric:tabular-nums}
-.ted{position:absolute;right:3px;top:3px}.ted svg{width:16px;height:16px}
-.tart svg{width:58px;height:58px}
-.tname{font-size:16px;min-height:2em;display:flex;align-items:center;text-wrap:balance}
-.tb{position:absolute;left:5px;bottom:5px;width:10px;height:10px}
-.row.x .num{font-size:16px}
-.exhead{font-family:var(--font-label);font-size:8px;font-weight:400;line-height:1.6;margin:12px 0 6px}
-.seg.mini{display:inline-flex;margin:0}.seg.mini button{font-size:18px;padding:0 8px}
-/* forms */
+.stat b{font-weight:400;font-variant-numeric:tabular-nums;text-align:right}
+.bars{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;align-items:end;height:30px;margin:2px 0 2px;border-bottom:2px solid var(--lcd-ink)}
+.bars i{display:block;background:var(--lcd-dim);opacity:.45}.bars i.on{background:var(--lcd-ink);opacity:1}
+.mlabels{display:grid;grid-template-columns:repeat(12,1fr);font-size:12px;color:var(--lcd-dim);text-align:center;margin-bottom:6px}
+.look{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.lk{background:rgba(255,255,255,.25);border:2px solid var(--lcd-ink);border-radius:3px;padding:4px;display:grid;justify-items:center;gap:2px;text-align:center;font-size:15px;line-height:1.05;color:var(--lcd-ink);min-width:0}
+.lk svg.art{width:46px;height:46px}.lk span{max-width:100%;overflow-wrap:break-word}
+.lk .roman{font-family:var(--font-label);font-size:7px;color:var(--lcd-dim)}
+.prog{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;font-size:18px}
+.prog .bar{height:10px;border:2px solid var(--lcd-ink);border-radius:2px;position:relative;background:rgba(255,255,255,.3)}
+.prog .bar i{position:absolute;inset:0 auto 0 0;background:var(--lcd-ink)}
 .field{display:grid;gap:2px;margin-bottom:8px;font-size:18px}
-.field input,.field select,.field textarea{font:inherit;font-size:20px;background:rgba(255,255,255,.45);border:2px solid var(--lcd-ink);border-radius:3px;padding:4px 6px;color:var(--lcd-ink);width:100%}
-.shot{display:grid;place-items:center;gap:6px;aspect-ratio:4/3;max-height:30vh;width:100%;border:3px dashed var(--lcd-ink);border-radius:4px;cursor:pointer;margin-bottom:8px;text-align:center;overflow:hidden;position:relative}
-.shot input{position:absolute;opacity:0;inset:0;cursor:pointer}
-.shot img{width:100%;height:100%;object-fit:cover}
+.field select{font-size:20px;background:rgba(255,255,255,.45);border:2px solid var(--lcd-ink);border-radius:3px;padding:4px 6px;color:var(--lcd-ink);width:100%}
 .cta{width:100%;font-family:var(--font-label);font-size:10px;background:var(--lcd-ink);color:var(--lcd);border:0;border-radius:3px;padding:10px;line-height:1.5}
-.seg{display:flex;gap:0;border:2px solid var(--lcd-ink);border-radius:3px;overflow:hidden;margin-bottom:8px}
-.seg button{flex:1;background:transparent;border:0;padding:4px;font-size:20px;color:var(--lcd-ink)}
-.seg button[aria-pressed="true"]{background:var(--lcd-ink);color:var(--lcd)}
-.logo{font-family:var(--font-label);font-size:20px;text-align:center;margin:14px 0 4px;letter-spacing:1px}
+.cta.ghost{background:transparent;color:var(--lcd-ink);border:2px solid var(--lcd-ink)}
+.seg2{display:flex;border:2px solid var(--lcd-ink);border-radius:3px;overflow:hidden;margin-bottom:6px}
+.seg2 button{flex:1;background:transparent;border:0;padding:4px;font-size:19px;color:var(--lcd-ink)}
+.seg2 button[aria-pressed="true"]{background:var(--lcd-ink);color:var(--lcd)}
+.guess{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;text-align:left;border:2px solid var(--lcd-ink);border-radius:3px;background:transparent;color:var(--lcd-ink);font-size:18px;padding:3px 8px;margin-bottom:4px}
+.guess[aria-pressed="true"]{background:var(--lcd-ink);color:var(--lcd)}
+.warnbox{background:#f6d27a;border-color:#7a4a00}
+.note{font-size:15px;color:var(--lcd-dim);margin:6px 0 0}
+.empty{color:var(--lcd-dim);font-size:17px;margin:0}
+.callout{font-family:var(--font-label);font-size:7px;line-height:1.7;color:var(--lcd-dim);border-top:2px dashed var(--lcd-dim);padding-top:6px;margin-top:8px}
+.shot{border:2px solid var(--lcd-ink);border-radius:3px;display:block;width:100%;max-width:340px;margin:0 auto 8px;aspect-ratio:1/1;padding:0;background:linear-gradient(170deg,#7e9a5a,#2a3a1c);position:relative;overflow:hidden}
+.shot svg{width:72%;height:72%}.shot img{width:100%;height:100%;object-fit:cover}
+.shot .stamp{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.55);color:#fff;font-size:15px;padding:0 6px;border-radius:3px}
 .toast{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);background:var(--lcd-ink);color:var(--lcd);font-family:var(--font-label);font-size:11px;padding:12px 16px;border-radius:4px;z-index:5;white-space:nowrap}
-.note{font-size:16px;color:var(--lcd-dim);margin-top:6px}
-@media (prefers-reduced-motion:reduce){.led.flash{animation:none}}
+
+@media (max-width:899px){.viewbar .hint{display:none}}
+@media (max-width:440px){.stage{padding:0;gap:0}.viewbar{display:none}.book{height:100%;max-height:none}.left{width:100%;border-radius:0;border-width:0}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
-</head>
-<body>
-<div id="device">
-  <header class="top">
-    <div class="lens" aria-hidden="true"></div>
-    <div class="leds" aria-hidden="true"><i class="led r"></i><i class="led y"></i><i class="led g" id="ledG"></i></div>
-    <div class="spacer"></div>
-    <div class="tag"><b>MOCK DATA</b><br>v0.0 design</div>
-    <button class="iconbtn" id="menuBtn" aria-label="Settings">&#8801;</button>
-  </header>
 
-  <section class="bezel">
-    <div class="bezel-dots" aria-hidden="true"><i></i><i></i></div>
-    <div class="lcd" id="lcd"></div>
-    <div class="bezel-foot" aria-hidden="true"><span class="dot"></span><span class="grill"></span></div>
-  </section>
+<div class="stage">
+  <div class="viewbar" role="group" aria-label="Preview">
+    <span>PREVIEW</span>
+    <span class="seg"><button id="vWide" aria-pressed="true">WEB</button><button id="vPhone" aria-pressed="false">PHONE</button></span>
+    <span class="hint" id="vHint">two panels from 900 px wide</span>
+  </div>
 
-  <footer class="controls">
-    <div class="cl">
-      <div class="btnrow">
-        <button class="hw" id="btnA"><span class="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.4" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><small id="lblA">CATCH</small></button>
-        <div class="counter" id="counter">3/8<small>caught</small></div>
-        <button class="hw" id="btnB"><span class="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6M4 12h16"/></svg></span><small id="lblB">BACK</small></button>
+  <div class="book" id="book">
+    <!-- LEFT: the device as today, with a debloated screen in web mode -->
+    <section class="dev left" aria-label="Pilzdex">
+      <header class="top">
+        <div class="lens" aria-hidden="true"></div>
+        <div class="leds" aria-hidden="true"><i class="led r"></i><i class="led y"></i><i class="led g"></i></div>
+        <div class="spacer"></div>
+        <div class="tag"><b>MOCK DATA</b><br>design</div>
+        <button class="iconbtn" id="menuBtn" aria-label="Settings">&#8801;</button>
+      </header>
+      <section class="bezel">
+        <div class="bezel-dots" aria-hidden="true"><i></i><i></i></div>
+        <div class="lcd" id="lcdL"></div>
+        <div class="bezel-foot" aria-hidden="true"><span class="dot"></span><span class="grill"></span></div>
+      </section>
+      <footer class="controls">
+        <div class="cl">
+          <div class="btnrow">
+            <label class="hw catchbtn"><span class="biground" id="lblA">CATCH</span>
+              <input type="file" accept="image/*" id="catchInput" aria-label="Catch"></label>
+            <div class="counter" id="counter"></div>
+            <button class="hw" id="btnB"><span class="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6M4 12h16"/></svg></span><small id="lblB">BACK</small></button>
+          </div>
+          <button class="pill" id="pillPage">PAGE</button>
+        </div>
+        <div class="dpad" role="group" aria-label="D-pad">
+          <button class="u" id="dU" aria-label="Up">&#9650;</button>
+          <button class="l" id="dL" aria-label="Previous">&#9664;</button>
+          <button class="c" id="dC" aria-label="OK">OK</button>
+          <button class="r" id="dR" aria-label="Next">&#9654;</button>
+          <button class="d" id="dD" aria-label="Down">&#9660;</button>
+        </div>
+      </footer>
+    </section>
+
+    <div class="hinge" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <!-- RIGHT: context panel (web only) -->
+    <section class="dev right" aria-label="Details panel">
+      <header class="rtop">
+        <div class="leds" aria-hidden="true"><i class="led g"></i><i class="led y"></i></div>
+        <span class="label" id="rLabel">INFO</span>
+      </header>
+      <div class="rlcd"><div class="lcd" id="lcdR"></div></div>
+      <div>
+        <div class="keyslabel"><span id="keysTitle">MES TROUVAILLES</span><span id="keysCount"></span></div>
+        <div class="keys" id="keys"></div>
       </div>
-      <div class="pillrow">
-        <button class="pill red" id="pillPage">PAGE</button>
-        <button class="pill navy" id="pillLang">FR</button>
+      <div class="rbottom">
+        <button class="ybtn" id="yPrev">&#9664; PREV</button>
+        <div class="rnum" id="rnum">–</div>
+        <button class="ybtn" id="yNext">NEXT &#9654;</button>
       </div>
-    </div>
-    <div class="dpad" role="group" aria-label="D-pad">
-      <button class="u" id="dU" aria-label="Up">&#9650;</button>
-      <button class="l" id="dL" aria-label="Previous">&#9664;</button>
-      <button class="c" id="dC" aria-label="OK">OK</button>
-      <button class="r" id="dR" aria-label="Next">&#9654;</button>
-      <button class="d" id="dD" aria-label="Down">&#9660;</button>
-    </div>
-  </footer>
+    </section>
+  </div>
 </div>
 
 <script>
-/* ---------- i18n ---------- */
 const T={
-fr:{exHead:"Sosies hors Pilzdex",exTag:"hors Pilzdex",grid:"Grille",list:"Liste",dex:"PILZDEX",caught:"attrapés",all:"Tous",got:"Attrapés",missing:"Manquants",catch:"ATTRAPER",back:"RETOUR",page:"PAGE",season:"Saison",cap:"Chapeau",spores:"Sporée",where:"Où le trouver",look:"Sosies dangereux",finds:"Mes trouvailles",noFinds:"Pas encore trouvé. Appuie sur ATTRAPER quand tu le vois.",settings:"Réglages",language:"Langue",account:"Compte",signout:"Se déconnecter",export:"Exporter ma collection (JSON)",copy:"Copier",copied:"Copié",disclaimer:"Collection personnelle, pas un guide d'identification. Ne mange jamais un champignon sur la foi de cette app.",loginTitle:"Connexion par lien magique",email:"E-mail",send:"Envoyer le lien",inbox:"Lien envoyé. Ouvre ton e-mail sur ce téléphone.",openMock:"(maquette) Continuer",photo:"Prendre une photo",species:"Espèce",date:"Date",place:"Lieu",placeHint:"GPS auto dans l'app",note:"Note",save:"ENREGISTRER",gotcha:"ATTRAPÉ !",edible:"Comestible",none:"Sans intérêt",toxic:"Toxique",deadly:"Mortel",swipe:"glisse ou PAGE",more:"+22 espèces après le scraping des données (30 au total)",notIn:"hors Pilzdex",yours:"Ta photo",allYear:"toute l'année",filterEd:"Comestibilité",ok:"OK",menu:"MENU",photoNeeded:"Ajoute une photo d'abord"},
-en:{exHead:"Lookalikes outside the Pilzdex",exTag:"not in top 30",grid:"Grid",list:"List",dex:"PILZDEX",caught:"caught",all:"All",got:"Caught",missing:"Missing",catch:"CATCH",back:"BACK",page:"PAGE",season:"Season",cap:"Cap",spores:"Spore print",where:"Where to find",look:"Dangerous lookalikes",finds:"My finds",noFinds:"Not found yet. Press CATCH when you spot it.",settings:"Settings",language:"Language",account:"Account",signout:"Sign out",export:"Export my collection (JSON)",copy:"Copy",copied:"Copied",disclaimer:"Personal collection, not an identification guide. Never eat a mushroom based on this app.",loginTitle:"Sign in with a magic link",email:"Email",send:"Send link",inbox:"Link sent. Open the email on this phone.",openMock:"(mockup) Continue",photo:"Take a photo",species:"Species",date:"Date",place:"Place",placeHint:"auto GPS in the app",note:"Note",save:"SAVE",gotcha:"GOTCHA!",edible:"Edible",none:"No interest",toxic:"Toxic",deadly:"Deadly",swipe:"swipe or PAGE",more:"+22 species once the data is scraped (30 total)",notIn:"not in Pilzdex",yours:"Your photo",allYear:"all year",filterEd:"Edibility",ok:"OK",menu:"MENU",photoNeeded:"Add a photo first"},
-de:{exHead:"Doppelgänger außerhalb des Pilzdex",exTag:"nicht in Top 30",grid:"Raster",list:"Liste",dex:"PILZDEX",caught:"gefangen",all:"Alle",got:"Gefangen",missing:"Fehlend",catch:"FANGEN",back:"ZURÜCK",page:"SEITE",season:"Saison",cap:"Hut",spores:"Sporenpulver",where:"Fundort",look:"Gefährliche Doppelgänger",finds:"Meine Funde",noFinds:"Noch nicht gefunden. Drück FANGEN, wenn du ihn siehst.",settings:"Einstellungen",language:"Sprache",account:"Konto",signout:"Abmelden",export:"Sammlung exportieren (JSON)",copy:"Kopieren",copied:"Kopiert",disclaimer:"Persönliche Sammlung, kein Bestimmungsbuch. Iss nie einen Pilz auf Grundlage dieser App.",loginTitle:"Anmelden per Magic Link",email:"E-Mail",send:"Link senden",inbox:"Link gesendet. Öffne die Mail auf diesem Handy.",openMock:"(Mockup) Weiter",photo:"Foto aufnehmen",species:"Art",date:"Datum",place:"Ort",placeHint:"GPS automatisch in der App",note:"Notiz",save:"SPEICHERN",gotcha:"GEFANGEN!",edible:"Essbar",none:"Ohne Wert",toxic:"Giftig",deadly:"Tödlich",swipe:"wischen oder SEITE",more:"+22 Arten nach dem Daten-Scraping (30 insgesamt)",notIn:"nicht im Pilzdex",yours:"Dein Foto",allYear:"ganzjährig",filterEd:"Essbarkeit",ok:"OK",menu:"MENÜ",photoNeeded:"Erst ein Foto hinzufügen"}
+fr:{dex:"PILZDEX",caught:"attrapés",all:"Tous",got:"Attrapés",missing:"Manquants",catch:"ATTRAPER",back:"RETOUR",page:"PAGE",
+ season:"Saison",cap:"Chapeau",spores:"Sporée",where:"Où le trouver",look:"Sosies",finds:"MES TROUVAILLES",recent:"DERNIÈRES PRISES",
+ filters:"Filtres",progress:"Progression",byEd:"Par comestibilité",regions:"Régions",settings:"Réglages",language:"Langue",view:"Affichage",
+ grid:"Grille",list:"Liste",account:"Compte",signout:"Se déconnecter",edible:"Comestible",none:"Sans intérêt",toxic:"Toxique",deadly:"Mortel",
+ allYear:"toute l'année",exHead:"Sosies hors Pilzdex",exTag:"hors Pilzdex",tapToCatch:"Touche pour attraper",
+ noFinds:"Pas encore trouvé. Appuie sur ATTRAPER quand tu le vois.",suggestion:"Suggestion",probably:"Probablement :",notSure:"Pas sûr. Possibilités :",
+ species:"Espèce",save:"ENREGISTRER",gotcha:"ATTRAPÉ !",sample:"Photo d'exemple",areYouSure:"Tu es sûr que c'est {x} ? Ça ressemble plutôt à {y} ({p}).",
+ keep:"Garder {x}",switchTo:"Mettre {y}",info:"INFO",prev:"PRÉC",next:"SUIV",panelIdx:"Ce panneau remplace les filtres et la progression qui encombraient l'écran.",
+ panelEntry:"Ce panneau remplace la PAGE 2 : saison, morphologie, lieu et sosies, à côté de la photo.",tapPhoto:"Touche la photo pour la changer"},
+en:{dex:"PILZDEX",caught:"caught",all:"All",got:"Caught",missing:"Missing",catch:"CATCH",back:"BACK",page:"PAGE",
+ season:"Season",cap:"Cap",spores:"Spore print",where:"Where to find",look:"Lookalikes",finds:"MY FINDS",recent:"LATEST CATCHES",
+ filters:"Filters",progress:"Progress",byEd:"By edibility",regions:"Regions",settings:"Settings",language:"Language",view:"View",
+ grid:"Grid",list:"List",account:"Account",signout:"Sign out",edible:"Edible",none:"No interest",toxic:"Toxic",deadly:"Deadly",
+ allYear:"all year",exHead:"Lookalikes outside the Pilzdex",exTag:"not in Pilzdex",tapToCatch:"Tap to catch",
+ noFinds:"Not found yet. Press CATCH when you spot it.",suggestion:"Suggestion",probably:"Probably:",notSure:"Not sure. Could be:",
+ species:"Species",save:"SAVE",gotcha:"GOTCHA!",sample:"Sample photo",areYouSure:"Are you sure this is {x}? It looks more like {y} ({p}).",
+ keep:"Keep {x}",switchTo:"Switch to {y}",info:"INFO",prev:"PREV",next:"NEXT",panelIdx:"This panel takes the filters and progress off the main screen.",
+ panelEntry:"This panel replaces PAGE 2: season, morphology, place and lookalikes, next to the photo.",tapPhoto:"Tap the photo to change it"},
+de:{dex:"PILZDEX",caught:"gefangen",all:"Alle",got:"Gefangen",missing:"Fehlend",catch:"FANGEN",back:"ZURÜCK",page:"SEITE",
+ season:"Saison",cap:"Hut",spores:"Sporenpulver",where:"Fundort",look:"Doppelgänger",finds:"MEINE FUNDE",recent:"LETZTE FÄNGE",
+ filters:"Filter",progress:"Fortschritt",byEd:"Nach Essbarkeit",regions:"Regionen",settings:"Einstellungen",language:"Sprache",view:"Ansicht",
+ grid:"Raster",list:"Liste",account:"Konto",signout:"Abmelden",edible:"Essbar",none:"Ohne Wert",toxic:"Giftig",deadly:"Tödlich",
+ allYear:"ganzjährig",exHead:"Doppelgänger außerhalb des Pilzdex",exTag:"nicht im Pilzdex",tapToCatch:"Tippen zum Fangen",
+ noFinds:"Noch nicht gefunden. Drück FANGEN, wenn du ihn siehst.",suggestion:"Vorschlag",probably:"Wahrscheinlich:",notSure:"Unsicher. Möglich:",
+ species:"Art",save:"SPEICHERN",gotcha:"GEFANGEN!",sample:"Beispielfoto",areYouSure:"Bist du sicher, dass das {x} ist? Sieht eher aus wie {y} ({p}).",
+ keep:"{x} behalten",switchTo:"{y} nehmen",info:"INFO",prev:"ZURÜCK",next:"WEITER",panelIdx:"Dieses Feld nimmt Filter und Fortschritt vom Hauptbildschirm.",
+ panelEntry:"Dieses Feld ersetzt SEITE 2: Saison, Merkmale, Fundort und Doppelgänger neben dem Foto.",tapPhoto:"Foto antippen zum Ändern"}
 };
-
+</script>
+<script>
 /* ---------- MOCK data: placeholder text for UX only, real data will be scraped ---------- */
 const D=[
 {id:1,latin:"Amanita muscaria",n:{fr:"Amanite tue-mouches",en:"Fly agaric",de:"Fliegenpilz"},ed:"toxic",shape:"amanita",c:["#d42a1f","#f6f1e4"],season:"VIII–XI",cap:"8–20 cm",spores:{fr:"blanche",en:"white",de:"weiß"},reg:["BER","GRE"],how:{fr:"Sous bouleaux et épicéas, sol acide.",en:"Under birch and spruce, acidic soil.",de:"Unter Birken und Fichten, saurer Boden."},look:[4,101],desc:{fr:"MAQUETTE. Le champignon des contes : chapeau rouge à flocons blancs.",en:"MOCK. The fairy-tale mushroom: red cap with white flakes.",de:"MOCKUP. Der Märchenpilz: roter Hut mit weißen Flocken."}},
@@ -248,140 +320,148 @@ none:`<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#8a8a8a" stro
 toxic:`<svg viewBox="0 0 20 20"><path d="M10 1.5L19 18H1z" fill="#e08a12" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 7v5" stroke="#111" stroke-width="2.4" stroke-linecap="round"/><circle cx="10" cy="15" r="1.3" fill="#111"/></svg>`,
 deadly:`<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#111" stroke="#d9262b" stroke-width="1.5"/><path d="M5 9a5 5 0 0 1 10 0c0 2-1 3-2 3.5V15H7v-2.5C6 12 5 11 5 9z" fill="#fff"/><circle cx="8" cy="9" r="1.4" fill="#111"/><circle cx="12" cy="9" r="1.4" fill="#111"/><path d="M9 15v-1.5M11 15v-1.5" stroke="#111" stroke-width="1"/></svg>`};
 
-/* ---------- state ---------- */
+
+</script>
+<script>
+/* ---------- helpers ---------- */
+const ROM=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+const MON={fr:["JANV","FÉVR","MARS","AVR","MAI","JUIN","JUIL","AOÛT","SEPT","OCT","NOV","DÉC"],en:["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"],de:["JAN","FEB","MÄR","APR","MAI","JUN","JUL","AUG","SEP","OKT","NOV","DEZ"]};
+function months(sp){ if(!sp.season||sp.season==="?")return []; const [a,b]=sp.season.split("–").map(r=>ROM.indexOf(r)+1); const out=[]; for(let m=a;;m=m%12+1){out.push(m);if(m===b||out.length>12)break;} return out; }
+function hist(ms){ const h=Array(12).fill(0); ms.forEach((m,i)=>{h[m-1]=Math.round(100*Math.sin(Math.PI*(i+1)/(ms.length+1)))+10}); return h; }
+const seasonLabel=(ms,l)=>!ms.length?"–":ms.length>=12?T[l].allYear:`${MON[l][ms[0]-1]}–${MON[l][ms[ms.length-1]-1]}`;
 const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-const S={lang:store.get("pz.lang","fr"),view:"login",sent:false,sel:0,cur:1,page:0,filter:"all",edf:null,prev:"index",mode:store.get("pz.mode","grid"),stack:[],
-  finds:store.get("pz.finds",{2:[{date:"2026-09-14",place:"Grunewald, Berlin",note:""}],3:[{date:"2026-07-22",place:"Chartreuse, Isère",note:"sous les hêtres"},{date:"2026-08-30",place:"Vercors, Isère",note:""}],7:[{date:"2026-10-03",place:"Tegeler Forst, Berlin",note:""}]})};
-const t=k=>T[S.lang][k]??k;
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const fill=(s,v)=>s.replace(/\{(\w+)\}/g,(_,k)=>v[k]??"");
+
+const S={lang:store.get("pzm.lang","fr"),mode:store.get("pzm.mode","grid"),view:"index",cur:2,page:0,filter:"all",edf:null,stack:[],prev:"index",
+  wide:store.get("pzm.wide",null),draft:null,draftSp:null,catchFor:null,
+  finds:{2:[{date:"2026-09-14"}],3:[{date:"2026-07-22"},{date:"2026-08-30"},{date:"2026-10-12"}],7:[{date:"2026-10-03"}],1:[{date:"2026-10-20"}]}};
+const t=k=>T[S.lang][k]??k;
 const caught=id=>(S.finds[id]||[]).length>0;
 const nm=sp=>sp.n[S.lang];
 const no=id=>id>100?"EX-"+String(id-100).padStart(2,"0"):"No. "+String(id).padStart(3,"0");
+const short=id=>id>100?"EX"+(id-100):String(id).padStart(3,"0");
 const byId=id=>ALL.find(x=>x.id===id);
 const looksOf=sp=>[...new Set([...sp.look,...ALL.filter(x=>x.look.includes(sp.id)).map(x=>x.id)])].map(byId);
 const visible=()=>D.filter(sp=>(S.filter==="all"||(S.filter==="got"?caught(sp.id):!caught(sp.id)))&&(!S.edf||sp.ed===S.edf));
 const $=id=>document.getElementById(id);
-const lcd=$("lcd");
+const canWide=()=>innerWidth>=900;
+const isWide=()=>canWide()&&S.wide!==false;
+const edPill=(ed,big)=>`<span class="edpill ${ed}${big?" big":""}">${ED[ed]}${esc(t(ed))}</span>`;
 
-function pic(sp,big){
-  const f=(S.finds[sp.id]||[])[0];
-  if(f&&f.img) return `<div class="pic"><img src="${esc(f.img)}" alt=""><span class="stamp">${esc(t("yours"))} · ${esc(f.date)}</span></div>`;
-  if(caught(sp.id)) return `<div class="pic photo">${art(sp.shape,sp.c,false,sp.plain)}${big?`<span class="stamp">${esc(t("yours"))} · ${esc(f.date)}</span>`:""}</div>`;
-  return `<div class="pic">${art(sp.shape,sp.c,true)}<span class="lock">???</span></div>`;
-}
-const rowH=(sp,sel)=>`<li class="row ${sel?"sel":""} ${sp.extra?"x":""}" data-open="${sp.id}"><span class="num">${sp.extra?"EX"+(sp.id-100):String(sp.id).padStart(3,"0")}</span><span class="thumb">${art(sp.shape,sp.c,!caught(sp.id),sp.plain)}</span><span class="nm">${esc(nm(sp))}</span><span class="ed">${ED[sp.ed]}</span><span class="ball ${caught(sp.id)?"on":""}"></span></li>`;
-const tile=(sp,sel)=>`<button class="tile ${sel?"sel":""} ${caught(sp.id)?"got":""} ${sp.extra?"x":""}" data-open="${sp.id}"><span class="tn">${sp.extra?"EX"+(sp.id-100):String(sp.id).padStart(3,"0")}</span><span class="ted">${ED[sp.ed]}</span><span class="tart">${art(sp.shape,sp.c,!caught(sp.id),sp.plain)}</span><span class="tname">${esc(nm(sp))}</span>${caught(sp.id)?`<span class="ball on tb"></span>`:""}</button>`;
-const edPill=ed=>`<span class="edpill ${ed}">${ED[ed]}${esc(t(ed))}</span>`;
+/* ---------- pieces ---------- */
+const tile=sp=>`<button class="tile ${caught(sp.id)?"got":""} ${sp.extra?"x":""}" data-open="${sp.id}"><span class="thead"><span>${short(sp.id)}</span><span class="ed">${ED[sp.ed]}</span></span><span class="tart">${art(sp.shape,sp.c,!caught(sp.id),sp.plain)}</span><span class="tname">${esc(nm(sp))}</span></button>`;
+const filters=()=>`<div class="chips one">${["all","got","missing"].map(f=>`<button class="chip" data-filter="${f}" aria-pressed="${S.filter===f}">${esc(t(f))}</button>`).join("")}<span class="sep"></span>${["edible","none","toxic","deadly"].map(e=>`<button class="chip icon" data-edf="${e}" aria-pressed="${S.edf===e}" title="${esc(t(e))}"><span class="ed">${ED[e]}</span></button>`).join("")}</div>`;
+function picture(sp,hint){ const f=(S.finds[sp.id]||[])[0];
+  if(f) return `<button class="shot" data-recrop="${sp.id}">${art(sp.shape,sp.c,false,sp.plain)}<span class="stamp">${esc(f.date)}</span></button>`;
+  return `<label class="pic">${art(sp.shape,sp.c,true)}<span class="stamp">${esc(hint)}</span><input type="file" accept="image/*" data-catchfor="${sp.id}" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>`; }
+function statsBox(sp){ const ms=months(sp),h=hist(ms),mx=Math.max(1,...h);
+  return `<div class="box"><div class="stat"><span>${esc(t("season"))}</span><span></span><b>${esc(seasonLabel(ms,S.lang))}</b></div>
+   <div class="bars">${h.map((v,i)=>`<i class="${ms.includes(i+1)?"on":""}" style="height:${Math.max(4,v/mx*100)}%"></i>`).join("")}</div>
+   <div class="mlabels">${MON[S.lang].map(m=>`<span>${m[0]}</span>`).join("")}</div>
+   <div class="stat"><span>${esc(t("cap"))}</span><span></span><b>${esc(sp.cap)}</b></div>
+   <div class="stat"><span>${esc(t("spores"))}</span><span></span><b>${esc(sp.spores[S.lang])}</b></div></div>`; }
+const whereBox=sp=>`<div class="box"><h3>${esc(t("where"))}</h3><div class="chips">${["BER","GRE"].map(r=>`<span class="chip ${sp.reg.includes(r)?"on":"off"}">${r==="BER"?"Berlin":"Grenoble"}</span>`).join("")}</div>${esc(sp.how[S.lang])}</div>`;
+function lookBox(sp,roman){ const L=looksOf(sp); if(!L.length)return "";
+  return `<div class="box"><h3>${esc(t("look"))}</h3><div class="look">${L.slice(0,3).map((x,i)=>`<button class="lk" data-open="${x.id}" data-push="1">${roman?`<span class="roman">${ROM[i]}</span>`:""}${art(x.shape,x.c,!caught(x.id),x.plain)}<span>${esc(nm(x))}</span><span class="ed">${ED[x.ed]}</span></button>`).join("")}</div></div>`; }
 
-/* ---------- views ---------- */
-const V={
-login(){return `<div class="scroll"><div class="logo">PILZDEX</div><p class="sub" style="text-align:center;margin:0 0 14px">Berlin · Grenoble</p>
-  <div class="box"><h3>${esc(t("loginTitle"))}</h3>
-  ${S.sent?`<p style="margin:4px 0 10px">${esc(t("inbox"))}</p><button class="cta" data-act="enter">${esc(t("openMock"))}</button>`:
-  `<form id="loginForm"><div class="field"><label for="em">${esc(t("email"))}</label><input id="em" type="email" value="sam@example.com" autocomplete="email"></div><button class="cta" type="submit">${esc(t("send"))}</button></form>`}</div>
-  <p class="note">${esc(t("disclaimer"))}</p></div>`},
-index(){
-  const list=visible(); if(S.sel>=list.length)S.sel=Math.max(0,list.length-1);
-  return `<div class="titlebar"><span>${t("dex")}</span><span>${D.filter(x=>caught(x.id)).length}/${D.length}</span></div>
-  <div class="scroll" id="sc">
-  <div class="chips"><span class="seg mini">${["grid","list"].map(m=>`<button data-mode="${m}" aria-pressed="${S.mode===m}" title="${esc(t(m))}">${m==="grid"?"&#9638;":"&#9776;"}</button>`).join("")}</span>${["all","got","missing"].map(f=>`<button class="chip" data-filter="${f}" aria-pressed="${S.filter===f}">${esc(t(f))}</button>`).join("")}</div>
-  <div class="chips" aria-label="${esc(t("filterEd"))}">${["edible","none","toxic","deadly"].map(e=>`<button class="chip" data-edf="${e}" aria-pressed="${S.edf===e}" title="${esc(t(e))}"><span class="ed">${ED[e]}</span></button>`).join("")}</div>
-  ${S.mode==="grid"?`<div class="grid">${list.map((sp,i)=>tile(sp,i===S.sel)).join("")}</div>`:`<ul class="list">${list.map((sp,i)=>rowH(sp,i===S.sel)).join("")}</ul>`}
-  <p class="more">${esc(t("more"))}</p>
-  <h3 class="exhead">${esc(t("exHead"))} (${EX.length})</h3>
-  ${S.mode==="grid"?`<div class="grid">${EX.map(sp=>tile(sp,false)).join("")}</div>`:`<ul class="list">${EX.map(sp=>rowH(sp,false)).join("")}</ul>`}
-  </div>`},
-entry(){
-  const sp=byId(S.cur), fs=S.finds[sp.id]||[];
-  const head=`<div class="titlebar"><span class="name">${esc(nm(sp))}</span><span>${no(sp.id)}</span></div>`;
-  const dots=`<div class="dots"><i class="${S.page?"":"on"}"></i><i class="${S.page?"on":""}"></i>&nbsp;${esc(t("swipe"))}</div>`;
-  if(!S.page) return head+`<div class="scroll" id="sc">${pic(sp,true)}
-    <div class="meta">${edPill(sp.ed)}${sp.extra?`<span class="chip">${esc(t("exTag"))}</span>`:""}<span class="latin">${esc(sp.latin)}</span></div>
-    <div class="box">${esc(sp.desc[S.lang])}</div></div>`+dots;
-  const looks=looksOf(sp).map(x=>`<button class="lk" data-open="${x.id}" data-push="1">${art(x.shape,x.c,!caught(x.id),x.plain)}<span>${esc(nm(x))}</span><span class="ed">${ED[x.ed]}</span><span class="sub" style="font-size:14px">${no(x.id)}</span></button>`).join("");
-  return head+`<div class="scroll" id="sc">
-    <div class="box"><div class="stat"><span>${esc(t("season"))}</span><span></span><b>${esc(sp.season==="I–XII"?t("allYear"):sp.season)}</b></div>
-    <div class="stat"><span>${esc(t("cap"))}</span><span></span><b>${esc(sp.cap)}</b></div>
-    <div class="stat"><span>${esc(t("spores"))}</span><span></span><b>${esc(sp.spores[S.lang])}</b></div></div>
-    <div class="box"><h3>${esc(t("where"))}</h3><div class="chips" style="margin:2px 0 4px">${["BER","GRE"].map(r=>`<span class="chip ${sp.reg.includes(r)?"on":"off"}">${r==="BER"?"Berlin":"Grenoble"}</span>`).join("")}</div>${esc(sp.how[S.lang])}</div>
-    ${looksOf(sp).length?`<div class="box"><h3>${esc(t("look"))}</h3><div class="look">${looks}</div></div>`:""}
-    <div class="box"><h3>${esc(t("finds"))} (${fs.length})</h3>${fs.length?fs.map(f=>`<div class="find"><span class="t">${f.img?`<img src="${esc(f.img)}" alt="">`:art(sp.shape,sp.c,false,sp.plain)}</span><span>${esc(f.date)}<small>${esc(f.place||"–")}${f.note?" · "+esc(f.note):""}</small></span></div>`).join(""):`<p class="empty">${esc(t("noFinds"))}</p>`}</div>
-  </div>`+dots},
-catch(){
-  return `<div class="titlebar"><span>${esc(t("catch"))}</span><span>${no(S.cur)}</span></div><div class="scroll"><form id="catchForm">
-  <label class="shot" for="ph">${S.draft?`<img src="${esc(S.draft)}" alt="">`:`<span style="font-size:40px">&#128247;</span><span>${esc(t("photo"))}</span>`}<input id="ph" type="file" accept="image/*" capture="environment"></label>
-  <div class="field"><label for="spc">${esc(t("species"))}</label><select id="spc">${ALL.map(sp=>`<option value="${sp.id}" ${sp.id===S.cur?"selected":""}>${no(sp.id)} ${esc(nm(sp))}</option>`).join("")}</select></div>
-  <div class="field"><label for="dt">${esc(t("date"))}</label><input id="dt" type="date" value="2026-11-01"></div>
-  <div class="field"><label for="pl">${esc(t("place"))}</label><input id="pl" placeholder="${esc(t("placeHint"))}"></div>
-  <div class="field"><label for="nt">${esc(t("note"))}</label><input id="nt"></div>
-  <button class="cta" type="submit">${esc(t("save"))}</button><p class="note" id="catchMsg"></p></form></div>`},
-settings(){
-  const json=JSON.stringify(S.finds);
-  return `<div class="titlebar"><span>${esc(t("settings"))}</span><span>v0.0</span></div><div class="scroll">
-  <div class="box"><h3>${esc(t("language"))}</h3><div class="seg">${["fr","en","de"].map(l=>`<button data-lang="${l}" aria-pressed="${S.lang===l}">${l.toUpperCase()}</button>`).join("")}</div></div>
-  <div class="box"><h3>${esc(t("account"))}</h3><p style="margin:0 0 8px">sam@example.com</p><button class="cta" data-act="signout">${esc(t("signout"))}</button></div>
-  <div class="box"><h3>${esc(t("export"))}</h3><button class="cta" data-act="copy">${esc(t("copy"))} (${json.length} B)</button></div>
-  <p class="note">${esc(t("disclaimer"))}</p></div>`}
-};
+/* ---------- views: left screen ---------- */
+function leftIndex(){ const list=visible(), n=D.filter(x=>caught(x.id)).length;
+  return `<div class="titlebar"><span>${t("dex")}</span><span>${n}/30</span></div><div class="scroll">
+   ${isWide()?"":filters()}
+   <div class="grid dex">${list.map(tile).join("")}</div>
+   <h3 class="exhead">${esc(t("exHead"))} (${EX.length})</h3><div class="grid dex">${EX.map(tile).join("")}</div></div>`; }
+function leftEntry(){ const sp=byId(S.cur); const head=`<div class="titlebar"><span class="name">${esc(nm(sp))}</span><span>${no(sp.id)}</span></div>`;
+  const p1=`${picture(sp,t("tapToCatch"))}<div class="meta">${edPill(sp.ed)}${sp.extra?`<span class="chip">${esc(t("exTag"))}</span>`:""}<span class="latin">${esc(sp.latin)}</span></div><div class="box">${esc(sp.desc[S.lang])}</div>`;
+  if(isWide()||S.page===0) return head+`<div class="scroll">${p1}</div>`;
+  return head+`<div class="scroll">${statsBox(sp)}${whereBox(sp)}${lookBox(sp,false)}${findsList(sp)}</div>`; }
+function findsList(sp){ const fs=S.finds[sp.id]||[]; return `<div class="box"><h3>${esc(t("finds"))} (${fs.length})</h3>${fs.length?fs.map(f=>`<div class="stat"><span>${esc(f.date)}</span><span></span><b>📍</b></div>`).join(""):`<p class="empty">${esc(t("noFinds"))}</p>`}</div>`; }
+function leftCatch(){ const sp=byId(S.draftSp??S.catchFor??2);
+  return `<div class="titlebar"><span>${esc(t("catch"))}</span>${S.catchFor?`<span class="name">${esc(nm(byId(S.catchFor)))}</span>`:""}</div><div class="scroll">
+   <label class="shot">${S.draft?`<img src="${esc(S.draft)}" alt="">`:art(sp.shape,sp.c,false,sp.plain)}<span class="stamp">${esc(t("tapPhoto"))}</span><input type="file" accept="image/*" id="rePick" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>
+   ${isWide()?"":catchForm()}</div>`; }
+function catchForm(){ const verify=S.catchFor!=null, sel=byId(S.draftSp);
+  const guesses=[[sel?.id===2?103:2,.58],[3,.21],[104,.09]];
+  let html="";
+  if(verify){ const y=byId(103); if(!S.dismissed&&S.draftSp===S.catchFor&&S.catchFor===2) html+=`<div class="box warnbox"><p style="margin:0 0 6px">${esc(fill(t("areYouSure"),{x:nm(sel),y:nm(y),p:"72%"}))}</p><div class="chips"><button class="chip" data-pick="103">${esc(fill(t("switchTo"),{y:nm(y)}))}</button><button class="chip" data-dismiss="1">${esc(fill(t("keep"),{x:nm(sel)}))}</button></div></div>`; }
+  else html+=`<div class="box"><h3>${esc(t("suggestion"))}</h3><p style="margin:0 0 4px">${esc(t("notSure"))}</p>${guesses.map(([id,p])=>`<button class="guess" data-pick="${id}" aria-pressed="${S.draftSp===id}"><span class="ed">${ED[byId(id).ed]}</span><span>${esc(nm(byId(id)))}</span><b style="font-weight:400">${Math.round(p*100)}%</b></button>`).join("")}</div>`;
+  return html+`<div class="field"><label for="spc">${esc(t("species"))}</label><select id="spc">${ALL.map(s=>`<option value="${s.id}" ${s.id===S.draftSp?"selected":""}>${no(s.id)} ${esc(nm(s))}</option>`).join("")}</select></div>
+   <button class="cta" data-save="1">${esc(t("save"))}</button>`; }
+function leftSettings(){ return `<div class="titlebar"><span>${esc(t("settings"))}</span></div><div class="scroll">${settingsBody()}</div>`; }
+function settingsBody(){ return `<div class="box"><h3>${esc(t("language"))}</h3><div class="seg2">${["fr","en","de"].map(l=>`<button data-lang="${l}" aria-pressed="${S.lang===l}">${l.toUpperCase()}</button>`).join("")}</div></div>
+  <div class="box"><h3>${esc(t("view"))}</h3><div class="seg2">${["grid","list"].map(m=>`<button data-mode="${m}" aria-pressed="${S.mode===m}">${esc(t(m))}</button>`).join("")}</div></div>
+  <div class="box"><h3>${esc(t("account"))}</h3><p style="margin:0 0 8px">sam@example.com</p><button class="cta">${esc(t("signout"))}</button></div>`; }
 
+/* ---------- views: right panel (web) ---------- */
+function rightIndex(){ const n=D.filter(x=>caught(x.id)).length;
+  const by=["edible","none","toxic","deadly"].map(e=>[e,D.filter(s=>s.ed===e).length,D.filter(s=>s.ed===e&&caught(s.id)).length]);
+  return `<div class="titlebar"><span>${esc(t("filters"))}</span><span>${visible().length}</span></div><div class="scroll">${filters()}
+   <div class="box"><h3>${esc(t("progress"))}</h3><div class="prog"><span>${n}/30</span><span class="bar"><i style="width:${n/30*100}%"></i></span><span>${Math.round(n/30*100)}%</span></div></div>
+   <div class="box"><h3>${esc(t("byEd"))}</h3><div class="prog">${by.map(([e,tot,got])=>`<span class="ed">${ED[e]}</span><span class="bar"><i style="width:${tot?got/tot*100:0}%"></i></span><span>${got}/${tot}</span>`).join("")}</div></div>
+   <div class="box"><h3>${esc(t("regions"))}</h3><div class="prog">${["BER","GRE"].map(r=>{const tot=D.filter(s=>s.reg.includes(r)).length,got=D.filter(s=>s.reg.includes(r)&&caught(s.id)).length;return `<span>${r==="BER"?"Berlin":"Grenoble"}</span><span class="bar"><i style="width:${got/tot*100}%"></i></span><span>${got}/${tot}</span>`}).join("")}</div></div>
+   <p class="callout">${esc(t("panelIdx"))}</p></div>`; }
+function rightEntry(){ const sp=byId(S.cur);
+  return `<div class="titlebar"><span>${no(sp.id)}</span>${edPill(sp.ed)}</div><div class="scroll">${statsBox(sp)}${whereBox(sp)}${lookBox(sp,true)}<p class="callout">${esc(t("panelEntry"))}</p></div>`; }
+function rightCatch(){ return `<div class="titlebar"><span>${esc(t("suggestion"))}</span></div><div class="scroll">${catchForm()}</div>`; }
+function rightSettings(){ return `<div class="titlebar"><span>${esc(t("settings"))}</span></div><div class="scroll">${settingsBody()}</div>`; }
+
+function keys(){ let items, title;
+  if(S.view==="entry"){ const sp=byId(S.cur); title=t("finds"); items=(S.finds[sp.id]||[]).map(f=>({sp,date:f.date})); }
+  else { title=t("recent"); items=Object.entries(S.finds).flatMap(([id,fs])=>fs.map(f=>({sp:byId(+id),date:f.date}))).sort((a,b)=>b.date.localeCompare(a.date)); }
+  $("keysTitle").textContent=title; $("keysCount").textContent=items.length?String(items.length):"";
+  $("keys").innerHTML=Array.from({length:10},(_,i)=>{const it=items[i];
+    return it?`<button class="key photo" data-open="${it.sp.id}" title="${esc(nm(it.sp))} · ${esc(it.date)}">${art(it.sp.shape,it.sp.c,false,it.sp.plain)}<span class="kd">${esc(it.date.slice(5))}</span></button>`:`<button class="key" disabled aria-label="empty"></button>`}).join(""); }
+
+/* ---------- render ---------- */
 function render(){
-  lcd.innerHTML=V[S.view]();
-  document.documentElement.lang=S.lang;
+  const wide=isWide(); $("book").classList.toggle("wide",wide);
+  $("vWide").setAttribute("aria-pressed",wide);$("vPhone").setAttribute("aria-pressed",!wide);$("vWide").disabled=!canWide();
+  $("vHint").textContent=canWide()?"":"widen the window to 900 px for two panels";
+  const L={index:leftIndex,entry:leftEntry,catch:leftCatch,settings:wide?leftIndex:leftSettings}[S.view]();
+  $("lcdL").innerHTML=L;
+  if(wide){ $("lcdR").innerHTML={index:rightIndex,entry:rightEntry,catch:rightCatch,settings:rightSettings}[S.view]();
+    $("rLabel").textContent=S.view==="settings"?t("settings").toUpperCase():t("info");
+    keys(); const step=S.view==="entry"; $("yPrev").disabled=!step;$("yNext").disabled=!step;
+    $("yPrev").innerHTML=`&#9664; ${esc(t("prev"))}`;$("yNext").innerHTML=`${esc(t("next"))} &#9654;`;
+    $("rnum").textContent=step?short(S.cur):"–"; }
   const n=D.filter(x=>caught(x.id)).length;
-  $("counter").innerHTML=`${n}/${D.length}<small>${esc(t("caught"))}</small>`;
-  $("lblA").textContent=t("catch"); $("lblB").textContent=t("back");
-  $("pillPage").textContent=t("page"); $("pillPage").disabled=S.view!=="entry";
-  $("pillLang").textContent=S.lang.toUpperCase();
-  const sel=lcd.querySelector(".row.sel,.tile.sel"); if(sel) sel.scrollIntoView({block:"nearest"});
+  $("counter").innerHTML=`${n}/30<small>${esc(t("caught"))}</small>`;
+  const a=t("catch"); $("lblA").textContent=a; $("lblA").classList.toggle("long",a.length>6);
+  $("lblB").textContent=t("back"); $("pillPage").textContent=t("page"); $("pillPage").disabled=S.view!=="entry";
+  document.documentElement.lang=S.lang;
 }
-function go(view,extra={}){ if(view!==S.view&&S.view!=="catch"&&S.view!=="settings")S.prev=S.view; Object.assign(S,extra,{view}); render(); }
-function toast(msg){const el=document.createElement("div");el.className="toast";el.textContent=msg;lcd.appendChild(el);$("ledG").classList.remove("flash");void $("ledG").offsetWidth;$("ledG").classList.add("flash");setTimeout(()=>el.remove(),1400)}
-function step(d){S.stack=[];const ids=(byId(S.cur).extra?EX:D).map(x=>x.id);const i=ids.indexOf(S.cur);S.cur=ids[(i+d+ids.length)%ids.length];render()}
+function go(v,extra={}){ if(v!==S.view&&S.view!=="catch"&&S.view!=="settings")S.prev=S.view; Object.assign(S,extra,{view:v}); render(); }
+function step(d){ const g=byId(S.cur).extra?EX:D; const i=g.findIndex(x=>x.id===S.cur); S.cur=g[(i+d+g.length)%g.length].id; S.stack=[]; render(); }
+function toast(m){ const el=document.createElement("div");el.className="toast";el.textContent=m;$("lcdL").appendChild(el);setTimeout(()=>el.remove(),1300); }
+function startCatch(file,forId){ S.dismissed=false; S.draft=file?URL.createObjectURL(file):null; S.catchFor=forId; S.draftSp=forId; go("catch"); }
 
-/* ---------- hardware ---------- */
-const H={
-up(){ if(S.view==="index"){S.sel=Math.max(0,S.sel-(S.mode==="grid"?3:1));render()} else {const sc=$("sc");sc&&sc.scrollBy({top:-80,behavior:"smooth"})} },
-down(){ if(S.view==="index"){S.sel=Math.min(visible().length-1,S.sel+(S.mode==="grid"?3:1));render()} else {const sc=$("sc");sc&&sc.scrollBy({top:80,behavior:"smooth"})} },
-left(){ if(S.view==="entry")step(-1); else if(S.view==="index"&&S.mode==="grid"){S.sel=Math.max(0,S.sel-1);render()} else if(S.view==="index"){const f=["all","got","missing"];S.filter=f[(f.indexOf(S.filter)+2)%3];S.sel=0;render()} },
-right(){ if(S.view==="entry")step(1); else if(S.view==="index"&&S.mode==="grid"){S.sel=Math.min(visible().length-1,S.sel+1);render()} else if(S.view==="index"){const f=["all","got","missing"];S.filter=f[(f.indexOf(S.filter)+1)%3];S.sel=0;render()} },
-ok(){ if(S.view==="index"){const sp=visible()[S.sel]; if(sp)go("entry",{cur:sp.id,page:0})} else if(S.view==="entry"){S.page^=1;render()} },
-a(){ if(S.view==="login")return; if(S.view==="index"){const sp=visible()[S.sel]; if(sp)S.cur=sp.id} S.draft=null; go("catch") },
-b(){ if(S.view==="entry"){ if(S.stack.length){S.cur=S.stack.pop();S.page=1;render()} else go("index") } else if(S.view==="catch"||S.view==="settings")go(S.prev==="login"?"index":S.prev); }
-};
-$("dU").onclick=H.up;$("dD").onclick=H.down;$("dL").onclick=H.left;$("dR").onclick=H.right;$("dC").onclick=H.ok;
-$("btnA").onclick=H.a;$("btnB").onclick=H.b;
-$("pillPage").onclick=()=>{if(S.view==="entry"){S.page^=1;render()}};
-$("pillLang").onclick=()=>{const L=["fr","en","de"];S.lang=L[(L.indexOf(S.lang)+1)%3];store.set("pz.lang",S.lang);render()};
-$("menuBtn").onclick=()=>{if(S.view!=="login")go("settings")};
-document.addEventListener("keydown",e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;
-  const m={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",Enter:"ok",Escape:"b",c:"a"}[e.key]; if(m){e.preventDefault();H[m]()}});
-
-lcd.addEventListener("click",e=>{
-  const o=e.target.closest("[data-open]"); if(o){ if(o.dataset.push&&S.view==="entry")S.stack.push(S.cur); else if(S.view!=="entry")S.stack=[]; go("entry",{cur:+o.dataset.open,page:0});return}
-  const md=e.target.closest("[data-mode]"); if(md){S.mode=md.dataset.mode;store.set("pz.mode",S.mode);render();return}
-  const f=e.target.closest("[data-filter]"); if(f){S.filter=f.dataset.filter;S.sel=0;render();return}
-  const ef=e.target.closest("[data-edf]"); if(ef){S.edf=S.edf===ef.dataset.edf?null:ef.dataset.edf;S.sel=0;render();return}
-  const l=e.target.closest("[data-lang]"); if(l){S.lang=l.dataset.lang;store.set("pz.lang",S.lang);render();return}
-  const a=e.target.closest("[data-act]"); if(!a)return;
-  if(a.dataset.act==="enter")go("index");
-  if(a.dataset.act==="signout"){S.sent=false;go("login")}
-  if(a.dataset.act==="copy"){navigator.clipboard?.writeText(JSON.stringify(S.finds,null,2)).then(()=>{a.textContent=t("copied")}).catch(()=>{})}
+/* ---------- events ---------- */
+$("catchInput").addEventListener("change",e=>{const f=e.target.files[0];e.target.value="";if(f)startCatch(f,S.view==="entry"?S.cur:null);});
+$("btnB").onclick=()=>{ if(S.view==="entry"){ if(S.stack.length){S.cur=S.stack.pop();render()} else go("index"); } else if(S.view==="catch"||S.view==="settings") go(S.prev); };
+$("menuBtn").onclick=()=>{ S.view==="settings"?go(S.prev):go("settings"); };
+$("pillPage").onclick=()=>{ if(S.view==="entry"){S.page^=1;render()} };
+$("dL").onclick=()=>{ if(S.view==="entry")step(-1) }; $("dR").onclick=()=>{ if(S.view==="entry")step(1) };
+$("dC").onclick=()=>{ if(S.view==="entry"&&!isWide()){S.page^=1;render()} };
+$("dU").onclick=()=>document.querySelector("#lcdL .scroll")?.scrollBy({top:-160,behavior:"smooth"});
+$("dD").onclick=()=>document.querySelector("#lcdL .scroll")?.scrollBy({top:160,behavior:"smooth"});
+$("yPrev").onclick=()=>step(-1); $("yNext").onclick=()=>step(1);
+$("vWide").onclick=()=>{S.wide=true;store.set("pzm.wide",true);render()}; $("vPhone").onclick=()=>{S.wide=false;store.set("pzm.wide",false);render()};
+addEventListener("resize",render);
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"); if(o){ if(o.dataset.push&&S.view==="entry")S.stack.push(S.cur); else S.stack=[]; go("entry",{cur:+o.dataset.open,page:0}); return; }
+  const f=e.target.closest("[data-filter]"); if(f){S.filter=f.dataset.filter;render();return;}
+  const ef=e.target.closest("[data-edf]"); if(ef){S.edf=S.edf===ef.dataset.edf?null:ef.dataset.edf;render();return;}
+  const l=e.target.closest("[data-lang]"); if(l){S.lang=l.dataset.lang;store.set("pzm.lang",S.lang);render();return;}
+  const m=e.target.closest("[data-mode]"); if(m){S.mode=m.dataset.mode;store.set("pzm.mode",S.mode);render();return;}
+  const p=e.target.closest("[data-pick]"); if(p){S.draftSp=+p.dataset.pick;render();return;}
+  if(e.target.closest("[data-dismiss]")){S.dismissed=true;render();return;}
+  if(e.target.closest("[data-save]")){ const id=+($("spc")?.value||S.draftSp||2); (S.finds[id]=S.finds[id]||[]).unshift({date:"2026-11-02"}); S.draft=null; go("entry",{cur:id,page:0}); toast(t("gotcha")); return; }
+  if(e.target.closest("[data-recrop]")){ toast("✂"); }
 });
-lcd.addEventListener("submit",e=>{e.preventDefault();
-  if(e.target.id==="loginForm"){S.sent=true;render()}
-  if(e.target.id==="catchForm"){
-    if(!S.draft){$("catchMsg").textContent=t("photoNeeded");return}
-    const id=+$("spc").value; (S.finds[id]=S.finds[id]||[]).unshift({date:$("dt").value,place:$("pl").value,note:$("nt").value,img:S.draft});
-    store.set("pz.finds",Object.fromEntries(Object.entries(S.finds).map(([k,v])=>[k,v.map(({img,...r})=>r)])));
-    S.draft=null; go("entry",{cur:id,page:0}); toast(t("gotcha"));
-  }
+document.addEventListener("change",e=>{
+  if(e.target.id==="spc"){S.draftSp=+e.target.value;render();}
+  if(e.target.dataset?.catchfor){const f=e.target.files[0];if(f)startCatch(f,+e.target.dataset.catchfor);}
+  if(e.target.id==="rePick"){const f=e.target.files[0];if(f){S.draft=URL.createObjectURL(f);render();}}
 });
-lcd.addEventListener("change",e=>{if(e.target.id==="ph"&&e.target.files[0]){S.draft=URL.createObjectURL(e.target.files[0]);S.cur=+$("spc").value;render()}});
-let tx=null;
-lcd.addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
-lcd.addEventListener("touchend",e=>{if(tx==null||S.view!=="entry")return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>50){S.page=dx<0?1:0;render()}});
-
 render();
 </script>
-</body>
-</html>
