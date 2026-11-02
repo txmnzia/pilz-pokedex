@@ -11,6 +11,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      injectRegister: false, // registered in main.tsx with update checks
       manifest: {
         name: "Pilzdex",
         short_name: "Pilzdex",
