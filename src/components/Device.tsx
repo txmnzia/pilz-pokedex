@@ -2,13 +2,15 @@ import type { ReactNode } from "react";
 
 export interface Hardware {
   up(): void; down(): void; left(): void; right(): void; ok(): void;
-  a(): void; b(): void; page(): void; menu(): void;
+  b(): void; page(): void; menu(): void;
 }
 
 interface Props {
   hw: Hardware;
   labels: { a: string; b: string; page: string; counter: string; counterSub: string };
   pageEnabled: boolean;
+  catchEnabled: boolean;
+  onCatchFile(f: File): void;
   ledFlash: number;
   status: string;
   children: ReactNode;
@@ -16,7 +18,7 @@ interface Props {
 
 declare const __APP_VERSION__: string;
 
-export function Device({ hw, labels, pageEnabled, ledFlash, status, children }: Props) {
+export function Device({ hw, labels, pageEnabled, catchEnabled, onCatchFile, ledFlash, status, children }: Props) {
   return (
     <div id="device">
       <header className="top">
@@ -39,10 +41,12 @@ export function Device({ hw, labels, pageEnabled, ledFlash, status, children }: 
       <footer className="controls">
         <div className="cl">
           <div className="btnrow">
-            <button className="hw" onClick={hw.a}>
-              <span className="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" strokeWidth="2.4" strokeLinejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg></span>
-              <small>{labels.a}</small>
-            </button>
+            {/* The main action: opens the OS photo menu (camera or library) directly. */}
+            <label className={`hw catchbtn${catchEnabled ? "" : " off"}`}>
+              <span className="biground"><span>{labels.a}</span></span>
+              <input type="file" accept="image/*" aria-label={labels.a} disabled={!catchEnabled}
+                onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onCatchFile(f); }} />
+            </label>
             <div className="counter">{labels.counter}<small>{labels.counterSub}</small></div>
             <button className="hw" onClick={hw.b}>
               <span className="round"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M10 6l-6 6 6 6M4 12h16" /></svg></span>

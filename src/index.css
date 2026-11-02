@@ -221,7 +221,6 @@ ul.list{list-style:none;margin:0;padding:0}
 .cropper{position:absolute;inset:0;z-index:6;background:#0d130a;display:flex;flex-direction:column;gap:8px;padding:8px}
 .croparea{position:relative;flex:1;min-height:0;border:2px solid var(--lcd);border-radius:3px;overflow:hidden}
 .crophint{margin:0;color:var(--lcd);font-size:16px;text-align:center}
-.zoom{width:100%;accent-color:var(--lcd)}
 .cropper .cta.ghost{color:var(--lcd);border-color:var(--lcd)}
 .warnbox{background:#f6d27a;border-color:#7a4a00}
 .warnbox p{font-size:19px}
@@ -229,3 +228,19 @@ ul.list{list-style:none;margin:0;padding:0}
 .shot{width:min(100%,260px);margin:0 auto 8px}
 .cropper .cta:not(.ghost){background:var(--lcd);color:var(--lcd-ink)}
 .cropper .cta:disabled{opacity:.5}
+
+/* CATCH: the main action, big and yellow; BACK smaller */
+.catchbtn{position:relative;cursor:pointer}
+.catchbtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.catchbtn.off{opacity:.5;cursor:default}
+.biground{width:78px;height:78px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 28%,#fff8cf 0 9%,#ffd84a 30%,#f5ad00 72%,#b97800);
+  box-shadow:0 5px 0 var(--red-dark);font-family:var(--font-label);font-size:9px;color:var(--ink);letter-spacing:.5px}
+.catchbtn:active .biground{transform:translateY(3px);box-shadow:0 2px 0 var(--red-dark)}
+.catchbtn:focus-within .biground{outline:3px solid #ffe14d;outline-offset:3px}
+.round{width:46px;height:46px}.round svg{width:20px;height:20px}
+.picbtn{position:relative;display:block;width:100%;padding:0;border:0;background:none;cursor:pointer}
+.picbtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.findbtns{display:flex;gap:2px}
+.find .del svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+@media (max-width:380px){.biground{width:64px;height:64px;font-size:8px}.round{width:40px;height:40px}}

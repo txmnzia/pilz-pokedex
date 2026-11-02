@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
-import { Catch, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
+import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
 import { deleteFind, findsBySpecies, newFind, parseBackup, restoreInto } from "./lib/finds";
-import { compress, loadFinds, putPhoto, saveFinds, store } from "./lib/local";
+import { compress, getPhoto, loadFinds, putPhoto, saveFinds, store } from "./lib/local";
 import { supabase } from "./lib/supabase";
-import { pullPrefs, pushPrefs, sync } from "./lib/sync";
+import { photoUrl, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
 import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
 
@@ -24,6 +24,9 @@ export default function App() {
   const [cur, setCur] = useState<number>(0);
   const [stack, setStack] = useState<number[]>([]);
   const [catchFor, setCatchFor] = useState<number | null>(null);
+  const [catchFile, setCatchFile] = useState<File | null>(null);
+  const [catchKey, setCatchKey] = useState(0);
+  const [recrop, setRecrop] = useState<{ find: Find; blob: Blob; url: string } | null>(null);
   const [page, setPage] = useState<0 | 1>(0);
   const [filter, setFilter] = useState<Filter>("all");
   const [edf, setEdf] = useState<Edibility | null>(null);
@@ -129,11 +132,6 @@ export default function App() {
     left: () => { if (effectiveView === "entry") step(-1); },
     right: () => { if (effectiveView === "entry") step(1); },
     ok: () => { if (effectiveView === "entry") setPage(p => (p ? 0 : 1)); },
-    a: () => {
-      if (effectiveView === "login" || !all.length) return;
-      setCatchFor(effectiveView === "entry" ? cur : null); // from a species page: verify that species
-      go("catch");
-    },
     b: () => {
       if (effectiveView === "entry") {
         if (stack.length) { setCur(stack[stack.length - 1]); setStack(s => s.slice(0, -1)); setPage(1); } else go("index");
@@ -161,6 +159,26 @@ export default function App() {
     if (Math.abs(dx) > 50) setPage(dx < 0 ? 1 : 0);
   };
 
+  // CATCH (or tapping a silhouette) hands the picked photo straight to the catch screen's cropper
+  const startCatch = (f: File, forSpecies: number | null) => {
+    setCatchFor(forSpecies); setCatchFile(f); setCatchKey(k => k + 1); go("catch");
+  };
+  // Re-crop an existing find's photo: replaces the stored image and re-syncs it
+  const openRecrop = async (f: Find) => {
+    let blob = await getPhoto(f.id);
+    if (!blob) { const u = await photoUrl(f); if (u) blob = await fetch(u).then(r => r.blob()).catch(() => undefined); }
+    if (blob) setRecrop({ find: f, blob, url: URL.createObjectURL(blob) });
+  };
+  const closeRecrop = () => { if (recrop) URL.revokeObjectURL(recrop.url); setRecrop(null); };
+  const finishRecrop = async (a: Parameters<typeof cropToBlob>[1]) => {
+    if (!recrop) return;
+    const out = await cropToBlob(recrop.blob, a);
+    await putPhoto(recrop.find.id, out);
+    const id = recrop.find.id;
+    setFinds(x => x.map(y => (y.id === id ? { ...y, photo_path: null, synced: false, updated_at: new Date().toISOString() } : y)));
+    closeRecrop();
+  };
+
   const save = async (d: CatchDraft) => {
     const f = newFind(d.species, { observed_on: d.observed_on, place: d.place, note: d.note, lat: d.lat, lng: d.lng });
     await putPhoto(f.id, await compress(d.file));
@@ -182,8 +200,9 @@ export default function App() {
     }}
     onOffline={() => { setOffline(true); store.set("pz.offline", true); }} />;
   else if (effectiveView === "entry" && curSp) screen = <Entry ctx={ctx} sp={curSp} page={page} scrollRef={entryScroll}
+    onCatchFile={f => startCatch(f, curSp.inat)} onRecrop={openRecrop}
     open={sp => open(sp, true)} onDelete={f => setFinds(x => x.map(y => (y.id === f.id ? deleteFind(y) : y)))} />;
-  else if (effectiveView === "catch") screen = <Catch ctx={ctx} initial={catchFor} onSave={save} />;
+  else if (effectiveView === "catch") screen = <Catch key={catchKey} ctx={ctx} initial={catchFor} startFile={catchFile} onSave={save} onCancelEmpty={() => setView(prev === "login" ? "index" : prev)} />;
   else if (effectiveView === "settings") screen = <Settings ctx={ctx} email={user?.email ?? null} mode={mode} setLang={setLang} setMode={setMode}
     sources={data.sources} onExport={exportJson}
     onRestore={async json => {
@@ -198,8 +217,11 @@ export default function App() {
   return (
     <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className="app">
       <Device hw={hw} ledFlash={flash} status={status} pageEnabled={effectiveView === "entry"}
+        catchEnabled={signedIn && all.length > 0}
+        onCatchFile={f => startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null)}
         labels={{ a: t("catch"), b: t("back"), page: t("page"), counter: `${core.filter(s => caught.has(s.inat)).length}/${core.length || 30}`, counterSub: t("caught") }}>
         {screen}
+        {recrop && <Cropper ctx={ctx} src={recrop.url} onDone={finishRecrop} onCancel={closeRecrop} />}
         {toast && <div className="toast">{toast}</div>}
       </Device>
     </div>

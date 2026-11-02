@@ -31,7 +31,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/rank.ts`, `src/lib/resample.ts` | Pure: European-only ranking + confidence threshold; anti-aliased bilinear resize (matches Pillow, worth ~5 pts top-1) |
 | `scripts/model-labels.mjs`, `scripts/fix-model-batch.py`, `scripts/copy-litert.mjs` | Model prep: European flags per label (iNat), fix dynamic batch for LiteRT.js, copy wasm runtime to `public/litert/` (gitignored) |
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings |
-| `src/App.tsx` | State, hardware buttons (D-pad scrolls / steps species, A=catch, B=back, PAGE), auth, sync |
+| `src/App.tsx` | State, hardware buttons (big yellow CATCH = photo picker, D-pad scrolls / steps species, B=back, PAGE), auth, sync, re-crop |
 | `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings) |
 | `design/mockup.html` | Original UX mockup (mock data) |
 
@@ -46,9 +46,12 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 - Photo identifier: suggestion only, user confirms; preselect only when p >= CONFIDENT (0.5). Measured on 232 post-2023
   European iNat photos of 29 dex species in Chromium: top-1 74.6%, top-3 85.8%; "Probably" shown for 78%, right 84%.
   Re-measure after any preprocessing or model change (browser resize alone once cost 5 points).
-- Catch: one photo input without `capture` (the OS offers camera or library), square crop (react-easy-crop), then
+- Catch: CATCH button / tapping an uncaught silhouette opens the photo input directly (no `capture`: the OS offers camera
+  or library), then a square finger-only crop (react-easy-crop, no slider), then
   identification on the crop. From a species page it is silent unless `mismatch()` fires (top >= 0.5 and selected < 0.1:
   measured 7.3% false alarms, catches 70% of lookalike mix-ups); from the list it suggests the top 3.
+- Re-crop: tapping a caught photo or a find's crop button re-crops the stored (already cropped) image; storage paths
+  are versioned (`<user>/<find>-<updated_at ms>.jpg`) so other devices never see a cached old crop.
 
 ## Skills
 | Skill | When |

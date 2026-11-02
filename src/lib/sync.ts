@@ -16,7 +16,7 @@ export async function sync(local: Find[], userId: string): Promise<Find[]> {
     if (!photo_path && !f.deleted) {
       const blob = await getPhoto(f.id);
       if (blob) {
-        const path = `${userId}/${f.id}.jpg`;
+        const path = `${userId}/${f.id}-${Date.parse(f.updated_at) || 0}.jpg`; // new name per version: no stale caches
         const up = await supabase.storage.from(BUCKET).upload(path, blob, { upsert: true, contentType: "image/jpeg" });
         if (up.error) continue; // retry next sync
         photo_path = path;
