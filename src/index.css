@@ -5,7 +5,7 @@
   --red:#d9262b; --red-dark:#8f1117; --ink:#160b0b;
   --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
   --bezel:#eceae3; --blue:#3d9ce6; --blue-dark:#1d5f9c;
-  --ed:#3d9a41; --none:#8a8a7a; --tox:#9a4fb0; --dead:#2a2a2a;
+  --ed:#3d9a41; --none:#8a8a7a; --tox:#d83a2e; --dead:#2a2a2a;
   --font-lcd:'VT323', ui-monospace, Menlo, monospace;
   --font-label:'Press Start 2P', ui-monospace, monospace;
   color-scheme:light;

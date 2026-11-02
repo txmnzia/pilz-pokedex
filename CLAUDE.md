@@ -82,7 +82,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Filters: All / Caught / Missing + the 4 edibility icons on ONE line on every screen size (measured to fit iPhone SE,
   iPhone 13, Galaxy S22 in fr/en/de; under 380px the icon chips lose their boxes).
 - Icons (v0.7.0, design/icons.html option 4H): edibility = "LED" lamps with a faint top-left shine and a white
-  12x12 pixel glyph: edible fork+knife on green, no interest plate on grey, toxic ! on purple, deadly skull on dark,
+  12x12 pixel glyph: edible fork+knife on green, no interest plate on grey, toxic ! on red (v0.7.1, was purple), deadly skull on dark,
   unverified ? on beige. One component: `EdIcon` in `src/components/Art.tsx`.
 - Caught marker (option 2H): `CaughtBall`, glossy red/white capture ball when caught, a faint dashed "ghost" outline when
   not (must read as empty, not as a grey ball). List rows show it for every species; grid tiles only for caught ones
