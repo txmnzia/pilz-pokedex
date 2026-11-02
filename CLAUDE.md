@@ -58,8 +58,11 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
   iOS only (`@supports (-webkit-touch-callout: none)`; Android keeps 100dvh, its address bar does not overlay the page):
   like the eki app, `#root` is 100lvh (runs under the floating URL bar) and `#device` padding-bottom is
   `max(10px + safe-area, 100lvh - 100dvh - 10px)`: controls end ~17pt above the URL bar (iPhone: lvh 754, dvh 654, gap 27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
-- Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
-  a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
+- Caching is NETWORK FIRST (Sam's choice): index.html is not precached; navigations fetch from the network with
+  `cache: no-store` and fall back to the last good copy only offline (4 s timeout). JS/CSS are hashed. The worker has
+  `skipWaiting` + `clientsClaim` (without them new versions sat in 'waiting' forever: the root cause of stuck phones).
+  Tested: new deploy visible on one normal reload; offline reload opens the dex with all 83 tiles.
+- Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly.
   Backstop: `version.json` (emitted at build, never cached) is compared with the running version; if the server is
   newer and the worker has not taken over in 4 s, the app unregisters it, clears caches and navigates to `?v=<live>`
   (a plain reload was answered from Safari's HTTP cache, max-age 600); the `v` param is stripped on load. Once per version.

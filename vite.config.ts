@@ -29,8 +29,18 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globIgnores: ["**/data/**", "**/models/**", "**/litert/**"],
+        // Network first for the app itself: the page is never served from a stale copy when online.
+        // index.html is not precached; navigations go to the network (bypassing the HTTP cache) and fall back
+        // to the last good copy only when offline / no answer within 4 s. JS/CSS are hashed, so never stale.
+        globIgnores: ["**/data/**", "**/models/**", "**/litert/**", "**/*.html"],
+        navigateFallback: null,
+        // take over as soon as installed: without this the new worker waited for a SKIP_WAITING message that never
+        // came (measured), so phones kept running old versions and offline pages mismatched their scripts
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
+          { urlPattern: ({ request }) => request.mode === "navigate", handler: "NetworkFirst",
+            options: { cacheName: "pages", networkTimeoutSeconds: 4, fetchOptions: { cache: "no-store" } } },
           { urlPattern: /\/data\/.*\.json$/, handler: "NetworkFirst", options: { cacheName: "data", networkTimeoutSeconds: 5 } },
           // photo identifier: big, rarely changes, only fetched when first used, then works offline
           { urlPattern: /\/(models|litert)\/.*$/, handler: "CacheFirst", options: { cacheName: "identifier", expiration: { maxEntries: 10 } } },
