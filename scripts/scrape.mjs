@@ -2,12 +2,17 @@
 //   Ranking, regions, season: iNaturalist (research-grade observations)
 //   Names, edibility, morphology: Wikidata
 //   Description, habitat, lookalikes: Wikipedia FR/EN/DE (CC BY-SA, source URL kept per entry)
-// Usage: node scripts/scrape.mjs [--top 30]   -> writes public/data/species.next.json
+// Usage: node scripts/scrape.mjs [--top 120] [--deadly-min 20] [--plan]   -> writes public/data/species.next.json
+// Selection (issue #2): the current dex keeps its numbers 1..N, then every deadly species with >= DEADLY_MIN_OBS
+// observations, then the rest by fame with edible species first in line (see selectDex), up to TOP.
 // Then:  node scripts/check-data.mjs public/data/species.next.json && mv public/data/species.next.json public/data/species.json
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 
-const TOP = Number(process.argv[process.argv.indexOf("--top") + 1]) || 30;
+const arg = (k, d) => (process.argv.includes(k) ? Number(process.argv[process.argv.indexOf(k) + 1]) : d);
+const TOP = arg("--top", 120);           // dex size (Sam, issue #2: ~120, absolute max 150)
+const DEADLY_MIN_OBS = arg("--deadly-min", 1); // every deadly species observed in FR + DE gets in (issue #2: "all deadly ones")
+const PLAN_ONLY = process.argv.includes("--plan"); // print the selection and stop (no enrichment)
 const LANGS = ["fr", "en", "de"];
 const UA = "pilz-pokedex/0.1 (https://github.com/txmnzia/pilz-pokedex)";
 const CACHE = ".cache";
@@ -25,7 +30,7 @@ async function get(url, { text = false, encoding = "utf-8" } = {}) {
   try { return JSON.parse(await readFile(file, "utf8")); } catch {}
   const h = new URL(url).host;
   const host = h.endsWith("wikipedia.org") ? "wikipedia" : h; // one shared budget for all wikis
-  const gap = host === "wikipedia" ? 2500 : 1100;
+  const gap = host === "wikipedia" ? 6000 : 1100; // Wikipedia answers 429 with ~50 s penalties below ~6 s
   for (let attempt = 0; attempt < 30; attempt++) {
     const wait = (last[host] || 0) + gap - Date.now();
     if (wait > 0) await new Promise(r => setTimeout(r, wait));
@@ -80,10 +85,15 @@ const RANK = ["deadly", "toxic", "caution", "edible", "none"];
 const OVERRIDES = await readFile("data/edibility-overrides.json", "utf8").then(JSON.parse).catch(() => ({}));
 const MORPH = { P783: "hymenium", P784: "cap", P785: "attachment", P786: "stipe", P787: "spores", P788: "ecology" };
 
+// Wikidata P3151 can hold an iNat id that iNaturalist has since retired (taxon renamed): match on that old id
+const wdKey = e => String(e.wdInat ?? e.inat);
+// species in English Wikipedia's "Category:Deadly fungi" (filled in selectDex), a second deadly signal next to P789
+let DEADLY_WIKI = new Set();
+
 async function wikidata(entries) {
-  const byInat = new Map(entries.map(e => [String(e.inat), e]));
+  const byInat = new Map(entries.map(e => [wdKey(e), e]));
   for (const part of chunk(entries, 40)) {
-    const values = part.map(e => `"${e.inat}"`).join(" ");
+    const values = part.map(e => `"${wdKey(e)}"`).join(" ");
     const rows = await sparql(`SELECT ?item ?inat ?p ?v ?cn ?site WHERE {
       VALUES ?inat { ${values} } ?item wdt:P3151 ?inat .
       { VALUES ?p { wdt:P789 ${Object.keys(MORPH).map(p => "wdt:" + p).join(" ")} } ?item ?p ?v }
@@ -110,13 +120,14 @@ async function wikidata(entries) {
   for (const e of entries) {
     const c = e.claims || {};
     const eds = [...(c.P789 || [])].map(q => EDIBILITY[q]).filter(Boolean);
+    if (DEADLY_WIKI.has(e.inat)) eds.push("deadly");
     // contradictory sources (edible + poisonous, edible + inedible) are not resolved by a rule: a human decides
     const edibleish = eds.includes("edible"), bad = eds.some(x => x === "toxic" || x === "deadly");
     e.edibilityConflict = (edibleish && (bad || eds.includes("none"))) || eds.includes("caution");
     e.edibility = e.edibilityConflict ? null : RANK.find(r => eds.includes(r)) || null;
     const o = OVERRIDES[e.latin];
     if (o) { e.edibility = o.edibility; e.edibilityOverride = o.reason; }
-    e.edibilitySource = [...(c.P789 || [])].map(q => labels[q]?.en || q);
+    e.edibilitySource = [...(c.P789 || [])].map(q => labels[q]?.en || q).concat(DEADLY_WIKI.has(e.inat) ? ["en.wikipedia Category:Deadly fungi"] : []);
     e.morph = {};
     for (const [p, k] of Object.entries(MORPH)) if (c[p]) e.morph[k] = [...c[p]].map(q => ({ qid: q, ...labels[q] }));
     delete e.claims;
@@ -264,16 +275,108 @@ async function enrich(entries) {
 // score = observations x number of Wikipedia language editions (fame, not seasonal)
 async function fame(pool) {
   for (const part of chunk(pool, 60)) {
-    const rows = await sparql(`SELECT ?inat ?n WHERE { VALUES ?inat { ${part.map(e => `"${e.inat}"`).join(" ")} } ?item wdt:P3151 ?inat ; wikibase:sitelinks ?n . }`);
-    for (const r of rows) { const e = part.find(x => String(x.inat) === r.inat.value); e.wikiLangs = Math.max(e.wikiLangs || 0, Number(r.n.value)); }
+    const rows = await sparql(`SELECT ?inat ?n WHERE { VALUES ?inat { ${part.map(e => `"${wdKey(e)}"`).join(" ")} } ?item wdt:P3151 ?inat ; wikibase:sitelinks ?n . }`);
+    for (const r of rows) { const e = part.find(x => wdKey(x) === r.inat.value); e.wikiLangs = Math.max(e.wikiLangs || 0, Number(r.n.value)); }
   }
   for (const e of pool) e.score = (e.obs.DE + e.obs.FR) * (e.wikiLangs || 0);
   return pool.sort((a, b) => b.score - a.score);
 }
-const ranked = await fame((await ranking()).slice(0, 250));
-console.log(`top ${TOP} of ${ranked.length} by observations x wikipedia languages:`);
-const core = ranked.slice(0, TOP);
-core.forEach((e, i) => console.log(String(i + 1).padStart(3), e.latin.padEnd(28), e.obs.DE + e.obs.FR, e.wikiLangs));
+// Candidate pool: most observed species in FR + DE, plus every Wikidata deadly or edible species with an iNat id
+// (rare deadly ones never reach the top of the observation counts).
+async function wikidataByEdibility(qids) {
+  const rows = await sparql(`SELECT DISTINCT ?inat ?name WHERE { VALUES ?e { ${qids.map(q => "wd:" + q).join(" ")} }
+    ?item wdt:P789 ?e ; wdt:P3151 ?inat ; wdt:P105 wd:Q7432 ; wdt:P225 ?name . }`);
+  return rows.map(r => ({ inat: Number(r.inat.value), latin: r.name.value }));
+}
+async function countsFor(ids) {
+  const obs = new Map();
+  for (const [cc, place] of Object.entries(PLACES)) for (const part of chunk(ids, 100)) {
+    const r = await inat("observations/species_counts", { place_id: place, taxon_id: part.join(","), quality_grade: "research", per_page: 500 });
+    for (const { count, taxon } of r.results) if (taxon.rank === "species") { const o = obs.get(taxon.id) || { DE: 0, FR: 0, latin: taxon.name }; o[cc] = count; obs.set(taxon.id, o); }
+  }
+  return obs;
+}
+// light edibility pass for the whole pool (same rules as wikidata(): worst wins, conflicts stay null)
+async function poolEdibility(pool) {
+  for (const part of chunk(pool, 80)) {
+    const rows = await sparql(`SELECT ?inat ?v WHERE { VALUES ?inat { ${part.map(e => `"${wdKey(e)}"`).join(" ")} } ?item wdt:P3151 ?inat ; wdt:P789 ?v . }`);
+    const by = {};
+    for (const r of rows) (by[r.inat.value] ||= []).push(EDIBILITY[qid(r.v.value)]);
+    for (const e of part) {
+      const eds = (by[wdKey(e)] || []).filter(Boolean);
+      if (DEADLY_WIKI.has(e.inat)) eds.push("deadly");
+      const conflict = (eds.includes("edible") && eds.some(x => x === "toxic" || x === "deadly" || x === "none")) || eds.includes("caution");
+      e.poolEdibility = OVERRIDES[e.latin]?.edibility ?? (conflict ? null : RANK.find(r => eds.includes(r)) || null);
+    }
+  }
+}
+// English Wikipedia "Category:Deadly fungi" -> Wikidata species with an iNat id
+async function deadlyCategory() {
+  const r = await wiki("en", { action: "query", list: "categorymembers", cmtitle: "Category:Deadly fungi", cmlimit: 500, cmtype: "page" });
+  const titles = r.query.categorymembers.map(m => m.title);
+  const out = [];
+  for (const part of chunk(titles, 50)) {
+    const q = await wiki("en", { action: "query", prop: "pageprops", ppprop: "wikibase_item", redirects: 1, titles: part.join("|") });
+    const items = (q.query.pages || []).map(p => p.pageprops?.wikibase_item).filter(Boolean);
+    if (!items.length) continue;
+    const rows = await sparql(`SELECT ?inat ?name WHERE { VALUES ?item { ${items.map(x => "wd:" + x).join(" ")} } ?item wdt:P105 wd:Q7432 ; wdt:P3151 ?inat ; wdt:P225 ?name . }`);
+    out.push(...rows.map(x => ({ inat: Number(x.inat.value), latin: x.name.value })));
+  }
+  return out;
+}
+// iNaturalist retires renamed taxa; follow them to the current id (counts live there), remember the old one for Wikidata
+async function currentTaxa(list) {
+  for (const part of chunk(list, 30)) {
+    const t = await inat(`taxa/${part.map(e => e.inat).join(",")}`, {});
+    for (const x of t.results) {
+      const e = part.find(y => y.inat === x.id);
+      if (e && !x.is_active && x.current_synonymous_taxon_ids?.length === 1) {
+        const cur = await inat(`taxa/${x.current_synonymous_taxon_ids[0]}`, {});
+        const c = cur.results[0];
+        if (c?.rank === "species") { e.wdInat = e.inat; e.inat = c.id; e.latin = c.name; }
+      }
+    }
+  }
+  return list;
+}
+async function selectDex() {
+  const top = (await ranking()).slice(0, 400);
+  const deadlyCat = await currentTaxa(await deadlyCategory());
+  DEADLY_WIKI = new Set(deadlyCat.map(e => e.inat));
+  const extra = await currentTaxa([...await wikidataByEdibility(["Q19888591"]), ...await wikidataByEdibility(["Q654236", "Q19888517", "Q62102033"]), ...deadlyCat]);
+  const known = new Set(top.map(e => e.inat));
+  const add = extra.filter(e => !known.has(e.inat));
+  const obs = await countsFor([...new Set(add.map(e => e.inat))]);
+  const pool = [...top];
+  for (const e of add) { const o = obs.get(e.inat); if (o && o.DE + o.FR > 0 && !pool.some(x => x.inat === e.inat)) pool.push({ inat: e.inat, ...(e.wdInat ? { wdInat: e.wdInat } : {}), latin: o.latin || e.latin, obs: { DE: o.DE, FR: o.FR } }); }
+  await fame(pool);
+  await poolEdibility(pool);
+  // the current dex keeps its numbers (stable Pokedex numbers); new species are numbered after them
+  const prev = await readFile("public/data/species.json", "utf8").then(JSON.parse).catch(() => ({ species: [] }));
+  const keep = prev.species.filter(s => !s.extra).sort((a, b) => a.no - b.no).map(s => s.inat);
+  const byId = new Map(pool.map(e => [e.inat, e]));
+  const chosen = keep.map(id => byId.get(id) || { inat: id, latin: prev.species.find(s => s.inat === id).latin, obs: { DE: 0, FR: 0 } });
+  const taken = new Set(keep);
+  const n = e => e.obs.DE + e.obs.FR;
+  const deadly = pool.filter(e => !taken.has(e.inat) && e.poolEdibility === "deadly" && n(e) >= DEADLY_MIN_OBS);
+  deadly.forEach(e => taken.add(e.inat));
+  const rest = pool.filter(e => !taken.has(e.inat) && e.score > 0);
+  const slots = Math.max(0, TOP - chosen.length - deadly.length);
+  // edible first in line: half the free slots go to the most famous edible species, the other half to the most
+  // famous of everything left (edible or not), so famous toxic / inedible species still get in
+  const edible = rest.filter(e => e.poolEdibility === "edible").slice(0, Math.ceil(slots / 2));
+  edible.forEach(e => taken.add(e.inat));
+  const famous = rest.filter(e => !taken.has(e.inat)).slice(0, slots - edible.length);
+  const fresh = [...deadly, ...edible, ...famous].sort((a, b) => b.score - a.score);
+  for (const e of [...deadly]) e.why = "deadly"; for (const e of edible) e.why = "edible"; for (const e of famous) e.why = "famous";
+  for (const e of chosen) e.why = "kept";
+  console.log(`pool ${pool.length} (top observed + Wikidata deadly/edible); kept ${chosen.length}, deadly ${deadly.length}, edible ${edible.length}, famous ${famous.length}`);
+  return [...chosen, ...fresh];
+}
+const core = await selectDex();
+core.forEach((e, i) => console.log(String(i + 1).padStart(3), e.why.padEnd(7), (e.poolEdibility || "-").padEnd(7), e.latin.padEnd(32), n4(e)));
+function n4(e) { return `${e.obs.DE + e.obs.FR} obs x ${e.wikiLangs || 0} wiki`; }
+if (PLAN_ONLY) process.exit(0);
 await enrich(core);
 await resolveLookalikes(core);
 
