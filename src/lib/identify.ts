@@ -39,7 +39,11 @@ async function pixels(photo: Blob): Promise<Uint8Array> {
   return rgb;
 }
 
-export async function identify(photo: Blob): Promise<Guess[]> {
+export interface Identification { guesses: Guess[]; known: ReadonlySet<string> }
+let knownSet: ReadonlySet<string> | null = null;
+
+/** All European guesses, best first, plus the species the model can recognise at all. */
+export async function identify(photo: Blob): Promise<Identification> {
   const [{ model, labels, Tensor }, rgb] = await Promise.all([load(), pixels(photo)]);
   const input = new Tensor(rgb, [1, 160, 160, 3]);
   try {
@@ -47,8 +51,9 @@ export async function identify(photo: Blob): Promise<Guess[]> {
     const first = Array.isArray(out) ? out[0] : out;
     const host = typeof first.moveTo === "function" ? await first.moveTo("wasm") : first;
     const raw = host.toTypedArray() as Uint8Array;
-    const guesses = rankGuesses(raw, labels);
+    const guesses = rankGuesses(raw, labels, labels.length);
+    knownSet ??= new Set(labels.filter(l => l.eu).map(l => l.latin));
     host.delete?.(); if (host !== first) first.delete?.();
-    return guesses;
+    return { guesses, known: knownSet };
   } finally { input.delete?.(); }
 }

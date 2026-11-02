@@ -172,3 +172,17 @@ describe("readExif", () => {
     expect(readExif(new Uint8Array([1, 2, 3, 4]).buffer)).toEqual({});
   });
 });
+
+import { mismatch } from "../src/lib/rank";
+describe("are-you-sure check", () => {
+  const known = new Set(["Boletus edulis", "Suillus luteus", "Imleria badia"]);
+  const g = (...x: [string, number][]) => x.map(([latin, p]) => ({ latin, common: "", p }));
+  it("silent when the photo agrees", () => expect(mismatch(g(["Boletus edulis", 0.8]), "Boletus edulis", known)).toBeNull());
+  it("warns when confident about another species and the pick is unlikely", () =>
+    expect(mismatch(g(["Suillus luteus", 0.89], ["Boletus edulis", 0.02]), "Boletus edulis", known)?.latin).toBe("Suillus luteus"));
+  it("silent when the pick is still plausible", () =>
+    expect(mismatch(g(["Suillus luteus", 0.6], ["Boletus edulis", 0.3]), "Boletus edulis", known)).toBeNull());
+  it("silent when the model is unsure", () => expect(mismatch(g(["Suillus luteus", 0.4]), "Boletus edulis", known)).toBeNull());
+  it("silent for species the model never learned", () =>
+    expect(mismatch(g(["Suillus luteus", 0.95]), "Oudemansiella mucida", known)).toBeNull());
+});

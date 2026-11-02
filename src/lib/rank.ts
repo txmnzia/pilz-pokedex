@@ -25,3 +25,17 @@ export function cropBox(w: number, h: number, short = 183, size = 160) {
   const sw = Math.round(w * k), sh = Math.round(h * k);
   return { scale: k, sw, sh, x: Math.floor((sw - size) / 2), y: Math.floor((sh - size) / 2), size };
 }
+
+/** "Are you sure?" thresholds. Measured on 232 photos: false alarm 7.3% of correct catches,
+ *  catches 70% of mix-ups with a known lookalike (0.7 would give 3.9% / 60%). */
+export const WARN_TOP = 0.5;
+export const WARN_SELECTED = 0.1;
+
+/** The species the photo looks like instead of the selected one, or null (agrees, unsure, or model can't judge). */
+export function mismatch(guesses: Guess[], selected: string, known: ReadonlySet<string>): Guess | null {
+  if (!known.has(selected) || !guesses.length) return null; // model never learned it: can't judge
+  const top = guesses[0];
+  if (top.latin === selected || top.p < WARN_TOP) return null;
+  const pSel = guesses.find(g => g.latin === selected)?.p ?? 0;
+  return pSel < WARN_SELECTED ? top : null;
+}
