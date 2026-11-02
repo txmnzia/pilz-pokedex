@@ -420,8 +420,51 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
     }
   };
   const remove = (key: number) => setShots(xs => { const x = xs.find(y => y.key === key); if (x) { URL.revokeObjectURL(x.origUrl); if (x.url) URL.revokeObjectURL(x.url); } return xs.filter(y => y.key !== key); });
-  const makeCover = (key: number) => setShots(xs => [...xs.filter(x => x.key === key), ...xs.filter(x => x.key !== key)]);
   const ready = shots.filter(x => x.blob);
+  /** Put a cropped photo at position idx among the cropped ones (the first one is the cover). */
+  const moveTo = (key: number, idx: number) => setShots(xs => {
+    const done = xs.filter(x => x.blob && x.key !== key), moving = xs.find(x => x.key === key);
+    if (!moving) return xs;
+    done.splice(Math.max(0, Math.min(idx, done.length)), 0, moving);
+    return [...done, ...xs.filter(x => !x.blob)];
+  });
+  // Drag to reorder (pointer events: iOS Safari has no HTML drag and drop on touch). A tap without movement = crop.
+  const strip = useRef<HTMLDivElement | null>(null);
+  const drag = useRef<{ key: number; from: number; x0: number; y0: number; moved: boolean; slots: DOMRect[] } | null>(null);
+  const [dragView, setDragView] = useState<{ key: number; to: number; dx: number; dy: number } | null>(null);
+  const onDown = (e: React.PointerEvent, key: number, from: number) => {
+    if ((e.target as Element).closest(".shx") || e.button > 0) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const slots = [...(strip.current?.querySelectorAll(".sh:not(.add)") ?? [])].map(el => el.getBoundingClientRect());
+    drag.current = { key, from, x0: e.clientX, y0: e.clientY, moved: false, slots };
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current; if (!d) return;
+    const dx = e.clientX - d.x0, dy = e.clientY - d.y0;
+    if (!d.moved && Math.hypot(dx, dy) < 8) return;
+    d.moved = true;
+    const to = d.slots.filter((r, i) => i !== d.from && r.left + r.width / 2 < e.clientX).length;
+    setDragView({ key: d.key, to, dx, dy });
+  };
+  const onUp = () => {
+    const d = drag.current; drag.current = null;
+    if (!d) return;
+    if (d.moved) { if (dragView) moveTo(d.key, dragView.to); } else setCropKey(d.key);
+    setDragView(null);
+  };
+  const onCancelDrag = () => { drag.current = null; setDragView(null); };
+  // order shown while dragging: the dragged photo already sits in its target slot and follows the finger
+  const shown = (() => {
+    if (!dragView) return ready;
+    const rest = ready.filter(x => x.key !== dragView.key), me = ready.find(x => x.key === dragView.key)!;
+    rest.splice(dragView.to, 0, me); return rest;
+  })();
+  const dragStyle = (key: number, slot: number): React.CSSProperties | undefined => {
+    const d = drag.current;
+    if (!dragView || dragView.key !== key || !d) return undefined;
+    const from = d.slots[d.from], to = d.slots[slot] ?? from;
+    return { transform: `translate(${from.left + dragView.dx - to.left}px, ${dragView.dy}px) scale(1.08)`, zIndex: 3 };
+  };
 
   const sel = species != null ? byId.get(species) : undefined;
   const warn = ident === "done" && result && sel && verify ? mismatch(result.guesses, sel.latin, result.known) : null;
@@ -456,17 +499,24 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
       ? <button type="button" className="shot" onClick={() => setCropKey(cover.key)} aria-label={ctx.t("crop")}>
           <img src={cover.url!} alt="" /><span className="stamp">{ctx.t("tapToChange")}</span></button>
       : addLabel("cta srcbtn", <>{camera}{ctx.t("addPhoto")}</>)}
-    {cover && <div className="shots" aria-label={ctx.t("photos")}>
-      {ready.map((x, i) => (
-        <div key={x.key} className={`sh${i === 0 ? " cover" : ""}`}>
-          <button type="button" className="shimg" onClick={() => setCropKey(x.key)} aria-label={ctx.t("crop")}><img src={x.url!} alt="" /></button>
-          {i === 0 ? <span className="shtag">★ {ctx.t("cover")}</span>
-            : <button type="button" className="shstar" aria-label={ctx.t("setCover")} title={ctx.t("setCover")} onClick={() => makeCover(x.key)}>☆</button>}
-          <button type="button" className="shx" aria-label={ctx.t("removePhoto")} onClick={() => remove(x.key)}>✕</button>
-        </div>))}
+    {cover && <div className="shots" ref={strip} aria-label={ctx.t("photos")}>
+      {shown.map((x, slot) => {
+        const i = ready.indexOf(x);
+        return (
+          <div key={x.key} className={`sh${dragView?.key === x.key ? " dragging" : ""}`} style={dragStyle(x.key, slot)}
+            role="button" tabIndex={0} aria-label={`${ctx.t("crop")} ${i + 1}/${ready.length}`}
+            onPointerDown={e => onDown(e, x.key, i)} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onCancelDrag}
+            onKeyDown={e => {
+              if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setCropKey(x.key); }
+              if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); moveTo(x.key, i + (e.key === "ArrowLeft" ? -1 : 1)); }
+            }}>
+            <img src={x.url!} alt="" draggable={false} />
+            <button type="button" className="shx" aria-label={ctx.t("removePhoto")} onClick={() => remove(x.key)}>✕</button>
+          </div>);
+      })}
       {shots.length < MAX_PHOTOS && addLabel("sh add", <><span aria-hidden="true">+</span><small>{ctx.t("addPhoto")}</small></>)}
     </div>}
-    {cover && <p className="note autometa">{date} · GPS {pos ? "✓" : "–"}{ready.length < MAX_PHOTOS ? ` · ${ctx.t("morePhotos")}` : ""}</p>}
+    {cover && <p className="note autometa">{date} · GPS {pos ? "✓" : "–"}{ready.length > 1 ? ` · ${ctx.t("dragToReorder")}` : ready.length < MAX_PHOTOS ? ` · ${ctx.t("morePhotos")}` : ""}</p>}
   </>;
 
   const formPart = <>
