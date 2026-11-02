@@ -59,6 +59,8 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
   `max(10px + safe-area, 100lvh - 100dvh - 20px)` so the controls end just above the URL bar (measured gap ~27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
 - Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
   a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
+  Backstop: `version.json` (emitted at build, never cached) is compared with the running version; if the server is
+  newer and the worker has not taken over in 4 s, the app unregisters it, clears caches and reloads (once per version).
 
 ## Next item (requested by Sam, not started)
 Simplify the UX:

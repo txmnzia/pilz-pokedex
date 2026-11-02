@@ -7,17 +7,37 @@ import App from "./App";
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
 
 // Service worker: check for a new version on load, whenever the tab comes back, and hourly.
-// iOS Safari otherwise keeps serving the old version until a full reload (seen on v0.4.0).
+// iOS Safari kept serving old versions (v0.4.0, then v0.4.4) despite the worker's own update check, so the
+// app also asks the server directly (version.json, no cache). If the server is newer and the worker has not
+// taken over within 4 s, drop the worker and its caches and reload. Once per version, so it cannot loop.
+let registration: ServiceWorkerRegistration | undefined;
 const updateSW = registerSW({
   immediate: true,
   onNeedRefresh() { updateSW(true); }, // new version ready: activate and reload
-  onRegisteredSW(_url, reg) {
-    if (!reg) return;
-    const check = () => { if (navigator.onLine) reg.update().catch(() => {}); };
-    document.addEventListener("visibilitychange", () => { if (!document.hidden) check(); });
-    setInterval(check, 60 * 60 * 1000);
-  },
+  onRegisteredSW(_url, reg) { registration = reg; },
 });
+
+async function ensureLatest() {
+  if (!navigator.onLine) return;
+  registration?.update().catch(() => {});
+  let live: string | undefined;
+  try {
+    const r = await fetch(`${import.meta.env.BASE_URL}version.json?t=${Date.now()}`, { cache: "no-store" });
+    live = (await r.json()).version;
+  } catch { return; }
+  if (!live || live === __APP_VERSION__) return;
+  const key = "pz.forcedUpdate";
+  if (sessionStorage.getItem(key) === live) return; // already tried for this version in this tab
+  setTimeout(async () => {
+    sessionStorage.setItem(key, live!);
+    for (const reg of await navigator.serviceWorker?.getRegistrations?.() ?? []) await reg.unregister();
+    for (const k of await caches?.keys?.() ?? []) await caches.delete(k);
+    location.reload();
+  }, 4000); // a normal worker update reloads the page before this fires
+}
+ensureLatest();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) ensureLatest(); });
+setInterval(ensureLatest, 60 * 60 * 1000);
 
 // ?debug=1: viewport numbers for iOS layout issues (txmnzia convention: fix from numbers, not guesses)
 if (new URLSearchParams(location.search).has("debug")) {
