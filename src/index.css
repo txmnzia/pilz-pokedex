@@ -409,3 +409,14 @@ span.bdg > svg.bglyph{width:12px;height:12px;filter:drop-shadow(1px 1px 0 var(--
 .ybtn:disabled{opacity:1;background:linear-gradient(180deg,#d8c98e,#b89f52);color:#5a4a1c}
 .pill:disabled{opacity:1;background:#c5675f;color:#f3d2cf}
 .catchbtn.off{opacity:1}.catchbtn.off .biground{background:radial-gradient(circle at 35% 28%,#f3ecc8 0 9%,#d9c27a 30%,#b89f52 72%,#8f7a3c)}
+
+/* v0.10.3 (Sam): controls breathe more; labels clear the button shadow (shadow is 4 px down) */
+.hw{gap:10px}
+.btnrow{gap:14px}
+@media (max-width:380px){ .btnrow{gap:8px} .hw{gap:8px} }
+@media (min-width:900px){
+  /* the PAGE pill is hidden on the web: take it out of the layout so CATCH / counter / BACK centre on the d-pad */
+  .book.wide .pillrow{display:none}
+  .book.wide .controls{gap:24px}
+  .book.wide .btnrow{gap:20px}
+}
