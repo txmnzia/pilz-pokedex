@@ -25,6 +25,18 @@ const core = species.filter(s => !s.extra);
 const nos = core.map(s => s.no).sort((a, b) => a - b);
 if (nos.some((n, i) => n !== i + 1)) errors.push("core numbering is not 1..N");
 
+// rares (v0.12.0): off-dex species the photo model knows, names only
+try {
+  const { rares } = JSON.parse(await readFile("public/data/rares.json", "utf8"));
+  const dexIds = new Set(species.map(s => s.inat)), seen = new Set();
+  for (const r of rares) {
+    if (!r.inat || !r.latin) errors.push(`rare ${r.latin}: missing inat id or latin name`);
+    if (dexIds.has(r.inat)) errors.push(`rare ${r.latin}: already in the Pilzdex data`);
+    if (seen.has(r.inat)) errors.push(`rare ${r.latin}: duplicate`); seen.add(r.inat);
+    for (const l of LANGS) if (!r.names?.[l]) errors.push(`rare ${r.latin}: no ${l} name`);
+  }
+  console.log(`${rares.length} rares; Latin fallback names: ${LANGS.map(l => `${l} ${rares.filter(r => r.nameSource?.[l] === "latin").length}`).join(", ")}`);
+} catch (e) { if (e.code !== "ENOENT") errors.push(`rares.json: ${e.message}`); }
 console.log(`${core.length} core, ${species.length - core.length} lookalike-only`);
 console.log(`edibility: ${["edible", "none", "toxic", "deadly", "caution", null].map(e => `${e}=${species.filter(s => s.edibility === e).length}`).join(" ")}`);
 if (review.length) console.log(`\nREVIEW (${review.length}):\n  ` + review.join("\n  "));

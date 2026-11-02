@@ -113,7 +113,7 @@ export function Login({ ctx, configured, onSend, onOffline }: { ctx: Ctx; config
 interface DexProps {
   /** web settings view: the right panel shows settings, the left dex stays a plain grid */
   gridOnly?: boolean;
-  ctx: Ctx; list: Species[]; extras: Species[]; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
+  ctx: Ctx; list: Species[]; extras: Species[]; rares: Species[]; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
   setFilter(f: Filter): void; setEdf(e: Edibility | null): void; open(sp: Species): void;
 }
 /** Largest font size (15 -> 11 px) at which every word of a tile name sits on one line within the 2-line box. */
@@ -159,7 +159,7 @@ function useFitTileNames(deps: unknown[]) {
 
 export function Dex(p: DexProps) {
   const { ctx } = p;
-  const gridRef = useFitTileNames([ctx.lang, p.mode, p.list, p.extras]);
+  const gridRef = useFitTileNames([ctx.lang, p.mode, p.list, p.extras, p.rares]);
   const core = ctx.all.filter(s => !s.extra);
   const n = core.filter(s => ctx.caught.has(s.inat)).length;
   const item = (sp: Species) => {
@@ -205,6 +205,7 @@ export function Dex(p: DexProps) {
         </ToRight>
         {wrap(p.list.map(sp => item(sp)))}
         {p.extras.length > 0 && <><h3 className="exhead">{ctx.t("exHead")} ({p.extras.length})</h3>{wrap(p.extras.map(sp => item(sp)))}</>}
+        {p.rares.length > 0 && <><h3 className="exhead">{ctx.t("raresHead")} ({p.rares.length})</h3>{wrap(p.rares.map(sp => item(sp)))}</>}
       </div>
     </>
   );
@@ -234,7 +235,7 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
             ? <Gallery key={sp.inat} finds={finds} ctx={ctx} onRecrop={onRecrop} />
             : <label className="picbtn"><Picture sp={sp} ctx={ctx} hint={ctx.t("tapToCatch")} />
                 <input type="file" accept="image/*" aria-label={ctx.t("catch")} onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onCatchFile(f); }} /></label>}
-          <div className="meta"><EdPill ed={sp.edibility} ctx={ctx} />{sp.extra && <span className="chip">{ctx.t("exTag")}</span>}<span className="latin">{sp.latin}</span></div>
+          <div className="meta"><EdPill ed={sp.edibility} ctx={ctx} />{sp.extra && <span className="chip">{ctx.t(sp.rare != null ? "rareTag" : "exTag")}</span>}<span className="latin">{sp.latin}</span></div>
           {tx && <div className="box">{tx.intro}
             <p className="src"><a href={tx.url} target="_blank" rel="noreferrer">Wikipedia {tx.lang.toUpperCase()} ↗</a> · CC BY-SA</p></div>}
         </div>{!wide && dots}
@@ -244,6 +245,7 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
   return <>{head}<div className="scroll" ref={scrollRef}>{details()}</div>{dots}</>;
 
   function details() {
+  if (sp.rare != null) return <>{noData()}{findsBox()}</>;
   const season = seasonLabel(sp.season.months, ctx.lang);
   const max = Math.max(1, ...sp.season.histogram);
   const hab = habitatFor(sp, ctx.lang);
@@ -276,23 +278,39 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
         {looks.length > 0 && <div className="box"><h3>{ctx.t("look")}</h3><div className="grid look" ref={lookRef}>
           {looks.map(x => <DexTile key={x.inat} sp={x} ctx={ctx} onOpen={open} />)}
         </div></div>}
-        <div className="box"><h3>{ctx.t("finds")} ({finds.length})</h3>
-          {finds.length ? finds.map(f => (
-            <div className="find" key={f.id}>
-              <span className="t"><Photo find={f} thumb /></span>
-              <span>{f.observed_on}<small>{f.place || (f.lat != null ? `${f.lat.toFixed(3)}, ${f.lng!.toFixed(3)}` : "–")}{f.note ? ` · ${f.note}` : ""}</small>
-                {photosOf(f).length > 1 && <span className="fthumbs">{photosOf(f).slice(1).map(p => (
-                  <button type="button" key={p.id} aria-label={ctx.t("crop")} onClick={() => onRecrop(f, p.id)}><Photo find={f} photo={p} thumb /></button>))}</span>}</span>
-              {confirm === f.id
-                ? <span className="confirm">{ctx.t("confirmDel")} <button onClick={() => { onDelete(f); setConfirm(null); }}>{ctx.t("yes")}</button><button onClick={() => setConfirm(null)}>{ctx.t("no")}</button></span>
-                : <span className="findbtns">
-                    <button className="del" aria-label={ctx.t("crop")} onClick={() => onRecrop(f)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14" /></svg></button>
-                    <button className="del" aria-label={ctx.t("del")} onClick={() => setConfirm(f.id)}>✕</button></span>}
-            </div>
-          )) : <p className="empty">{ctx.t("noFinds")}</p>}
-        </div>
+{findsBox()}
     </>
   );
+  }
+  function findsBox() {
+    return (
+        <div className="box"><h3>{ctx.t("finds")} ({finds.length})</h3>
+        {finds.length ? finds.map(f => (
+          <div className="find" key={f.id}>
+            <span className="t"><Photo find={f} thumb /></span>
+            <span>{f.observed_on}<small>{f.place || (f.lat != null ? `${f.lat.toFixed(3)}, ${f.lng!.toFixed(3)}` : "–")}{f.note ? ` · ${f.note}` : ""}</small>
+              {photosOf(f).length > 1 && <span className="fthumbs">{photosOf(f).slice(1).map(p => (
+                <button type="button" key={p.id} aria-label={ctx.t("crop")} onClick={() => onRecrop(f, p.id)}><Photo find={f} photo={p} thumb /></button>))}</span>}</span>
+            {confirm === f.id
+              ? <span className="confirm">{ctx.t("confirmDel")} <button onClick={() => { onDelete(f); setConfirm(null); }}>{ctx.t("yes")}</button><button onClick={() => setConfirm(null)}>{ctx.t("no")}</button></span>
+              : <span className="findbtns">
+                  <button className="del" aria-label={ctx.t("crop")} onClick={() => onRecrop(f)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14" /></svg></button>
+                  <button className="del" aria-label={ctx.t("del")} onClick={() => setConfirm(f.id)}>✕</button></span>}
+          </div>
+        )) : <p className="empty">{ctx.t("noFinds")}</p>}
+      </div>
+    );
+  }
+  /** Rares: the Pilzdex has no data for them, only the name; point to sources instead. */
+  function noData() {
+    const wiki = sp.wiki?.[ctx.lang] ?? sp.wiki?.en ?? Object.values(sp.wiki ?? {})[0];
+    return (
+      <div className="box"><h3>{ctx.t("noDataTitle")}</h3>
+        <p className="m0">{ctx.t("noDataText")}</p>
+        <p className="src"><a href={`https://www.inaturalist.org/taxa/${sp.inat}`} target="_blank" rel="noreferrer">iNaturalist ↗</a>
+          {wiki && <> · <a href={wiki} target="_blank" rel="noreferrer">Wikipedia ↗</a></>}</p>
+      </div>
+    );
   }
 }
 
@@ -477,7 +495,8 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const warn = ident === "done" && result && sel && verify ? mismatch(result.guesses, sel.latin, result.known) : null;
   const warnKey = warn && sel ? `${sel.inat}:${warn.latin}` : null;
   const warnSp = warn ? byLatin.get(warn.latin) : undefined;
-  const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex!) - (b.no ?? b.ex!) : a.extra ? 1 : -1));
+  const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex ?? 0) - (b.no ?? b.ex ?? 0) : a.extra ? 1 : -1));
+  const rareOpts = ctx.all.filter(sp => sp.rare != null).sort((a, b) => name(a, ctx.lang).localeCompare(name(b, ctx.lang), ctx.lang));
   const submit = () => {
     if (!ready.length) { setMsg(ctx.t("photoNeeded")); return; }
     if (species == null) { setMsg(ctx.t("pickSpecies")); return; }
@@ -552,7 +571,8 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
     <div className="field"><label htmlFor="spc">{ctx.t("species")}</label>
       <select id="spc" value={species ?? ""} onChange={e => setSpecies(e.target.value ? Number(e.target.value) : null)}>
         {species == null && <option value="">{ctx.t("choose")}</option>}
-        {sorted.map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
+        {sorted.filter(sp => sp.rare == null).map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
+        {rareOpts.length > 0 && <optgroup label={ctx.t("raresHead")}>{rareOpts.map(sp => <option key={sp.inat} value={sp.inat}>{name(sp, ctx.lang)} ({sp.latin})</option>)}</optgroup>}
       </select></div>
     <button className="cta" type="button" onClick={submit}>{ctx.t("save")}</button>
     <p className="note" id="catchMsg" aria-live="polite">{msg}</p>

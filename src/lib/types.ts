@@ -22,7 +22,13 @@ export interface Species {
   season: { histogram: number[]; months: number[] };
   regions: { berlin: number; grenoble: number };
   lookalikes: number[];
+  /** Off-dex species the photo model knows (v0.12.0): R number in order of first catch (0 = not caught yet). */
+  rare?: number;
+  wiki?: Partial<Record<Lang, string>>;
 }
+
+/** public/data/rares.json entry (scripts/scrape-rares.mjs). */
+export interface RareEntry { inat: number; latin: string; names: Record<Lang, string>; nameSource: Record<Lang, string>; wiki?: Partial<Record<Lang, string>> }
 
 export interface SpeciesFile {
   generatedAt: string;

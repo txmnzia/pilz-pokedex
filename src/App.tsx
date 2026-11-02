@@ -8,14 +8,15 @@ import { compress, getPhoto, loadFinds, makeThumb, putPhoto, saveFinds, store, t
 import { supabase } from "./lib/supabase";
 import { photoUrlOf, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs, type Sort } from "./lib/prefs";
-import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
-import { shortNo, sortByName } from "./lib/species";
+import type { Edibility, Find, Lang, RareEntry, Species, SpeciesFile } from "./lib/types";
+import { rareSpecies, shortNo, sortByName } from "./lib/species";
 
 type View = "login" | "index" | "entry" | "catch" | "settings";
 type Mode = "grid" | "list";
 
 export default function App() {
   const [data, setData] = useState<SpeciesFile | null>(null);
+  const [rareList, setRareList] = useState<RareEntry[]>([]);
   const [prefs, setPrefsState] = useState<Prefs>(loadPrefs);
   const { lang, mode, sort } = prefs;
   const [user, setUser] = useState<{ id: string; email: string | null } | null>(null);
@@ -73,6 +74,8 @@ export default function App() {
   useEffect(() => { document.documentElement.lang = lang; }, [lang]);
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/species.json`).then(r => r.json()).then(setData).catch(() => setData(null));
+    // off-dex species the photo model knows (v0.12.0); optional: without it, finds stay dex-only
+    fetch(`${import.meta.env.BASE_URL}data/rares.json`).then(r => r.json()).then(j => setRareList(j.rares ?? [])).catch(() => setRareList([]));
   }, []);
 
   // auth
@@ -118,11 +121,14 @@ export default function App() {
   const dirty = finds.some(f => !f.synced);
   useEffect(() => { if (dirty) { const h = setTimeout(runSync, 1500); return () => clearTimeout(h); } }, [dirty, finds, runSync]);
 
-  const all = data?.species ?? [];
+  const rares = useMemo(() => rareSpecies(rareList, finds), [rareList, finds]);
+  const all = useMemo(() => [...(data?.species ?? []), ...rares], [data, rares]);
   // Order from Settings (v0.10.5, Sam): by dex number (default) or A to Z in the UI language; PREV/NEXT follow it.
   const core = useMemo(() => { const c = all.filter(s => !s.extra); return sort === "az" ? sortByName(c, lang) : [...c].sort((a, b) => (a.no ?? 0) - (b.no ?? 0)); }, [all, lang, sort]);
-  const extras = useMemo(() => { const x = all.filter(s => s.extra); return sort === "az" ? sortByName(x, lang) : [...x].sort((a, b) => (a.ex ?? 0) - (b.ex ?? 0)); }, [all, lang, sort]);
+  const extras = useMemo(() => { const x = all.filter(s => s.extra && s.rare == null); return sort === "az" ? sortByName(x, lang) : [...x].sort((a, b) => (a.ex ?? 0) - (b.ex ?? 0)); }, [all, lang, sort]);
   const caught = useMemo(() => findsBySpecies(finds), [finds]);
+  // rares you have found, by R number (or A to Z when chosen)
+  const caughtRares = useMemo(() => { const r = rares.filter(x => x.rare); return sort === "az" ? sortByName(r, lang) : r.sort((a, b) => a.rare! - b.rare!); }, [rares, sort, lang]);
   const ctx: Ctx = { t, lang, all, caught, right: wide ? rightEl : null };
   const visible = core.filter(s =>
     (filter === "all" || (filter === "got" ? caught.has(s.inat) : !caught.has(s.inat))) && (!edf || s.edibility === edf));
@@ -139,7 +145,7 @@ export default function App() {
   };
   const step = (d: number) => {
     if (!curSp) return;
-    const group = curSp.extra ? extras : core;
+    const group = curSp.rare != null ? caughtRares : curSp.extra ? extras : core;
     const i = group.findIndex(s => s.inat === cur);
     setStack([]); setCur(group[(i + d + group.length) % group.length].inat); setPage(0);
   };
@@ -243,6 +249,7 @@ export default function App() {
   else screen = dexScreen();
   function dexScreen() {
     return <Dex ctx={wide && effectiveView === "settings" ? { ...ctx, right: null } : ctx} gridOnly={wide && effectiveView === "settings"} list={visible} extras={filter === "all" && !edf ? extras : []}
+      rares={filter !== "missing" && !edf ? caughtRares : []}
       mode={mode} filter={filter} edf={edf} setFilter={setFilter} setEdf={setEdf} open={sp => open(sp)} />;
   }
   // right panel keys: this species' finds on a species page, otherwise the latest catches

@@ -261,3 +261,24 @@ describe("characteristic badges (v0.11.0)", () => {
     expect(shortMorph({ qid: "Q0", fr: "chapeau étrange" }, "fr")).toBe("CHAPEAU ETRANGE");
   });
 });
+
+import { rareSpecies } from "../src/lib/species";
+describe("rares (v0.12.0)", () => {
+  const R = (inat: number, latin: string) => ({ inat, latin, names: { fr: latin, en: latin, de: latin }, nameSource: { fr: "latin", en: "latin", de: "latin" } });
+  const f = (species: number, created_at: string, deleted = false) => ({ species, created_at, deleted });
+  it("numbers caught rares R1, R2... by first catch, never by name, and keeps edibility unknown", () => {
+    const rs = rareSpecies([R(1, "Zeta a"), R(2, "Alpha b"), R(3, "Beta c")], [f(1, "2026-01-02"), f(2, "2026-03-01"), f(1, "2026-05-01"), f(3, "2026-02-01", true)]);
+    expect(rs.map(s => [s.latin, s.rare])).toEqual([["Zeta a", 1], ["Alpha b", 2], ["Beta c", 0]]);
+    expect(rs.every(s => s.edibility === null && s.extra && s.no === null)).toBe(true);
+  });
+  it("labels: R-01 when caught, R otherwise", () => {
+    expect(dexLabel({ no: null, rare: 3 })).toBe("R-03");
+    expect(dexLabel({ no: null, rare: 0 })).toBe("R");
+  });
+  it("rares.json never repeats a dex species and has a name in every language", () => {
+    const rares = JSON.parse(readFileSync("public/data/rares.json", "utf8")).rares as { inat: number; names: Record<string, string> }[];
+    const dex = new Set(data.species.map(s => s.inat));
+    expect(rares.filter(r => dex.has(r.inat))).toEqual([]);
+    expect(rares.every(r => r.names.fr && r.names.en && r.names.de)).toBe(true);
+  });
+});
