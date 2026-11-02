@@ -9,6 +9,8 @@ export default defineConfig({
   define: { __APP_VERSION__: JSON.stringify(pkg.version) },
   plugins: [
     react(),
+    // version.json: read by the app with no caching to detect a stuck service worker (see src/main.tsx)
+    { name: "version-json", generateBundle() { this.emitFile({ type: "asset", fileName: "version.json", source: JSON.stringify({ version: pkg.version }) }); } },
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: false, // registered in main.tsx with update checks
