@@ -6,6 +6,9 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
 
+// Drop the cache-busting ?v= left by a forced update (keeps any other parameter such as ?debug=1)
+{ const u = new URL(location.href); if (u.searchParams.has("v")) { u.searchParams.delete("v"); history.replaceState(null, "", u.toString()); } }
+
 // Service worker: check for a new version on load, whenever the tab comes back, and hourly.
 // iOS Safari kept serving old versions (v0.4.0, then v0.4.4) despite the worker's own update check, so the
 // app also asks the server directly (version.json, no cache). If the server is newer and the worker has not
@@ -32,7 +35,9 @@ async function ensureLatest() {
     sessionStorage.setItem(key, live!);
     for (const reg of await navigator.serviceWorker?.getRegistrations?.() ?? []) await reg.unregister();
     for (const k of await caches?.keys?.() ?? []) await caches.delete(k);
-    location.reload();
+    // a plain reload can be answered by Safari's HTTP cache (GitHub Pages: max-age 600) and bring the old app back
+    const u = new URL(location.href); u.searchParams.set("v", live!);
+    location.replace(u.toString());
   }, 4000); // a normal worker update reloads the page before this fires
 }
 ensureLatest();
