@@ -55,12 +55,16 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 
 ## iOS notes
 - Phones: `html, body` background is the device red so Safari paints red behind the Dynamic Island and URL bar.
-  Like the eki app, `#root` is 100lvh (runs under the floating URL bar) and `#device` padding-bottom is
+  iOS only (`@supports (-webkit-touch-callout: none)`; Android keeps 100dvh, its address bar does not overlay the page):
+  like the eki app, `#root` is 100lvh (runs under the floating URL bar) and `#device` padding-bottom is
   `max(10px + safe-area, 100lvh - 100dvh - 10px)`: controls end ~17pt above the URL bar (iPhone: lvh 754, dvh 654, gap 27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
 - Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
   a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
   Backstop: `version.json` (emitted at build, never cached) is compared with the running version; if the server is
-  newer and the worker has not taken over in 4 s, the app unregisters it, clears caches and reloads (once per version).
+  newer and the worker has not taken over in 4 s, the app unregisters it, clears caches and navigates to `?v=<live>`
+  (a plain reload was answered from Safari's HTTP cache, max-age 600); the `v` param is stripped on load. Once per version.
+- Android check: Galaxy S22 simulation (360x690 Chrome tab, 360x780 app) in fr/de: no off-screen control, no horizontal
+  overflow, tile names fit (only "Frühlings-Knollenblätterpilz" wraps mid-word).
 
 ## Next item (requested by Sam, not started)
 Simplify the UX:

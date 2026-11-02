@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
@@ -86,7 +86,7 @@ function fitTileNames(root: HTMLElement | null) {
     el.style.fontSize = `${size}px`;
     el.classList.remove("breakall");
     const words = [...el.querySelectorAll<HTMLElement>(".w")];
-    const fits = () => el.scrollHeight <= el.clientHeight + 1 &&
+    const fits = () => el.scrollHeight <= el.clientHeight + 1 && el.scrollWidth <= el.clientWidth + 1 &&
       words.every(w => w.getBoundingClientRect().width <= el.clientWidth + 0.5);
     while (!fits() && size > 11) { size -= 0.5; el.style.fontSize = `${size}px`; }
     if (!fits()) el.classList.add("breakall"); // a single word wider than the tile even at 11 px: break it rather than clip it
@@ -111,7 +111,7 @@ export function Dex(p: DexProps) {
       <button key={sp.inat} className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted"><EdIcon ed={sp.edibility} /></span></span>
         <span className="tart"><Picture sp={sp} ctx={ctx} small /></span>
-        <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <span key={i} className="w">{i ? " " : ""}{w}</span>)}</span>
+        <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <Fragment key={i}>{i ? " " : ""}<span className="w">{w}</span></Fragment>)}</span>
       </button>
     ) : (
       <li key={sp.inat} className={`row${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>

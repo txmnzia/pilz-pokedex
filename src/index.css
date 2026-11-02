@@ -280,8 +280,13 @@ ul.list{list-style:none;margin:0;padding:0}
    controls clear of it. lvh - dvh = what Safari's bars take; the page ended ~27pt above the URL bar pill
    (measured on Sam's iPhone, v0.4.4 debug), so 20px of that is reclaimed and ~7px margin remains.
    With no bars (Home Screen app) lvh = dvh and only the safe-area padding applies. */
-@media (max-width:440px){
-  #root{height:100lvh}
-  #device{box-shadow:none;
-    padding-bottom:max(calc(10px + env(safe-area-inset-bottom,0px)), calc(100lvh - 100dvh - 10px))}
+@media (max-width:440px){ #device{box-shadow:none} }
+/* iOS Safari only (-webkit-touch-callout exists only there): its URL bar floats OVER the page, so extend under it.
+   Android Chrome/Samsung keep the address bar outside the page: there 100lvh would push the controls off-screen. */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width:440px){
+    #root{height:100lvh}
+    #device{padding-bottom:max(calc(10px + env(safe-area-inset-bottom,0px)), calc(100lvh - 100dvh - 10px))}
+  }
 }
+.srcrow .cta{white-space:normal;overflow-wrap:break-word;min-width:0;line-height:1.4}
