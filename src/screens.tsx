@@ -138,10 +138,7 @@ export function Dex(p: DexProps) {
     <>
       <div className="titlebar"><span>{ctx.t("dex")}</span><span>{n}/{core.length}</span></div>
       <div className="scroll" ref={gridRef}>
-        {!ctx.right && !p.gridOnly && <>
-          <div className="chips">{statusChips}</div>
-          <div className="chips">{edChips}</div>
-        </>}
+        {!ctx.right && !p.gridOnly && <div className="chips one">{statusChips}<span className="sep" />{edChips}</div>}
         <ToRight ctx={ctx}>
           <div className="titlebar"><span>{ctx.t("filters")}</span><span>{p.list.length}</span></div>
           <div className="scroll">
@@ -264,7 +261,7 @@ export async function cropToBlob(src: Blob, a: Area): Promise<Blob> {
   return new Promise<Blob>((res, rej) => c.toBlob(b => (b ? res(b) : rej(new Error("crop failed"))), "image/jpeg", 0.9));
 }
 
-export function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string; onDone(a: Area): void; onCancel(): void }) {
+export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src: string; onDone(a: Area): void; onCancel(): void; onOther?(f: File): void }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area | null>(null);
@@ -275,8 +272,10 @@ export function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string;
           onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={(_, px) => setArea(px)} />
       </div>
       <p className="crophint">{ctx.t("cropHint")}</p>
-      <div className="srcrow">
+      <div className={`srcrow${onOther ? " three" : ""}`}>
         <button type="button" className="cta ghost" onClick={onCancel}>{ctx.t("cancel")}</button>
+        {onOther && <label className="cta ghost filebtn">{ctx.t("otherPhoto")}
+          <input type="file" accept="image/*" onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onOther(f); }} /></label>}
         <button type="button" className="cta" disabled={!area} onClick={() => area && onDone(area)}>{ctx.t("useCrop")}</button>
       </div>
     </div>
@@ -294,8 +293,8 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const [preview, setPreview] = useState<string | null>(null);
   const [species, setSpecies] = useState<number | null>(initial);
   const [date, setDate] = useState(localToday);
-  const [place, setPlace] = useState("");
-  const [note, setNote] = useState("");
+  const place = "";
+  const note = "";
   const [pos, setPos] = useState<{ lat: number; lng: number } | null>(null);
   const [msg, setMsg] = useState("");
   const [ident, setIdent] = useState<"idle" | "busy" | "done" | "error">("idle");
@@ -331,10 +330,9 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
     const gps = meta.lat != null && meta.lng != null ? { lat: meta.lat, lng: meta.lng } : null;
     if (meta.date && meta.date !== localToday()) {
       setDate(meta.date); setPos(gps);
-      setMsg(gps ? ctx.t("fromPhotoMeta") : ctx.t("fromPhotoDate"));
     } else {
       setDate(localToday()); setMsg("");
-      if (gps) { setPos(gps); setMsg(ctx.t("fromPhotoMeta")); } else { setPos(null); locate(); }
+      if (gps) setPos(gps); else { setPos(null); locate(); }
     }
   };
   const started = useRef(false);
@@ -369,11 +367,13 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   );
 
   const photoPart = <>
-    {preview && <button type="button" className="shot" onClick={() => setCropping(true)} aria-label={ctx.t("crop")}>
-      <img src={preview} alt="" /><span className="stamp">{ctx.t("tapToCrop")}</span></button>}
-    <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-      {preview ? ctx.t("otherPhoto") : ctx.t("addPhoto")}
-      <input id="ph" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>
+    {preview
+      ? <button type="button" className="shot" onClick={() => setCropping(true)} aria-label={ctx.t("crop")}>
+          <img src={preview} alt="" /><span className="stamp">{ctx.t("tapToChange")}</span></button>
+      : <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+          {ctx.t("addPhoto")}
+          <input id="ph" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>}
+    {preview && <p className="note autometa">{date} · GPS {pos ? "✓" : "–"}</p>}
   </>;
 
   const formPart = <>
@@ -404,11 +404,6 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
         {species == null && <option value="">{ctx.t("choose")}</option>}
         {sorted.map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
       </select></div>
-    <div className="field"><label htmlFor="dt">{ctx.t("date")}</label><input id="dt" type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
-    <div className="field"><label htmlFor="pl">{ctx.t("place")}</label>
-      <div className="inrow"><input id="pl" value={place} placeholder={ctx.t("placeHint")} onChange={e => setPlace(e.target.value)} />
-        <button type="button" className="chip" onClick={locate} aria-pressed={!!pos}>📍 GPS</button></div></div>
-    <div className="field"><label htmlFor="nt">{ctx.t("note")}</label><input id="nt" value={note} onChange={e => setNote(e.target.value)} /></div>
     <button className="cta" type="button" onClick={submit}>{ctx.t("save")}</button>
     <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
   </>;
@@ -427,7 +422,7 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
         <div className="titlebar"><span>{ctx.t(verify ? "species" : "suggestion")}</span></div>
         <div className="scroll">{warnBox}{formPart}</div>
       </ToRight>
-      {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); onCancelEmpty(); } }} />}
+      {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onOther={f => pick(f)} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); onCancelEmpty(); } }} />}
     </>
   );
 }

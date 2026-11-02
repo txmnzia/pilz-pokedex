@@ -31,7 +31,7 @@ export function Silhouette({ shape, className = "art" }: { shape: Shape; classNa
 export function EdIcon({ ed }: { ed: Edibility | null }) {
   switch (ed) {
     case "edible":
-      return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#2f8a3b" stroke="#111" strokeWidth="1.5" /><path d="M5.5 10.5l3 3 6-7" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+      return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#2f8a3b" stroke="#111" strokeWidth="1.5" /><g fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round"><path d="M6.5 4.5v4.2M8 4.5v4.2M9.5 4.5v4.2M6.5 8.7q1.5 1.6 3 0M8 9.4v6.1" /><path d="M13.2 15.5V4.6q-2 1.3-2 4.6h2" /></g></svg>;
     case "none":
       return <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#8a8a8a" stroke="#111" strokeWidth="1.5" /><path d="M5.5 10h9" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" /></svg>;
     case "toxic":

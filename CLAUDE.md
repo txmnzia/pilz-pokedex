@@ -76,14 +76,12 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Android check: Galaxy S22 simulation (360x690 Chrome tab, 360x780 app) in fr/de: no off-screen control, no horizontal
   overflow, tile names fit (only "Frühlings-Knollenblätterpilz" wraps mid-word).
 
-## Next item (requested by Sam, not started)
-Simplify the UX:
-- Catch form: remove Note, Date and Place fields and the "Other photo" button. Keep GPS coordinates in memory.
-  Tapping the photo re-opens the photo picker/crop to change it.
-- Dex filters: All / Caught / Missing and the 4 edibility filters on a single line.
-- Icons: edible must not be a check mark (confused with "caught"). Caught stays a small dot, but not red.
-Open questions to ask Sam first (form): edible icon (fork & knife / leaf / plate), caught dot colour
-(yellow like CATCH / ink / blue), keep the date saved automatically and shown in "My finds" or drop it.
+## UX decisions (v0.6.0, Sam)
+- Catch form: only the photo and the species. Date (EXIF or today) and GPS (EXIF or current position) are saved
+  automatically and shown as one line; no place/note fields. Tap the photo = crop window with Cancel / Other photo / Use.
+- Filters: All / Caught / Missing + the 4 edibility icons on ONE line on every screen size (measured to fit iPhone SE,
+  iPhone 13, Galaxy S22 in fr/en/de; under 380px the icon chips lose their boxes).
+- Icons: edible = fork and knife on green (not a check mark); caught dot = yellow (same as CATCH).
 
 ## Skills
 | Skill | When |
