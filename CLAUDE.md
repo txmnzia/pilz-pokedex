@@ -20,7 +20,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `scripts/check-data.mjs` | Data validation + review list (edibility conflicts, missing names) |
 | `data/edibility-overrides.json` | Human decisions for conflicting/missing edibility, applied by the scraper (optional file) |
 | `public/data/species.json` | Generated data, fetched at runtime (NetworkFirst in the SW, never precached) |
-| `src/lib/species.ts` | Pure: silhouette shape, season label, lookalikes, text fallback |
+| `src/lib/species.ts` | Pure: silhouette shape (species override, then genus, then Wikidata morphology), season label, lookalikes, text fallback |
 | `src/lib/finds.ts` | Pure: merge (never drops), soft delete, grouping |
 | `src/lib/i18n.ts` | All UI strings FR/EN/DE |
 | `src/lib/local.ts` | localStorage + IndexedDB photo store, image compression |

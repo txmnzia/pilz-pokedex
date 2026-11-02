@@ -17,6 +17,10 @@ describe("seasonLabel", () => {
 });
 
 describe("shapeOf", () => {
+  it("species override beats the genus", () => {
+    expect(shapeOf({ latin: "Clathrus archeri", morph: {} } as never)).toBe("starfish");
+    expect(shapeOf({ latin: "Clathrus ruber", morph: {} } as never)).toBe("cage");
+  });
   it("amanita from ring+volva", () => expect(shapeOf(bySpecies("Amanita phalloides"))).toBe("amanita"));
   it("bolete from pores+stem", () => expect(shapeOf(bySpecies("Boletus edulis"))).toBe("bolete"));
   it("funnel for chanterelle", () => expect(shapeOf(bySpecies("Cantharellus cibarius"))).toBe("funnel"));
