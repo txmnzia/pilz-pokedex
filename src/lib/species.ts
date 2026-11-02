@@ -3,7 +3,7 @@ import type { Lang, Species } from "./types";
 
 export type Shape =
   | "amanita" | "bolete" | "funnel" | "morel" | "parasol" | "tuft" | "bracket" | "gilled"
-  | "inkcap" | "puffball" | "stinkhorn" | "cage" | "starfish" | "ear" | "saddle" | "oyster";
+  | "inkcap" | "puffball" | "stinkhorn" | "cage" | "starfish" | "hoof" | "rosette" | "ear" | "saddle" | "oyster";
 
 // Species whose look differs from the rest of their genus (checked before the genus).
 // Clathrus archeri (octopus stinkhorn) opens into 4 to 7 red arms, not a lattice ball like Clathrus ruber.
@@ -18,10 +18,11 @@ const GENUS_SHAPE: Record<string, Shape> = {
   Pleurotus: "oyster", Hohenbuehelia: "oyster", Schizophyllum: "oyster",
   Hypholoma: "tuft", Kuehneromyces: "tuft", Galerina: "tuft", Armillaria: "tuft",
   Macrolepiota: "parasol", Lepiota: "parasol", Chlorophyllum: "parasol",
-  Trametes: "bracket", Fomes: "bracket", Fomitopsis: "bracket", Laetiporus: "bracket",
-  Meripilus: "bracket", Phellinus: "bracket", Ganoderma: "bracket", Bjerkandera: "bracket",
-  Laricifomes: "bracket", Heterobasidion: "bracket", Fistulina: "bracket", Ischnoderma: "bracket",
-  Amylocystis: "bracket", Hapalopilus: "bracket", Stereum: "bracket", Lenzites: "bracket",
+  // tree polypores: thin shelves / one thick hoof / overlapping wavy tiers
+  Trametes: "bracket", Bjerkandera: "bracket", Stereum: "bracket", Lenzites: "bracket", Hapalopilus: "bracket", Amylocystis: "bracket",
+  Fomes: "hoof", Fomitopsis: "hoof", Phellinus: "hoof", Ganoderma: "hoof", Laricifomes: "hoof", Heterobasidion: "hoof",
+  Ischnoderma: "hoof", Fistulina: "hoof",
+  Laetiporus: "rosette", Meripilus: "rosette",
 };
 const Q = {
   pores: "Q19861549", gleba: "Q2034230", noCap: "Q19887965", offset: "Q14544541",
