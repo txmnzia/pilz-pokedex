@@ -398,3 +398,14 @@ span.bdg > svg.bglyph{width:12px;height:12px;filter:drop-shadow(1px 1px 0 var(--
 .fthumbs{display:flex;gap:4px;margin-top:3px}
 .fthumbs button{width:28px;height:28px;padding:0;border:1.5px solid var(--lcd-ink);border-radius:3px;overflow:hidden;background:#2a3a1c;cursor:pointer}
 .fthumbs img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* v0.10.2 (Sam, design/shadows.html option 2): one shadow logic for every hardware button. Light from the top left,
+   a crisp 3 px / 4 px shadow down-right at 55 %; pressed = the button slides onto its shadow.
+   Disabled buttons keep their full ink border (opacity washed it out); the fill dims instead. */
+:root{--bsh:rgba(80,0,4,.55)}
+.round,.biground,.pill,.iconbtn,.ybtn{box-shadow:3px 4px 0 var(--bsh);transition:transform .06s,box-shadow .06s}
+.hw:active .round,.catchbtn:active .biground,.pill:active:not(:disabled),.iconbtn:active,.ybtn:active:not(:disabled){transform:translate(2px,3px);box-shadow:1px 1px 0 var(--bsh)}
+.dpad{filter:drop-shadow(3px 4px 0 var(--bsh))}
+.ybtn:disabled{opacity:1;background:linear-gradient(180deg,#d8c98e,#b89f52);color:#5a4a1c}
+.pill:disabled{opacity:1;background:#c5675f;color:#f3d2cf}
+.catchbtn.off{opacity:1}.catchbtn.off .biground{background:radial-gradient(circle at 35% 28%,#f3ecc8 0 9%,#d9c27a 30%,#b89f52 72%,#8f7a3c)}

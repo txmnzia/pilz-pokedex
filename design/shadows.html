@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pilzdex Ombres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Une seule logique d'ombre pour tous les boutons : lumière en haut à gauche, ombre légère en bas à droite.
+   Pressé = le bouton glisse vers son ombre. Même monde visuel que l'app (rouge du boîtier), fixé explicitement. */
+:root{
+  --red:#d9262b; --red-dark:#8f1117; --ink:#160b0b;
+  --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
+  --blue:#2a7fd4; --blue-dark:#164c86;
+  --font-lcd:'VT323', ui-monospace, Menlo, monospace;
+  --font-label:'Press Start 2P', ui-monospace, monospace;
+  --dx:3px; --dy:4px; --sh:rgba(80,0,4,.55); --blur:0px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#3a1012;color:#fff;font-family:var(--font-lcd);font-size:19px}
+.wrap{max-width:1180px;margin:0 auto;padding:26px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px));display:grid;gap:20px}
+h1{font-family:var(--font-label);font-size:14px;line-height:1.6;margin:0 0 8px}
+header p{margin:0 0 6px;max-width:76ch;line-height:1.2;color:#ffe3e3}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.opt{background:#260a0b;border:2px solid #000;border-radius:10px;padding:14px;display:grid;gap:10px;align-content:start}
+.opt h2{font-family:var(--font-label);font-size:10px;line-height:1.6;margin:0}
+.opt p{margin:0;line-height:1.15;color:#ffd9d9}
+.tag{font-family:var(--font-label);font-size:7px;background:#ffd84a;color:var(--ink);border:1.5px solid var(--ink);border-radius:3px;padding:3px 5px;margin-left:6px;vertical-align:2px}
+.toggle{justify-self:start;font-family:var(--font-label);font-size:8px;padding:8px 10px;border:2px solid #000;border-radius:5px;background:#fff;color:var(--ink);cursor:pointer}
+.toggle[aria-pressed="true"]{background:#ffd84a}
+
+/* the device: top row (lens + burger), controls (CATCH, counter, BACK, PAGE, d-pad), web PREV / NEXT */
+.dev{background:linear-gradient(180deg,#e0302f,var(--red) 40%,#c92126);border:3px solid var(--ink);border-radius:14px;padding:14px;display:grid;gap:14px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.lens{width:44px;height:44px;border-radius:50%;border:3px solid #fff;outline:3px solid var(--ink);background:radial-gradient(circle at 35% 30%,#bfe6ff,#3a9be8 45%,#155da8)}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.cl{display:grid;gap:12px}
+.row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
+.counter{background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;text-align:center;font-size:22px;color:var(--lcd-ink);padding:3px 2px}
+.counter small{display:block;font-size:13px;color:var(--lcd-dim)}
+.hw{display:grid;justify-items:center;gap:5px;background:none;border:0;padding:0;cursor:pointer;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+.hw small{font-family:var(--font-label);font-size:7px;color:#ffe3e3}
+.k{transition:transform .06s,box-shadow .06s;border:3px solid var(--ink)}
+.big{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-label);font-size:7px;color:var(--ink);background:radial-gradient(circle at 35% 28%,#fff8cf 0 9%,#ffd84a 30%,#f5ad00 72%,#c58800)}
+.sm{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark))}
+.sm svg{width:18px;height:18px}
+.burger{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#555,#222 60%,#111)}
+.burger i{display:block;width:16px;height:2px;background:#fff;box-shadow:0 5px 0 #fff,0 -5px 0 #fff}
+.pill{height:28px;border-radius:14px;font-family:var(--font-label);font-size:7px;color:#fff;background:linear-gradient(180deg,#ff5a4e,#e0302f)}
+.dpad{display:grid;grid-template-columns:repeat(3,34px);grid-template-rows:repeat(3,34px)}
+.dpad .d{background:#2a2a2a;display:grid;place-items:center;color:#fff;font-size:12px}
+.dpad .u{grid-area:1/2;border-radius:6px 6px 0 0}.dpad .l{grid-area:2/1;border-radius:6px 0 0 6px}.dpad .c{grid-area:2/2;border-width:3px 0;border-radius:0;font-family:var(--font-label);font-size:6px}
+.dpad .r{grid-area:2/3;border-radius:0 6px 6px 0}.dpad .dn{grid-area:3/2;border-radius:0 0 6px 6px}
+.dpad .u,.dpad .dn{border-left-width:3px;border-right-width:3px}
+.dpadwrap{filter:drop-shadow(var(--dx) var(--dy) var(--blur) var(--sh))}
+.dpadwrap .k{box-shadow:none}
+.web{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.yb{height:40px;border-radius:8px;font-family:var(--font-label);font-size:7px;color:var(--ink);background:linear-gradient(180deg,#ffe57a,#f5b400)}
+.yb.off{background:linear-gradient(180deg,#d8c98e,#b89f52);color:#5a4a1c}
+.rnum{min-width:70px;text-align:center;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;padding:4px 8px;font-size:20px;color:var(--lcd-ink)}
+
+/* the logic: every key casts the same shadow; pressed = moves onto it */
+.k{box-shadow:var(--dx) var(--dy) var(--blur) var(--sh)}
+.pressed .k:not(.dpadwrap .k),.k:active{transform:translate(calc(var(--dx) - 1px),calc(var(--dy) - 1px));box-shadow:1px 1px 0 var(--sh)}
+.pressed .dpadwrap{filter:drop-shadow(1px 1px 0 var(--sh))}
+.pressed .dpadwrap .dpad{transform:translate(calc(var(--dx) - 1px),calc(var(--dy) - 1px))}
+
+/* variants */
+.now{--dx:0px;--dy:5px;--sh:var(--red-dark);--blur:0px}
+.v1{--dx:2px;--dy:3px;--sh:rgba(80,0,4,.45);--blur:0px}
+.v2{--dx:3px;--dy:4px;--sh:rgba(80,0,4,.55);--blur:0px}
+.v3{--dx:3px;--dy:4px;--sh:rgba(60,0,4,.5);--blur:3px}
+@media (max-width:380px){.dpad{grid-template-columns:repeat(3,30px);grid-template-rows:repeat(3,30px)}.big{width:60px;height:60px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Une seule logique d'ombre</h1>
+    <p>Lumière en haut à gauche : chaque bouton du boîtier (ATTRAPER, RETOUR, menu, PAGE, croix directionnelle, PREC / SUIV sur le web) projette la même ombre légère vers le bas à droite. Pressé, le bouton glisse sur son ombre. Trois intensités, à côté de l'actuel.</p>
+    <p>Les boutons sont cliquables ; « voir pressé » les enfonce tous.</p>
+  </header>
+  <main class="grid" id="g"></main>
+</div>
+<script>
+const V=[
+ {k:"now",t:"Aujourd'hui",d:"Ombre dure rouge foncé, droit vers le bas, pas pareille sur tous les boutons."},
+ {k:"v1",t:"1 · Léger",d:"Décalage 2 px à droite, 3 px en bas, ombre bordeaux à 45 %, nette."},
+ {k:"v2",t:"2 · Moyen",tag:"recommandé",d:"Décalage 3 px / 4 px, 55 %, nette : se voit sur le rouge sans faire autocollant."},
+ {k:"v3",t:"3 · Moyen flou",d:"Même décalage, bord adouci de 3 px : plus doux, un peu moins « pixel »."}
+];
+const back='<svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6M4 12h16"/></svg>';
+document.getElementById("g").innerHTML=V.map(v=>`<section class="opt ${v.k}"><h2>${v.t}${v.tag?`<span class="tag">${v.tag}</span>`:""}</h2><p>${v.d}</p>
+<div class="dev">
+ <div class="top"><span class="lens"></span><button class="hw"><span class="k burger"><i></i></span></button></div>
+ <div class="ctl"><div class="cl">
+   <div class="row"><button class="hw"><span class="k big">ATTRAPER</span></button><div class="counter">4/120<small>attrapés</small></div><button class="hw"><span class="k sm">${back}</span><small>RETOUR</small></button></div>
+   <button class="hw"><span class="k pill" style="display:grid;place-items:center;width:100%">PAGE</span></button>
+ </div>
+ <div class="dpadwrap"><div class="dpad"><span class="k d u">▲</span><span class="k d l">◀</span><span class="k d c">OK</span><span class="k d r">▶</span><span class="k d dn">▼</span></div></div></div>
+ <div class="web"><button class="hw"><span class="k yb off" style="display:grid;place-items:center;width:100%">◀ PREC</span></button><div class="rnum">001</div><button class="hw"><span class="k yb" style="display:grid;place-items:center;width:100%">SUIV ▶</span></button></div>
+</div>
+<button class="toggle" aria-pressed="false">voir pressé</button></section>`).join("");
+document.querySelectorAll(".toggle").forEach(t=>t.addEventListener("click",()=>{const on=t.getAttribute("aria-pressed")!=="true";t.setAttribute("aria-pressed",String(on));t.closest(".opt").classList.toggle("pressed",on);}));
+</script>
+</body>
+</html>
