@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { EdIcon, Silhouette } from "./components/Art";
+import { CaughtBall, EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
 import { CONFIDENT, mismatch, type Guess } from "./lib/rank";
@@ -117,14 +117,14 @@ export function Dex(p: DexProps) {
     return p.mode === "grid" ? (
       <button key={sp.inat} className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted"><EdIcon ed={sp.edibility} /></span></span>
-        <span className="tart"><Picture sp={sp} ctx={ctx} small /></span>
+        <span className="tart"><Picture sp={sp} ctx={ctx} small />{got && <CaughtBall caught className="cball corner" />}</span>
         <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <Fragment key={i}>{i ? " " : ""}<span className="w">{w}</span></Fragment>)}</span>
       </button>
     ) : (
       <li key={sp.inat} className={`row${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="num">{shortNo(sp)}</span><span className="thumb"><Picture sp={sp} ctx={ctx} small /></span>
         <span className="nm">{name(sp, ctx.lang)}</span><span className="ed"><EdIcon ed={sp.edibility} /></span>
-        <span className={`ball${got ? " on" : ""}`} />
+        <CaughtBall caught={got} />
       </li>
     );
   };
