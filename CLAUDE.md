@@ -27,6 +27,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/species.ts` | Pure: silhouette shape (species override, then genus, then Wikidata morphology), season label, lookalikes, text fallback |
 | `src/lib/finds.ts` | Pure: merge (never drops), soft delete, grouping |
 | `src/lib/i18n.ts` | All UI strings FR/EN/DE |
+| `src/lib/morph.ts` | Short badge words + spore colours for the Wikidata morphology values (by QID) |
 | `src/lib/local.ts` | localStorage + IndexedDB photo store, image compression |
 | `src/lib/sync.ts` | Supabase upload/upsert/pull, signed photo URLs, prefs pull/push |
 | `src/lib/prefs.ts` | Pure-ish: language + grid/list prefs, local-first, newer `updated_at` wins per account |
@@ -119,6 +120,10 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   design/grid.html). Do not re-add without asking.
 - Pixel font (Press Start 2P) squashes accented capitals: write a plain E in labels drawn with it (PREC, DERNIERES,
   ATTRAPE !, Ecologie). German umlauts unchanged.
+- Characteristics (v0.11.0, Sam, design/data.html option A): species page shows Sporée / Chapeau / Hyménium / Pied /
+  Ecologie as one fixed-width badge each (`.mchip`, 124 px, 112 px under 380 px) with ONE short word, the first
+  Wikidata value; spore print = real colour swatch. Words come from `src/lib/morph.ts` (keyed by QID, FR/EN/DE, capitals
+  without accents/umlauts); a test fails if a new QID in the data has no short word. No stat bars (Sam declined).
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
   UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added

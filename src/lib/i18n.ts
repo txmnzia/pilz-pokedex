@@ -68,7 +68,7 @@ const en: Dict = {
 const de: Dict = {
   dex: "PILZDEX", caught: "gefangen", all: "Alle", got: "Gefangen", missing: "Fehlend",
   catch: "FANGEN", back: "ZURÜCK", page: "SEITE", grid: "Raster", list: "Liste",
-  season: "Saison", allYear: "ganzjährig", spores: "Sporenpulver", cap: "Hut", hymenium: "Hymenium",
+  season: "Saison", allYear: "ganzjährig", spores: "Sporen", cap: "Hut", hymenium: "Hymenium",
   stipe: "Stiel", ecology: "Ökologie", where: "Fundort", look: "Doppelgänger", finds: "Meine Funde",
   noFinds: "Noch nicht gefunden. Drück FANGEN, wenn du ihn siehst.", obs: "Beob.",
   exHead: "Doppelgänger außerhalb des Pilzdex", exTag: "nicht im Pilzdex", source: "Quelle", textIn: "Text auf",

@@ -421,3 +421,12 @@ span.bdg > svg.bglyph{width:12px;height:12px;filter:drop-shadow(1px 1px 0 var(--
   .book.wide .btnrow{gap:20px}
 }
 
+
+/* v0.11.0 (Sam, design/data.html option A): one badge per characteristic, fixed width like the edibility badges */
+.mrow{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:26px}
+.mchip{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:124px;height:20px;padding:0 4px;
+  border:1.5px solid var(--ink);border-radius:4px;background:linear-gradient(#e9f0d4,#c9d8a8 55%,#9fb578);color:var(--lcd-ink);
+  font-family:var(--font-label);font-size:7px;line-height:1;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.mchip i{flex:none;width:11px;height:11px;border:1.5px solid var(--ink);border-radius:2px;display:block}
+.mrow > span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:380px){ .mchip{width:112px;gap:4px} }
