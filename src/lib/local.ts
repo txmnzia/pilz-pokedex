@@ -47,3 +47,20 @@ export async function compress(file: Blob, max = 1600, quality = 0.82): Promise<
     return await new Promise<Blob>(res => c.toBlob(b => res(b || file), "image/jpeg", quality));
   } catch { return file; }
 }
+
+/** Thumbnail for grid / list / keys (tiles were slow with full 1600 px photos). 480 px short side: a ~160 CSS px tile
+ *  on a 3x iPhone screen is ~480 device px, so it stays sharp; ~30-40 KB instead of ~300-500 KB. */
+export const THUMB = 480;
+export const thumbKey = (photoId: string, path: string | null) => `t:${path ?? photoId}`; // path changes per re-crop: never stale
+export const thumbPath = (path: string) => path.replace(/\.jpg$/, "-t.jpg");
+export async function makeThumb(src: Blob): Promise<Blob | null> {
+  try {
+    const bmp = await createImageBitmap(src);
+    const k = Math.min(1, THUMB / Math.min(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    const g = c.getContext("2d")!; g.imageSmoothingQuality = "high";
+    g.drawImage(bmp, 0, 0, c.width, c.height); bmp.close();
+    return await new Promise<Blob | null>(res => c.toBlob(b => res(b), "image/jpeg", 0.8));
+  } catch { return null; }
+}

@@ -1,6 +1,6 @@
 // Supabase sync. Local state is the source of truth for the UI; this only merges and pushes.
 import { supabase, BUCKET } from "./supabase";
-import { getPhoto } from "./local";
+import { getPhoto, makeThumb, putPhoto, thumbKey, thumbPath } from "./local";
 import { mergeFinds, photosOf } from "./finds";
 import type { Find, FindPhoto } from "./types";
 import { normalizePrefs, type Prefs } from "./prefs";
@@ -24,6 +24,9 @@ export async function sync(local: Find[], userId: string): Promise<Find[]> {
       const path = `${userId}/${p.id}-${Date.parse(f.updated_at) || 0}.jpg`; // new name per version: no stale caches
       const up = await supabase.storage.from(BUCKET).upload(path, blob, { upsert: true, contentType: "image/jpeg" });
       if (up.error) { failed = true; break; } // retry next sync
+      // thumbnail next to it (best effort: other devices fall back to the full photo and make their own)
+      const t = await getPhoto(thumbKey(p.id, null)) ?? await makeThumb(blob);
+      if (t) { await supabase.storage.from(BUCKET).upload(thumbPath(path), t, { upsert: true, contentType: "image/jpeg" }); await putPhoto(thumbKey(p.id, path), t); }
       photos.push({ ...p, path });
     }
     if (failed) continue;
@@ -50,6 +53,30 @@ export async function photoUrlOf(p: FindPhoto): Promise<string | null> {
   const { data } = await supabase.storage.from(BUCKET).createSignedUrl(p.path, 3600);
   if (data?.signedUrl) urlCache.set(p.path, data.signedUrl);
   return data?.signedUrl ?? null;
+}
+/** Small version for tiles, rows and keys: cached thumbnail, else made from the local photo, else the uploaded
+ *  thumbnail, else (photos uploaded before thumbnails existed) the full photo once, shrunk and cached on this device. */
+export async function thumbUrlOf(p: FindPhoto): Promise<string | null> {
+  const key = thumbKey(p.id, p.path);
+  const cached = await getPhoto(key);
+  if (cached) return URL.createObjectURL(cached);
+  const local = await getPhoto(p.id);
+  if (local) {
+    const t = await makeThumb(local);
+    if (t) { await putPhoto(key, t); return URL.createObjectURL(t); }
+    return URL.createObjectURL(local);
+  }
+  if (!p.path || !supabase) return null;
+  const tp = thumbPath(p.path);
+  if (urlCache.has(tp)) return urlCache.get(tp)!;
+  const { data } = await supabase.storage.from(BUCKET).createSignedUrl(tp, 3600);
+  if (data?.signedUrl) { urlCache.set(tp, data.signedUrl); return data.signedUrl; }
+  const full = await photoUrlOf(p);
+  if (!full) return null;
+  const blob = await fetch(full).then(r => r.blob()).catch(() => null);
+  const t = blob && await makeThumb(blob);
+  if (t) { await putPhoto(key, t); return URL.createObjectURL(t); }
+  return full;
 }
 /** The cover photo of a find. */
 export const photoUrl = (f: Find) => photoUrlOf(photosOf(f)[0]);

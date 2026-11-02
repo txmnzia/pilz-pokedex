@@ -31,7 +31,7 @@ export function RightPanel(p: Props) {
         <div className="keys">
           {slots.map((k, i) => k
             ? <button key={k.find.id} className="key photo" onClick={() => p.onOpen(k.sp)} title={`${k.find.observed_on}`}>
-                {k.find.photo_path || !k.find.synced ? <Photo find={k.find} /> : <Silhouette shape={shapeOf(k.sp)} />}
+                {k.find.photo_path || !k.find.synced ? <Photo find={k.find} thumb /> : <Silhouette shape={shapeOf(k.sp)} />}
                 <span className="kd">{k.find.observed_on.slice(5)}</span></button>
             : <button key={`e${i}`} className="key" disabled aria-label="" />)}
         </div>

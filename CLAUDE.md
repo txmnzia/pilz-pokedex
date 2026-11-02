@@ -68,6 +68,10 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   on pairs of the same species: 74% -> 91% top-1 with 2 photos, 95% with 3; mean of p 89%, max 87%). Without
   migration 0003 sync silently falls back to cover only. Species page = gallery of all photos (swipe on the photo or
   arrows; that swipe does not flip the page); finds list shows the extra photos, tap = re-crop that photo.
+- Thumbnails (v0.10.1, Sam): grid, list, keys and finds list use a 480 px JPEG (`thumbUrlOf`), the species gallery the
+  full photo. Made at save / re-crop, uploaded as `<path>-t.jpg` (no schema change), cached in IndexedDB under
+  `t:<path or photo id>` (path changes per re-crop, so never stale). Photos uploaded before v0.10.1 get their thumbnail
+  made once per device from the full photo.
 - Re-crop: tapping a caught photo or a find's crop button re-crops the stored (already cropped) image; storage paths
   are versioned (`<user>/<find>-<updated_at ms>.jpg`) so other devices never see a cached old crop.
 
