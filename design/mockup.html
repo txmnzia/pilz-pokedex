@@ -40,9 +40,9 @@ button:focus-visible,select:focus-visible,input:focus-visible,label:focus-within
 .hinge,.right{display:none}
 .book.wide .left{width:430px;border-radius:20px 6px 6px 20px;border-right-width:2px}
 .book.wide .hinge{display:flex;flex-direction:column;width:26px;background:linear-gradient(90deg,var(--red-dark),var(--red) 45%,var(--red-dark));
-  border-block:3px solid var(--ink);margin-block:18px}
+  border-block:3px solid var(--ink);margin-top:calc(var(--rtop,90px) + 14px);margin-bottom:14px} /* within both panels' height */
 .hinge i{flex:1;border-bottom:3px solid var(--ink)}.hinge i:last-child{border-bottom:0}
-.book.wide .right{display:grid;width:430px;border-radius:6px 20px 20px 6px;border-left-width:2px;margin-top:38px;
+.book.wide .right{display:grid;width:430px;border-radius:6px 20px 20px 6px;border-left-width:2px;margin-top:var(--rtop,90px);
   grid-template-rows:auto 1fr auto auto;box-shadow:0 18px 40px rgba(0,0,0,.35)}
 
 /* ---------- left device ---------- */
@@ -108,7 +108,8 @@ button:focus-visible,select:focus-visible,input:focus-visible,label:focus-within
 .titlebar .name{min-width:0;overflow-wrap:break-word}
 .sub{color:var(--lcd-dim);font-size:17px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px;align-items:center}
-.chips.one{flex-wrap:nowrap;overflow-x:auto}
+.chips.one{flex-wrap:nowrap;gap:4px}
+.chips.one .chip{font-size:17px;padding:0 5px}.chips.one .chip.icon{padding:0 3px}
 .chip{border:2px solid var(--lcd-ink);background:transparent;border-radius:3px;padding:0 7px;font-size:18px;line-height:1.3;color:var(--lcd-ink);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
 .chip[aria-pressed="true"],.chip.on{background:var(--lcd-ink);color:var(--lcd)}
 .chip.off{opacity:.4}
@@ -222,7 +223,6 @@ button:focus-visible,select:focus-visible,input:focus-visible,label:focus-within
     <!-- RIGHT: context panel (web only) -->
     <section class="dev right" aria-label="Details panel">
       <header class="rtop">
-        <div class="leds" aria-hidden="true"><i class="led g"></i><i class="led y"></i></div>
         <span class="label" id="rLabel">INFO</span>
       </header>
       <div class="rlcd"><div class="lcd" id="lcdR"></div></div>
@@ -415,6 +415,9 @@ function keys(){ let items, title;
 /* ---------- render ---------- */
 function render(){
   const wide=isWide(); $("book").classList.toggle("wide",wide);
+  // right panel starts on the line under the left header, so the two halves look like they fit together when closed
+  if(wide){ const L=document.querySelector(".left"), tp=L.querySelector(".top");
+    document.documentElement.style.setProperty("--rtop",(tp.getBoundingClientRect().bottom-L.getBoundingClientRect().top-3)+"px"); }
   $("vWide").setAttribute("aria-pressed",wide);$("vPhone").setAttribute("aria-pressed",!wide);$("vWide").disabled=!canWide();
   $("vHint").textContent=canWide()?"":"widen the window to 900 px for two panels";
   const L={index:leftIndex,entry:leftEntry,catch:leftCatch,settings:wide?leftIndex:leftSettings}[S.view]();
