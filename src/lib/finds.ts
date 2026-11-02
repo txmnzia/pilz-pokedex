@@ -1,12 +1,25 @@
 // Pure find-collection logic. Merge never drops a find: newer updated_at wins per id.
-import type { Find } from "./types";
+import type { Find, FindPhoto } from "./types";
+
+/** Photos per find (issue #1: up to 4, the first is the cover). */
+export const MAX_PHOTOS = 4;
+/** All photos of a find, cover first. Finds from before v0.9 have one photo stored under the find id. */
+export function photosOf(f: Find): FindPhoto[] {
+  return f.photos?.length ? f.photos : [{ id: f.id, path: f.photo_path }];
+}
+/** Mark one photo for re-upload (after a re-crop); the cover also clears photo_path. */
+export function touchPhoto(f: Find, photoId: string, now = new Date()): Find {
+  const photos = photosOf(f).map(p => (p.id === photoId ? { ...p, path: null } : p));
+  return { ...f, photos, photo_path: photos[0].path, synced: false, updated_at: now.toISOString() };
+}
 
 export function mergeFinds(local: Find[], remote: Find[]): Find[] {
   const out = new Map<string, Find>();
   for (const f of local) out.set(f.id, f);
   for (const r of remote) {
     const l = out.get(r.id);
-    if (!l || r.updated_at >= l.updated_at) out.set(r.id, { ...r, synced: true });
+    // a server without the photos column (migration 0003 not run) sends no photos: keep the local list
+    if (!l || r.updated_at >= l.updated_at) out.set(r.id, { ...r, photos: r.photos?.length ? r.photos : l?.photos, synced: true });
   }
   return [...out.values()].sort((a, b) => b.observed_on.localeCompare(a.observed_on) || b.created_at.localeCompare(a.created_at));
 }

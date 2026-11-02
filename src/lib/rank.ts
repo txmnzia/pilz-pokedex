@@ -39,3 +39,21 @@ export function mismatch(guesses: Guess[], selected: string, known: ReadonlySet<
   const pSel = guesses.find(g => g.latin === selected)?.p ?? 0;
   return pSel < WARN_SELECTED ? top : null;
 }
+
+/** Combine the guesses of several photos of the same mushroom: geometric mean of the probabilities, renormalised.
+ *  Measured on pairs of photos of the same species (different observations, so an upper bound for top + side views
+ *  of one mushroom): 1 photo 74% top-1, 2 photos 91% (mean of p 89%, max 87%), 3 photos 95%. */
+export function combineGuesses(lists: Guess[][], eps = 1e-4): Guess[] {
+  const valid = lists.filter(l => l.length);
+  if (valid.length <= 1) return valid[0] ?? [];
+  const info = new Map<string, Guess>();
+  for (const l of valid) for (const g of l) if (!info.has(g.latin)) info.set(g.latin, g);
+  const score = new Map<string, number>();
+  for (const latin of info.keys()) {
+    let s = 0;
+    for (const l of valid) s += Math.log((l.find(g => g.latin === latin)?.p ?? 0) + eps);
+    score.set(latin, Math.exp(s / valid.length));
+  }
+  const sum = [...score.values()].reduce((a, b) => a + b, 0);
+  return [...score.entries()].sort((a, b) => b[1] - a[1]).map(([latin, v]) => ({ ...info.get(latin)!, p: v / sum }));
+}

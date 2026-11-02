@@ -206,3 +206,32 @@ describe("sortByName", () => {
     expect(l[0].names.fr).toBe("Pied-bleu"); // input untouched
   });
 });
+
+import { combineGuesses } from "../src/lib/rank";
+import { photosOf, touchPhoto } from "../src/lib/finds";
+describe("multi-photo finds (issue #1)", () => {
+  const g = (latin: string, p: number) => ({ latin, common: "", p });
+  it("combines photos with a geometric mean: agreement wins over one confident outlier", () => {
+    const a = [g("A", 0.6), g("B", 0.4)], b = [g("B", 0.7), g("A", 0.01), g("C", 0.29)];
+    const c = combineGuesses([a, b]);
+    expect(c[0].latin).toBe("B");
+    expect(c.reduce((s, x) => s + x.p, 0)).toBeCloseTo(1, 6);
+    expect(combineGuesses([a])).toBe(a);
+    expect(combineGuesses([[], a])).toBe(a);
+  });
+  it("old finds have one photo under the find id; re-crop resets only that photo", () => {
+    const f = newFind(1, { photo_path: "u/x.jpg" });
+    expect(photosOf(f)).toEqual([{ id: f.id, path: "u/x.jpg" }]);
+    const two = { ...f, photos: [{ id: f.id, path: "u/x.jpg" }, { id: "p2", path: "u/p2.jpg" }] };
+    const t = touchPhoto(two, "p2");
+    expect(t.photos).toEqual([{ id: f.id, path: "u/x.jpg" }, { id: "p2", path: null }]);
+    expect(t.photo_path).toBe("u/x.jpg");
+    expect(t.synced).toBe(false);
+    expect(touchPhoto(two, f.id).photo_path).toBeNull();
+  });
+  it("a server without the photos column never wipes local photos", () => {
+    const f = { ...newFind(1), photos: [{ id: "a", path: "u/a.jpg" }, { id: "b", path: "u/b.jpg" }] };
+    const { photos: _p, ...remote } = f;
+    expect(mergeFinds([f], [remote as typeof f])[0].photos).toEqual(f.photos);
+  });
+});
