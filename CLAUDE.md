@@ -54,8 +54,9 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
   are versioned (`<user>/<find>-<updated_at ms>.jpg`) so other devices never see a cached old crop.
 
 ## iOS notes
-- Phones: `html, body` background is the device red so Safari paints red behind the Dynamic Island and URL bar;
-  interactive layout stays in `#root` (100dvh). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
+- Phones: `html, body` background is the device red so Safari paints red behind the Dynamic Island and URL bar.
+  Like the eki app, `#root` is 100lvh (runs under the floating URL bar) and `#device` padding-bottom is
+  `max(10px + safe-area, 100lvh - 100dvh - 20px)` so the controls end just above the URL bar (measured gap ~27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
 - Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
   a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
 
