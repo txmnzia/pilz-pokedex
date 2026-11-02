@@ -43,7 +43,7 @@ export function Device({ hw, labels, pageEnabled, catchEnabled, onCatchFile, led
           <div className="btnrow">
             {/* The main action: opens the OS photo menu (camera or library) directly. */}
             <label className={`hw catchbtn${catchEnabled ? "" : " off"}`}>
-              <span className="biground"><span>{labels.a}</span></span>
+              <span className={`biground${labels.a.length > 6 ? " long" : labels.a.length > 5 ? " mid" : ""}`}><span>{labels.a}</span></span>
               <input type="file" accept="image/*" aria-label={labels.a} disabled={!catchEnabled}
                 onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onCatchFile(f); }} />
             </label>
