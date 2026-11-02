@@ -43,7 +43,7 @@ const GLYPH: Record<string, string> = Object.fromEntries(Object.entries(BITMAPS)
 const LED: Record<string, { fill: string; glyph: string; ink: string }> = {
   edible: { fill: "#4caf50", glyph: "fork", ink: "#fff" },
   none: { fill: "#9e9e8e", glyph: "plate", ink: "#fff" },
-  toxic: { fill: "#9a4fb0", glyph: "bang", ink: "#fff" },
+  toxic: { fill: "#d83a2e", glyph: "bang", ink: "#fff" },
   deadly: { fill: "#2a2a2a", glyph: "skull", ink: "#fff" },
   unknown: { fill: "#d8d8c8", glyph: "ask", ink: "#111" },
 };
