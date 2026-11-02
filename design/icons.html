@@ -77,12 +77,18 @@ footer{color:#ffd9d9;font-size:16px}
   </section>
 
   <section>
+    <h2>EACH STYLE WITH THE CAPTURE BALL</h2>
+    <p class="lead">The same five edibility styles, each paired with a capture ball drawn in the same style. Caught species get the ball, the others get its empty version.</p>
+    <div class="cards" id="ballCards"></div>
+  </section>
+
+  <section>
     <h2>CAUGHT MARKERS</h2>
     <p class="lead">In the games, the dex list put a small capture-ball icon next to every species you owned, and showed nothing for species only seen. Pilzdex tiles already show your photo when caught, so the marker matters most in the list. Shown here with edibility style 1.</p>
     <div class="cards" id="caughtCards"></div>
   </section>
 
-  <div class="answer">Reply with a number and a letter, for example <code>2 + B</code>. Mixing is fine too, for example "style 3 but with the skull from 1".</div>
+  <div class="answer">Reply with a number and a letter, for example <code>2 + B</code>, or one of the ball pairings, for example <code>5H</code>. Mixing is fine too, for example "style 3 but with the skull from 1".</div>
   <footer>Mock content: species names and photos are placeholders for comparison only.</footer>
 </div>
 
@@ -176,6 +182,20 @@ const CAUGHTS=[
  {k:"G",name:"Nothing in the grid",note:"The photo already says 'caught' in the grid, so no marker there; the list keeps the basket from A. The quietest grid.",
   c:{list:()=>px("basket","#7a4a10")}},
 ];
+
+/* ---------- capture ball in each style ---------- */
+const ballLine=(c,fill)=>`<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">${fill?`<path d="M3 12a9 9 0 0 1 18 0z" fill="${fill}"/>`:""}<circle cx="12" cy="12" r="9" fill="none" stroke="${c}" stroke-width="1.7"/><path d="M3 12h6M15 12h6" stroke="${c}" stroke-width="1.7"/><circle cx="12" cy="12" r="2.6" fill="#f3efe4" stroke="${c}" stroke-width="1.7"/></svg>`;
+const ballGloss=(on,s=17)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" aria-hidden="true"><defs><linearGradient id="gt${s}${on}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${on?"#ff6b5e":"#b9c2a8"}"/><stop offset="1" stop-color="${on?"#c81e22":"#93a07d"}"/></linearGradient></defs><path d="M2.5 12a9.5 9.5 0 0 1 19 0z" fill="url(#gt${s}${on})"/><path d="M2.5 12a9.5 9.5 0 0 0 19 0z" fill="${on?"#fff":"#dfe6cf"}"/><circle cx="12" cy="12" r="9.5" fill="none" stroke="#160b0b" stroke-width="1.8"/><path d="M2.5 12h19" stroke="#160b0b" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="#fff" stroke="#160b0b" stroke-width="1.8"/><ellipse cx="8.5" cy="7" rx="2.4" ry="1.4" fill="#fff" opacity=".6"/></svg>`;
+const ballLed=on=>`<span class="led" style="--c:${on?"linear-gradient(180deg,#ff5a4e 0 46%,#160b0b 46% 56%,#fff 56%)":"linear-gradient(180deg,#b9c2a8 0 46%,#5d7240 46% 56%,#dfe6cf 56%)"};background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.8) 0 12%,rgba(255,255,255,0) 28%),radial-gradient(circle at 50% 51%,#fff 0 18%,#160b0b 19% 28%,transparent 29%),var(--c)"></span>`;
+const BALLS=[
+  {list:()=>pxc(BALL,{k:INK,r:INK},15),empty:()=>pxc(BALL,{k:"#7f9460"},15),tile:()=>`<span class="corner">${pxc(BALL,{k:INK,r:INK,w:"#bcd583"},18)}</span>`},
+  {list:()=>ballGloss(1),empty:()=>ballGloss(0),tile:()=>`<span class="corner">${ballGloss(1,20)}</span>`},
+  {list:()=>ballLine("#c62828","#ffd5d2"),empty:()=>ballLine("#7f9460"),tile:()=>`<span class="corner">${ballLine("#c62828","#ffd5d2")}</span>`},
+  {list:()=>ballLed(1),empty:()=>ballLed(0),tile:()=>`<span class="corner">${ballLed(1)}</span>`},
+  {list:()=>ball(15),empty:()=>ballEmpty(15),tile:()=>`<span class="corner">${ball(18)}</span>`},
+];
+const BNOTE=["Ball in the screen's ink, one colour like everything else on the LCD.","Glossy red and white ball, same shine as the type badges.","Thin outline ball with a pale red top, same line weight as the icons.","The ball as a glossy LED, split red and white like a device light.","Red and white pixel ball, same pixel grid as the coloured icons."];
+document.getElementById("ballCards").innerHTML=STYLES.map((st,i)=>`<article class="card"><h3><b>${st.n}H</b>${st.name} + ball</h3><p>${BNOTE[i]}</p>${surfaces(st,BALLS[i])}</article>`).join("");
 
 document.getElementById("edCards").innerHTML=STYLES.map(st=>`<article class="card"><h3><b>${st.n}</b>${st.name}</h3><p>${st.note}</p>
   ${surfaces(st,CAUGHTS[5].c)}<div class="badges">${["edible","none","toxic","deadly"].map(st.badge).join("")}</div></article>`).join("");
