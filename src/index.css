@@ -302,7 +302,7 @@ ul.list{list-style:none;margin:0;padding:0}
   .hinge i{flex:1;border-bottom:3px solid var(--ink)}.hinge i:last-child{border-bottom:0}
   .rpanel{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;grid-template-columns:minmax(0,1fr);gap:10px;width:430px;
     margin-top:var(--rtop,90px);padding:10px 14px 16px;background:var(--red);border:3px solid var(--ink);border-left-width:2px;
-    border-radius:6px 20px 20px 6px;box-shadow:0 18px 40px rgba(0,0,0,.35);min-height:0}
+    border-radius:6px 20px 20px 6px;box-shadow:inset -6px -6px 0 var(--red-dark),0 18px 40px rgba(0,0,0,.35);min-height:0}
   .rtop{padding-bottom:6px;border-bottom:3px solid var(--ink)}
   .rtop .label{font-family:var(--font-label);font-size:8px;color:#ffe3e3;letter-spacing:.5px}
   .rlcd{min-height:0;min-width:0;display:flex;border:3px solid var(--ink);border-radius:6px;background:var(--bezel);padding:8px}
