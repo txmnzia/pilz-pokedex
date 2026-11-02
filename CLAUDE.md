@@ -59,6 +59,15 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 - Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
   a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
 
+## Next item (requested by Sam, not started)
+Simplify the UX:
+- Catch form: remove Note, Date and Place fields and the "Other photo" button. Keep GPS coordinates in memory.
+  Tapping the photo re-opens the photo picker/crop to change it.
+- Dex filters: All / Caught / Missing and the 4 edibility filters on a single line.
+- Icons: edible must not be a check mark (confused with "caught"). Caught stays a small dot, but not red.
+Open questions to ask Sam first (form): edible icon (fork & knife / leaf / plate), caught dot colour
+(yellow like CATCH / ink / blue), keep the date saved automatically and shown in "My finds" or drop it.
+
 ## Skills
 | Skill | When |
 |---|---|
