@@ -138,7 +138,7 @@ export default function App() {
       } else if (effectiveView === "catch" || effectiveView === "settings") setView(prev === "login" ? "index" : prev);
     },
     page: () => setPage(p => (p ? 0 : 1)),
-    menu: () => { if (signedIn) go("settings"); },
+    menu: () => { if (!signedIn) return; if (effectiveView === "settings") setView(prev === "login" ? "index" : prev); else go("settings"); }, // toggles
   };
 
   useEffect(() => {
