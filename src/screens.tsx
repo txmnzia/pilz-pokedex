@@ -103,26 +103,41 @@ function fitTileNames(root: HTMLElement | null) {
   }
 }
 
-export function Dex(p: DexProps) {
-  const { ctx } = p;
-  const gridRef = useRef<HTMLDivElement | null>(null);
+/** One dex tile: number, edibility badge, picture (+ ball when caught), fitted name. Used by the dex grid and lookalikes. */
+function DexTile({ sp, ctx, onOpen }: { sp: Species; ctx: Ctx; onOpen(sp: Species): void }) {
+  const got = ctx.caught.has(sp.inat);
+  return (
+    <button className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => onOpen(sp)}>
+      <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted">{badge(ctx, sp.edibility)}</span></span>
+      <span className="tart"><Picture sp={sp} ctx={ctx} small />{got && <CaughtBall caught className="cball corner" />}</span>
+      <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <Fragment key={i}>{i ? " " : ""}<span className="w">{w}</span></Fragment>)}</span>
+    </button>
+  );
+}
+
+/** Refits tile names in a container on mount, font load, resize and when deps change. */
+function useFitTileNames(deps: unknown[]) {
+  const ref = useRef<HTMLDivElement | null>(null);
   useLayoutEffect(() => {
-    const run = () => fitTileNames(gridRef.current);
+    const run = () => fitTileNames(ref.current);
     run();
     document.fonts?.ready.then(run); // VT323 changes widths once loaded
     window.addEventListener("resize", run);
     return () => window.removeEventListener("resize", run);
-  }, [ctx.lang, p.mode, p.list, p.extras]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+  return ref;
+}
+
+export function Dex(p: DexProps) {
+  const { ctx } = p;
+  const gridRef = useFitTileNames([ctx.lang, p.mode, p.list, p.extras]);
   const core = ctx.all.filter(s => !s.extra);
   const n = core.filter(s => ctx.caught.has(s.inat)).length;
   const item = (sp: Species) => {
     const got = ctx.caught.has(sp.inat);
     return p.mode === "grid" ? (
-      <button key={sp.inat} className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
-        <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted">{badge(ctx, sp.edibility)}</span></span>
-        <span className="tart"><Picture sp={sp} ctx={ctx} small />{got && <CaughtBall caught className="cball corner" />}</span>
-        <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <Fragment key={i}>{i ? " " : ""}<span className="w">{w}</span></Fragment>)}</span>
-      </button>
+      <DexTile key={sp.inat} sp={sp} ctx={ctx} onOpen={p.open} />
     ) : (
       <li key={sp.inat} className={`row${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
         <span className="num">{shortNo(sp)}</span><span className="thumb"><Picture sp={sp} ctx={ctx} small /></span>
@@ -174,6 +189,8 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
   const finds = ctx.caught.get(sp.inat) || [];
   const [confirm, setConfirm] = useState<string | null>(null);
   const head = <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span>{dexLabel(sp)}</span></div>;
+  // lookalike tiles live in details(), which renders on page 2 or in the web right panel; refit when they change
+  const lookRef = useFitTileNames([ctx.lang, sp.inat, page, ctx.right]);
   const dots = <div className="dots"><i className={page ? "" : "on"} /><i className={page ? "on" : ""} />&nbsp;{ctx.t("swipe")}</div>;
   const wide = !!ctx.right;
   if (page === 0 || wide) {
@@ -222,13 +239,8 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
           </div>
           {hab && <>{hab.text}{hab.lang !== ctx.lang && <span className="sub"> ({ctx.t("textIn")} {hab.lang.toUpperCase()})</span>}</>}
         </div>
-        {looks.length > 0 && <div className="box"><h3>{ctx.t("look")}</h3><div className="look">
-          {looks.map(x => (
-            <button key={x.inat} className="lk" onClick={() => open(x)}>
-              <Picture sp={x} ctx={ctx} small /><span>{name(x, ctx.lang)}</span>
-              <span className="ed"><EdIcon ed={x.edibility} /></span><span className="sub tiny">{dexLabel(x)}</span>
-            </button>
-          ))}
+        {looks.length > 0 && <div className="box"><h3>{ctx.t("look")}</h3><div className="grid look" ref={lookRef}>
+          {looks.map(x => <DexTile key={x.inat} sp={x} ctx={ctx} onOpen={open} />)}
         </div></div>}
         <div className="box"><h3>{ctx.t("finds")} ({finds.length})</h3>
           {finds.length ? finds.map(f => (
