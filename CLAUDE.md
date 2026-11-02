@@ -124,6 +124,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   Ecologie as one fixed-width badge each (`.mchip`, 124 px, 112 px under 380 px) with ONE short word, the first
   Wikidata value; spore print = real colour swatch. Words come from `src/lib/morph.ts` (keyed by QID, FR/EN/DE, capitals
   without accents/umlauts); a test fails if a new QID in the data has no short word. No stat bars (Sam declined).
+- No text selection anywhere (v0.11.1, Sam): `* {user-select:none; -webkit-touch-callout:none}`, inputs/selects excepted.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
   UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added

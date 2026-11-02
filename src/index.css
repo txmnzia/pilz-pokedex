@@ -430,3 +430,9 @@ span.bdg > svg.bglyph{width:12px;height:12px;filter:drop-shadow(1px 1px 0 var(--
 .mchip i{flex:none;width:11px;height:11px;border:1.5px solid var(--ink);border-radius:2px;display:block}
 .mrow > span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media (max-width:380px){ .mchip{width:112px;gap:4px} }
+
+/* v0.11.1 (Sam): nothing in the app is selectable (stray selections were hard to undo on the phone), no iOS long-press
+   callout, no image dragging. Real input fields stay editable. */
+*{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+img,svg{-webkit-user-drag:none}
+input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
