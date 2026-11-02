@@ -113,6 +113,8 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Buttons (v0.10.2, Sam, design/shadows.html option 2): ONE shadow logic for every hardware button (CATCH, BACK,
   burger, PAGE, d-pad, PREV/NEXT): light from the top left, crisp `3px 4px 0 rgba(80,0,4,.55)`; pressed = slides onto
   it. Disabled buttons never use opacity (it washed the ink border out): full border, dimmed fill.
+- Controls spacing (v0.10.3, Sam): labels sit 10 px under their button (clear of the 4 px shadow); on the web the hidden
+  PAGE pill is removed from the layout so CATCH / counter / BACK centre on the d-pad; wider gaps (20-24 px) on the web.
 - Pixel font (Press Start 2P) squashes accented capitals: write a plain E in labels drawn with it (PREC, DERNIERES,
   ATTRAPE !, Ecologie). German umlauts unchanged.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
