@@ -265,12 +265,13 @@ async function mycodb(entries) {
   }
 }
 
-async function enrich(entries) {
-  await wikidata(entries);
-  await mycodb(entries);
+// cheap part (Wikidata + mycodb, not throttled) and the slow part (iNat names, Wikipedia text, season, regions)
+async function enrichCheap(entries) { await wikidata(entries); await mycodb(entries); }
+async function enrichFull(entries) {
   for (const e of entries) { await inatNames(e); pickNames(e); await wikipedia(e); await season(e); process.stdout.write("."); }
   await regions(entries);
 }
+async function enrich(entries) { await enrichCheap(entries); await enrichFull(entries); }
 
 // score = observations x number of Wikipedia language editions (fame, not seasonal)
 async function fame(pool) {
@@ -401,8 +402,8 @@ const coreIds = new Set(core.map(e => e.inat));
 const extraMap = new Map();
 for (const e of core) for (const c of e.lookalikeCandidates) if (!coreIds.has(c.inat)) extraMap.set(c.inat, { inat: c.inat, latin: c.latin, obs: { DE: 0, FR: 0 } });
 const extras = [...extraMap.values()];
-console.log(`\nenriching ${extras.length} lookalike-only species`);
-await enrich(extras);
+// edibility first (the lookalike cap ranks by danger), Wikipedia text only for the lookalikes actually kept
+await enrichCheap(extras);
 const all = [...core, ...extras];
 const danger = { deadly: 0, toxic: 1, caution: 2, none: 3, edible: 4, null: 5 };
 const byId = new Map(all.map(e => [e.inat, e]));
@@ -414,6 +415,8 @@ for (const e of core) {
 // keep only extras actually referenced after the cap
 const used = new Set(core.flatMap(e => e.lookalikes));
 const keptExtras = extras.filter(e => used.has(e.inat));
+console.log(`\nenriching ${keptExtras.length} lookalike-only species (of ${extras.length} candidates)`);
+await enrichFull(keptExtras);
 for (const e of keptExtras) e.lookalikes = core.filter(c => c.lookalikes.includes(e.inat)).map(c => c.inat); // link back
 
 const out = {
