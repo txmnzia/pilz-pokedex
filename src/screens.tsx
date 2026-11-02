@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
@@ -26,17 +26,17 @@ function Photo({ find, className }: { find: Find; className?: string }) {
     let alive = true, made: string | null = null;
     photoUrl(find).then(u => { if (!alive) return; if (u?.startsWith("blob:")) made = u; setUrl(u); });
     return () => { alive = false; if (made) URL.revokeObjectURL(made); };
-  }, [find.id, find.photo_path]);
+  }, [find.id, find.photo_path, find.updated_at]);
   return url ? <img className={className} src={url} alt="" /> : <span className="photo-wait" />;
 }
 
 /** Caught: your latest photo. Not caught: black silhouette. */
-function Picture({ sp, ctx, small }: { sp: Species; ctx: Ctx; small?: boolean }) {
+function Picture({ sp, ctx, small, hint }: { sp: Species; ctx: Ctx; small?: boolean; hint?: string }) {
   const f = ctx.caught.get(sp.inat)?.[0];
   if (f) return small ? <Photo find={f} className="thumbimg" /> : (
     <div className="pic photo"><Photo find={f} /><span className="stamp">{f.observed_on}{f.place ? ` · ${f.place}` : ""}</span></div>
   );
-  return small ? <Silhouette shape={shapeOf(sp)} /> : <div className="pic"><Silhouette shape={shapeOf(sp)} /><span className="lock">???</span></div>;
+  return small ? <Silhouette shape={shapeOf(sp)} /> : <div className="pic"><Silhouette shape={shapeOf(sp)} />{hint ? <span className="stamp">{hint}</span> : <span className="lock">???</span>}</div>;
 }
 
 const EdPill = ({ ed, ctx }: { ed: Edibility | null; ctx: Ctx }) => (
@@ -122,7 +122,7 @@ export function Dex(p: DexProps) {
 // ---------------------------------------------------------------- entry
 const MORPH_ROWS: [MorphKey, StringKey][] = [["spores", "spores"], ["cap", "cap"], ["hymenium", "hymenium"], ["stipe", "stipe"], ["ecology", "ecology"]];
 
-export function Entry({ ctx, sp, page, open, onDelete, scrollRef }: { ctx: Ctx; sp: Species; page: 0 | 1; open(sp: Species): void; onDelete(f: Find): void; scrollRef: React.RefObject<HTMLDivElement | null> }) {
+export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, scrollRef }: { ctx: Ctx; sp: Species; page: 0 | 1; open(sp: Species): void; onDelete(f: Find): void; onCatchFile(f: File): void; onRecrop(f: Find): void; scrollRef: React.RefObject<HTMLDivElement | null> }) {
   const finds = ctx.caught.get(sp.inat) || [];
   const [confirm, setConfirm] = useState<string | null>(null);
   const head = <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span>{dexLabel(sp)}</span></div>;
@@ -132,7 +132,10 @@ export function Entry({ ctx, sp, page, open, onDelete, scrollRef }: { ctx: Ctx; 
     return (
       <>{head}
         <div className="scroll" ref={scrollRef}>
-          <Picture sp={sp} ctx={ctx} />
+          {finds.length
+            ? <button type="button" className="picbtn" onClick={() => onRecrop(finds[0])} aria-label={ctx.t("crop")}><Picture sp={sp} ctx={ctx} /></button>
+            : <label className="picbtn"><Picture sp={sp} ctx={ctx} hint={ctx.t("tapToCatch")} />
+                <input type="file" accept="image/*" aria-label={ctx.t("catch")} onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onCatchFile(f); }} /></label>}
           <div className="meta"><EdPill ed={sp.edibility} ctx={ctx} />{sp.extra && <span className="chip">{ctx.t("exTag")}</span>}<span className="latin">{sp.latin}</span></div>
           {tx && <div className="box">{tx.intro}
             <p className="src"><a href={tx.url} target="_blank" rel="noreferrer">Wikipedia {tx.lang.toUpperCase()} ↗</a> · CC BY-SA</p></div>}
@@ -179,7 +182,9 @@ export function Entry({ ctx, sp, page, open, onDelete, scrollRef }: { ctx: Ctx; 
               <span>{f.observed_on}<small>{f.place || (f.lat != null ? `${f.lat.toFixed(3)}, ${f.lng!.toFixed(3)}` : "–")}{f.note ? ` · ${f.note}` : ""}</small></span>
               {confirm === f.id
                 ? <span className="confirm">{ctx.t("confirmDel")} <button onClick={() => { onDelete(f); setConfirm(null); }}>{ctx.t("yes")}</button><button onClick={() => setConfirm(null)}>{ctx.t("no")}</button></span>
-                : <button className="del" aria-label={ctx.t("del")} onClick={() => setConfirm(f.id)}>✕</button>}
+                : <span className="findbtns">
+                    <button className="del" aria-label={ctx.t("crop")} onClick={() => onRecrop(f)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14M2 6h14a2 2 0 0 1 2 2v14" /></svg></button>
+                    <button className="del" aria-label={ctx.t("del")} onClick={() => setConfirm(f.id)}>✕</button></span>}
             </div>
           )) : <p className="empty">{ctx.t("noFinds")}</p>}
         </div>
@@ -195,7 +200,7 @@ const localToday = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d
 const fill = (tpl: string, v: Record<string, string>) => tpl.replace(/\{(\w+)\}/g, (_, k) => v[k] ?? "");
 
 /** Square crop of the original photo, max 1600 px, as JPEG. */
-async function cropToBlob(src: Blob, a: Area): Promise<Blob> {
+export async function cropToBlob(src: Blob, a: Area): Promise<Blob> {
   const bmp = await createImageBitmap(src);
   const size = Math.min(1600, Math.round(a.width));
   const c = document.createElement("canvas"); c.width = c.height = size;
@@ -204,7 +209,7 @@ async function cropToBlob(src: Blob, a: Area): Promise<Blob> {
   return new Promise<Blob>((res, rej) => c.toBlob(b => (b ? res(b) : rej(new Error("crop failed"))), "image/jpeg", 0.9));
 }
 
-function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string; onDone(a: Area): void; onCancel(): void }) {
+export function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string; onDone(a: Area): void; onCancel(): void }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area | null>(null);
@@ -215,7 +220,6 @@ function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string; onDone
           onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={(_, px) => setArea(px)} />
       </div>
       <p className="crophint">{ctx.t("cropHint")}</p>
-      <input className="zoom" type="range" min={1} max={6} step={0.01} value={zoom} aria-label="Zoom" onChange={e => setZoom(Number(e.target.value))} />
       <div className="srcrow">
         <button type="button" className="cta ghost" onClick={onCancel}>{ctx.t("cancel")}</button>
         <button type="button" className="cta" disabled={!area} onClick={() => area && onDone(area)}>{ctx.t("useCrop")}</button>
@@ -227,7 +231,7 @@ function Cropper({ ctx, src, onDone, onCancel }: { ctx: Ctx; src: string; onDone
 /** One photo button (the OS offers camera or library), crop, then identification:
  *  opened from a species page = verify silently and only warn on a likely mix-up;
  *  opened from the list = suggest the top 3. */
-export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number | null; onSave(d: CatchDraft): void }) {
+export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx: Ctx; initial: number | null; startFile: File | null; onSave(d: CatchDraft): void; onCancelEmpty(): void }) {
   const [orig, setOrig] = useState<File | null>(null);
   const [origUrl, setOrigUrl] = useState<string | null>(null);
   const [cropping, setCropping] = useState(false);
@@ -278,6 +282,8 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number | nu
       if (gps) { setPos(gps); setMsg(ctx.t("fromPhotoMeta")); } else { setPos(null); locate(); }
     }
   };
+  const started = useRef(false);
+  useEffect(() => { if (startFile && !started.current) { started.current = true; pick(startFile); } });
   const finishCrop = async (a: Area) => {
     setCropping(false);
     const blob = await cropToBlob(orig!, a);
@@ -354,7 +360,7 @@ export function Catch({ ctx, initial, onSave }: { ctx: Ctx; initial: number | nu
           <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
         </form>
       </div>
-      {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); } }} />}
+      {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); onCancelEmpty(); } }} />}
     </>
   );
 }
