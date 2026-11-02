@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
@@ -14,13 +15,17 @@ export interface Ctx {
   lang: Lang;
   all: Species[];
   caught: Map<number, Find[]>;
+  /** Web two-panel layout: the right panel's screen. null on phones (everything stays on the left). */
+  right: HTMLElement | null;
 }
+/** Content for the right panel when it exists, nothing otherwise. */
+const ToRight = ({ ctx, children }: { ctx: Ctx; children: React.ReactNode }) => (ctx.right ? createPortal(children, ctx.right) : null);
 export type Filter = "all" | "got" | "missing";
 
 const name = (sp: Species, lang: Lang) => sp.names[lang];
 const edKey = (ed: Edibility | null): StringKey => ed ?? "unknown";
 
-function Photo({ find, className }: { find: Find; className?: string }) {
+export function Photo({ find, className }: { find: Find; className?: string }) {
   const [url, setUrl] = useState<string | null>(null);
   useEffect(() => {
     let alive = true, made: string | null = null;
@@ -75,6 +80,8 @@ export function Login({ ctx, configured, onSend, onOffline }: { ctx: Ctx; config
 
 // ---------------------------------------------------------------- dex
 interface DexProps {
+  /** web settings view: the right panel shows settings, the left dex stays a plain grid */
+  gridOnly?: boolean;
   ctx: Ctx; list: Species[]; extras: Species[]; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
   setFilter(f: Filter): void; setEdf(e: Edibility | null): void; open(sp: Species): void;
 }
@@ -122,18 +129,37 @@ export function Dex(p: DexProps) {
     );
   };
   const wrap = (items: React.ReactNode[]) => p.mode === "grid" ? <div className="grid">{items}</div> : <ul className="list">{items}</ul>;
+  const statusChips = (["all", "got", "missing"] as const).map(f => <button key={f} className="chip" aria-pressed={p.filter === f} onClick={() => p.setFilter(f)}>{ctx.t(f)}</button>);
+  const edChips = (["edible", "none", "toxic", "deadly"] as const).map(e => (
+    <button key={e} className="chip icon" aria-pressed={p.edf === e} title={ctx.t(e)} onClick={() => p.setEdf(p.edf === e ? null : e)}><span className="ed"><EdIcon ed={e} /></span></button>
+  ));
+  const bar = (got: number, tot: number) => <span className="bar"><i style={{ width: `${tot ? (got / tot) * 100 : 0}%` }} /></span>;
   return (
     <>
       <div className="titlebar"><span>{ctx.t("dex")}</span><span>{n}/{core.length}</span></div>
       <div className="scroll" ref={gridRef}>
-        <div className="chips">
-          {(["all", "got", "missing"] as const).map(f => <button key={f} className="chip" aria-pressed={p.filter === f} onClick={() => p.setFilter(f)}>{ctx.t(f)}</button>)}
-        </div>
-        <div className="chips">
-          {(["edible", "none", "toxic", "deadly"] as const).map(e => (
-            <button key={e} className="chip" aria-pressed={p.edf === e} title={ctx.t(e)} onClick={() => p.setEdf(p.edf === e ? null : e)}><span className="ed"><EdIcon ed={e} /></span></button>
-          ))}
-        </div>
+        {!ctx.right && !p.gridOnly && <>
+          <div className="chips">{statusChips}</div>
+          <div className="chips">{edChips}</div>
+        </>}
+        <ToRight ctx={ctx}>
+          <div className="titlebar"><span>{ctx.t("filters")}</span><span>{p.list.length}</span></div>
+          <div className="scroll">
+            <div className="chips one">{statusChips}<span className="sep" />{edChips}</div>
+            <div className="box"><h3>{ctx.t("progress")}</h3>
+              <div className="prog"><span>{n}/{core.length}</span>{bar(n, core.length)}<span>{Math.round((n / Math.max(1, core.length)) * 100)}%</span></div></div>
+            <div className="box"><h3>{ctx.t("byEd")}</h3><div className="prog">
+              {(["edible", "none", "toxic", "deadly", null] as const).map(e => {
+                const tot = core.filter(s => s.edibility === e), got = tot.filter(s => ctx.caught.has(s.inat)).length;
+                return tot.length ? <Fragment key={String(e)}><span className="ed"><EdIcon ed={e} /></span>{bar(got, tot.length)}<span>{got}/{tot.length}</span></Fragment> : null;
+              })}</div></div>
+            <div className="box"><h3>{ctx.t("regions")}</h3><div className="prog">
+              {(["berlin", "grenoble"] as const).map(r => {
+                const tot = core.filter(s => s.regions[r] >= REGION_MIN_OBS), got = tot.filter(s => ctx.caught.has(s.inat)).length;
+                return <Fragment key={r}><span>{r === "berlin" ? "Berlin" : "Grenoble"}</span>{bar(got, tot.length)}<span>{got}/{tot.length}</span></Fragment>;
+              })}</div></div>
+          </div>
+        </ToRight>
         {wrap(p.list.map(sp => item(sp)))}
         {p.extras.length > 0 && <><h3 className="exhead">{ctx.t("exHead")} ({p.extras.length})</h3>{wrap(p.extras.map(sp => item(sp)))}</>}
       </div>
@@ -149,10 +175,15 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
   const [confirm, setConfirm] = useState<string | null>(null);
   const head = <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span>{dexLabel(sp)}</span></div>;
   const dots = <div className="dots"><i className={page ? "" : "on"} /><i className={page ? "on" : ""} />&nbsp;{ctx.t("swipe")}</div>;
-  if (page === 0) {
+  const wide = !!ctx.right;
+  if (page === 0 || wide) {
     const tx = textFor(sp, ctx.lang);
     return (
       <>{head}
+        {wide && <ToRight ctx={ctx}>
+          <div className="titlebar"><span>{dexLabel(sp)}</span><EdPill ed={sp.edibility} ctx={ctx} /></div>
+          <div className="scroll">{details()}</div>
+        </ToRight>}
         <div className="scroll" ref={scrollRef}>
           {finds.length
             ? <button type="button" className="picbtn" onClick={() => onRecrop(finds[0])} aria-label={ctx.t("crop")}><Picture sp={sp} ctx={ctx} /></button>
@@ -161,17 +192,19 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
           <div className="meta"><EdPill ed={sp.edibility} ctx={ctx} />{sp.extra && <span className="chip">{ctx.t("exTag")}</span>}<span className="latin">{sp.latin}</span></div>
           {tx && <div className="box">{tx.intro}
             <p className="src"><a href={tx.url} target="_blank" rel="noreferrer">Wikipedia {tx.lang.toUpperCase()} ↗</a> · CC BY-SA</p></div>}
-        </div>{dots}
+        </div>{!wide && dots}
       </>
     );
   }
+  return <>{head}<div className="scroll" ref={scrollRef}>{details()}</div>{dots}</>;
+
+  function details() {
   const season = seasonLabel(sp.season.months, ctx.lang);
   const max = Math.max(1, ...sp.season.histogram);
   const hab = habitatFor(sp, ctx.lang);
   const looks = lookalikesOf(sp, ctx.all);
   return (
-    <>{head}
-      <div className="scroll" ref={scrollRef}>
+    <>
         <div className="box">
           <div className="stat"><span>{ctx.t("season")}</span><span /><b>{season === null ? ctx.t("allYear") : season || "–"}</b></div>
           <div className="bars" aria-hidden="true">
@@ -210,9 +243,9 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
             </div>
           )) : <p className="empty">{ctx.t("noFinds")}</p>}
         </div>
-      </div>{dots}
     </>
   );
+  }
 }
 
 // ---------------------------------------------------------------- catch
@@ -317,71 +350,83 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const warnKey = warn && sel ? `${sel.inat}:${warn.latin}` : null;
   const warnSp = warn ? byLatin.get(warn.latin) : undefined;
   const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex!) - (b.no ?? b.ex!) : a.extra ? 1 : -1));
+  const submit = () => {
+    if (!file) { setMsg(ctx.t("photoNeeded")); return; }
+    if (species == null) { setMsg(ctx.t("pickSpecies")); return; }
+    onSave({ file, species, observed_on: date, place, note, lat: pos?.lat ?? null, lng: pos?.lng ?? null });
+  };
+
+  const warnBox = verify && warn && warnKey !== dismissed && (
+    <div className="box warnbox" role="alert" ref={el => el?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
+      <p className="m0">{fill(ctx.t("areYouSure"), { x: sel ? name(sel, ctx.lang) : "", y: spName(warn), p: `${Math.round(warn.p * 100)}%` })}</p>
+      <div className="srcrow">
+        {warnSp
+          ? <button type="button" className="cta" onClick={() => setSpecies(warnSp.inat)}>{fill(ctx.t("switchTo"), { y: name(warnSp, ctx.lang) })}</button>
+          : <span className="note">{ctx.t("notInDex")}</span>}
+        <button type="button" className="cta ghost" onClick={() => setDismissed(warnKey)}>{fill(ctx.t("keep"), { x: sel ? name(sel, ctx.lang) : "" })}</button>
+      </div>
+    </div>
+  );
+
+  const photoPart = <>
+    {preview && <button type="button" className="shot" onClick={() => setCropping(true)} aria-label={ctx.t("crop")}>
+      <img src={preview} alt="" /><span className="stamp">{ctx.t("tapToCrop")}</span></button>}
+    <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+      {preview ? ctx.t("otherPhoto") : ctx.t("addPhoto")}
+      <input id="ph" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>
+  </>;
+
+  const formPart = <>
+    {!verify && ident !== "idle" && (
+      <div className="box ident" aria-live="polite">
+        <h3>{ctx.t("suggestion")}</h3>
+        {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
+        {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
+        {ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
+          <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}</p>
+          <div className="guesses">
+            {result.guesses.slice(0, 3).map(g => {
+              const sp = byLatin.get(g.latin);
+              const pct = `${Math.round(g.p * 100)}%`;
+              return sp
+                ? <button type="button" key={g.latin} className="guess" aria-pressed={species === sp.inat} onClick={() => setSpecies(sp.inat)}>
+                    <span className="ed"><EdIcon ed={sp.edibility} /></span><span className="gname">{name(sp, ctx.lang)}</span><b>{pct}</b></button>
+                : <div key={g.latin} className="guess off">
+                    <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{pct}</b></div>;
+            })}
+          </div>
+          <p className="note">{ctx.t("idDisclaimer")}</p>
+        </>)}
+      </div>
+    )}
+    <div className="field"><label htmlFor="spc">{ctx.t("species")}</label>
+      <select id="spc" value={species ?? ""} onChange={e => setSpecies(e.target.value ? Number(e.target.value) : null)}>
+        {species == null && <option value="">{ctx.t("choose")}</option>}
+        {sorted.map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
+      </select></div>
+    <div className="field"><label htmlFor="dt">{ctx.t("date")}</label><input id="dt" type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
+    <div className="field"><label htmlFor="pl">{ctx.t("place")}</label>
+      <div className="inrow"><input id="pl" value={place} placeholder={ctx.t("placeHint")} onChange={e => setPlace(e.target.value)} />
+        <button type="button" className="chip" onClick={locate} aria-pressed={!!pos}>📍 GPS</button></div></div>
+    <div className="field"><label htmlFor="nt">{ctx.t("note")}</label><input id="nt" value={note} onChange={e => setNote(e.target.value)} /></div>
+    <button className="cta" type="button" onClick={submit}>{ctx.t("save")}</button>
+    <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
+  </>;
+
   return (
     <>
       <div className="titlebar"><span>{ctx.t("catch")}</span>{sel && verify && <span className="name">{name(sel, ctx.lang)}</span>}</div>
       <div className="scroll">
-        <form onSubmit={e => {
-          e.preventDefault();
-          if (!file) { setMsg(ctx.t("photoNeeded")); return; }
-          if (species == null) { setMsg(ctx.t("pickSpecies")); return; }
-          onSave({ file, species, observed_on: date, place, note, lat: pos?.lat ?? null, lng: pos?.lng ?? null });
-        }}>
-          {verify && warn && warnKey !== dismissed && (
-            <div className="box warnbox" role="alert" ref={el => el?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
-              <p className="m0">{fill(ctx.t("areYouSure"), { x: sel ? name(sel, ctx.lang) : "", y: spName(warn), p: `${Math.round(warn.p * 100)}%` })}</p>
-              <div className="srcrow">
-                {warnSp
-                  ? <button type="button" className="cta" onClick={() => setSpecies(warnSp.inat)}>{fill(ctx.t("switchTo"), { y: name(warnSp, ctx.lang) })}</button>
-                  : <span className="note">{ctx.t("notInDex")}</span>}
-                <button type="button" className="cta ghost" onClick={() => setDismissed(warnKey)}>{fill(ctx.t("keep"), { x: sel ? name(sel, ctx.lang) : "" })}</button>
-              </div>
-            </div>
-          )}
-
-          {preview && <button type="button" className="shot" onClick={() => setCropping(true)} aria-label={ctx.t("crop")}>
-            <img src={preview} alt="" /><span className="stamp">{ctx.t("tapToCrop")}</span></button>}
-          <label className="cta srcbtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-            {preview ? ctx.t("otherPhoto") : ctx.t("addPhoto")}
-            <input id="ph" type="file" accept="image/*" onChange={e => { pick(e.target.files?.[0]); e.target.value = ""; }} /></label>
-
-          {!verify && ident !== "idle" && (
-            <div className="box ident" aria-live="polite">
-              <h3>{ctx.t("suggestion")}</h3>
-              {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
-              {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
-              {ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
-                <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}</p>
-                <div className="guesses">
-                  {result.guesses.slice(0, 3).map(g => {
-                    const sp = byLatin.get(g.latin);
-                    const pct = `${Math.round(g.p * 100)}%`;
-                    return sp
-                      ? <button type="button" key={g.latin} className="guess" aria-pressed={species === sp.inat} onClick={() => setSpecies(sp.inat)}>
-                          <span className="ed"><EdIcon ed={sp.edibility} /></span><span className="gname">{name(sp, ctx.lang)}</span><b>{pct}</b></button>
-                      : <div key={g.latin} className="guess off">
-                          <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{pct}</b></div>;
-                  })}
-                </div>
-                <p className="note">{ctx.t("idDisclaimer")}</p>
-              </>)}
-            </div>
-          )}
-
-          <div className="field"><label htmlFor="spc">{ctx.t("species")}</label>
-            <select id="spc" value={species ?? ""} onChange={e => setSpecies(e.target.value ? Number(e.target.value) : null)}>
-              {species == null && <option value="">{ctx.t("choose")}</option>}
-              {sorted.map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
-            </select></div>
-          <div className="field"><label htmlFor="dt">{ctx.t("date")}</label><input id="dt" type="date" value={date} onChange={e => setDate(e.target.value)} /></div>
-          <div className="field"><label htmlFor="pl">{ctx.t("place")}</label>
-            <div className="inrow"><input id="pl" value={place} placeholder={ctx.t("placeHint")} onChange={e => setPlace(e.target.value)} />
-              <button type="button" className="chip" onClick={locate} aria-pressed={!!pos}>📍 GPS</button></div></div>
-          <div className="field"><label htmlFor="nt">{ctx.t("note")}</label><input id="nt" value={note} onChange={e => setNote(e.target.value)} /></div>
-          <button className="cta" type="submit">{ctx.t("save")}</button>
-          <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
+        <form onSubmit={e => { e.preventDefault(); submit(); }}>
+          {!ctx.right && warnBox}
+          {photoPart}
+          {!ctx.right && formPart}
         </form>
       </div>
+      <ToRight ctx={ctx}>
+        <div className="titlebar"><span>{ctx.t(verify ? "species" : "suggestion")}</span></div>
+        <div className="scroll">{warnBox}{formPart}</div>
+      </ToRight>
       {cropping && origUrl && <Cropper ctx={ctx} src={origUrl} onDone={finishCrop} onCancel={() => { setCropping(false); if (!file) { setOrig(null); setOrigUrl(null); onCancelEmpty(); } }} />}
     </>
   );
@@ -393,7 +438,7 @@ export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExpo
   onSignOut(): void; onExport(): void; onRestore(json: string): Promise<string>; sources: Record<string, string>;
 }) {
   const [msg, setMsg] = useState("");
-  return (
+  const body = (
     <>
       <div className="titlebar"><span>{ctx.t("settings")}</span></div>
       <div className="scroll">
@@ -417,4 +462,5 @@ export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExpo
       </div>
     </>
   );
+  return ctx.right ? createPortal(body, ctx.right) : body;
 }
