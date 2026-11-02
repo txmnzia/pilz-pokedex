@@ -56,7 +56,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 ## iOS notes
 - Phones: `html, body` background is the device red so Safari paints red behind the Dynamic Island and URL bar.
   Like the eki app, `#root` is 100lvh (runs under the floating URL bar) and `#device` padding-bottom is
-  `max(10px + safe-area, 100lvh - 100dvh - 20px)` so the controls end just above the URL bar (measured gap ~27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
+  `max(10px + safe-area, 100lvh - 100dvh - 10px)`: controls end ~17pt above the URL bar (iPhone: lvh 754, dvh 654, gap 27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
 - Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
   a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
   Backstop: `version.json` (emitted at build, never cached) is compared with the running version; if the server is
