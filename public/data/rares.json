@@ -1,0 +1,1170 @@
+{
+ "generatedAt": "2026-11-02T20:01:39.346Z",
+ "sources": {
+  "list": "photo model labels (species-classifiers fungi, European only) minus the Pilzdex species",
+  "names": "iNaturalist localized common names, then Wikidata P1843; Latin when none"
+ },
+ "rares": [
+  {
+   "inat": 118041,
+   "latin": "Abortiporus biennis",
+   "modelLatin": "Abortiporus biennis",
+   "names": {
+    "fr": "Polypore bisannuel",
+    "en": "Blushing Rosette",
+    "de": "Rötender Saftwirrling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Abortiporus_biennis",
+    "fr": "https://fr.wikipedia.org/wiki/Polypore_bisannuel"
+   }
+  },
+  {
+   "inat": 118393,
+   "latin": "Agrocybe pediades",
+   "modelLatin": "Agrocybe pediades",
+   "names": {
+    "fr": "Agrocybe des pelouses",
+    "en": "Common Fieldcap",
+    "de": "Trockener Ackerling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Raustieliger_Ackerling",
+    "en": "https://en.wikipedia.org/wiki/Agrocybe_pediades"
+   }
+  },
+  {
+   "inat": 118391,
+   "latin": "Agrocybe praecox",
+   "modelLatin": "Agrocybe praecox",
+   "names": {
+    "fr": "Agrocybe précoce",
+    "en": "Spring Fieldcap",
+    "de": "Voreilender Ackerling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Fr%C3%BCher_Ackerling",
+    "en": "https://en.wikipedia.org/wiki/Agrocybe_praecox",
+    "fr": "https://fr.wikipedia.org/wiki/Agrocybe_praecox"
+   }
+  },
+  {
+   "inat": 334704,
+   "latin": "Artomyces pyxidatus",
+   "modelLatin": "Artomyces pyxidatus",
+   "names": {
+    "fr": "Clavaire à pyxides",
+    "en": "Crown-tipped coral fungus",
+    "de": "Verzweigte Becherkoralle"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Artomyces_pyxidatus",
+    "de": "https://de.wikipedia.org/wiki/Verzweigte_Becherkoralle",
+    "fr": "https://fr.wikipedia.org/wiki/Artomyces_pyxidatus"
+   }
+  },
+  {
+   "inat": 381310,
+   "latin": "Aseroe rubra",
+   "modelLatin": "Aseroe rubra",
+   "names": {
+    "en": "Anemone stinkhorn fungus",
+    "fr": "Aseroe rubra",
+    "de": "Aseroe rubra"
+   },
+   "nameSource": {
+    "en": "inaturalist",
+    "fr": "latin",
+    "de": "latin"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Aseroe_rubra"
+   }
+  },
+  {
+   "inat": 55271,
+   "latin": "Astraeus hygrometricus",
+   "modelLatin": "Astraeus hygrometricus",
+   "names": {
+    "fr": "Géastre hygrométrique",
+    "en": "Hygroscopic Earthstar",
+    "de": "Gemeiner Wetterstern"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Wetterstern",
+    "en": "https://en.wikipedia.org/wiki/Astraeus_hygrometricus",
+    "fr": "https://fr.wikipedia.org/wiki/Astraeus_hygrometricus"
+   }
+  },
+  {
+   "inat": 119969,
+   "latin": "Battarrea phalloides",
+   "modelLatin": "Battarrea phalloides",
+   "names": {
+    "fr": "Battarrée phalloïde",
+    "en": "Sandy Stilt-puffball",
+    "de": "Stelzenstäubling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Battarrea_phalloides"
+   }
+  },
+  {
+   "inat": 56535,
+   "latin": "Chlorophyllum rhacodes",
+   "modelLatin": "Chlorophyllum rhacodes",
+   "names": {
+    "fr": "Lépiote déguenillée",
+    "en": "Shaggy Parasol",
+    "de": "Gemeiner Safranschirmling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Shaggy_parasol",
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Safranschirmling",
+    "fr": "https://fr.wikipedia.org/wiki/Chlorophyllum_rhacodes"
+   }
+  },
+  {
+   "inat": 53885,
+   "latin": "Clavaria fragilis",
+   "modelLatin": "Clavaria fragilis",
+   "names": {
+    "fr": "Clavaire vermicelle",
+    "en": "Fairy Fingers",
+    "de": "Wurmförmiges Keulchen"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Clavaria_fragilis"
+   }
+  },
+  {
+   "inat": 63260,
+   "latin": "Clavulina coralloides",
+   "modelLatin": "Clavulina coralloides",
+   "names": {
+    "fr": "Clavaire crêtée",
+    "en": "White Coral Fungus",
+    "de": "Kammförmiger Keulenpilz"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Clavaire_%C3%A0_cr%C3%AAtes",
+    "de": "https://de.wikipedia.org/wiki/Kammf%C3%B6rmiger_Keulenpilz",
+    "en": "https://en.wikipedia.org/wiki/Clavulina_cristata"
+   }
+  },
+  {
+   "inat": 81961,
+   "latin": "Clavulina rugosa",
+   "modelLatin": "Clavulina rugosa",
+   "names": {
+    "fr": "Clavaire rugueuse",
+    "en": "Wrinkled club fungus",
+    "de": "Runzeliger Keulenpilz"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Runzeliger_Keulenpilz",
+    "en": "https://en.wikipedia.org/wiki/Clavulina_rugosa",
+    "fr": "https://fr.wikipedia.org/wiki/Clavulina_rugosa"
+   }
+  },
+  {
+   "inat": 55272,
+   "latin": "Clavulinopsis fusiformis",
+   "modelLatin": "Clavulinopsis fusiformis",
+   "names": {
+    "fr": "Clavaire en fuseau",
+    "en": "Golden Spindles",
+    "de": "Spindelförmige Wiesenkeule"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Clavulinopsis_fusiformis",
+    "fr": "https://fr.wikipedia.org/wiki/Clavulinopsis_fusiformis"
+   }
+  },
+  {
+   "inat": 350366,
+   "latin": "Climacodon septentrionalis",
+   "modelLatin": "Climacodon septentrionalis",
+   "names": {
+    "fr": "Hydne septentrional",
+    "en": "Northern Tooth",
+    "de": "Nördlicher Stachelseitling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Climacodon_septentrionalis"
+   }
+  },
+  {
+   "inat": 55605,
+   "latin": "Coprinopsis lagopus",
+   "modelLatin": "Coprinopsis lagopus",
+   "names": {
+    "fr": "Coprin pied-de-lièvre",
+    "en": "Hare's foot inkcap",
+    "de": "Hasenpfote"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Hasenpfote_(Pilz)",
+    "en": "https://en.wikipedia.org/wiki/Coprinopsis_lagopus"
+   }
+  },
+  {
+   "inat": 120030,
+   "latin": "Crucibulum laeve",
+   "modelLatin": "Crucibulum laeve",
+   "names": {
+    "fr": "Crucibule lisse",
+    "en": "Common bird's nest fungus",
+    "de": "Gemeiner Tiegelteuerling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Tiegelteuerling"
+   }
+  },
+  {
+   "inat": 895035,
+   "latin": "Desarmillaria tabescens",
+   "modelLatin": "Desarmillaria tabescens",
+   "names": {
+    "fr": "Armillaire sans anneau",
+    "en": "Ringless honey fungus",
+    "de": "Ringloser Hallimasch"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 55568,
+   "latin": "Exidia glandulosa",
+   "modelLatin": "Exidia glandulosa",
+   "names": {
+    "fr": "Exidie glanduleuse",
+    "en": "Black Witches' Butter",
+    "de": "Stoppeliger Drüsling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Exidia_glandulosa",
+    "de": "https://de.wikipedia.org/wiki/Stoppeliger_Dr%C3%BCsling",
+    "en": "https://en.wikipedia.org/wiki/Exidia_glandulosa"
+   }
+  },
+  {
+   "inat": 129027,
+   "latin": "Exidia recisa",
+   "modelLatin": "Exidia recisa",
+   "names": {
+    "fr": "Exidie obconique",
+    "en": "Amber jelly fungus",
+    "de": "Kreisel-Drüsling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Kreisel-Dr%C3%BCsling",
+    "en": "https://en.wikipedia.org/wiki/Exidia_recisa"
+   }
+  },
+  {
+   "inat": 63557,
+   "latin": "Geastrum saccatum",
+   "modelLatin": "Geastrum saccatum",
+   "names": {
+    "fr": "Géastre en sac",
+    "en": "Rounded earthstar",
+    "de": "Eingesenkter Erdstern"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Geastrum_saccatum"
+   }
+  },
+  {
+   "inat": 348711,
+   "latin": "Gliophorus psittacinus",
+   "modelLatin": "Gliophorus psittacinus",
+   "names": {
+    "fr": "Hygrophore perroquet",
+    "en": "Parrot Mushroom",
+    "de": "Papageiensaftling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Hygrophore_perroquet",
+    "de": "https://de.wikipedia.org/wiki/Papageigr%C3%BCner_Saftling",
+    "en": "https://en.wikipedia.org/wiki/Gliophorus_psittacinus"
+   }
+  },
+  {
+   "inat": 67338,
+   "latin": "Gloeophyllum sepiarium",
+   "modelLatin": "Gloeophyllum sepiarium",
+   "names": {
+    "fr": "Lenzite des poutres",
+    "en": "Conifer Mazegill",
+    "de": "Zaun-Blättling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Zaun-Bl%C3%A4ttling",
+    "en": "https://en.wikipedia.org/wiki/Gloeophyllum_sepiarium",
+    "fr": "https://fr.wikipedia.org/wiki/Lenzite_des_cl%C3%B4tures"
+   }
+  },
+  {
+   "inat": 53714,
+   "latin": "Grifola frondosa",
+   "modelLatin": "Grifola frondosa",
+   "names": {
+    "fr": "Polypore en touffe",
+    "en": "Hen of the woods",
+    "de": "Laubporling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Klapperschwamm",
+    "en": "https://en.wikipedia.org/wiki/Grifola_frondosa",
+    "fr": "https://fr.wikipedia.org/wiki/Polypore_en_touffe"
+   }
+  },
+  {
+   "inat": 83196,
+   "latin": "Gymnopilus junonius",
+   "modelLatin": "Gymnopilus junonius",
+   "names": {
+    "fr": "Pholiote remarquable",
+    "en": "Spectacular Rustgill",
+    "de": "Beringter Flämmling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Beringter_Fl%C3%A4mmling",
+    "en": "https://en.wikipedia.org/wiki/Gymnopilus_junonius",
+    "fr": "https://fr.wikipedia.org/wiki/Gymnopile_remarquable"
+   }
+  },
+  {
+   "inat": 130915,
+   "latin": "Gymnopus dryophilus",
+   "modelLatin": "Gymnopus dryophilus",
+   "names": {
+    "fr": "Collybie des chênes",
+    "en": "Oak-loving Gymnopus",
+    "de": "Waldfreund-Rübling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Waldfreund-R%C3%BCbling",
+    "en": "https://en.wikipedia.org/wiki/Gymnopus_dryophilus"
+   }
+  },
+  {
+   "inat": 154949,
+   "latin": "Hydnellum peckii",
+   "modelLatin": "Hydnellum peckii",
+   "names": {
+    "fr": "Hydnelle de Peck",
+    "en": "Red-juice Tooth",
+    "de": "Blutender Korkstachling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Hydnellum_peckii",
+    "de": "https://de.wikipedia.org/wiki/Scharfer_Korkstacheling",
+    "fr": "https://fr.wikipedia.org/wiki/Hydnellum_peckii"
+   }
+  },
+  {
+   "inat": 55245,
+   "latin": "Hygrocybe coccinea",
+   "modelLatin": "Hygrocybe coccinea",
+   "names": {
+    "fr": "Hygrocybe cochenille",
+    "en": "Scarlet Waxy Cap",
+    "de": "Kirschroter Saftling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Hygrocybe_cochenille",
+    "en": "https://en.wikipedia.org/wiki/Hygrocybe_coccinea"
+   }
+  },
+  {
+   "inat": 51872,
+   "latin": "Hygrocybe conica",
+   "modelLatin": "Hygrocybe conica",
+   "names": {
+    "fr": "Hygrophore conique",
+    "en": "Witch's Hat",
+    "de": "Kegeliger Saftling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Kegeliger_Saftling",
+    "en": "https://en.wikipedia.org/wiki/Hygrocybe_conica"
+   }
+  },
+  {
+   "inat": 130910,
+   "latin": "Irpex lacteus",
+   "modelLatin": "Irpex lacteus",
+   "names": {
+    "fr": "Irpex laiteux",
+    "en": "Milk-white Toothed Polypore",
+    "de": "Milchweißer Eggenpilz"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Irpex_lacteus"
+   }
+  },
+  {
+   "inat": 63236,
+   "latin": "Laccaria laccata",
+   "modelLatin": "Laccaria laccata",
+   "names": {
+    "fr": "Laccaire laqué",
+    "en": "Deceiver",
+    "de": "Rötlicher Lacktrichterling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Laccaria_laccata",
+    "de": "https://de.wikipedia.org/wiki/R%C3%B6tlicher_Lacktrichterling",
+    "fr": "https://fr.wikipedia.org/wiki/Laccaria_laccata"
+   }
+  },
+  {
+   "inat": 130934,
+   "latin": "Lacrymaria lacrymabunda",
+   "modelLatin": "Lacrymaria lacrymabunda",
+   "names": {
+    "fr": "Psathyrelle pleureuse",
+    "en": "Weeping widow",
+    "de": "Tränender Saumpilz"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Tr%C3%A4nender_Saumpilz",
+    "en": "https://en.wikipedia.org/wiki/Lacrymaria_lacrymabunda",
+    "fr": "https://fr.wikipedia.org/wiki/Lacrymaria_lacrymabunda"
+   }
+  },
+  {
+   "inat": 503241,
+   "latin": "Lactifluus volemus",
+   "modelLatin": "Lactifluus volemus",
+   "names": {
+    "fr": "Lactaire à lait abondant",
+    "en": "Weeping Milk Cap",
+    "de": "Brätling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Lactarius_volemus",
+    "de": "https://de.wikipedia.org/wiki/Br%C3%A4tling",
+    "en": "https://en.wikipedia.org/wiki/Lactifluus_volemus"
+   }
+  },
+  {
+   "inat": 1395761,
+   "latin": "Lentinus arcularius",
+   "modelLatin": "Lentinus arcularius",
+   "names": {
+    "fr": "Polypore alvéolé",
+    "en": "Spring Polypore",
+    "de": "Weitlöcheriger Stielporling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 121217,
+   "latin": "Leratiomyces ceres",
+   "modelLatin": "Leratiomyces ceres",
+   "names": {
+    "fr": "Strophaire orangée",
+    "en": "Chip Cherries",
+    "de": "Orangeroter Träuschling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Strophaire_orang%C3%A9e",
+    "de": "https://de.wikipedia.org/wiki/Orangeroter_Tr%C3%A4uschling",
+    "en": "https://en.wikipedia.org/wiki/Leratiomyces_ceres"
+   }
+  },
+  {
+   "inat": 85398,
+   "latin": "Leucocoprinus birnbaumii",
+   "modelLatin": "Leucocoprinus birnbaumii",
+   "names": {
+    "fr": "Lépiote jaune",
+    "en": "Flowerpot parasol",
+    "de": "Gelber Faltenschirmling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gelber_Faltenschirmling",
+    "en": "https://en.wikipedia.org/wiki/Leucocoprinus_birnbaumii",
+    "fr": "https://fr.wikipedia.org/wiki/Leucocoprinus_birnbaumii"
+   }
+  },
+  {
+   "inat": 67346,
+   "latin": "Leucopaxillus gentianeus",
+   "modelLatin": "Leucopaxillus gentianeus",
+   "names": {
+    "fr": "Leucopaxille amer",
+    "en": "Bitter Brown Leucopax",
+    "de": "Bitterer Krempenritterling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Leucopaxillus_gentianeus"
+   }
+  },
+  {
+   "inat": 118242,
+   "latin": "Marasmiellus candidus",
+   "modelLatin": "Marasmiellus candidus",
+   "names": {
+    "fr": "Marasme blanc",
+    "en": "Fairy Parachutes",
+    "de": "Weißer Zwergschwindling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 63100,
+   "latin": "Marasmius rotula",
+   "modelLatin": "Marasmius rotula",
+   "names": {
+    "fr": "Marasme petite roue",
+    "en": "Collared parachute",
+    "de": "Halsband-Schwindling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Marasme_petite_roue",
+    "de": "https://de.wikipedia.org/wiki/Halsband-Schwindling",
+    "en": "https://en.wikipedia.org/wiki/Marasmius_rotula"
+   }
+  },
+  {
+   "inat": 179113,
+   "latin": "Merulius tremellosus",
+   "modelLatin": "Merulius tremellosus",
+   "names": {
+    "fr": "Mérule tremblante",
+    "en": "Trembling Crust",
+    "de": "Gallertfleischiger Fältling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 179107,
+   "latin": "Mycena epipterygia",
+   "modelLatin": "Mycena epipterygia",
+   "names": {
+    "fr": "Mycène à gaine visqueuse",
+    "en": "Yellowleg Bonnet",
+    "de": "Dehnbarer Helmling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Dehnbarer_Helmling",
+    "en": "https://en.wikipedia.org/wiki/Mycena_epipterygia",
+    "fr": "https://fr.wikipedia.org/wiki/Mycena_epipterygia"
+   }
+  },
+  {
+   "inat": 63473,
+   "latin": "Mycena pura",
+   "modelLatin": "Mycena pura",
+   "names": {
+    "fr": "Mycène pure",
+    "en": "Lilac Bonnet",
+    "de": "Rettich-Helmling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Rettich-Helmling",
+    "en": "https://en.wikipedia.org/wiki/Mycena_pura",
+    "fr": "https://fr.wikipedia.org/wiki/Myc%C3%A8ne_pur"
+   }
+  },
+  {
+   "inat": 742831,
+   "latin": "Myxarium nucleatum",
+   "modelLatin": "Myxarium nucleatum",
+   "names": {
+    "fr": "Exidie à noyaux",
+    "en": "Crystal Brain Fungus",
+    "de": "Kristallgehirn"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Myxarium_nucleatum"
+   }
+  },
+  {
+   "inat": 496176,
+   "latin": "Neofavolus alveolaris",
+   "modelLatin": "Neofavolus alveolaris",
+   "names": {
+    "fr": "Polypore du mûrier",
+    "en": "Hexagonal-pored polypore",
+    "de": "Wabenporling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Neofavolus_alveolaris",
+    "de": "https://de.wikipedia.org/wiki/Waben-Stielporling",
+    "fr": "https://fr.wikipedia.org/wiki/Polypore_du_m%C3%BBrier"
+   }
+  },
+  {
+   "inat": 348989,
+   "latin": "Panaeolus antillarum",
+   "modelLatin": "Panaeolus antillarum",
+   "names": {
+    "de": "Antillen-Düngerling",
+    "fr": "Panaeolus antillarum",
+    "en": "Panaeolus antillarum"
+   },
+   "nameSource": {
+    "de": "inaturalist",
+    "fr": "latin",
+    "en": "latin"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Panaeolus_antillarum"
+   }
+  },
+  {
+   "inat": 902551,
+   "latin": "Panaeolus foenisecii",
+   "modelLatin": "Panaeolus foenisecii",
+   "names": {
+    "fr": "Panéole des moissons",
+    "en": "Mower's Mushroom",
+    "de": "Heudüngerling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 118263,
+   "latin": "Panaeolus papilionaceus",
+   "modelLatin": "Panaeolus papilionaceus",
+   "names": {
+    "fr": "Panéole papilionacé",
+    "en": "Petticoat Mottlegill",
+    "de": "Behangener Düngerling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Behangener_D%C3%BCngerling",
+    "en": "https://en.wikipedia.org/wiki/Panaeolus_papilionaceus"
+   }
+  },
+  {
+   "inat": 63583,
+   "latin": "Parasola plicatilis",
+   "modelLatin": "Parasola plicatilis",
+   "names": {
+    "fr": "Coprin plissé",
+    "en": "Pleated inkcap",
+    "de": "Gemeiner Scheibchentintling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Parasola_plicatilis"
+   }
+  },
+  {
+   "inat": 351800,
+   "latin": "Phellinus tremulae",
+   "modelLatin": "Phellinus tremulae",
+   "names": {
+    "fr": "Phellin du tremble",
+    "en": "Aspen Bracket",
+    "de": "Espen-Feuerschwamm"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Phellinus_tremulae"
+   }
+  },
+  {
+   "inat": 510852,
+   "latin": "Picipes badius",
+   "modelLatin": "Picipes badius",
+   "names": {
+    "fr": "Polypore bai",
+    "en": "Bay Polypore",
+    "de": "Kastanienbrauner Stielporling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Polypore_bai",
+    "de": "https://de.wikipedia.org/wiki/Kastanienbrauner_Stielporling",
+    "en": "https://en.wikipedia.org/wiki/Picipes_badius"
+   }
+  },
+  {
+   "inat": 179044,
+   "latin": "Pisolithus arhizus",
+   "modelLatin": "Pisolithus arhizus",
+   "names": {
+    "fr": "Pisolithe du teinturier",
+    "en": "Dyeball",
+    "de": "Gemeiner Erbsenstreuling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Erbsenstreuling",
+    "en": "https://en.wikipedia.org/wiki/Pisolithus_arhizus",
+    "fr": "https://fr.wikipedia.org/wiki/Pisolithus_arhizus"
+   }
+  },
+  {
+   "inat": 334340,
+   "latin": "Pleurotus dryinus",
+   "modelLatin": "Pleurotus dryinus",
+   "names": {
+    "fr": "Pleurote du chêne",
+    "en": "Veiled Oyster",
+    "de": "Berindeter Seitling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Pleurotus_dryinus",
+    "de": "https://de.wikipedia.org/wiki/Berindeter_Seitling",
+    "fr": "https://fr.wikipedia.org/wiki/Pleurotus_dryinus"
+   }
+  },
+  {
+   "inat": 118081,
+   "latin": "Porodaedalea pini",
+   "modelLatin": "Porodaedalea pini",
+   "names": {
+    "fr": "Tramète du pin",
+    "en": "Pine Bracket",
+    "de": "Kiefern-Feuerschwamm"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Porodaedalea_pini",
+    "fr": "https://fr.wikipedia.org/wiki/Tram%C3%A8te_du_pin"
+   }
+  },
+  {
+   "inat": 787944,
+   "latin": "Pseudoinonotus dryadeus",
+   "modelLatin": "Pseudoinonotus dryadeus",
+   "names": {
+    "fr": "Polypore larmoyant",
+    "en": "Oak bracket",
+    "de": "Tropfender Schillerporling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Inonotus_dryadeus",
+    "fr": "https://fr.wikipedia.org/wiki/Polypore_du_ch%C3%AAne"
+   }
+  },
+  {
+   "inat": 118170,
+   "latin": "Rickenella fibula",
+   "modelLatin": "Rickenella fibula",
+   "names": {
+    "fr": "Omphale bibelot",
+    "en": "Orange Moss Navel",
+    "de": "Orangeroter Heftelnabeling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Orangeroter_Heftelnabeling",
+    "en": "https://en.wikipedia.org/wiki/Rickenella_fibula",
+    "fr": "https://fr.wikipedia.org/wiki/Omphale_%C3%A9pingle"
+   }
+  },
+  {
+   "inat": 63585,
+   "latin": "Sarcomyxa serotina",
+   "modelLatin": "Sarcomyxa serotina",
+   "names": {
+    "fr": "Pleurote tardif",
+    "en": "Late Oyster",
+    "de": "Gelbstieliger Muschelseitling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gelbstieliger_Muschelseitling",
+    "en": "https://en.wikipedia.org/wiki/Sarcomyxa_serotina"
+   }
+  },
+  {
+   "inat": 126913,
+   "latin": "Sarcoscypha austriaca",
+   "modelLatin": "Sarcoscypha austriaca",
+   "names": {
+    "fr": "Pézize écarlate d’Autriche",
+    "en": "Scarlet Elfcup",
+    "de": "Österreichischer Kelchbecherling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "en": "https://en.wikipedia.org/wiki/Sarcoscypha_austriaca"
+   }
+  },
+  {
+   "inat": 119151,
+   "latin": "Stropharia rugosoannulata",
+   "modelLatin": "Stropharia rugosoannulata",
+   "names": {
+    "fr": "Strophaire à anneau rugueux",
+    "en": "Wine-cap Stropharia",
+    "de": "Riesen-Träuschling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Riesen-Tr%C3%A4uschling",
+    "en": "https://en.wikipedia.org/wiki/Stropharia_rugosoannulata",
+    "fr": "https://fr.wikipedia.org/wiki/Stropharia_rugosoannulata"
+   }
+  },
+  {
+   "inat": 786918,
+   "latin": "Trametes betulina",
+   "modelLatin": "Trametes betulina",
+   "names": {
+    "fr": "Lenzite du bouleau",
+    "en": "Gilled Polypore",
+    "de": "Birken-Blättling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 974663,
+   "latin": "Trametes cinnabarina",
+   "modelLatin": "Trametes cinnabarina",
+   "names": {
+    "fr": "Pycnopore cinabre",
+    "en": "Northern Cinnabar Polypore",
+    "de": "Nördlicher Zinnoberschwamm"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  },
+  {
+   "inat": 55573,
+   "latin": "Tubaria furfuracea",
+   "modelLatin": "Tubaria furfuracea",
+   "names": {
+    "fr": "Tubaire furfuracée",
+    "en": "Scurfy twiglet",
+    "de": "Gemeiner Trompetenschnitzling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "de": "https://de.wikipedia.org/wiki/Gemeiner_Trompetenschnitzling",
+    "en": "https://en.wikipedia.org/wiki/Tubaria_furfuracea"
+   }
+  },
+  {
+   "inat": 58709,
+   "latin": "Urnula craterium",
+   "modelLatin": "Urnula craterium",
+   "names": {
+    "fr": "Pézize cratériforme",
+    "en": "Devil's urn",
+    "de": "Schwarzer Kelchpilz"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Urnule_crat%C3%A9riforme",
+    "de": "https://de.wikipedia.org/wiki/Schwarzer_Kelchpilz",
+    "en": "https://en.wikipedia.org/wiki/Urnula_craterium"
+   }
+  },
+  {
+   "inat": 128074,
+   "latin": "Volvariella bombycina",
+   "modelLatin": "Volvariella bombycina",
+   "names": {
+    "fr": "Volvaire soyeuse",
+    "en": "Silky Rosegill",
+    "de": "Wolliger Scheidling"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   },
+   "wiki": {
+    "fr": "https://fr.wikipedia.org/wiki/Volvariella_bombycina",
+    "de": "https://de.wikipedia.org/wiki/Wolliger_Scheidling",
+    "en": "https://en.wikipedia.org/wiki/Volvariella_bombycina"
+   }
+  },
+  {
+   "inat": 130947,
+   "latin": "Xylobolus frustulatus",
+   "modelLatin": "Xylobolus frustulatus",
+   "names": {
+    "fr": "Xylobolus fragmenté",
+    "en": "Ceramic parchment",
+    "de": "Mosaikschichtpilz"
+   },
+   "nameSource": {
+    "fr": "inaturalist",
+    "en": "inaturalist",
+    "de": "inaturalist"
+   }
+  }
+ ]
+}

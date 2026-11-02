@@ -20,6 +20,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | File | Role |
 |---|---|
 | `scripts/scrape.mjs` | Scraper: iNaturalist (ranking, regions, season), Wikidata (names, edibility, morphology), Wikipedia (text, lookalikes) |
+| `scripts/scrape-rares.mjs` | Rares: model labels (European, Agaricomycetes + Pezizomycetes) not in the dex, FR/EN/DE names from iNat then Wikidata -> `public/data/rares.json` |
 | `scripts/check-data.mjs` | Data validation + review list (edibility conflicts, missing names) |
 | `data/edibility-overrides.json` | Human decisions for conflicting/missing edibility, applied by the scraper (optional file) |
 | `public/data/species.json` | Generated data, fetched at runtime (NetworkFirst in the SW, never precached) |
@@ -125,6 +126,11 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   Wikidata value; spore print = real colour swatch. Words come from `src/lib/morph.ts` (keyed by QID, FR/EN/DE, capitals
   without accents/umlauts); a test fails if a new QID in the data has no short word. No stat bars (Sam declined).
 - No text selection anywhere (v0.11.1, Sam): `* {user-select:none; -webkit-touch-callout:none}`, inputs/selects excepted.
+- Rares (v0.12.0, Sam): a find can be an off-dex species, but ONLY one the photo model knows (62 in `rares.json`, names
+  scraped, Latin as fallback). Stored like any find (species = its iNat id, no schema change). Suggestions "hors
+  Pilzdex" become clickable; the species menu has a "Raretés" group. Dex: section "Raretés" after the lookalikes,
+  only caught ones, numbered R-01.. by first catch (`rareSpecies`). Page: photos + "Données non disponibles" + links
+  (iNaturalist, Wikipedia); edibility always ???. Not counted in x/120.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
   UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added

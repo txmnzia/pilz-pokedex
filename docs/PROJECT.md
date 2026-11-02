@@ -44,6 +44,8 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
 - Local-first: finds in localStorage, photos in IndexedDB, works offline; magic-link login syncs to Supabase
   (schema `pilz_pokedex`, bucket `pilz_pokedex`). Merges never drop local finds, deletes are soft, photo paths are
   versioned so re-crops propagate. Language + grid/list prefs synced per account (newer wins).
+- Rares (v0.12.0): off-dex species the photo model knows can be caught too (Raretés section, R-01.., name + photos,
+  "Données non disponibles", edibility ???). Regenerate names with `node scripts/scrape-rares.mjs` after a dex re-scrape.
 - Settings: language FR/EN/DE, grid/list, account, export JSON, restore backup, data credits, disclaimer.
 - Web >= 900px: two-panel Pokédex (left device, right panel with filters/progress, page 2, catch form, settings,
   10 latest-finds keys, PREV/NEXT).

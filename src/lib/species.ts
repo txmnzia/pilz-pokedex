@@ -1,5 +1,5 @@
 // Pure helpers over the scraped species data. No DOM, covered by tests.
-import type { Lang, Species } from "./types";
+import type { Find, Lang, RareEntry, Species } from "./types";
 
 export type Shape =
   | "amanita" | "bolete" | "leccinum" | "suillus" | "gilled" | "russula" | "cortinarius" | "parasol" | "shaggy" | "bell" | "tuft" | "funnel" | "chanterelle" | "trumpet" | "hedgehog" | "morel" | "brain" | "saddle" | "pear" | "ball" | "earthball" | "stinkhorn" | "dogstink" | "cage" | "starfish" | "ear" | "jelly" | "cup" | "coral" | "cauliflower" | "icicles" | "nest" | "oyster" | "hoof" | "bracket" | "rosette" | "crust";
@@ -93,10 +93,25 @@ export function seasonLabel(months: number[], lang: Lang = "en"): string | null 
   return runs.map(([a, b]) => (a === b ? M[a - 1] : `${M[a - 1]}–${M[b - 1]}`)).join(", ");
 }
 
-export const dexLabel = (sp: Pick<Species, "no" | "ex">) =>
+export const dexLabel = (sp: Pick<Species, "no" | "ex" | "rare">) =>
+  sp.rare != null ? (sp.rare ? `R-${String(sp.rare).padStart(2, "0")}` : "R") :
   sp.no != null ? `No. ${String(sp.no).padStart(3, "0")}` : `EX-${String(sp.ex).padStart(2, "0")}`;
-export const shortNo = (sp: Pick<Species, "no" | "ex">) =>
-  sp.no != null ? String(sp.no).padStart(3, "0") : `EX${sp.ex}`;
+export const shortNo = (sp: Pick<Species, "no" | "ex" | "rare">) =>
+  sp.rare != null ? (sp.rare ? `R${String(sp.rare).padStart(2, "0")}` : "R") : sp.no != null ? String(sp.no).padStart(3, "0") : `EX${sp.ex}`;
+
+/** Rares as minimal species (v0.12.0): name only, no data, edibility always unknown. Caught ones get R-01, R-02... in
+ *  the order they were first added (created_at of their oldest live find), so numbers never shift. */
+export function rareSpecies(rares: RareEntry[], finds: Pick<Find, "species" | "created_at" | "deleted">[]): Species[] {
+  const first = new Map<number, string>();
+  for (const f of finds) if (!f.deleted) { const c = first.get(f.species); if (!c || f.created_at < c) first.set(f.species, f.created_at); }
+  const order = rares.filter(r => first.has(r.inat)).sort((a, b) => first.get(a.inat)!.localeCompare(first.get(b.inat)!) || a.latin.localeCompare(b.latin));
+  const num = new Map(order.map((r, i) => [r.inat, i + 1]));
+  return rares.map(r => ({
+    no: null, extra: true, rare: num.get(r.inat) ?? 0, inat: r.inat, latin: r.latin, names: r.names, wiki: r.wiki,
+    edibility: null, edibilitySource: [], morph: {}, text: {}, season: { histogram: new Array(12).fill(0), months: [] },
+    regions: { berlin: 0, grenoble: 0 }, lookalikes: [],
+  }));
+}
 
 /** Declared lookalikes plus reverse links (species that list this one), dangerous first. */
 export function lookalikesOf(sp: Species, all: Species[]): Species[] {
