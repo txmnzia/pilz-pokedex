@@ -92,6 +92,8 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   (bottom-left of the picture).
 - Silhouettes (v0.8.4, Sam): solid black, no light gaps. Pieces (cap, stem, ring, volva) are drawn as separate paths so
   overlaps never cancel. Only exception: the cage fungus lattice holes (without them it reads as a puffball).
+  Tree polypores (v0.8.5) split by growth form: `bracket` thin shelves (Trametes...), `hoof` (Fomes, Fomitopsis,
+  Ganoderma...), `rosette` wavy tiers (Laetiporus, Meripilus). Clathrus archeri = `starfish` (species override).
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order: always A to Z by the name in the UI language (`sortByName`), core and lookalike extras; PREV/NEXT follow it.
   Dex numbers stay rank-based, so they are not sequential in the list.

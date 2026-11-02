@@ -17,6 +17,10 @@ describe("seasonLabel", () => {
 });
 
 describe("shapeOf", () => {
+  it("tree polypores split by growth form", () => {
+    const sh = (latin: string) => shapeOf({ latin, morph: {} } as never);
+    expect([sh("Fomes fomentarius"), sh("Laetiporus sulphureus"), sh("Trametes versicolor")]).toEqual(["hoof", "rosette", "bracket"]);
+  });
   it("species override beats the genus", () => {
     expect(shapeOf({ latin: "Clathrus archeri", morph: {} } as never)).toBe("starfish");
     expect(shapeOf({ latin: "Clathrus ruber", morph: {} } as never)).toBe("cage");
@@ -26,7 +30,8 @@ describe("shapeOf", () => {
   it("funnel for chanterelle", () => expect(shapeOf(bySpecies("Cantharellus cibarius"))).toBe("funnel"));
   it("genus overrides", () => {
     expect(shapeOf(bySpecies("Clathrus ruber"))).toBe("cage");
-    expect(shapeOf(bySpecies("Fomes fomentarius"))).toBe("bracket");
+    expect(shapeOf(bySpecies("Fomes fomentarius"))).toBe("hoof");
+    expect(shapeOf(bySpecies("Trametes versicolor"))).toBe("bracket");
   });
 });
 
