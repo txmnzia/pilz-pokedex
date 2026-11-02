@@ -37,7 +37,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings. Each screen sends its right-side part to `ctx.right` via a portal (`ToRight`) on the web |
 | `src/components/RightPanel.tsx` | Web only (>= 900px): second Pokédex panel: LCD (portal target), 10 finds keys, yellow PREV/NEXT |
 | `src/App.tsx` | State, hardware buttons (big yellow CATCH = photo picker, D-pad scrolls / steps species, B=back, PAGE), auth, sync, re-crop |
-| `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings, 0003 photos column) |
+| `supabase/migrations/` | SQL to paste in the Supabase SQL editor (0001 finds + bucket, 0002 settings, 0003 photos column, 0004 sort pref) |
 | `design/mockup.html` | Original UX mockup (mock data) |
 
 ## Web two-panel layout (>= 900px, v0.5.0)
@@ -120,8 +120,9 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Pixel font (Press Start 2P) squashes accented capitals: write a plain E in labels drawn with it (PREC, DERNIERES,
   ATTRAPE !, Ecologie). German umlauts unchanged.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
-- Order: always A to Z by the name in the UI language (`sortByName`), core and lookalike extras; PREV/NEXT follow it.
-  Dex numbers stay rank-based, so they are not sequential in the list.
+- Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
+  UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added
+  by migration 0004; without it the pref stays on the device, no error).
 
 ## Skills
 | Skill | When |

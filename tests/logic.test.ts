@@ -118,9 +118,14 @@ describe("backup", () => {
 
 import { normalizePrefs, newerPrefs, type Prefs } from "../src/lib/prefs";
 describe("prefs", () => {
-  const base: Prefs = { lang: "en", mode: "grid", updated_at: "2026-01-01T00:00:00.000Z" };
+  const base: Prefs = { lang: "en", mode: "grid", sort: "no", updated_at: "2026-01-01T00:00:00.000Z" };
   it("rejects unknown values", () => {
     expect(normalizePrefs({ lang: "xx" as never, mode: "list" }, base)).toEqual({ ...base, mode: "list" });
+  });
+  it("dex order: by number by default, A to Z when chosen, junk falls back", () => {
+    expect(normalizePrefs({}, base).sort).toBe("no");
+    expect(normalizePrefs({ sort: "az" }, base).sort).toBe("az");
+    expect(normalizePrefs({ sort: "zz" as never }, base).sort).toBe("no");
   });
   it("newer account prefs win, older lose, tie keeps device", () => {
     const remoteNew = { ...base, lang: "de" as const, updated_at: "2026-02-01T00:00:00.000Z" };

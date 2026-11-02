@@ -104,8 +104,8 @@ Layout
 - Filters: All / Caught / Missing + 4 edibility glyphs on ONE line on every screen (iPhone SE, 13, Galaxy S22,
   320px, fr/en/de). Grid is 2 columns on phones; tile names auto-fit (15 to 11 px), never clipped.
 - List row: number column 28px, 6px gaps, so names get the room; badge and ball vertically centred.
-- Order: always A to Z by the name in the UI language (core and lookalikes; PREV/NEXT follow). Dex numbers stay
-  rank-based and are therefore not sequential (Sam: keep them).
+- Order: Settings > Tri: by number (popularity rank, default) or A to Z (v0.10.5, Sam); PREV/NEXT follow it.
+  Needs migration `0004_sort.sql` to sync across devices.
 - iOS: html/body red behind the Dynamic Island and URL bar, 100lvh layout, controls ~17pt above Safari's bar.
 - Web: two panels nested on the same line, hinge inside both panels, right panel shadow, no PAGE pill.
 - Language and grid/list live in Settings (burger), not on the main screen; the burger closes Settings again.
