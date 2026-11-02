@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { EdIcon, Silhouette } from "./components/Art";
 import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrl } from "./lib/sync";
@@ -78,18 +78,40 @@ interface DexProps {
   ctx: Ctx; list: Species[]; extras: Species[]; mode: "grid" | "list"; filter: Filter; edf: Edibility | null;
   setFilter(f: Filter): void; setEdf(e: Edibility | null): void; open(sp: Species): void;
 }
+/** Largest font size (15 -> 11 px) at which every word of a tile name sits on one line within the 2-line box. */
+function fitTileNames(root: HTMLElement | null) {
+  if (!root) return;
+  for (const el of root.querySelectorAll<HTMLElement>(".tile .tname")) {
+    let size = 15;
+    el.style.fontSize = `${size}px`;
+    el.classList.remove("breakall");
+    const words = [...el.querySelectorAll<HTMLElement>(".w")];
+    const fits = () => el.scrollHeight <= el.clientHeight + 1 &&
+      words.every(w => w.getBoundingClientRect().width <= el.clientWidth + 0.5);
+    while (!fits() && size > 11) { size -= 0.5; el.style.fontSize = `${size}px`; }
+    if (!fits()) el.classList.add("breakall"); // a single word wider than the tile even at 11 px: break it rather than clip it
+  }
+}
+
 export function Dex(p: DexProps) {
   const { ctx } = p;
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  useLayoutEffect(() => {
+    const run = () => fitTileNames(gridRef.current);
+    run();
+    document.fonts?.ready.then(run); // VT323 changes widths once loaded
+    window.addEventListener("resize", run);
+    return () => window.removeEventListener("resize", run);
+  }, [ctx.lang, p.mode, p.list, p.extras]);
   const core = ctx.all.filter(s => !s.extra);
   const n = core.filter(s => ctx.caught.has(s.inat)).length;
   const item = (sp: Species) => {
     const got = ctx.caught.has(sp.inat);
     return p.mode === "grid" ? (
       <button key={sp.inat} className={`tile${got ? " got" : ""}${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
-        <span className="tn">{shortNo(sp)}</span><span className="ted"><EdIcon ed={sp.edibility} /></span>
+        <span className="thead"><span className="tn">{shortNo(sp)}</span><span className="ted"><EdIcon ed={sp.edibility} /></span></span>
         <span className="tart"><Picture sp={sp} ctx={ctx} small /></span>
-        <span className="tname">{name(sp, ctx.lang)}</span>
-        {got && <span className="ball on tb" />}
+        <span className="tname">{name(sp, ctx.lang).split(" ").map((w, i) => <span key={i} className="w">{i ? " " : ""}{w}</span>)}</span>
       </button>
     ) : (
       <li key={sp.inat} className={`row${sp.extra ? " x" : ""}`} onClick={() => p.open(sp)}>
@@ -103,7 +125,7 @@ export function Dex(p: DexProps) {
   return (
     <>
       <div className="titlebar"><span>{ctx.t("dex")}</span><span>{n}/{core.length}</span></div>
-      <div className="scroll">
+      <div className="scroll" ref={gridRef}>
         <div className="chips">
           {(["all", "got", "missing"] as const).map(f => <button key={f} className="chip" aria-pressed={p.filter === f} onClick={() => p.setFilter(f)}>{ctx.t(f)}</button>)}
         </div>
