@@ -22,6 +22,11 @@ const updateSW = registerSW({
 // ?debug=1: viewport numbers for iOS layout issues (txmnzia convention: fix from numbers, not guesses)
 if (new URLSearchParams(location.search).has("debug")) {
   const probe = Object.assign(document.createElement("div"), { className: "sa-probe" });
+  const units = ["svh", "lvh", "dvh"].map(u => {
+    const el = document.createElement("div");
+    el.style.cssText = `position:fixed;top:0;left:0;width:1px;height:100${u};visibility:hidden;pointer-events:none`;
+    document.body.append(el); return [u, el] as const;
+  });
   const box = Object.assign(document.createElement("div"), { className: "dbg" });
   document.body.append(probe, box);
   const show = () => {
@@ -29,6 +34,8 @@ if (new URLSearchParams(location.search).has("debug")) {
     box.textContent = [
       `innerH ${innerHeight}  vvH ${Math.round(visualViewport?.height ?? 0)}  screenH ${screen.height}`,
       `safe-area t ${cs.paddingTop} b ${cs.paddingBottom}`,
+      units.map(([u, el]) => `${u} ${Math.round(el.getBoundingClientRect().height)}`).join("  ") +
+        `  vvTop ${Math.round(visualViewport?.offsetTop ?? 0)}  docH ${document.documentElement.clientHeight}`,
       `device top ${Math.round(dev?.top ?? 0)} h ${Math.round(dev?.height ?? 0)}`,
       `standalone ${matchMedia("(display-mode: standalone)").matches}  v${__APP_VERSION__}`,
     ].join("\n");
