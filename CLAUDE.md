@@ -1,4 +1,5 @@
-Load the txmnzia-conventions skill before editing.
+Load the txmnzia-conventions skill before editing. Then read `docs/PROJECT.md`: how Sam works, scraping method,
+UX/UI decisions, core features and the backlog.
 
 # Pilzdex (pilz-pokedex)
 
@@ -10,6 +11,8 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 ## Commands
 - `npm run dev` / `npm run build` / `npm test` / `npm run lint`
 - `npm run check-data` validates `public/data/species.json`
+- `npm run check-ui` layout regression check (Playwright) against `npx vite preview --port 4193`: filters on one line,
+  fixed badge widths, no overflow, on 5 screen sizes x fr/en/de x grid/list
 - `npm run scrape` regenerates data into `public/data/species.next.json` (needs network access to api.inaturalist.org,
   query.wikidata.org, *.wikipedia.org). Validate, then move over `species.json`. Responses are cached in `.cache/`.
 
