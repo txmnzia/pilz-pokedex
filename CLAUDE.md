@@ -90,6 +90,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Caught marker (option 2H): `CaughtBall`, glossy red/white capture ball when caught, a faint dashed "ghost" outline when
   not (must read as empty, not as a grey ball). List rows show it for every species; grid tiles only for caught ones
   (bottom-left of the picture).
+- Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order: always A to Z by the name in the UI language (`sortByName`), core and lookalike extras; PREV/NEXT follow it.
   Dex numbers stay rank-based, so they are not sequential in the list.
 
