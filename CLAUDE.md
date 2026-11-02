@@ -53,6 +53,12 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 - Re-crop: tapping a caught photo or a find's crop button re-crops the stored (already cropped) image; storage paths
   are versioned (`<user>/<find>-<updated_at ms>.jpg`) so other devices never see a cached old crop.
 
+## iOS notes
+- Phones: `html, body` background is the device red so Safari paints red behind the Dynamic Island and URL bar;
+  interactive layout stays in `#root` (100dvh). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
+- Service worker registered in `src/main.tsx` (not auto-injected): update check on load, on tab return, hourly;
+  a new version activates and reloads by itself (iOS kept v0.4.0 for several deploys before this).
+
 ## Skills
 | Skill | When |
 |---|---|
