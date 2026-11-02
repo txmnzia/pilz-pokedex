@@ -571,8 +571,8 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
 }
 
 // ---------------------------------------------------------------- settings
-export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExport, onRestore, sources }: {
-  ctx: Ctx; email: string | null; mode: "grid" | "list"; setLang(l: Lang): void; setMode(m: "grid" | "list"): void;
+export function Settings({ ctx, email, mode, sort, setSort, setLang, setMode, onSignOut, onExport, onRestore, sources }: {
+  ctx: Ctx; email: string | null; mode: "grid" | "list"; sort: "no" | "az"; setSort(s: "no" | "az"): void; setLang(l: Lang): void; setMode(m: "grid" | "list"): void;
   onSignOut(): void; onExport(): void; onRestore(json: string): Promise<string>; sources: Record<string, string>;
 }) {
   const [msg, setMsg] = useState("");
@@ -585,6 +585,9 @@ export function Settings({ ctx, email, mode, setLang, setMode, onSignOut, onExpo
         </div></div>
         <div className="box"><h3>{ctx.t("view")}</h3><div className="seg">
           {(["grid", "list"] as const).map(m => <button key={m} aria-pressed={mode === m} onClick={() => setMode(m)}>{ctx.t(m)}</button>)}
+        </div></div>
+        <div className="box"><h3>{ctx.t("sort")}</h3><div className="seg">
+          {(["no", "az"] as const).map(k => <button key={k} aria-pressed={sort === k} onClick={() => setSort(k)}>{ctx.t(k === "no" ? "sortNo" : "sortAz")}</button>)}
         </div></div>
         <div className="box"><h3>{ctx.t("account")}</h3>
           <p className="m0">{email ?? ctx.t("localOnly")}</p>

@@ -7,7 +7,7 @@ import { deleteFind, findsBySpecies, newFind, parseBackup, photosOf, restoreInto
 import { compress, getPhoto, loadFinds, makeThumb, putPhoto, saveFinds, store, thumbKey } from "./lib/local";
 import { supabase } from "./lib/supabase";
 import { photoUrlOf, pullPrefs, pushPrefs, sync } from "./lib/sync";
-import { loadPrefs, newerPrefs, savePrefs, type Prefs } from "./lib/prefs";
+import { loadPrefs, newerPrefs, savePrefs, type Prefs, type Sort } from "./lib/prefs";
 import type { Edibility, Find, Lang, Species, SpeciesFile } from "./lib/types";
 import { shortNo, sortByName } from "./lib/species";
 
@@ -17,7 +17,7 @@ type Mode = "grid" | "list";
 export default function App() {
   const [data, setData] = useState<SpeciesFile | null>(null);
   const [prefs, setPrefsState] = useState<Prefs>(loadPrefs);
-  const { lang, mode } = prefs;
+  const { lang, mode, sort } = prefs;
   const [user, setUser] = useState<{ id: string; email: string | null } | null>(null);
   const [offline, setOffline] = useState<boolean>(() => !supabase && store.get("pz.offline", false));
   const [authReady, setAuthReady] = useState(!supabase);
@@ -64,6 +64,7 @@ export default function App() {
   };
   const setLang = (l: Lang) => changePrefs({ lang: l });
   const setMode = (m: Mode) => changePrefs({ mode: m });
+  const setSort = (s: Sort) => changePrefs({ sort: s });
   // every mutation is mirrored to localStorage immediately
   const setFinds = useCallback((f: Find[] | ((x: Find[]) => Find[])) => {
     setFindsState(old => { const n = typeof f === "function" ? f(old) : f; saveFinds(n); return n; });
@@ -118,9 +119,9 @@ export default function App() {
   useEffect(() => { if (dirty) { const h = setTimeout(runSync, 1500); return () => clearTimeout(h); } }, [dirty, finds, runSync]);
 
   const all = data?.species ?? [];
-  // Always A to Z in the UI language (Sam's choice, v0.7.0); PREV/NEXT follow the same order.
-  const core = useMemo(() => sortByName(all.filter(s => !s.extra), lang), [all, lang]);
-  const extras = useMemo(() => sortByName(all.filter(s => s.extra), lang), [all, lang]);
+  // Order from Settings (v0.10.5, Sam): by dex number (default) or A to Z in the UI language; PREV/NEXT follow it.
+  const core = useMemo(() => { const c = all.filter(s => !s.extra); return sort === "az" ? sortByName(c, lang) : [...c].sort((a, b) => (a.no ?? 0) - (b.no ?? 0)); }, [all, lang, sort]);
+  const extras = useMemo(() => { const x = all.filter(s => s.extra); return sort === "az" ? sortByName(x, lang) : [...x].sort((a, b) => (a.ex ?? 0) - (b.ex ?? 0)); }, [all, lang, sort]);
   const caught = useMemo(() => findsBySpecies(finds), [finds]);
   const ctx: Ctx = { t, lang, all, caught, right: wide ? rightEl : null };
   const visible = core.filter(s =>
@@ -232,7 +233,7 @@ export default function App() {
     onCatchFile={f => startCatch(f, curSp.inat)} onRecrop={openRecrop}
     open={sp => open(sp, true)} onDelete={f => setFinds(x => x.map(y => (y.id === f.id ? deleteFind(y) : y)))} />;
   else if (effectiveView === "catch") screen = <Catch key={catchKey} ctx={ctx} initial={catchFor} startFile={catchFile} onSave={save} onCancelEmpty={() => setView(prev === "login" ? "index" : prev)} />;
-  else if (effectiveView === "settings") screen = <>{wide && dexScreen()}<Settings ctx={ctx} email={user?.email ?? null} mode={mode} setLang={setLang} setMode={setMode}
+  else if (effectiveView === "settings") screen = <>{wide && dexScreen()}<Settings ctx={ctx} email={user?.email ?? null} mode={mode} sort={sort} setSort={setSort} setLang={setLang} setMode={setMode}
     sources={data.sources} onExport={exportJson}
     onRestore={async json => {
       try { const b = parseBackup(json); setFinds(x => restoreInto(x, b)); return `${b.length} ${t("restored")}`; }

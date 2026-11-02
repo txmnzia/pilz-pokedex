@@ -84,13 +84,20 @@ export const photoUrl = (f: Find) => photoUrlOf(photosOf(f)[0]);
 // ---------- preferences (table pilz_pokedex.settings, one row per user) ----------
 
 /** Remote prefs, or null if none / table missing / offline. */
+let sortColumn = true;
+const missingCol = (e: { message?: string; code?: string }, col: string) => e.code === "PGRST204" || e.code === "42703" || (e.message ?? "").includes(col);
 export async function pullPrefs(fallback: Prefs): Promise<Prefs | null> {
   if (!supabase) return null;
-  const { data, error } = await supabase.from("settings").select("lang,mode,updated_at").maybeSingle();
-  return error || !data ? null : normalizePrefs(data as Partial<Prefs>, fallback);
+  // sort column comes with migration 0004; without it the sort pref stays on this device
+  let res = await supabase.from("settings").select(sortColumn ? "lang,mode,sort,updated_at" : "lang,mode,updated_at").maybeSingle();
+  if (res.error && sortColumn && missingCol(res.error, "sort")) { sortColumn = false; res = await supabase.from("settings").select("lang,mode,updated_at").maybeSingle(); }
+  const { data, error } = res;
+  return error || !data ? null : normalizePrefs({ sort: fallback.sort, ...(data as Partial<Prefs>) }, fallback);
 }
 export async function pushPrefs(p: Prefs): Promise<boolean> {
   if (!supabase) return false;
-  const { error } = await supabase.from("settings").upsert({ lang: p.lang, mode: p.mode, updated_at: p.updated_at });
+  const row: Record<string, unknown> = { lang: p.lang, mode: p.mode, updated_at: p.updated_at };
+  let { error } = await supabase.from("settings").upsert(sortColumn ? { ...row, sort: p.sort } : row);
+  if (error && sortColumn && missingCol(error, "sort")) { sortColumn = false; ({ error } = await supabase.from("settings").upsert(row)); }
   return !error;
 }
