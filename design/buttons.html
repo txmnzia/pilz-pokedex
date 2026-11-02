@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pilzdex Boutons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Planche de styles pour les boutons ATTRAPER / RETOUR, posés sur la vraie rangée de contrôles (même tailles que l'app).
+   Monde visuel unique (rouge du boîtier), fixé explicitement. */
+:root{
+  --red:#d9262b; --red-dark:#8f1117; --red-deep:#5e0a0e; --ink:#160b0b;
+  --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
+  --blue:#2a7fd4; --blue-dark:#164c86;
+  --font-lcd:'VT323', ui-monospace, Menlo, monospace;
+  --font-label:'Press Start 2P', ui-monospace, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#3a1012;color:#fff;font-family:var(--font-lcd);font-size:19px}
+.wrap{max-width:1120px;margin:0 auto;padding:26px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px));display:grid;gap:22px}
+h1{font-family:var(--font-label);font-size:14px;line-height:1.6;margin:0 0 8px}
+header p{margin:0 0 6px;max-width:74ch;line-height:1.2;color:#ffe3e3}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.opt{background:#260a0b;border:2px solid #000;border-radius:10px;padding:14px;display:grid;gap:10px}
+.opt h2{font-family:var(--font-label);font-size:10px;line-height:1.6;margin:0}
+.opt p{margin:0;line-height:1.15;color:#ffd9d9}
+.opt .pc{font-size:17px;color:#ffc9c9}
+.opt .pc b{color:#fff;font-weight:normal}
+.tag{font-family:var(--font-label);font-size:7px;background:#ffd84a;color:var(--ink);border:1.5px solid var(--ink);border-radius:3px;padding:3px 5px;margin-left:6px;vertical-align:2px}
+/* the device strip: same red plastic, same sizes as the app on a phone */
+.dev{background:linear-gradient(180deg,#e0302f,var(--red) 40%,#c92126);border:3px solid var(--ink);border-radius:14px;padding:16px 14px 14px}
+.row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
+.counter{background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;text-align:center;font-size:24px;color:var(--lcd-ink);padding:4px 2px;font-variant-numeric:tabular-nums}
+.counter small{display:block;font-size:14px;color:var(--lcd-dim)}
+.hw{display:grid;justify-items:center;gap:5px;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;font:inherit;color:inherit}
+.hw small{font-family:var(--font-label);font-size:7px;color:#ffe3e3}
+.well{display:grid;place-items:center;border-radius:50%}
+.big{width:78px;height:78px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;font-family:var(--font-label);font-size:8px;color:var(--ink);transition:transform .06s,box-shadow .06s,background .06s}
+.sm{width:48px;height:48px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;transition:transform .06s,box-shadow .06s,background .06s}
+.sm svg{width:20px;height:20px}
+.y{background:radial-gradient(circle at 35% 28%,#fff8cf 0 9%,#ffd84a 30%,#f5ad00 72%,#b97800)}
+.b{background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark))}
+
+/* 0 · today: hard dark-red offset under the button */
+.o0 .big{box-shadow:0 5px 0 var(--red-dark)}
+.o0 .sm{box-shadow:0 4px 0 var(--red-dark)}
+.o0 .hw:active .big,.o0 .hw.pressed .big{transform:translateY(3px);box-shadow:0 2px 0 var(--red-dark)}
+.o0 .hw:active .sm,.o0 .hw.pressed .sm{transform:translateY(3px);box-shadow:0 1px 0 var(--red-dark)}
+
+/* A · recessed well (Game Boy): a dark hole in the shell, the domed button sits inside it */
+.oA .well{padding:5px;background:radial-gradient(circle at 50% 35%,#4a0609,#7a0d12 70%,#a8161c);box-shadow:inset 0 3px 4px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.25)}
+.oA .big,.oA .sm{box-shadow:0 3px 3px rgba(0,0,0,.45),inset 0 -4px 6px rgba(0,0,0,.25),inset 0 3px 3px rgba(255,255,255,.45)}
+.oA .hw:active .big,.oA .hw.pressed .big,.oA .hw:active .sm,.oA .hw.pressed .sm{transform:translateY(2px) scale(.97);box-shadow:0 1px 1px rgba(0,0,0,.5),inset 0 -2px 4px rgba(0,0,0,.25),inset 0 4px 6px rgba(0,0,0,.25)}
+
+/* B · bezel ring: a dark plastic collar around each button, like the lens rings on the shell */
+.oB .well{padding:4px;background:linear-gradient(160deg,#5b5b5b,#1d1d1d 60%,#0d0d0d);border:2px solid var(--ink);box-shadow:0 2px 3px rgba(0,0,0,.4)}
+.oB .big,.oB .sm{border-width:2px;box-shadow:inset 0 -4px 6px rgba(0,0,0,.28),inset 0 3px 3px rgba(255,255,255,.5)}
+.oB .hw:active .big,.oB .hw.pressed .big,.oB .hw:active .sm,.oB .hw.pressed .sm{transform:scale(.95);box-shadow:inset 0 4px 7px rgba(0,0,0,.35)}
+
+/* C · soft cast shadow: light from the top left, the button floats a little above the shell */
+.oC .big,.oC .sm{box-shadow:3px 5px 8px rgba(60,0,0,.55),inset 0 -4px 6px rgba(0,0,0,.22),inset 0 3px 3px rgba(255,255,255,.45)}
+.oC .hw:active .big,.oC .hw.pressed .big,.oC .hw:active .sm,.oC .hw.pressed .sm{transform:translate(1px,2px);box-shadow:1px 1px 3px rgba(60,0,0,.6),inset 0 3px 6px rgba(0,0,0,.3)}
+
+/* D · arcade cylinder: the button has its own side wall in a darker shade of its colour, plus a soft shadow */
+.oD .big{box-shadow:0 5px 0 #9a6400,0 8px 8px rgba(60,0,0,.45),inset 0 3px 3px rgba(255,255,255,.4)}
+.oD .sm{box-shadow:0 4px 0 #0f3a66,0 7px 7px rgba(60,0,0,.45),inset 0 3px 3px rgba(255,255,255,.4)}
+.oD .hw:active .big,.oD .hw.pressed .big{transform:translateY(4px);box-shadow:0 1px 0 #9a6400,0 2px 3px rgba(60,0,0,.5),inset 0 3px 3px rgba(255,255,255,.3)}
+.oD .hw:active .sm,.oD .hw.pressed .sm{transform:translateY(3px);box-shadow:0 1px 0 #0f3a66,0 2px 3px rgba(60,0,0,.5),inset 0 3px 3px rgba(255,255,255,.3)}
+
+.toggle{justify-self:start;font-family:var(--font-label);font-size:8px;padding:8px 10px;border:2px solid #000;border-radius:5px;background:#fff;color:var(--ink);cursor:pointer}
+.toggle[aria-pressed="true"]{background:#ffd84a}
+@media (max-width:380px){.big{width:64px;height:64px;font-size:7px}.sm{width:42px;height:42px}}
+
+/* PREV / NEXT (web right panel) */
+.rb{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:linear-gradient(180deg,#e0302f,var(--red) 40%,#c92126);border:3px solid var(--ink);border-radius:14px;padding:14px}
+.yb{height:44px;border:3px solid var(--ink);border-radius:8px;background:linear-gradient(180deg,#ffe57a,#f5b400);box-shadow:0 4px 0 var(--red-dark);font-family:var(--font-label);font-size:8px;color:var(--ink);cursor:pointer}
+.rnum{min-width:84px;text-align:center;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;padding:4px 8px;font-size:22px;color:var(--lcd-ink)}
+.p0 .yb.off{opacity:.45}
+.p1 .yb.off{background:linear-gradient(180deg,#d8c98e,#b89f52);color:#5a4a1c;box-shadow:0 4px 0 var(--red-dark)}
+.p2 .yb{box-shadow:0 3px 3px rgba(0,0,0,.45),inset 0 -3px 5px rgba(0,0,0,.2),inset 0 2px 2px rgba(255,255,255,.55)}
+.p2 .yb.off{background:linear-gradient(180deg,#d8c98e,#b89f52);color:#5a4a1c}
+.p2 .well{padding:4px;border-radius:11px;background:radial-gradient(circle at 50% 35%,#4a0609,#7a0d12 70%,#a8161c);box-shadow:inset 0 3px 4px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.25)}
+.p2 .well .yb{width:100%}
+/* accented capitals: the font squashes É, È, Ü, Ö... Fix: real capital + pixel accent drawn above (1 font pixel = 1/8 em) */
+.lab{font-family:var(--font-label);color:#fff;line-height:2.4}
+.lab.s8{font-size:8px}.lab.s12{font-size:12px}.lab.s16{font-size:16px}
+.px{position:relative;display:inline-block;line-height:1}
+.px::before{content:"";position:absolute;width:.25em;height:.125em;top:-.25em;background:currentColor}
+.px.acute::before{left:.3125em;box-shadow:.125em -.125em 0 currentColor}
+.px.grave::before{left:.25em;box-shadow:.125em .125em 0 currentColor;top:-.375em}
+.px.uml::before{left:.125em;box-shadow:.375em 0 0 currentColor}
+.px.circ::before{left:.25em;width:.125em;box-shadow:.125em -.125em 0 currentColor,.25em 0 0 currentColor}
+.cmp{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center;background:var(--red);border:3px solid var(--ink);border-radius:10px;padding:10px 14px}
+.cmp .k{font-size:16px;color:#ffe3e3}
+.badge{display:inline-grid;place-items:center;width:60px;height:16px;border:1.5px solid var(--ink);border-radius:4px;background:linear-gradient(#7a6a6a,#4a3c3c 55%,#1e1515);color:#fff;font-family:var(--font-label);font-size:7px;line-height:1;text-shadow:1px 0 0 #1e1515,-1px 0 0 #1e1515,0 1px 0 #1e1515,0 -1px 0 #1e1515;vertical-align:middle;margin-right:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Ombres des boutons ATTRAPER / RETOUR</h1>
+    <p>Aujourd'hui, les deux boutons ont une ombre dure rouge foncé décalée de 5 px vers le bas : on dirait une pastille collée sur une épaisseur rouge, pas un bouton en plastique. Sur un vrai Pokédex ou une Game Boy, le bouton est un dôme en plastique enfoncé dans un trou de la coque.</p>
+    <p>Appuie sur les boutons (ou sur « voir pressé ») pour comparer l'état enfoncé. Mêmes tailles que dans l'app.</p>
+  </header>
+  <main class="grid" id="g"></main>
+  <h1 style="margin-top:10px">Boutons PRÉC / SUIV (web)</h1>
+  <p style="margin:0;color:#ffe3e3;max-width:74ch;line-height:1.2">Leur bordure est la même que les autres, mais sur l'accueil ils sont désactivés et tout le bouton passe à 45 % d'opacité : la bordure noire devient rose pâle. Correction : la bordure reste toujours noire, l'état inactif se voit par un jaune éteint.</p>
+  <div class="grid">
+    <section class="opt p0"><h2>Aujourd'hui (inactif)</h2><div class="rb"><button class="yb off">&#9664; PR<span class="px acute">E</span>C</button><div class="rnum">–</div><button class="yb off">SUIV &#9654;</button></div><p class="pc">Bordure délavée par l'opacité.</p></section>
+    <section class="opt p1"><h2>1 · Bordure pleine, jaune éteint<span class="tag">recommandé</span></h2><div class="rb"><button class="yb off">&#9664; PR<span class="px acute">E</span>C</button><div class="rnum">–</div><button class="yb">SUIV &#9654;</button></div><p class="pc"><b>+</b> même punch que les autres boutons, l'état inactif reste lisible. Gauche inactif, droite actif.</p></section>
+    <section class="opt p2"><h2>2 · Comme 1, dans un creux (va avec l'option A)</h2><div class="rb"><span class="well"><button class="yb off">&#9664; PR<span class="px acute">E</span>C</button></span><div class="rnum">–</div><span class="well"><button class="yb">SUIV &#9654;</button></span></div><p class="pc"><b>+</b> cohérent si tu choisis A pour ATTRAPER / RETOUR.</p></section>
+  </div>
+  <h1 style="margin-top:10px">Majuscules accentuées</h1>
+  <p style="margin:0;color:#ffe3e3;max-width:74ch;line-height:1.2">Dans Press Start 2P, toutes les majuscules accentuées sont écrasées (la lettre rapetisse pour faire tenir l'accent dans la case) : É, È, Ü, Ö… Correction proposée : la vraie majuscule, avec un accent dessiné en pixels au-dessus, sans changer de police. Ça touche aussi l'allemand (ZURÜCK, TÖDLICH).</p>
+  <div class="cmp">
+    <span class="k">avant</span><span class="lab s12">PRÉC · DERNIÈRES PRISES · ATTRAPÉ ! · ZURÜCK · <span class="badge">TÖDLICH</span></span>
+    <span class="k">après</span><span class="lab s12">PR<span class="px acute">E</span>C · DERNI<span class="px grave">E</span>RES PRISES · ATTRAP<span class="px acute">E</span> ! · ZUR<span class="px uml">U</span>CK · <span class="badge"><span>T<span class="px uml">O</span>DLICH</span></span></span>
+    <span class="k">avant 8 px</span><span class="lab s8">PRÉC · DERNIÈRES PRISES · ZURÜCK</span>
+    <span class="k">après 8 px</span><span class="lab s8">PR<span class="px acute">E</span>C · DERNI<span class="px grave">E</span>RES PRISES · ZUR<span class="px uml">U</span>CK</span>
+  </div>
+
+</div>
+<script>
+const OPTS=[
+ {k:"o0",t:"Aujourd'hui",d:"Ombre dure rouge foncé sous le bouton.",p:"Lisible, mais c'est le look 'autocollant' qui te gêne."},
+ {k:"oA",t:"A · Bouton dans un trou",tag:"recommandé",d:"Un creux sombre dans la coque (ombre intérieure), le dôme posé dedans avec un léger reflet en haut. Pressé, le bouton s'enfonce dans le trou.",p:"<b>+</b> le plus proche d'un vrai Game Boy / Pokédex. <b>−</b> le cercle prend 10 px de plus (à vérifier sur iPhone SE)."},
+ {k:"oB",t:"B · Bague noire",d:"Une bague en plastique noir autour de chaque bouton, comme les bagues des lentilles du boîtier.",p:"<b>+</b> très 'jouet', bien contrasté sur le rouge. <b>−</b> ajoute un élément de plus, un peu plus chargé."},
+ {k:"oC",t:"C · Ombre douce portée",d:"Lumière venant d'en haut à gauche : une ombre floue sous le bouton, le volume vient du dégradé.",p:"<b>+</b> sobre, ne change pas les tailles. <b>−</b> plus 'appli' que 'objet physique'."},
+ {k:"oD",t:"D · Bouton d'arcade",d:"Le bouton a sa propre tranche dans une teinte plus sombre de sa couleur (jaune foncé, bleu foncé), plus une ombre douce.",p:"<b>+</b> garde l'idée du relief actuel, mais cohérent (la tranche est le bouton, pas la coque). <b>−</b> reste assez épais."}
+];
+const back='<svg viewBox="0 0 24 24" fill="none" stroke="#10324f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l-6 6 6 6M4 12h16"/></svg>';
+document.getElementById("g").innerHTML=OPTS.map(o=>`<section class="opt ${o.k}"><h2>${o.t}${o.tag?`<span class="tag">${o.tag}</span>`:""}</h2><p>${o.d}</p>
+ <div class="dev"><div class="row">
+  <button class="hw"><span class="well"><span class="big y">ATTRAPER</span></span></button>
+  <div class="counter">4/120<small>attrapés</small></div>
+  <button class="hw"><span class="well"><span class="sm b">${back}</span></span><small>RETOUR</small></button>
+ </div></div>
+ <p class="pc">${o.p}</p>
+ <button class="toggle" aria-pressed="false">voir pressé</button></section>`).join("");
+document.querySelectorAll(".toggle").forEach(t=>t.addEventListener("click",()=>{const on=t.getAttribute("aria-pressed")!=="true";t.setAttribute("aria-pressed",String(on));t.closest(".opt").querySelectorAll(".hw").forEach(h=>h.classList.toggle("pressed",on));}));
+</script>
+</body>
+</html>
