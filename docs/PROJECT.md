@@ -25,7 +25,7 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
 
 ## 2. Core features (what exists)
 
-- 30 dex species + 53 lookalike-only species (EX-nn), each with its own page. Uncaught = black silhouette, caught =
+- 120 dex species + 136 lookalike-only species (EX-nn), each with its own page. Uncaught = black silhouette, caught =
   your latest photo with a capture ball in the corner.
 - Species page (2 pages on phones, PAGE pill / swipe; on the web page 2 lives in the right panel): name, dex number,
   edibility badge, Latin name, Wikipedia intro (source link, CC BY-SA), season bars, morphology, Berlin / Grenoble
@@ -59,13 +59,21 @@ query.wikidata.org, *.wikipedia.org, www.mycodb.fr.
 
 1. Candidate pool: iNaturalist research-grade species counts in Germany (place 7207) + France (6753), taxa
    Agaricomycetes + Pezizomycetes (mushroom-forming, no lichens).
-2. Ranking ("famous", not regional, not seasonal): score = (obs DE + obs FR) x number of Wikipedia language editions
-   (Wikidata sitelinks). Top 30 = the dex. Sam rejected a regional dex and a ~100 list: ~30 well-known species.
+2. Selection (v0.10.0, issue #2, Sam: FR + DE only, ~120, absolute max 150): the original 30 keep numbers 1-30; then
+   every DEADLY species with >= 1 research-grade observation in FR + DE (sources: Wikidata P789 deadly + English
+   Wikipedia "Category:Deadly fungi"; renamed iNat taxa are followed to their current id); then the free slots are
+   split half and half: most famous EDIBLE species, then most famous of everything left. Fame = (obs DE + obs FR) x
+   number of Wikipedia language editions. `node scripts/scrape.mjs --plan` prints the selection without scraping.
+   Wikipedia rate-limits the sandbox hard (429 with ~50 s waits even at 1 request / 6 s): a full run takes hours;
+   run it detached (`setsid nohup ... &`), everything is cached in `.cache/`. Node fetch needs
+   `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt` in the sandbox.
 3. Names: Wikidata labels FR/EN/DE, fallback iNaturalist common names, last resort Latin (flagged for review).
 4. Edibility: Wikidata P789, worst value wins (deadly > toxic > caution > edible > none). When Wikidata conflicts or
    is missing, mycodb.fr is the tie-breaker (also tried on Wikidata synonyms). Human decisions go in
-   `data/edibility-overrides.json` WITH a reason (file optional, currently absent). Still missing, shown as "???":
-   Oudemansiella mucida (#dex), Laricifomes officinalis (EX-19), Amylocystis lapponica (EX-51).
+   `data/edibility-overrides.json` WITH a reason. Current override: Gyromitra esculenta = deadly (Wikidata says
+   "edible when cooked"). Still unknown, shown as "???": Oudemansiella mucida, Collybia nuda (Wikidata conflict),
+   Laricifomes officinalis, Amylocystis lapponica, Dacrymyces chrysospermus, Hydnum umbilicatum, Stropharia caerulea,
+   Mycena tintinnabulum.
 5. Morphology: Wikidata P783 to P788 (hymenium, cap, attachment, stipe, spores, ecology).
 6. Text: Wikipedia FR/EN/DE intro + habitat section (fallback to another language is labelled), source URL kept.
 7. Lookalikes: links in Wikipedia "similar species / confusion / Verwechslung" sections, resolved to Wikidata
@@ -111,8 +119,9 @@ Design artifacts (all in `design/`, published as claude.ai artifacts)
 ## 5. Backlog / open points
 
 Data
-- [ ] Decide edibility for the 3 "???" species (Oudemansiella mucida, Laricifomes officinalis, Amylocystis lapponica)
-      in `data/edibility-overrides.json` with a reason, then re-scrape. Ask Sam, do not guess.
+- [ ] Decide edibility for the 8 "???" species (list in section 3) in `data/edibility-overrides.json` with a reason,
+      then re-scrape. Ask Sam, do not guess.
+- [ ] The photo model knows 75 of the 120 dex species (101 of 256 with lookalikes); the others can't be suggested.
 
 UI
 - [ ] Lookalike EX tiles: dashed border kept for consistency with the dex; Sam was offered solid borders on the
