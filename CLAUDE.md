@@ -115,8 +115,8 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   it. Disabled buttons never use opacity (it washed the ink border out): full border, dimmed fill.
 - Controls spacing (v0.10.3, Sam): labels sit 10 px under their button (clear of the 4 px shadow); on the web the hidden
   PAGE pill is removed from the layout so CATCH / counter / BACK centre on the d-pad; wider gaps (20-24 px) on the web.
-- Silhouette background (v0.10.4, Sam, design/grid.html "C + projecteur léger"): big squares (16 px, stronger line every
-  64 px) with a faint light disc, only behind silhouettes (`.tile:not(.got) .tart`, `.pic:not(.photo)`), never photos.
+- Silhouette background (v0.10.4, Sam, design/grid.html): big squares (16 px, stronger line every 64 px) with a faint
+  Pokéball spotlight (size L, 24 % white, like the DS Pokédex), only behind silhouettes (`.tile:not(.got) .tart`, `.pic:not(.photo)`), never photos.
 - Pixel font (Press Start 2P) squashes accented capitals: write a plain E in labels drawn with it (PREC, DERNIERES,
   ATTRAPE !, Ecologie). German umlauts unchanged.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
