@@ -1,0 +1,174 @@
+<title>Pilzdex Icon Styles</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Layout: a specimen sheet. Each option is shown on the real Pilzdex surfaces (filter bar, grid tile, list row, type badge)
+   so the choice is made in context. Single visual world (device red + LCD green), set explicitly. */
+:root{
+  --red:#d9262b; --red-dark:#8f1117; --ink:#160b0b; --paper:#f3efe4;
+  --lcd:#bcd583; --lcd-2:#a2c066; --lcd-ink:#1c2a10; --lcd-dim:#5d7240;
+  --yellow:#ffd84a; --ed:#3f9a3c; --none:#8a8a7a; --tox:#e0901a; --poison:#9a4fb0; --dead:#1d1d1d;
+  --font-lcd:'VT323', ui-monospace, Menlo, monospace;
+  --font-label:'Press Start 2P', ui-monospace, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--red);color:#fff;font-family:var(--font-lcd);font-size:20px}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+header h1{font-family:var(--font-label);font-size:16px;line-height:1.6;margin:0 0 8px;text-wrap:balance}
+header p{margin:0;max-width:70ch;line-height:1.25;color:#ffe9e9}
+h2{font-family:var(--font-label);font-size:11px;line-height:1.7;margin:0 0 6px;color:var(--yellow);letter-spacing:.5px}
+.lead{margin:0 0 14px;max-width:72ch;color:#ffe9e9;line-height:1.25}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:14px}
+.card{min-width:0;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:10px;padding:12px;display:grid;gap:10px;align-content:start;box-shadow:inset -4px -4px 0 #d8d1bf}
+.card h3{margin:0;font-family:var(--font-label);font-size:9px;line-height:1.7;display:flex;gap:8px;align-items:baseline}
+.card h3 b{background:var(--ink);color:var(--yellow);padding:2px 6px;border-radius:3px;font-weight:400}
+.card p{margin:0;font-size:17px;line-height:1.2;color:#463c34}
+.lcd{min-width:0;overflow:hidden;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));border:3px solid var(--ink);border-radius:4px;color:var(--lcd-ink);padding:8px;display:grid;gap:8px}
+.bar{display:flex;gap:3px;align-items:center;flex-wrap:nowrap}
+.chip{border:2px solid var(--lcd-ink);border-radius:3px;padding:0 4px;font-size:15px;line-height:1.3;white-space:nowrap}
+.chip.on{background:var(--lcd-ink);color:var(--lcd)}
+.chip.ic{padding:1px 2px;display:grid;place-items:center}
+.sep{width:2px;align-self:stretch;background:var(--lcd-dim);opacity:.5}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tile{min-width:0;border:2px solid var(--lcd-ink);border-radius:4px;padding:5px;background:rgba(255,255,255,.22);display:grid;gap:3px;text-align:center;position:relative}
+.tile.got{background:rgba(255,255,255,.5)}
+.thead{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--lcd-dim);min-height:18px}
+.thead .no{display:inline-block;padding:0 3px;border-radius:2px}
+.thead .no.inv{background:var(--lcd-ink);color:var(--lcd)}
+.art{aspect-ratio:1/1;display:grid;place-items:center;border-radius:3px;overflow:hidden}
+.tile.got .art{background:linear-gradient(170deg,#7e9a5a,#2a3a1c)}
+.art svg{width:70%;height:70%}
+.tname{font-size:14px;line-height:1.05}
+.stamp{position:absolute;left:8px;top:34%;transform:rotate(-14deg);border:2px solid #b3201f;color:#b3201f;font-family:var(--font-label);font-size:7px;padding:3px 4px;border-radius:3px;background:rgba(255,255,255,.75)}
+.corner{position:absolute;left:5px;bottom:24px;display:grid}
+.rows{display:grid;gap:2px}
+.row{display:grid;grid-template-columns:30px 24px minmax(0,1fr) 20px 16px;gap:6px;align-items:center;font-size:16px}
+.row .no{color:var(--lcd-dim);font-size:15px}.row .no.inv{background:var(--lcd-ink);color:var(--lcd);border-radius:2px;text-align:center}
+.row .th svg{width:22px;height:22px}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.ic svg{display:block}
+/* type-badge styles */
+.tb{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-label);font-size:7px;line-height:1;color:#fff;padding:5px 8px;border:2px solid var(--ink);border-radius:9px;
+  background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),var(--c);text-shadow:1px 1px 0 rgba(0,0,0,.45)}
+.sq{display:inline-grid;place-items:center;width:20px;height:16px;border:2px solid var(--ink);border-radius:3px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 60%),var(--c)}
+.sq svg{width:12px;height:12px}
+.led{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;border:2px solid var(--ink);
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.85) 0 14%,rgba(255,255,255,0) 32%),var(--c)}
+.led svg{width:11px;height:11px}
+.answer{background:var(--ink);color:var(--yellow);border:3px solid var(--yellow);border-radius:8px;padding:12px 14px;font-size:20px;line-height:1.3}
+.answer code{font-family:var(--font-label);font-size:10px;background:var(--yellow);color:var(--ink);padding:2px 5px;border-radius:3px}
+footer{color:#ffd9d9;font-size:16px}
+@media (max-width:420px){.cards{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>PILZDEX ICON STYLES</h1>
+    <p>Each option is drawn on the real Pilzdex surfaces: filter bar, two grid tiles (one caught, one not), list rows and the species badge. Pick one edibility style (1 to 5) and one caught marker (A to G).</p>
+  </header>
+
+  <section>
+    <h2>EDIBILITY STYLES</h2>
+    <p class="lead">Four states: edible, no interest, toxic, deadly. The grey "no-entry" sign is gone in every option: "no interest" is now an empty plate or a neutral mark. The skull has no red ring.</p>
+    <div class="cards" id="edCards"></div>
+  </section>
+
+  <section>
+    <h2>CAUGHT MARKERS</h2>
+    <p class="lead">In the games, the dex list put a small capture-ball icon next to every species you owned, and showed nothing for species only seen. Pilzdex tiles already show your photo when caught, so the marker matters most in the list. Shown here with edibility style 1.</p>
+    <div class="cards" id="caughtCards"></div>
+  </section>
+
+  <div class="answer">Reply with a number and a letter, for example <code>2 + B</code>. Mixing is fine too, for example "style 3 but with the skull from 1".</div>
+  <footer>Mock content: species names and photos are placeholders for comparison only.</footer>
+</div>
+
+<script>
+/* ---------- 12x12 pixel bitmaps ('x' = ink) ---------- */
+const BM={
+fork:["............","..x.x.x...x.","..x.x.x..xx.","..x.x.x..xx.","..xxxxx..xx.","...xxx...xx.","....x....xx.","....x.....x.","....x.....x.","....x.....x.","....x.....x.","............"],
+plate:["............","...xxxxxx...","..x......x..",".x..xxxx..x.",".x.x....x.x.",".x.x....x.x.",".x.x....x.x.",".x.x....x.x.",".x..xxxx..x.","..x......x..","...xxxxxx...","............"],
+dash:["............","............","............","............","............","..xxxxxxxx..","..xxxxxxxx..","............","............","............","............","............"],
+warn:[".....xx.....","....xxxx....","....x..x....","...xx..xx...","...x.xx.x...","..xx.xx.xx..","..x..xx..x..",".xx......xx.",".x...xx...x.","xx...xx...xx","xxxxxxxxxxxx","............"],
+bang:[".....xx.....",".....xx.....",".....xx.....",".....xx.....",".....xx.....",".....xx.....",".....xx.....","............","............",".....xx.....",".....xx.....","............"],
+skull:["...xxxxxx...","..xxxxxxxx..",".xxxxxxxxxx.",".xx..xx..xx.",".xx..xx..xx.",".xxxxxxxxxx.","..xxx..xxx..","...xxxxxx...","...x.xx.x...","...xxxxxx...","............","............"],
+basket:["............","....xxxx....","...x....x...","..x......x..","xxxxxxxxxxxx","x.x.x.x.x.xx",".xxxxxxxxxx.",".x.x.x.x.xx.",".xxxxxxxxxx.","..x.x.x.x.x.","..xxxxxxxx..","............"],
+star:[".....xx.....",".....xx.....","....xxxx....","xxxxxxxxxxxx",".xxxxxxxxxx.","..xxxxxxxx..","..xxxxxxxx..",".xxxx..xxxx.",".xxx....xxx.","xx........xx","............","............"],
+cap:["............","............","...xxxxxx...","..xxxxxxxx..",".xxx.xx.xxx.",".xxxxxxxxxx.","....xxxx....","....xxxx....","....xxxx....","...xxxxxx...","............","............"],
+check:["............","............","..........xx",".........xx.","........xx..","xx.....xx...",".xx...xx....","..xx.xx.....","...xxx......","....x.......","............","............"],
+};
+const px=(name,color,size=16)=>{const rows=BM[name];let r="";rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c==="x")r+=`<rect x="${x}" y="${y}" width="1" height="1"/>`}));
+  return `<svg viewBox="0 0 12 12" width="${size}" height="${size}" shape-rendering="crispEdges" fill="${color}" aria-hidden="true">${r}</svg>`;};
+
+/* ---------- fine line icons (24 grid) ---------- */
+const LN={
+fork:c=>`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v6M9.5 3v6M12 3v6M7 9q2.5 2.5 5 0M9.5 11v10"/><path d="M18 21V3q-3 2-3 7h3"/></svg>`,
+plate:c=>`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="${c}" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg>`,
+warn:c=>`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3l10 18H2z"/><path d="M12 10v5"/><circle cx="12" cy="18" r=".6" fill="${c}"/></svg>`,
+skull:c=>`<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 10a7 7 0 0 1 14 0c0 2.6-1.3 4-2.6 4.8V18H7.6v-3.2C6.3 14 5 12.6 5 10z" fill="${c}"/><circle cx="9.3" cy="10.3" r="1.8" fill="#bcd583"/><circle cx="14.7" cy="10.3" r="1.8" fill="#bcd583"/><path d="M10 18v2M14 18v2M12 18v2" stroke="${c}" stroke-width="1.6"/></svg>`,
+};
+
+/* ---------- edibility styles ---------- */
+const INK="#1c2a10";
+const STYLES=[
+ {n:1,name:"Game Boy LCD",note:"1-bit pixel icons in the screen's ink, no colour: like the original handheld. State is told by shape only, the most Pokédex-like and the calmest.",
+  ic:{edible:()=>px("fork",INK),none:()=>px("plate",INK),toxic:()=>px("warn",INK),deadly:()=>px("skull",INK)},
+  badge:e=>`<span class="tb" style="--c:${{edible:"#3f9a3c",none:"#8a8a7a",toxic:"#e0901a",deadly:"#1d1d1d"}[e]}">${px({edible:"fork",none:"plate",toxic:"warn",deadly:"skull"}[e],"#fff",11)}${LBL[e]}</span>`},
+ {n:2,name:"Type badges",note:"Small glossy squares like the game's type icons, colour plus a white pixel glyph. Toxic uses the poison-type purple. Strongest colour coding.",
+  ic:Object.fromEntries(["edible","none","toxic","deadly"].map(e=>[e,()=>`<span class="sq" style="--c:${COL2[e]}">${px(GL[e],"#fff",12)}</span>`])),
+  badge:e=>`<span class="tb" style="--c:${COL2[e]}">${px(GL[e],"#fff",11)}${LBL[e]}</span>`},
+ {n:3,name:"Fine line",note:"Thin outline icons in the four colours, no circles or frames. Light and modern; the fork and knife is easy to read.",
+  ic:{edible:()=>LN.fork("#2e7d32"),none:()=>LN.plate("#7d7d70"),toxic:()=>LN.warn("#c77700"),deadly:()=>LN.skull("#111")},
+  badge:e=>`<span class="tb" style="--c:${{edible:"#3f9a3c",none:"#8a8a7a",toxic:"#e0901a",deadly:"#1d1d1d"}[e]}">${LN[GL3[e]]("#fff").replace('width="18" height="18"','width="12" height="12"')}${LBL[e]}</span>`},
+ {n:4,name:"Device LEDs",note:"Glossy round lights like the LEDs on the device top, with a tiny white pixel glyph. Ties the icons to the hardware.",
+  ic:Object.fromEntries(["edible","none","toxic","deadly"].map(e=>[e,()=>`<span class="led" style="--c:${COL2[e]}">${px(GL[e],"#fff",11)}</span>`])),
+  badge:e=>`<span class="tb" style="--c:${COL2[e]}">${px(GL[e],"#fff",11)}${LBL[e]}</span>`},
+ {n:5,name:"Pixel colour",note:"Pixel icons like style 1, but each in its own colour on the green screen. A middle ground between 1 and 2.",
+  ic:{edible:()=>px("fork","#2e7d32"),none:()=>px("dash","#6d6d60"),toxic:()=>px("warn","#c77700"),deadly:()=>px("skull","#111")},
+  badge:e=>`<span class="tb" style="--c:${{edible:"#3f9a3c",none:"#8a8a7a",toxic:"#e0901a",deadly:"#1d1d1d"}[e]}">${px({edible:"fork",none:"dash",toxic:"warn",deadly:"skull"}[e],"#fff",11)}${LBL[e]}</span>`},
+];
+var LBL={edible:"COMESTIBLE",none:"SANS INTÉRÊT",toxic:"TOXIQUE",deadly:"MORTEL"};
+var COL2={edible:"#4caf50",none:"#9e9e8e",toxic:"#9a4fb0",deadly:"#2a2a2a"};
+var GL={edible:"fork",none:"plate",toxic:"bang",deadly:"skull"};
+var GL3={edible:"fork",none:"plate",toxic:"warn",deadly:"skull"};
+
+/* ---------- mock surfaces ---------- */
+const SIL={cep:`<svg viewBox="0 0 100 100"><path d="M36 52 Q24 80 40 91 L62 91 Q78 80 64 52Z M10 54 Q12 14 50 12 Q88 14 90 54 Q50 62 10 54Z" fill="#0f1a0a"/></svg>`,
+  cep_c:`<svg viewBox="0 0 100 100"><path d="M36 52 Q24 80 40 91 L62 91 Q78 80 64 52Z" fill="#efe3c8" stroke="#2b1a0e" stroke-width="2.5"/><path d="M10 54 Q12 14 50 12 Q88 14 90 54 Q50 62 10 54Z" fill="#7a4a23" stroke="#2b1a0e" stroke-width="2.5"/></svg>`,
+  ama:`<svg viewBox="0 0 100 100"><path d="M40 52 L37 84 Q50 90 63 84 L60 52Z M30 87 Q50 74 70 87 Q50 95 30 87Z M12 54 Q16 16 50 14 Q84 16 88 54 Q50 60 12 54Z" fill="#0f1a0a"/></svg>`};
+const ROWS=[{no:"001",n:"Amanite tue-mouches",e:"toxic",got:true,a:"ama"},{no:"003",n:"Cèpe de Bordeaux",e:"edible",got:true,a:"cep"},{no:"005",n:"Tramète versicolore",e:"none",got:false,a:"cep"},{no:"019",n:"Amanite phalloïde",e:"deadly",got:false,a:"ama"}];
+
+function surfaces(st,caught){
+  const icon=e=>st.ic[e]();
+  const tile=(r,got)=>`<div class="tile ${got?"got":""}"><div class="thead"><span class="no ${got&&caught.inv?"inv":""}">${r.no}</span><span class="ic">${icon(r.e)}</span></div>
+    <div class="art">${got?SIL.cep_c:SIL[r.a]}</div><div class="tname">${r.n}</div>${got&&caught.tile?caught.tile():""}</div>`;
+  return `<div class="lcd">
+   <div class="bar"><span class="chip on">Tous</span><span class="chip">Attrapés</span><span class="chip">Manquants</span><span class="sep"></span>${["edible","none","toxic","deadly"].map(e=>`<span class="chip ic">${icon(e)}</span>`).join("")}</div>
+   <div class="tiles">${tile(ROWS[1],true)}${tile(ROWS[3],false)}</div>
+   <div class="rows">${ROWS.map(r=>`<div class="row"><span class="no ${r.got&&caught.inv?"inv":""}">${r.no}</span><span class="th">${r.got?SIL.cep_c:SIL[r.a]}</span><span>${r.n}</span><span class="ic">${icon(r.e)}</span><span>${r.got?caught.list():(caught.empty?caught.empty():"")}</span></div>`).join("")}</div>
+  </div>`;
+}
+const CAUGHT={
+ dot:{list:()=>`<span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#ffd84a;border:2px solid #160b0b"></span>`,empty:()=>`<span style="display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid #1c2a10"></span>`},
+};
+const CAUGHTS=[
+ {k:"A",name:"Forager's basket",note:"A small pixel basket next to every caught species: the mushroom picker's equivalent of the capture ball in the games.",
+  c:{list:()=>px("basket","#7a4a10"),tile:()=>`<span class="corner">${px("basket","#ffd84a",16)}</span>`}},
+ {k:"B",name:"Pixel star",note:"A yellow pixel star, like a 'registered' mark. Very visible, playful.",c:{list:()=>px("star","#c99400"),tile:()=>`<span class="corner">${px("star","#ffd84a",16)}</span>`}},
+ {k:"C",name:"Inverted number",note:"No extra icon: a caught species' number turns into a dark tag (003). The dex number itself tells you, very Pokédex-like and clean.",
+  c:{inv:true,list:()=>""}},
+ {k:"D",name:"Ink stamp",note:"A small tilted 'PRIS' stamp on the tile, and a check in the list. Feels like a field-guide checklist.",
+  c:{list:()=>px("check","#b3201f"),tile:()=>`<span class="stamp">PRIS</span>`}},
+ {k:"E",name:"Tiny mushroom",note:"A small yellow mushroom cap marks caught species. On-theme and friendly.",c:{list:()=>px("cap","#b98500"),tile:()=>`<span class="corner">${px("cap","#ffd84a",16)}</span>`}},
+ {k:"F",name:"Yellow dot (current)",note:"What the app has today: a yellow dot when caught, an empty ring when not. Kept here as the baseline.",c:CAUGHT.dot},
+ {k:"G",name:"Nothing in the grid",note:"The photo already says 'caught' in the grid, so no marker there; the list keeps the basket from A. The quietest grid.",
+  c:{list:()=>px("basket","#7a4a10")}},
+];
+
+document.getElementById("edCards").innerHTML=STYLES.map(st=>`<article class="card"><h3><b>${st.n}</b>${st.name}</h3><p>${st.note}</p>
+  ${surfaces(st,CAUGHTS[5].c)}<div class="badges">${["edible","none","toxic","deadly"].map(st.badge).join("")}</div></article>`).join("");
+document.getElementById("caughtCards").innerHTML=CAUGHTS.map(cg=>`<article class="card"><h3><b>${cg.k}</b>${cg.name}</h3><p>${cg.note}</p>${surfaces(STYLES[0],cg.c)}</article>`).join("");
+</script>
