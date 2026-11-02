@@ -33,7 +33,8 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
 - Catch: big yellow CATCH button or tapping an uncaught silhouette opens the OS photo picker (camera or library, no
   `capture` attribute), square finger-only crop, then on-device identification on the crop. Date and GPS are taken
   from EXIF, else today and current position, and shown on one line. Form = photo + species only.
-- Several photos per catch (v0.9.0, issue #1): up to 4, each cropped, first = cover (☆ makes another one the cover),
+- Several photos per catch (v0.9.0, issue #1): up to 4, each cropped, first = cover (no label: drag thumbnails to
+  reorder, v0.9.1, Sam; tap = crop, arrow keys move),
   identification combines all photos (geometric mean). Species page 1 is a gallery of every photo of every find.
   Needs migration `0003_photos.sql` in Supabase for the extra photos to sync; without it only covers sync.
 - On-device identifier (LiteRT.js wasm, MobileNetV2 fungi model, Apache-2.0): suggestion only, European species only,

@@ -381,11 +381,9 @@ span.bdg > svg.bglyph{width:12px;height:12px;filter:drop-shadow(1px 1px 0 var(--
 /* v0.9.0 (issue #1): several photos per find */
 .shots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 auto 6px;width:min(100%,260px)}
 .sh{position:relative;aspect-ratio:1/1;border:2px solid var(--lcd-ink);border-radius:3px;overflow:hidden;background:#2a3a1c}
-.sh.cover{outline:2px solid var(--lcd-ink);outline-offset:1px}
-.sh .shimg{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer}
-.sh img{width:100%;height:100%;object-fit:cover;display:block}
-.sh .shtag{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);color:#fff;font-size:11px;line-height:1.3;white-space:nowrap;overflow:hidden;text-align:center;border:0;padding:0;font-family:var(--font-lcd)}
-.sh .shstar{position:absolute;left:1px;bottom:1px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ink);background:#fff;color:var(--ink);font-size:14px;line-height:1;padding:0;display:grid;place-items:center;cursor:pointer}
+.sh img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-select:none;user-select:none}
+.sh:not(.add){touch-action:none;cursor:grab;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.sh.dragging{cursor:grabbing;box-shadow:0 4px 10px rgba(0,0,0,.35)}
 .sh .shx{position:absolute;right:1px;top:1px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ink);background:#fff;color:var(--ink);font-size:11px;line-height:1;padding:0;display:grid;place-items:center;cursor:pointer}
 .sh.add{display:grid;place-items:center;align-content:center;gap:0;background:transparent;border-style:dashed;cursor:pointer;color:var(--lcd-ink);text-align:center;line-height:1}
 .sh.add span{font-size:26px}.sh.add small{font-size:11px;padding:0 2px}

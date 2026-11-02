@@ -60,7 +60,8 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   or library), then a square finger-only crop (react-easy-crop, no slider), then
   identification on the crop. From a species page it is silent unless `mismatch()` fires (top >= 0.5 and selected < 0.1:
   measured 7.3% false alarms, catches 70% of lookalike mix-ups); from the list it suggests the top 3.
-- Several photos per find (v0.9.0, issue #1): up to 4 (`MAX_PHOTOS`), first = cover. `Find.photos` = [{id, path}];
+- Several photos per find (v0.9.0, issue #1): up to 4 (`MAX_PHOTOS`), first = cover, no cover label (Sam): drag the
+  thumbnails to reorder (pointer events, iOS has no HTML drag on touch; tap without moving = crop; arrow keys move). `Find.photos` = [{id, path}];
   the cover keeps the find id as its IndexedDB key and `photo_path` mirrors it (old finds and old app versions keep
   working). Each photo is cropped and identified on its own, then `combineGuesses` takes the geometric mean (measured
   on pairs of the same species: 74% -> 91% top-1 with 2 photos, 95% with 3; mean of p 89%, max 87%). Without
