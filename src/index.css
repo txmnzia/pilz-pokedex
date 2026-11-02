@@ -126,7 +126,7 @@ ul.list{list-style:none;margin:0;padding:0}
 .tart svg{width:58px;height:58px}
 .tname{font-size:16px;min-height:2em;display:flex;align-items:center;text-wrap:balance}
 .tb{position:absolute;left:5px;bottom:5px;width:10px;height:10px}
-.row.x .num{font-size:16px}
+.row.x .num{font-size:14px;letter-spacing:-.3px} /* EX100+ must fit the 28px number column */
 .exhead{font-family:var(--font-label);font-size:8px;font-weight:400;line-height:1.6;margin:12px 0 6px}
 .seg.mini{display:inline-flex;margin:0}.seg.mini button{font-size:18px;padding:0 8px}
 /* forms */

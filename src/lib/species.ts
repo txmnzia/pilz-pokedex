@@ -2,27 +2,55 @@
 import type { Lang, Species } from "./types";
 
 export type Shape =
-  | "amanita" | "bolete" | "funnel" | "morel" | "parasol" | "tuft" | "bracket" | "gilled"
-  | "inkcap" | "puffball" | "stinkhorn" | "cage" | "starfish" | "hoof" | "rosette" | "ear" | "saddle" | "oyster";
+  | "amanita" | "bolete" | "leccinum" | "suillus" | "gilled" | "russula" | "cortinarius" | "parasol" | "shaggy" | "bell" | "tuft" | "funnel" | "chanterelle" | "trumpet" | "hedgehog" | "morel" | "brain" | "saddle" | "pear" | "ball" | "earthball" | "stinkhorn" | "dogstink" | "cage" | "starfish" | "ear" | "jelly" | "cup" | "coral" | "cauliflower" | "icicles" | "nest" | "oyster" | "hoof" | "bracket" | "rosette" | "crust";
 
 // Species whose look differs from the rest of their genus (checked before the genus).
 // Clathrus archeri (octopus stinkhorn) opens into 4 to 7 red arms, not a lattice ball like Clathrus ruber.
-const SPECIES_SHAPE: Record<string, Shape> = { "Clathrus archeri": "starfish" };
+// Craterellus tubaeformis (winter chanterelle) looks like a chanterelle, not like its black-trumpet genus mate.
+// Collybia rivulosa / dealbata were Clitocybe until recently: funnel-shaped, unlike the blewit in the same genus now.
+const SPECIES_SHAPE: Record<string, Shape> = {
+  "Clathrus archeri": "starfish", "Craterellus tubaeformis": "chanterelle", "Craterellus lutescens": "chanterelle",
+  "Collybia rivulosa": "funnel", "Collybia dealbata": "funnel",
+};
 
 // Illustration choice per genus where morphology data is missing or misleading.
 const GENUS_SHAPE: Record<string, Shape> = {
-  Clathrus: "cage", Phallus: "stinkhorn", Mutinus: "stinkhorn",
-  Lycoperdon: "puffball", Calvatia: "puffball", Bovista: "puffball", Scleroderma: "puffball",
-  Auricularia: "ear", Helvella: "saddle", Morchella: "morel", Gyromitra: "morel",
-  Coprinus: "inkcap", Coprinopsis: "inkcap",
-  Pleurotus: "oyster", Hohenbuehelia: "oyster", Schizophyllum: "oyster",
-  Hypholoma: "tuft", Kuehneromyces: "tuft", Galerina: "tuft", Armillaria: "tuft",
-  Macrolepiota: "parasol", Lepiota: "parasol", Chlorophyllum: "parasol",
-  // tree polypores: thin shelves / one thick hoof / overlapping wavy tiers
-  Trametes: "bracket", Bjerkandera: "bracket", Stereum: "bracket", Lenzites: "bracket", Hapalopilus: "bracket", Amylocystis: "bracket",
-  Fomes: "hoof", Fomitopsis: "hoof", Phellinus: "hoof", Ganoderma: "hoof", Laricifomes: "hoof", Heterobasidion: "hoof",
-  Ischnoderma: "hoof", Fistulina: "hoof",
-  Laetiporus: "rosette", Meripilus: "rosette",
+  Amanita: "amanita",
+  Boletus: "bolete", Imleria: "bolete", Neoboletus: "bolete", Suillellus: "bolete", Rubroboletus: "bolete", Caloboletus: "bolete", Tylopilus: "bolete", Xerocomellus: "bolete", Xerocomus: "bolete", Strobilomyces: "bolete", Chalciporus: "bolete", Lanmaoa: "bolete", Hortiboletus: "bolete", Aureoboletus: "bolete", Cyanoboletus: "bolete", Butyriboletus: "bolete", Hemileccinum: "bolete", Baorangia: "bolete", Porphyrellus: "bolete", Gyroporus: "bolete",
+  Leccinum: "leccinum", Leccinellum: "leccinum",
+  Suillus: "suillus",
+  Agaricus: "gilled", Tricholoma: "gilled", Entoloma: "gilled", Pluteus: "gilled", Volvopluteus: "gilled", Calocybe: "gilled", Cuphophyllus: "gilled", Hygrocybe: "gilled", Hygrophorus: "gilled", Stropharia: "gilled", Marasmius: "gilled", Megacollybia: "gilled", Oudemansiella: "gilled", Laccaria: "gilled", Tricholomopsis: "gilled", Leucopaxillus: "gilled", Lepista: "gilled", Collybia: "gilled", Gymnopus: "gilled", Rhodocollybia: "gilled", Melanoleuca: "gilled", Lyophyllum: "gilled", Agrocybe: "gilled", Hypsizygus: "gilled",
+  Russula: "russula",
+  Cortinarius: "cortinarius", Inocybe: "cortinarius", Inosperma: "cortinarius", Hebeloma: "cortinarius",
+  Macrolepiota: "parasol", Chlorophyllum: "parasol", Lepiota: "parasol", Echinoderma: "parasol", Leucoagaricus: "parasol", Cystolepiota: "parasol",
+  Coprinus: "shaggy", Coprinopsis: "shaggy",
+  Mycena: "bell", Leotia: "bell", Baeospora: "bell", Pholiotina: "bell", Conocybe: "bell", Bolbitius: "bell", Panaeolus: "bell", Mycetinis: "bell", Auriscalpium: "bell", Psilocybe: "bell", Deconica: "bell", Parasola: "bell", Hemimycena: "bell", Atheniella: "bell",
+  Hypholoma: "tuft", Xeromphalina: "tuft", Kuehneromyces: "tuft", Armillaria: "tuft", Pholiota: "tuft", Coprinellus: "tuft", Galerina: "tuft", Gymnopilus: "tuft", Flammulina: "tuft", Desarmillaria: "tuft",
+  Clitocybe: "funnel", Arrhenia: "funnel", Faerberia: "funnel", Infundibulicybe: "funnel", Lactarius: "funnel", Lactifluus: "funnel", Paxillus: "funnel", Tapinella: "funnel", Ampulloclitocybe: "funnel", Pseudoclitocybe: "funnel",
+  Cantharellus: "chanterelle", Hygrophoropsis: "chanterelle", Omphalotus: "chanterelle", Pseudocraterellus: "chanterelle",
+  Craterellus: "trumpet", Gomphus: "trumpet", Turbinellus: "trumpet",
+  Hydnum: "hedgehog", Sarcodon: "hedgehog", Hydnellum: "hedgehog",
+  Morchella: "morel", Verpa: "morel", Mitrophora: "morel",
+  Gyromitra: "brain", Discina: "brain",
+  Helvella: "saddle",
+  Lycoperdon: "pear", Apioperdon: "pear",
+  Calvatia: "ball", Bovista: "ball", Langermannia: "ball",
+  Scleroderma: "earthball", Pisolithus: "earthball",
+  Phallus: "stinkhorn",
+  Mutinus: "dogstink",
+  Clathrus: "cage",
+  Auricularia: "ear",
+  Tremella: "jelly", Naematelia: "jelly", Pseudohydnum: "jelly", Dacrymyces: "jelly", Exidia: "jelly",
+  Aleuria: "cup", Peziza: "cup", Otidea: "cup", Sarcoscypha: "cup", Scutellinia: "cup", Tarzetta: "cup", Paragalactinia: "cup",
+  Ramaria: "coral", Clavulina: "coral", Calocera: "coral", Clavaria: "coral", Clavulinopsis: "coral", Artomyces: "coral",
+  Sparassis: "cauliflower",
+  Hericium: "icicles",
+  Cyathus: "nest", Crucibulum: "nest",
+  Pleurotus: "oyster", Panus: "oyster", Panellus: "oyster", Phyllotopsis: "oyster", Schizophyllum: "oyster", Hohenbuehelia: "oyster", Crepidotus: "oyster", Lentinus: "oyster", Neolentinus: "oyster",
+  Fomes: "hoof", Fomitopsis: "hoof", Phellinus: "hoof", Phellinopsis: "hoof", Porodaedalea: "hoof", Ganoderma: "hoof", Laricifomes: "hoof", Heterobasidion: "hoof", Ischnoderma: "hoof", Fistulina: "hoof", Inonotus: "hoof", Piptoporus: "hoof", Buglossoporus: "hoof",
+  Trametes: "bracket", Bjerkandera: "bracket", Daedaleopsis: "bracket", Daedalea: "bracket", Cerioporus: "bracket", Polyporus: "bracket", Lenzites: "bracket", Hapalopilus: "bracket", Amylocystis: "bracket", Cerrena: "bracket", Trichaptum: "bracket", Gloeophyllum: "bracket", Postia: "bracket", Climacocystis: "bracket", Fuscoporia: "bracket",
+  Laetiporus: "rosette", Meripilus: "rosette", Grifola: "rosette", Phaeolus: "rosette", Bondarzewia: "rosette",
+  Stereum: "crust", Serpula: "crust", Amylostereum: "crust", Phlebia: "crust", Chondrostereum: "crust", Hymenochaete: "crust", Xylobolus: "crust",
 };
 const Q = {
   pores: "Q19861549", gleba: "Q2034230", noCap: "Q19887965", offset: "Q14544541",
@@ -35,11 +63,11 @@ export function shapeOf(sp: Pick<Species, "latin" | "morph">): Shape {
   const genus = sp.latin.split(" ")[0];
   if (GENUS_SHAPE[genus]) return GENUS_SHAPE[genus];
   const has = (k: keyof Species["morph"], q: string) => (sp.morph[k] || []).some(l => l.qid === q);
-  if (has("hymenium", Q.gleba)) return "puffball";
+  if (has("hymenium", Q.gleba)) return "pear";
   if (has("hymenium", Q.pores)) return has("cap", Q.noCap) || has("cap", Q.offset) || !sp.morph.stipe ? "bracket" : "bolete";
   if (has("cap", Q.funnel) || has("cap", Q.depressed)) return "funnel";
   if (has("stipe", Q.ringVolva) || has("stipe", Q.volva)) return "amanita";
-  if (has("cap", Q.conical)) return "inkcap";
+  if (has("cap", Q.conical)) return "bell";
   return "gilled";
 }
 

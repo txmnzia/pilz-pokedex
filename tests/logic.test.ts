@@ -27,7 +27,7 @@ describe("shapeOf", () => {
   });
   it("amanita from ring+volva", () => expect(shapeOf(bySpecies("Amanita phalloides"))).toBe("amanita"));
   it("bolete from pores+stem", () => expect(shapeOf(bySpecies("Boletus edulis"))).toBe("bolete"));
-  it("funnel for chanterelle", () => expect(shapeOf(bySpecies("Cantharellus cibarius"))).toBe("funnel"));
+  it("own shape for chanterelle", () => expect(shapeOf(bySpecies("Cantharellus cibarius"))).toBe("chanterelle"));
   it("genus overrides", () => {
     expect(shapeOf(bySpecies("Clathrus ruber"))).toBe("cage");
     expect(shapeOf(bySpecies("Fomes fomentarius"))).toBe("hoof");
@@ -36,9 +36,13 @@ describe("shapeOf", () => {
 });
 
 describe("species data", () => {
-  it("has 30 numbered core species", () => {
+  it("has 100 to 150 core species numbered 1..N (issue #2), the original 30 keep their numbers", () => {
     const core = data.species.filter(s => !s.extra);
-    expect(core.map(s => s.no)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1));
+    expect(core.length).toBeGreaterThanOrEqual(100);
+    expect(core.length).toBeLessThanOrEqual(150);
+    expect(core.map(s => s.no)).toEqual(Array.from({ length: core.length }, (_, i) => i + 1));
+    expect(core.find(s => s.no === 1)?.latin).toBe("Amanita muscaria");
+    expect(core.find(s => s.latin === "Gyromitra esculenta")?.edibility).toBe("deadly");
   });
   it("every lookalike resolves", () => {
     const ids = new Set(data.species.map(s => s.inat));

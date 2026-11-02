@@ -2,7 +2,9 @@
 
 A Pokédex for the mushrooms I find around Berlin and Grenoble. Live: https://txmnzia.github.io/pilz-pokedex/
 
-- 30 species ranked by iNaturalist research-grade observations in Germany + France × number of Wikipedia language editions
+- 120 species (v0.10.0): the original 30, every deadly species observed in France or Germany (Wikidata + Wikipedia
+  "Deadly fungi"), then edible and famous species ranked by iNaturalist observations in FR + DE × Wikipedia languages;
+  plus 136 lookalikes with their own pages
 - Each species: FR/EN/DE names, edibility (edible / no interest / toxic / deadly, or unverified), season from observations,
   morphology, Berlin/Grenoble presence, Wikipedia text, and lookalikes that get their own page
 - Catch: one photo button (camera or library, chosen in the OS menu), crop and zoom on the mushroom, date + GPS from the
