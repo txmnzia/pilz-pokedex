@@ -19573,9 +19573,8 @@
    "lookalikes": []
   },
   {
-   "no": null,
-   "ex": 1,
-   "extra": true,
+   "no": 182,
+   "extra": false,
    "inat": 204588,
    "latin": "Amanita caesarea",
    "obs": {
@@ -19899,12 +19898,12 @@
    },
    "lookalikes": [
     48715
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 2,
-   "extra": true,
+   "no": 183,
+   "extra": false,
    "inat": 464151,
    "latin": "Amanita regalis",
    "obs": {
@@ -20035,12 +20034,12 @@
    "lookalikes": [
     48715,
     48418
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 3,
-   "extra": true,
+   "no": 184,
+   "extra": false,
    "inat": 117308,
    "latin": "Chlorophyllum molybdites",
    "obs": {
@@ -20166,12 +20165,12 @@
    "lookalikes": [
     47392,
     63401
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 4,
-   "extra": true,
+   "no": 185,
+   "extra": false,
    "inat": 48521,
    "latin": "Coprinopsis atramentaria",
    "obs": {
@@ -20325,12 +20324,12 @@
     47392,
     63224,
     56318
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 5,
-   "extra": true,
+   "no": 186,
+   "extra": false,
    "inat": 544554,
    "latin": "Rubroboletus satanas",
    "obs": {
@@ -20624,12 +20623,12 @@
     48701,
     824777,
     701434
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 6,
-   "extra": true,
+   "no": 187,
+   "extra": false,
    "inat": 333772,
    "latin": "Boletus aereus",
    "obs": {
@@ -20845,12 +20844,12 @@
    },
    "lookalikes": [
     350216
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 7,
-   "extra": true,
+   "no": 188,
+   "extra": false,
    "inat": 125688,
    "latin": "Gyroporus castaneus",
    "obs": {
@@ -21016,12 +21015,12 @@
    },
    "lookalikes": [
     350216
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 8,
-   "extra": true,
+   "no": 189,
+   "extra": false,
    "inat": 544552,
    "latin": "Lanmaoa fragrans",
    "obs": {
@@ -21138,12 +21137,12 @@
     48701,
     510854,
     507493
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 9,
-   "extra": true,
+   "no": 190,
+   "extra": false,
    "inat": 363590,
    "latin": "Leccinum duriusculum",
    "obs": {
@@ -21277,12 +21276,12 @@
    },
    "lookalikes": [
     63232
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 10,
-   "extra": true,
+   "no": 191,
+   "extra": false,
    "inat": 118111,
    "latin": "Trametes ochracea",
    "obs": {
@@ -21364,12 +21363,12 @@
    },
    "lookalikes": [
     54134
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 11,
-   "extra": true,
+   "no": 192,
+   "extra": false,
    "inat": 352556,
    "latin": "Trametes suaveolens",
    "obs": {
@@ -21440,12 +21439,12 @@
    },
    "lookalikes": [
     54134
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 12,
-   "extra": true,
+   "no": 193,
+   "extra": false,
    "inat": 194476,
    "latin": "Cerrena unicolor",
    "obs": {
@@ -21555,12 +21554,12 @@
    },
    "lookalikes": [
     124102
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 13,
-   "extra": true,
+   "no": 194,
+   "extra": false,
    "inat": 125136,
    "latin": "Phellinus igniarius",
    "obs": {
@@ -21675,12 +21674,12 @@
    "lookalikes": [
     127510,
     118081
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 14,
-   "extra": true,
+   "no": 195,
+   "extra": false,
    "inat": 118396,
    "latin": "Amanita franchetii",
    "obs": {
@@ -21809,12 +21808,12 @@
    },
    "lookalikes": [
     67661
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 15,
-   "extra": true,
+   "no": 196,
+   "extra": false,
    "inat": 154366,
    "latin": "Amanita ceciliae",
    "obs": {
@@ -21980,12 +21979,12 @@
    },
    "lookalikes": [
     67661
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 16,
-   "extra": true,
+   "no": 197,
+   "extra": false,
    "inat": 58693,
    "latin": "Chlorophyllum brunneum",
    "obs": {
@@ -22102,12 +22101,12 @@
    },
    "lookalikes": [
     63401
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 17,
-   "extra": true,
+   "no": 198,
+   "extra": false,
    "inat": 135216,
    "latin": "Laricifomes officinalis",
    "obs": {
@@ -22212,12 +22211,12 @@
    },
    "lookalikes": [
     1098280
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 18,
-   "extra": true,
+   "no": 199,
+   "extra": false,
    "inat": 194485,
    "latin": "Heterobasidion annosum",
    "obs": {
@@ -22297,12 +22296,12 @@
    },
    "lookalikes": [
     1098280
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 19,
-   "extra": true,
+   "no": 200,
+   "extra": false,
    "inat": 64071,
    "latin": "Hypholoma capnoides",
    "obs": {
@@ -22445,12 +22444,12 @@
    },
    "lookalikes": [
     48767
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 20,
-   "extra": true,
+   "no": 201,
+   "extra": false,
    "inat": 157994,
    "latin": "Gymnopus fusipes",
    "obs": {
@@ -22549,12 +22548,12 @@
    },
    "lookalikes": [
     48767
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 21,
-   "extra": true,
+   "no": 202,
+   "extra": false,
    "inat": 510199,
    "latin": "Entoloma sinuatum",
    "obs": {
@@ -22769,12 +22768,12 @@
     450829,
     451026,
     1525557
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 22,
-   "extra": true,
+   "no": 203,
+   "extra": false,
    "inat": 64708,
    "latin": "Clitopilus prunulus",
    "obs": {
@@ -22932,12 +22931,12 @@
    "lookalikes": [
     451026,
     1525557
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 23,
-   "extra": true,
+   "no": 204,
+   "extra": false,
    "inat": 194737,
    "latin": "Ampulloclitocybe clavipes",
    "obs": {
@@ -23013,12 +23012,12 @@
    },
    "lookalikes": [
     63255
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 24,
-   "extra": true,
+   "no": 205,
+   "extra": false,
    "inat": 67351,
    "latin": "Leucopaxillus albissimus",
    "obs": {
@@ -23137,12 +23136,12 @@
    },
    "lookalikes": [
     63255
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 25,
-   "extra": true,
+   "no": 206,
+   "extra": false,
    "inat": 118213,
    "latin": "Tricholoma saponaceum",
    "obs": {
@@ -23269,12 +23268,12 @@
    },
    "lookalikes": [
     63255
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 26,
-   "extra": true,
+   "no": 207,
+   "extra": false,
    "inat": 154675,
    "latin": "Lycoperdon excipuliforme",
    "obs": {
@@ -23344,12 +23343,12 @@
    },
    "lookalikes": [
     48443
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 27,
-   "extra": true,
+   "no": 208,
+   "extra": false,
    "inat": 151795,
    "latin": "Lycoperdon marginatum",
    "obs": {
@@ -23423,12 +23422,12 @@
    },
    "lookalikes": [
     48443
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 28,
-   "extra": true,
+   "no": 209,
+   "extra": false,
    "inat": 118139,
    "latin": "Lycoperdon umbrinum",
    "obs": {
@@ -23531,12 +23530,12 @@
    },
    "lookalikes": [
     48443
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 29,
-   "extra": true,
+   "no": 210,
+   "extra": false,
    "inat": 474502,
    "latin": "Xerocomellus pruinatus",
    "obs": {
@@ -23639,12 +23638,12 @@
    },
    "lookalikes": [
     438013
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 30,
-   "extra": true,
+   "no": 211,
+   "extra": false,
    "inat": 485374,
    "latin": "Xerocomus subtomentosus",
    "obs": {
@@ -23855,12 +23854,12 @@
    },
    "lookalikes": [
     63489
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 31,
-   "extra": true,
+   "no": 212,
+   "extra": false,
    "inat": 474202,
    "latin": "Xerocomellus porosporus",
    "obs": {
@@ -23992,12 +23991,12 @@
    },
    "lookalikes": [
     438013
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 32,
-   "extra": true,
+   "no": 213,
+   "extra": false,
    "inat": 625287,
    "latin": "Aureoboletus moravicus",
    "obs": {
@@ -24088,12 +24087,12 @@
    },
    "lookalikes": [
     510854
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 33,
-   "extra": true,
+   "no": 214,
+   "extra": false,
    "inat": 147354,
    "latin": "Chalciporus piperatus",
    "obs": {
@@ -24232,12 +24231,12 @@
    },
    "lookalikes": [
     510854
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 34,
-   "extra": true,
+   "no": 215,
+   "extra": false,
    "inat": 544548,
    "latin": "Hortiboletus engelii",
    "obs": {
@@ -24357,12 +24356,12 @@
    },
    "lookalikes": [
     438013
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 35,
-   "extra": true,
+   "no": 216,
+   "extra": false,
    "inat": 875042,
    "latin": "Hortiboletus bubalinus",
    "obs": {
@@ -24455,12 +24454,12 @@
    },
    "lookalikes": [
     510854
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 36,
-   "extra": true,
+   "no": 217,
+   "extra": false,
    "inat": 118215,
    "latin": "Tricholoma equestre",
    "obs": {
@@ -24663,12 +24662,12 @@
    "lookalikes": [
     52135,
     408299
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 37,
-   "extra": true,
+   "no": 218,
+   "extra": false,
    "inat": 203806,
    "latin": "Russula heterophylla",
    "obs": {
@@ -24797,12 +24796,12 @@
    "lookalikes": [
     52135,
     125720
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 38,
-   "extra": true,
+   "no": 219,
+   "extra": false,
    "inat": 122333,
    "latin": "Russula aeruginea",
    "obs": {
@@ -24935,12 +24934,12 @@
    "lookalikes": [
     52135,
     125720
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 39,
-   "extra": true,
+   "no": 220,
+   "extra": false,
    "inat": 128521,
    "latin": "Phallus hadriani",
    "obs": {
@@ -25059,12 +25058,12 @@
    },
    "lookalikes": [
     54594
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 40,
-   "extra": true,
+   "no": 221,
+   "extra": false,
    "inat": 206090,
    "latin": "Morchella rufobrunnea",
    "obs": {
@@ -25231,12 +25230,12 @@
    },
    "lookalikes": [
     54594
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 41,
-   "extra": true,
+   "no": 222,
+   "extra": false,
    "inat": 351875,
    "latin": "Pleurotus cornucopiae",
    "obs": {
@@ -25345,12 +25344,12 @@
    },
    "lookalikes": [
     48494
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 42,
-   "extra": true,
+   "no": 223,
+   "extra": false,
    "inat": 136399,
    "latin": "Pleurotus pulmonarius",
    "obs": {
@@ -25534,12 +25533,12 @@
    },
    "lookalikes": [
     48494
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 43,
-   "extra": true,
+   "no": 224,
+   "extra": false,
    "inat": 205516,
    "latin": "Pleurotus eryngii",
    "obs": {
@@ -25657,12 +25656,12 @@
    },
    "lookalikes": [
     48494
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 44,
-   "extra": true,
+   "no": 225,
+   "extra": false,
    "inat": 64021,
    "latin": "Omphalotus olearius",
    "obs": {
@@ -25853,12 +25852,12 @@
    "lookalikes": [
     47347,
     63538
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 45,
-   "extra": true,
+   "no": 226,
+   "extra": false,
    "inat": 126831,
    "latin": "Omphalotus illudens",
    "obs": {
@@ -26029,12 +26028,12 @@
    "lookalikes": [
     47347,
     63538
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 46,
-   "extra": true,
+   "no": 227,
+   "extra": false,
    "inat": 626851,
    "latin": "Cantharellus pallens",
    "obs": {
@@ -26137,12 +26136,12 @@
    },
    "lookalikes": [
     47347
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 47,
-   "extra": true,
+   "no": 228,
+   "extra": false,
    "inat": 566555,
    "latin": "Cantharellus amethysteus",
    "obs": {
@@ -26285,12 +26284,12 @@
    },
    "lookalikes": [
     47347
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 48,
-   "extra": true,
+   "no": 229,
+   "extra": false,
    "inat": 179332,
    "latin": "Amylocystis lapponica",
    "obs": {
@@ -26356,12 +26355,12 @@
    },
    "lookalikes": [
     123897
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 49,
-   "extra": true,
+   "no": 230,
+   "extra": false,
    "inat": 130919,
    "latin": "Ischnoderma resinosum",
    "obs": {
@@ -26426,12 +26425,12 @@
    },
    "lookalikes": [
     123897
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 50,
-   "extra": true,
+   "no": 231,
+   "extra": false,
    "inat": 475619,
    "latin": "Helvella lacunosa",
    "obs": {
@@ -26627,12 +26626,12 @@
    "lookalikes": [
     49208,
     48607
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 51,
-   "extra": true,
+   "no": 232,
+   "extra": false,
    "inat": 1109245,
    "latin": "Naematelia aurantia",
    "obs": {
@@ -26722,12 +26721,12 @@
    },
    "lookalikes": [
     48529
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 52,
-   "extra": true,
+   "no": 233,
+   "extra": false,
    "inat": 118028,
    "latin": "Dacrymyces chrysospermus",
    "obs": {
@@ -26828,12 +26827,12 @@
    },
    "lookalikes": [
     48529
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 53,
-   "extra": true,
+   "no": 234,
+   "extra": false,
    "inat": 351927,
    "latin": "Polyporus tuberaster",
    "obs": {
@@ -26900,12 +26899,12 @@
    },
    "lookalikes": [
     940028
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 54,
-   "extra": true,
+   "no": 235,
+   "extra": false,
    "inat": 194304,
    "latin": "Gymnopilus penetrans",
    "obs": {
@@ -26973,12 +26972,12 @@
    },
    "lookalikes": [
     63538
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 55,
-   "extra": true,
+   "no": 236,
+   "extra": false,
    "inat": 981442,
    "latin": "Inocybe aeruginascens",
    "obs": {
@@ -27104,12 +27103,12 @@
    },
    "lookalikes": [
     118240
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 56,
-   "extra": true,
+   "no": 237,
+   "extra": false,
    "inat": 542911,
    "latin": "Suillellus mendax",
    "obs": {
@@ -27203,12 +27202,12 @@
    },
    "lookalikes": [
     824777
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 57,
-   "extra": true,
+   "no": 238,
+   "extra": false,
    "inat": 824671,
    "latin": "Imperator torosus",
    "obs": {
@@ -27362,12 +27361,12 @@
    },
    "lookalikes": [
     824777
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 58,
-   "extra": true,
+   "no": 239,
+   "extra": false,
    "inat": 824010,
    "latin": "Rubroboletus rhodoxanthus",
    "obs": {
@@ -27559,12 +27558,12 @@
    },
    "lookalikes": [
     824777
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 59,
-   "extra": true,
+   "no": 240,
+   "extra": false,
    "inat": 179071,
    "latin": "Scleroderma verrucosum",
    "obs": {
@@ -27675,12 +27674,12 @@
    },
    "lookalikes": [
     55927
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 60,
-   "extra": true,
+   "no": 241,
+   "extra": false,
    "inat": 491859,
    "latin": "Onnia tomentosa",
    "obs": {
@@ -27756,12 +27755,12 @@
    },
    "lookalikes": [
     118084
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 61,
-   "extra": true,
+   "no": 242,
+   "extra": false,
    "inat": 118283,
    "latin": "Crepidotus mollis",
    "obs": {
@@ -27851,12 +27850,12 @@
    "lookalikes": [
     68309,
     52529
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 62,
-   "extra": true,
+   "no": 243,
+   "extra": false,
    "inat": 499706,
    "latin": "Cortinarius camphoratus",
    "obs": {
@@ -27936,12 +27935,12 @@
    },
    "lookalikes": [
     1525548
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 63,
-   "extra": true,
+   "no": 244,
+   "extra": false,
    "inat": 824011,
    "latin": "Leccinellum pseudoscabrum",
    "obs": {
@@ -28068,12 +28067,12 @@
    },
    "lookalikes": [
     63232
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 64,
-   "extra": true,
+   "no": 245,
+   "extra": false,
    "inat": 363591,
    "latin": "Leccinum variicolor",
    "obs": {
@@ -28182,12 +28181,12 @@
    },
    "lookalikes": [
     63232
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 65,
-   "extra": true,
+   "no": 246,
+   "extra": false,
    "inat": 363587,
    "latin": "Leccinum holopus",
    "obs": {
@@ -28307,12 +28306,12 @@
    },
    "lookalikes": [
     63232
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 66,
-   "extra": true,
+   "no": 247,
+   "extra": false,
    "inat": 179065,
    "latin": "Suillus granulatus",
    "obs": {
@@ -28487,12 +28486,12 @@
    },
    "lookalikes": [
     53488
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 67,
-   "extra": true,
+   "no": 248,
+   "extra": false,
    "inat": 48424,
    "latin": "Gomphidius glutinosus",
    "obs": {
@@ -28637,12 +28636,12 @@
    },
    "lookalikes": [
     53488
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 68,
-   "extra": true,
+   "no": 249,
+   "extra": false,
    "inat": 58669,
    "latin": "Leotia lubrica",
    "obs": {
@@ -28772,12 +28771,12 @@
    },
    "lookalikes": [
     350511
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 69,
-   "extra": true,
+   "no": 250,
+   "extra": false,
    "inat": 56251,
    "latin": "Xeromphalina campanella",
    "obs": {
@@ -28882,12 +28881,12 @@
    },
    "lookalikes": [
     350511
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 70,
-   "extra": true,
+   "no": 251,
+   "extra": false,
    "inat": 332466,
    "latin": "Arrhenia rickenii",
    "obs": {
@@ -28956,12 +28955,12 @@
    },
    "lookalikes": [
     350511
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 71,
-   "extra": true,
+   "no": 252,
+   "extra": false,
    "inat": 351304,
    "latin": "Lactarius salmonicolor",
    "obs": {
@@ -29048,12 +29047,12 @@
    "lookalikes": [
     155197,
     194385
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 72,
-   "extra": true,
+   "no": 253,
+   "extra": false,
    "inat": 474683,
    "latin": "Lactarius quieticolor",
    "obs": {
@@ -29179,12 +29178,12 @@
    },
    "lookalikes": [
     155197
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 73,
-   "extra": true,
+   "no": 254,
+   "extra": false,
    "inat": 382886,
    "latin": "Lactarius turpis",
    "obs": {
@@ -29314,12 +29313,12 @@
    },
    "lookalikes": [
     55941
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 74,
-   "extra": true,
+   "no": 255,
+   "extra": false,
    "inat": 776927,
    "latin": "Paxillus obscurisporus",
    "obs": {
@@ -29380,12 +29379,12 @@
    },
    "lookalikes": [
     55941
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 75,
-   "extra": true,
+   "no": 256,
+   "extra": false,
    "inat": 496729,
    "latin": "Paxillus rubicundulus",
    "obs": {
@@ -29447,12 +29446,12 @@
    },
    "lookalikes": [
     55941
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 76,
-   "extra": true,
+   "no": 257,
+   "extra": false,
    "inat": 1536892,
    "latin": "Fomitopsis quercina",
    "obs": {
@@ -29524,12 +29523,12 @@
    "lookalikes": [
     124102,
     67338
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 77,
-   "extra": true,
+   "no": 258,
+   "extra": false,
    "inat": 63509,
    "latin": "Ganoderma adspersum",
    "obs": {
@@ -29606,12 +29605,12 @@
    },
    "lookalikes": [
     48473
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 78,
-   "extra": true,
+   "no": 259,
+   "extra": false,
    "inat": 154734,
    "latin": "Coprinellus radians",
    "obs": {
@@ -29684,12 +29683,12 @@
    },
    "lookalikes": [
     56318
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 79,
-   "extra": true,
+   "no": 260,
+   "extra": false,
    "inat": 56551,
    "latin": "Coprinellus truncorum",
    "obs": {
@@ -29750,12 +29749,12 @@
    },
    "lookalikes": [
     56318
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 80,
-   "extra": true,
+   "no": 261,
+   "extra": false,
    "inat": 203711,
    "latin": "Trametes pubescens",
    "obs": {
@@ -29832,12 +29831,12 @@
    },
    "lookalikes": [
     116695
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 81,
-   "extra": true,
+   "no": 262,
+   "extra": false,
    "inat": 120037,
    "latin": "Cyathus stercoreus",
    "obs": {
@@ -29912,12 +29911,12 @@
    },
    "lookalikes": [
     120242
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 82,
-   "extra": true,
+   "no": 263,
+   "extra": false,
    "inat": 326188,
    "latin": "Bjerkandera fumosa",
    "obs": {
@@ -29985,12 +29984,12 @@
    },
    "lookalikes": [
     118038
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 83,
-   "extra": true,
+   "no": 264,
+   "extra": false,
    "inat": 351596,
    "latin": "Morchella vulgaris",
    "obs": {
@@ -30123,12 +30122,12 @@
    },
    "lookalikes": [
     58682
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 84,
-   "extra": true,
+   "no": 265,
+   "extra": false,
    "inat": 1063069,
    "latin": "Morchella dunensis",
    "obs": {
@@ -30211,12 +30210,12 @@
    },
    "lookalikes": [
     58682
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 85,
-   "extra": true,
+   "no": 266,
+   "extra": false,
    "inat": 350767,
    "latin": "Faerberia carbonaria",
    "obs": {
@@ -30277,12 +30276,12 @@
    },
    "lookalikes": [
     48607
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 86,
-   "extra": true,
+   "no": 267,
+   "extra": false,
    "inat": 194414,
    "latin": "Russula nigricans",
    "obs": {
@@ -30421,12 +30420,12 @@
    },
    "lookalikes": [
     48607
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 87,
-   "extra": true,
+   "no": 268,
+   "extra": false,
    "inat": 344650,
    "latin": "Entoloma clypeatum",
    "obs": {
@@ -30538,12 +30537,12 @@
    },
    "lookalikes": [
     450829
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 88,
-   "extra": true,
+   "no": 269,
+   "extra": false,
    "inat": 118382,
    "latin": "Agaricus moelleri",
    "obs": {
@@ -30676,12 +30675,12 @@
    },
    "lookalikes": [
     49547
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 89,
-   "extra": true,
+   "no": 270,
+   "extra": false,
    "inat": 480774,
    "latin": "Agaricus pseudopratensis",
    "obs": {
@@ -30799,12 +30798,12 @@
    },
    "lookalikes": [
     118394
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 90,
-   "extra": true,
+   "no": 271,
+   "extra": false,
    "inat": 154291,
    "latin": "Agaricus sylvicola",
    "obs": {
@@ -30980,12 +30979,12 @@
    },
    "lookalikes": [
     49547
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 91,
-   "extra": true,
+   "no": 272,
+   "extra": false,
    "inat": 49134,
    "latin": "Sarcoscypha coccinea",
    "obs": {
@@ -31176,12 +31175,12 @@
    },
    "lookalikes": [
     48716
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 92,
-   "extra": true,
+   "no": 273,
+   "extra": false,
    "inat": 153035,
    "latin": "Caloscypha fulgens",
    "obs": {
@@ -31297,12 +31296,12 @@
    },
    "lookalikes": [
     48716
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 93,
-   "extra": true,
+   "no": 274,
+   "extra": false,
    "inat": 47164,
    "latin": "Entoloma bloxamii",
    "obs": {
@@ -31400,12 +31399,12 @@
    },
    "lookalikes": [
     124344
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 94,
-   "extra": true,
+   "no": 275,
+   "extra": false,
    "inat": 381232,
    "latin": "Amylostereum areolatum",
    "obs": {
@@ -31471,12 +31470,12 @@
    },
    "lookalikes": [
     118036
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 95,
-   "extra": true,
+   "no": 276,
+   "extra": false,
    "inat": 340866,
    "latin": "Hydnum rufescens",
    "obs": {
@@ -31633,12 +31632,12 @@
    },
    "lookalikes": [
     48641
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 96,
-   "extra": true,
+   "no": 277,
+   "extra": false,
    "inat": 123891,
    "latin": "Albatrellus ovinus",
    "obs": {
@@ -31793,12 +31792,12 @@
    },
    "lookalikes": [
     48641
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 97,
-   "extra": true,
+   "no": 278,
+   "extra": false,
    "inat": 122335,
    "latin": "Sarcodon imbricatus",
    "obs": {
@@ -31928,12 +31927,12 @@
    },
    "lookalikes": [
     48641
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 98,
-   "extra": true,
+   "no": 279,
+   "extra": false,
    "inat": 48421,
    "latin": "Hydnum umbilicatum",
    "obs": {
@@ -31997,12 +31996,12 @@
    },
    "lookalikes": [
     48641
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 99,
-   "extra": true,
+   "no": 280,
+   "extra": false,
    "inat": 363593,
    "latin": "Suillus variegatus",
    "obs": {
@@ -32145,12 +32144,12 @@
    },
    "lookalikes": [
     337850
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 100,
-   "extra": true,
+   "no": 281,
+   "extra": false,
    "inat": 410601,
    "latin": "Suillus cavipes",
    "obs": {
@@ -32240,12 +32239,12 @@
    },
    "lookalikes": [
     337850
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 101,
-   "extra": true,
+   "no": 282,
+   "extra": false,
    "inat": 157728,
    "latin": "Pholiota squarrosoides",
    "obs": {
@@ -32314,12 +32313,12 @@
    },
    "lookalikes": [
     153445
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 102,
-   "extra": true,
+   "no": 283,
+   "extra": false,
    "inat": 124705,
    "latin": "Pholiota aurivella",
    "obs": {
@@ -32395,12 +32394,12 @@
    },
    "lookalikes": [
     153445
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 103,
-   "extra": true,
+   "no": 284,
+   "extra": false,
    "inat": 351520,
    "latin": "Melanoleuca grammopodia",
    "obs": {
@@ -32462,12 +32461,12 @@
    },
    "lookalikes": [
     451026
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 104,
-   "extra": true,
+   "no": 285,
+   "extra": false,
    "inat": 179085,
    "latin": "Psilocybe cyanescens",
    "obs": {
@@ -32585,12 +32584,12 @@
    "lookalikes": [
     154735,
     55573
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 105,
-   "extra": true,
+   "no": 286,
+   "extra": false,
    "inat": 67594,
    "latin": "Flammulina velutipes",
    "obs": {
@@ -32727,12 +32726,12 @@
    },
    "lookalikes": [
     154735
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 106,
-   "extra": true,
+   "no": 287,
+   "extra": false,
    "inat": 118349,
    "latin": "Baeospora myosura",
    "obs": {
@@ -32805,12 +32804,12 @@
    },
    "lookalikes": [
     55175
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 107,
-   "extra": true,
+   "no": 288,
+   "extra": false,
    "inat": 63422,
    "latin": "Mycena purpureofusca",
    "obs": {
@@ -33041,12 +33040,12 @@
    "lookalikes": [
     55175,
     63473
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 108,
-   "extra": true,
+   "no": 289,
+   "extra": false,
    "inat": 194395,
    "latin": "Tricholomopsis decora",
    "obs": {
@@ -33131,12 +33130,12 @@
    },
    "lookalikes": [
     63387
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 109,
-   "extra": true,
+   "no": 290,
+   "extra": false,
    "inat": 350919,
    "latin": "Gymnopilus luteofolius",
    "obs": {
@@ -33257,12 +33256,12 @@
    },
    "lookalikes": [
     63387
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 110,
-   "extra": true,
+   "no": 291,
+   "extra": false,
    "inat": 117227,
    "latin": "Conocybe apala",
    "obs": {
@@ -33398,12 +33397,12 @@
    },
    "lookalikes": [
     55474
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 111,
-   "extra": true,
+   "no": 292,
+   "extra": false,
    "inat": 775629,
    "latin": "Lactarius semisanguifluus",
    "obs": {
@@ -33551,12 +33550,12 @@
    },
    "lookalikes": [
     194385
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 112,
-   "extra": true,
+   "no": 293,
+   "extra": false,
    "inat": 994823,
    "latin": "Lactarius fennoscandicus",
    "obs": {
@@ -33641,12 +33640,12 @@
    },
    "lookalikes": [
     194385
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 113,
-   "extra": true,
+   "no": 294,
+   "extra": false,
    "inat": 126131,
    "latin": "Verpa bohemica",
    "obs": {
@@ -33832,12 +33831,12 @@
    },
    "lookalikes": [
     85120
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 114,
-   "extra": true,
+   "no": 295,
+   "extra": false,
    "inat": 508747,
    "latin": "Butyriboletus fechtneri",
    "obs": {
@@ -33960,12 +33959,12 @@
    },
    "lookalikes": [
     507493
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 115,
-   "extra": true,
+   "no": 296,
+   "extra": false,
    "inat": 335973,
    "latin": "Serpula lacrymans",
    "obs": {
@@ -34049,12 +34048,12 @@
    },
    "lookalikes": [
     155122
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 116,
-   "extra": true,
+   "no": 297,
+   "extra": false,
    "inat": 485130,
    "latin": "Cuphophyllus russocoriaceus",
    "obs": {
@@ -34120,12 +34119,12 @@
    },
    "lookalikes": [
     486380
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 117,
-   "extra": true,
+   "no": 298,
+   "extra": false,
    "inat": 118196,
    "latin": "Stropharia caerulea",
    "obs": {
@@ -34199,12 +34198,12 @@
    },
    "lookalikes": [
     55583
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 118,
-   "extra": true,
+   "no": 299,
+   "extra": false,
    "inat": 384456,
    "latin": "Stropharia pseudocyanea",
    "obs": {
@@ -34270,12 +34269,12 @@
    },
    "lookalikes": [
     55583
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 119,
-   "extra": true,
+   "no": 300,
+   "extra": false,
    "inat": 49158,
    "latin": "Hericium erinaceus",
    "obs": {
@@ -34406,12 +34405,12 @@
    },
    "lookalikes": [
     49162
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 120,
-   "extra": true,
+   "no": 301,
+   "extra": false,
    "inat": 125654,
    "latin": "Pholiota limonella",
    "obs": {
@@ -34472,12 +34471,12 @@
    },
    "lookalikes": [
     192381
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 121,
-   "extra": true,
+   "no": 302,
+   "extra": false,
    "inat": 60782,
    "latin": "Pluteus cervinus",
    "obs": {
@@ -34623,12 +34622,12 @@
    },
    "lookalikes": [
     1097548
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 122,
-   "extra": true,
+   "no": 303,
+   "extra": false,
    "inat": 194460,
    "latin": "Tricholoma portentosum",
    "obs": {
@@ -34766,12 +34765,12 @@
    },
    "lookalikes": [
     1097548
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 123,
-   "extra": true,
+   "no": 304,
+   "extra": false,
    "inat": 116662,
    "latin": "Mutinus ravenelii",
    "obs": {
@@ -34873,12 +34872,12 @@
    },
    "lookalikes": [
     63580
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 124,
-   "extra": true,
+   "no": 305,
+   "extra": false,
    "inat": 84271,
    "latin": "Mutinus elegans",
    "obs": {
@@ -35024,12 +35023,12 @@
    },
    "lookalikes": [
     63580
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 125,
-   "extra": true,
+   "no": 306,
+   "extra": false,
    "inat": 118182,
    "latin": "Russula grisea",
    "obs": {
@@ -35096,12 +35095,12 @@
    },
    "lookalikes": [
     194437
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 126,
-   "extra": true,
+   "no": 307,
+   "extra": false,
    "inat": 499741,
    "latin": "Russula versicolor",
    "obs": {
@@ -35166,12 +35165,12 @@
    },
    "lookalikes": [
     194437
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 127,
-   "extra": true,
+   "no": 308,
+   "extra": false,
    "inat": 63453,
    "latin": "Mycena inclinata",
    "obs": {
@@ -35305,12 +35304,12 @@
    },
    "lookalikes": [
     63446
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 128,
-   "extra": true,
+   "no": 309,
+   "extra": false,
    "inat": 63468,
    "latin": "Mycena maculata",
    "obs": {
@@ -35447,12 +35446,12 @@
    },
    "lookalikes": [
     63446
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 129,
-   "extra": true,
+   "no": 310,
+   "extra": false,
    "inat": 849305,
    "latin": "Mycena tintinnabulum",
    "obs": {
@@ -35514,12 +35513,12 @@
    },
    "lookalikes": [
     63446
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 130,
-   "extra": true,
+   "no": 311,
+   "extra": false,
    "inat": 63460,
    "latin": "Mycena haematopus",
    "obs": {
@@ -35652,12 +35651,12 @@
    },
    "lookalikes": [
     63446
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 131,
-   "extra": true,
+   "no": 312,
+   "extra": false,
    "inat": 59249,
    "latin": "Panus conchatus",
    "obs": {
@@ -35789,12 +35788,12 @@
    },
    "lookalikes": [
     52529
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 132,
-   "extra": true,
+   "no": 313,
+   "extra": false,
    "inat": 480776,
    "latin": "Agaricus sylvaticus",
    "obs": {
@@ -35901,12 +35900,12 @@
    },
    "lookalikes": [
     49547
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 133,
-   "extra": true,
+   "no": 314,
+   "extra": false,
    "inat": 343661,
    "latin": "Leccinum versipelle",
    "obs": {
@@ -36036,12 +36035,12 @@
    },
    "lookalikes": [
     124085
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 134,
-   "extra": true,
+   "no": 315,
+   "extra": false,
    "inat": 351354,
    "latin": "Leccinum vulpinum",
    "obs": {
@@ -36164,12 +36163,12 @@
    },
    "lookalikes": [
     124085
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 135,
-   "extra": true,
+   "no": 316,
+   "extra": false,
    "inat": 543058,
    "latin": "Leccinum piceinum",
    "obs": {
@@ -36283,12 +36282,12 @@
    },
    "lookalikes": [
     124085
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 136,
-   "extra": true,
+   "no": 317,
+   "extra": false,
    "inat": 352605,
    "latin": "Tricholoma columbetta",
    "obs": {
@@ -36450,12 +36449,12 @@
    },
    "lookalikes": [
     1525557
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 137,
-   "extra": true,
+   "no": 318,
+   "extra": false,
    "inat": 143309,
    "latin": "Polyporus umbellatus",
    "obs": {
@@ -36535,12 +36534,12 @@
    },
    "lookalikes": [
     53714
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 138,
-   "extra": true,
+   "no": 319,
+   "extra": false,
    "inat": 517700,
    "latin": "Marasmius bulliardii",
    "obs": {
@@ -36602,12 +36601,12 @@
    },
    "lookalikes": [
     63100
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 139,
-   "extra": true,
+   "no": 320,
+   "extra": false,
    "inat": 804530,
    "latin": "Marasmius limosus",
    "obs": {
@@ -36674,12 +36673,12 @@
    },
    "lookalikes": [
     63100
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 140,
-   "extra": true,
+   "no": 321,
+   "extra": false,
    "inat": 136398,
    "latin": "Marasmius siccus",
    "obs": {
@@ -36762,12 +36761,12 @@
    },
    "lookalikes": [
     63100
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 141,
-   "extra": true,
+   "no": 322,
+   "extra": false,
    "inat": 55274,
    "latin": "Ramariopsis kunzei",
    "obs": {
@@ -36896,12 +36895,12 @@
    "lookalikes": [
     63260,
     55272
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 142,
-   "extra": true,
+   "no": 323,
+   "extra": false,
    "inat": 63470,
    "latin": "Mycena leptocephala",
    "obs": {
@@ -37032,12 +37031,12 @@
    },
    "lookalikes": [
     179107
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 143,
-   "extra": true,
+   "no": 324,
+   "extra": false,
    "inat": 179021,
    "latin": "Roridomyces roridus",
    "obs": {
@@ -37148,12 +37147,12 @@
    },
    "lookalikes": [
     179107
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 144,
-   "extra": true,
+   "no": 325,
+   "extra": false,
    "inat": 118348,
    "latin": "Laccaria proxima",
    "obs": {
@@ -37216,12 +37215,12 @@
    },
    "lookalikes": [
     63236
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 145,
-   "extra": true,
+   "no": 326,
+   "extra": false,
    "inat": 63238,
    "latin": "Laccaria bicolor",
    "obs": {
@@ -37348,12 +37347,12 @@
    },
    "lookalikes": [
     63236
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 146,
-   "extra": true,
+   "no": 327,
+   "extra": false,
    "inat": 382843,
    "latin": "Laccaria fraterna",
    "obs": {
@@ -37409,12 +37408,12 @@
    },
    "lookalikes": [
     63236
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 147,
-   "extra": true,
+   "no": 328,
+   "extra": false,
    "inat": 352832,
    "latin": "Volvariella pusilla",
    "obs": {
@@ -37476,12 +37475,12 @@
    },
    "lookalikes": [
     128074
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 148,
-   "extra": true,
+   "no": 329,
+   "extra": false,
    "inat": 179168,
    "latin": "Geastrum corollinum",
    "obs": {
@@ -37572,12 +37571,12 @@
    },
    "lookalikes": [
     55271
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 149,
-   "extra": true,
+   "no": 330,
+   "extra": false,
    "inat": 118166,
    "latin": "Rhodocollybia butyracea",
    "obs": {
@@ -37723,12 +37722,12 @@
    },
    "lookalikes": [
     130915
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 150,
-   "extra": true,
+   "no": 331,
+   "extra": false,
    "inat": 192652,
    "latin": "Gloeophyllum trabeum",
    "obs": {
@@ -37804,12 +37803,12 @@
    },
    "lookalikes": [
     67338
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 151,
-   "extra": true,
+   "no": 332,
+   "extra": false,
    "inat": 343465,
    "latin": "Agrocybe putaminum",
    "obs": {
@@ -37891,12 +37890,12 @@
    "lookalikes": [
     121217,
     118393
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 152,
-   "extra": true,
+   "no": 333,
+   "extra": false,
    "inat": 118302,
    "latin": "Gymnopilus sapineus",
    "obs": {
@@ -38032,12 +38031,12 @@
    },
    "lookalikes": [
     121217
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 153,
-   "extra": true,
+   "no": 334,
+   "extra": false,
    "inat": 155059,
    "latin": "Leratiomyces squamosus",
    "obs": {
@@ -38103,12 +38102,12 @@
    },
    "lookalikes": [
     121217
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 154,
-   "extra": true,
+   "no": 335,
+   "extra": false,
    "inat": 335990,
    "latin": "Exidia truncata",
    "obs": {
@@ -38203,12 +38202,12 @@
    },
    "lookalikes": [
     55568
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 155,
-   "extra": true,
+   "no": 336,
+   "extra": false,
    "inat": 872185,
    "latin": "Exidia pithya",
    "obs": {
@@ -38297,12 +38296,12 @@
    },
    "lookalikes": [
     55568
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 156,
-   "extra": true,
+   "no": 337,
+   "extra": false,
    "inat": 83419,
    "latin": "Bulgaria inquinans",
    "obs": {
@@ -38420,12 +38419,12 @@
    "lookalikes": [
     55568,
     58709
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 157,
-   "extra": true,
+   "no": 338,
+   "extra": false,
    "inat": 194659,
    "latin": "Hygrocybe miniata",
    "obs": {
@@ -38547,12 +38546,12 @@
    },
    "lookalikes": [
     55245
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 158,
-   "extra": true,
+   "no": 339,
+   "extra": false,
    "inat": 51869,
    "latin": "Hygrocybe punicea",
    "obs": {
@@ -38673,12 +38672,12 @@
    },
    "lookalikes": [
     55245
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 159,
-   "extra": true,
+   "no": 340,
+   "extra": false,
    "inat": 344540,
    "latin": "Inonotus cuticularis",
    "obs": {
@@ -38743,12 +38742,12 @@
    },
    "lookalikes": [
     787944
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 160,
-   "extra": true,
+   "no": 341,
+   "extra": false,
    "inat": 118217,
    "latin": "Tubaria conspersa",
    "obs": {
@@ -38813,12 +38812,12 @@
    },
    "lookalikes": [
     55573
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 161,
-   "extra": true,
+   "no": 342,
+   "extra": false,
    "inat": 179889,
    "latin": "Stropharia hornemannii",
    "obs": {
@@ -38889,12 +38888,12 @@
    },
    "lookalikes": [
     119151
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 162,
-   "extra": true,
+   "no": 343,
+   "extra": false,
    "inat": 1109244,
    "latin": "Naematelia encephala",
    "obs": {
@@ -38954,12 +38953,12 @@
    },
    "lookalikes": [
     742831
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 163,
-   "extra": true,
+   "no": 344,
+   "extra": false,
    "inat": 205261,
    "latin": "Multiclavula mucida",
    "obs": {
@@ -39019,12 +39018,12 @@
    },
    "lookalikes": [
     53885
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 164,
-   "extra": true,
+   "no": 345,
+   "extra": false,
    "inat": 154987,
    "latin": "Alloclavaria purpurea",
    "obs": {
@@ -39125,12 +39124,12 @@
    },
    "lookalikes": [
     53885
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 165,
-   "extra": true,
+   "no": 346,
+   "extra": false,
    "inat": 55273,
    "latin": "Clavulinopsis laeticolor",
    "obs": {
@@ -39210,12 +39209,12 @@
    "lookalikes": [
     53885,
     55272
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 166,
-   "extra": true,
+   "no": 347,
+   "extra": false,
    "inat": 351029,
    "latin": "Hydnellum ferrugineum",
    "obs": {
@@ -39332,12 +39331,12 @@
    },
    "lookalikes": [
     154949
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 167,
-   "extra": true,
+   "no": 348,
+   "extra": false,
    "inat": 351031,
    "latin": "Hydnellum spongiosipes",
    "obs": {
@@ -39419,12 +39418,12 @@
    },
    "lookalikes": [
     154949
-   ]
+   ],
+   "lookalikeOnly": true
   },
   {
-   "no": null,
-   "ex": 168,
-   "extra": true,
+   "no": 349,
+   "extra": false,
    "inat": 362042,
    "latin": "Clavulinopsis helvola",
    "obs": {
@@ -39504,7 +39503,8 @@
    },
    "lookalikes": [
     55272
-   ]
+   ],
+   "lookalikeOnly": true
   }
  ]
 }

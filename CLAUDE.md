@@ -3,8 +3,8 @@ UX/UI decisions, core features and the backlog.
 
 # Pilzdex (pilz-pokedex)
 
-A Pokédex for the mushrooms Sam finds. Classic red handheld UI, mobile first. 181 species (v0.14.0: 120 chosen from real data + 61 the photo model knows), each with
-lookalikes that get their own pages (EX-nn). Uncaught species show a black silhouette; caught ones show your photo.
+A Pokédex for the mushrooms Sam finds. Classic red handheld UI, mobile first. 349 species (v0.14.0: 120 chosen from real data + 61 the photo model knows; v0.16.0: their 168 lookalikes joined as 182-349),
+each with its lookalikes linked. Uncaught species show a black silhouette; caught ones show your photo.
 FR/EN/DE. Vite + React + TS, Supabase (shared project, schema `pilz_pokedex`, bucket `pilz_pokedex`), magic-link auth,
 local-first (works offline, syncs when signed in). Deployed to GitHub Pages from `main` via Actions.
 
@@ -144,7 +144,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   scraped, Latin as fallback). Stored like any find (species = its iNat id, no schema change). Suggestions "hors
   Pilzdex" become clickable; the species menu has a "Raretés" group. Dex: section "Raretés" after the lookalikes,
   only caught ones, numbered R-01.. by first catch (`rareSpecies`). Page: photos + "Données non disponibles" + links
-  (iNaturalist, Wikipedia); edibility always ???. Not counted in x/181.
+  (iNaturalist, Wikipedia); edibility always ???. Counted in the total (v0.16.0).
 - Compare before confirming (v0.13.0, Sam, artifact FVjK4vRPwvwKMifPhwEX2T): each suggestion shows a reference photo;
   tapping it opens a comparison (your photo | reference photos with arrows/swipe, spore/hymenium/stem badges,
   RETOUR / C'EST LUI). Tapping any photo opens it full screen. From a species page the "are you sure" alert shows
@@ -156,6 +156,12 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   version from iNaturalist's open-data bucket (`big` in refs.json) once loaded; offline it keeps the hosted copy.
   Hosting large versions was measured at ~490 MB (originals 1.5 GB), beyond GitHub Pages.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
+  v0.16.0 (Sam: a caught "bolet moucheté" showed "hors Pilzdex" and did not count): lookalike-only species are normal dex
+  species numbered 182-349 (`lookalikeOnly: true` in species.json, `extra` false, no EX numbers, no separate section).
+  The scraper numbers future lookalikes after the dex and keeps existing numbers.
+- Counter (v0.16.0, Sam): ONE total "X attrapés" (device counter, dex title, right-panel progress) = every caught
+  species, dex + rares, no denominator and no % bar. "By edibility" shows counts only. Regions (Berlin / Grenoble) keep
+  x/y (species common near there).
 - Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
   UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added
   by migration 0004; without it the pref stays on the device, no error).
