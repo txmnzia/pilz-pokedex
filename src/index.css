@@ -446,7 +446,7 @@ input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-sel
 .refthumb img{width:100%;height:100%;object-fit:cover;display:block}
 .refthumb svg{width:80%;height:80%}
 .cmpcue,.guess .gname .cmpcue{display:block;font-family:var(--font-label);font-size:6px;opacity:.7;margin-top:3px;letter-spacing:.3px}
-.compare{position:absolute;inset:0;z-index:6;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));color:var(--lcd-ink);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
+.compare{position:absolute;inset:0;z-index:6;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));color:var(--lcd-ink);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
 .cmpbody{overflow:hidden;padding:8px 10px;display:grid;gap:6px;align-content:start;min-height:0}
 .compare .titlebar .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .compare .titlebar{align-items:center}
@@ -463,11 +463,6 @@ input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-sel
 .cdots i,.lbdots i{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--lcd-ink)}
 .cdots i.on{background:var(--lcd-ink)}
 .cmplat{font-size:18px;color:var(--lcd-dim);text-align:center}
-/* v0.16.1 (Sam): no on-screen buttons in dialogs, the Pokedex buttons answer (OK / BACK / CATCH); this line says which */
-.keyhint{margin:0;padding:6px 10px 10px;display:flex;gap:8px;justify-content:center;align-items:flex-start;font-size:18px;line-height:1}
-.keyhint span{flex:1 1 0;min-width:0;display:grid;justify-items:center;gap:4px;text-align:center}
-.keyhint b{font-family:var(--font-label);font-weight:400;font-size:8px;background:var(--lcd-ink);color:var(--lcd);border-radius:3px;padding:4px 6px}
-.cropper .keyhint{padding:0 0 4px;color:var(--lcd)}.cropper .keyhint b{background:var(--lcd);color:var(--lcd-ink)}
 .lightbox{position:fixed;inset:0;z-index:60;background:rgba(5,8,4,.94);display:grid;place-items:center;cursor:zoom-out}
 .lightbox img{max-width:96vw;max-height:86vh;object-fit:contain;border-radius:4px}
 .lightbox .garr{position:fixed;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:rgba(255,255,255,.9);font-size:24px;line-height:1;display:grid;place-items:center;padding:0 0 3px;cursor:pointer}
