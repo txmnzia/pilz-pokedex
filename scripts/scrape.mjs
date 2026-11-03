@@ -374,7 +374,21 @@ async function selectDex() {
   console.log(`pool ${pool.length} (top observed + Wikidata deadly/edible); kept ${chosen.length}, deadly ${deadly.length}, edible ${edible.length}, famous ${famous.length}`);
   return [...chosen, ...fresh];
 }
-const core = await selectDex();
+// Sam (v0.14.0): every species the photo model knows that is observed in FR + DE belongs in the dex. They come
+// after the existing numbers, by fame, so no number moves. Source: the current rares.json + model labels.
+async function modelSpecies(taken) {
+  const rares = await readFile("public/data/rares.json", "utf8").then(j => JSON.parse(j).rares).catch(() => []);
+  const fresh = rares.filter(r => !taken.has(r.inat)).map(r => ({ inat: r.inat, latin: r.latin, obs: { DE: 0, FR: 0 } }));
+  const obs = await countsFor(fresh.map(e => e.inat));
+  for (const e of fresh) { const o = obs.get(e.inat); if (o) e.obs = { DE: o.DE, FR: o.FR }; }
+  const seen = fresh.filter(e => e.obs.DE + e.obs.FR > 0);
+  await fame(seen);
+  seen.forEach(e => (e.why = "model"));
+  console.log(`model species added: ${seen.length} (not observed in FR + DE, left as rares: ${fresh.length - seen.length})`);
+  return seen.sort((a, b) => b.score - a.score);
+}
+const core0 = await selectDex();
+const core = [...core0, ...(process.argv.includes("--no-model") ? [] : await modelSpecies(new Set(core0.map(e => e.inat))))];
 core.forEach((e, i) => console.log(String(i + 1).padStart(3), e.why.padEnd(7), (e.poolEdibility || "-").padEnd(7), e.latin.padEnd(32), n4(e)));
 function n4(e) { return `${e.obs.DE + e.obs.FR} obs x ${e.wikiLangs || 0} wiki`; }
 if (PLAN_ONLY) process.exit(0);

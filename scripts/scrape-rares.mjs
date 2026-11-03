@@ -10,6 +10,10 @@ const UA = "pilz-pokedex/0.1 (https://github.com/txmnzia/pilz-pokedex)";
 const CACHE = ".cache";
 const LANGS = ["fr", "en", "de"];
 const MUSHROOMS = [50814, 152032]; // Agaricomycetes, Pezizomycetes
+// Sam (v0.14.0): also these visible forest fungi from other classes (jelly fungi, Xylaria, discos...); plant diseases
+// (rusts, tar spot, Nectria) and lichens stay out.
+const ALSO = new Set(["Calocera cornea", "Calocera viscosa", "Phaeotremella foliacea", "Xylaria hypoxylon", "Xylaria polymorpha",
+  "Bulgaria inquinans", "Chlorociboria aeruginascens", "Ascocoryne sarcoides", "Calycina citrina", "Kretzschmaria deusta", "Hypomyces chrysospermus"]);
 const last = {};
 async function get(url) {
   const file = `${CACHE}/${createHash("sha1").update(url).digest("hex")}.json`;
@@ -37,7 +41,7 @@ for (const l of cands) {
   const r = await get(`https://api.inaturalist.org/v1/taxa?${qs({ q: l.latin, rank: "species", per_page: 5 })}`);
   let t = r.results.find(x => x.name === l.latin) ?? r.results.find(x => x.matched_term === l.latin);
   if (!t) { process.stdout.write("?"); continue; }
-  if (!t.ancestor_ids?.some(a => MUSHROOMS.includes(a))) { process.stdout.write("x"); continue; } // lichens, moulds...
+  if (!ALSO.has(l.latin) && !t.ancestor_ids?.some(a => MUSHROOMS.includes(a))) { process.stdout.write("x"); continue; } // lichens, moulds...
   const names = {}, nameSource = {};
   for (const lang of LANGS) {
     const lr = await get(`https://api.inaturalist.org/v1/taxa/${t.id}?${qs({ locale: lang })}`);

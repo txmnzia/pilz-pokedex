@@ -11,6 +11,7 @@ export type Shape =
 const SPECIES_SHAPE: Record<string, Shape> = {
   "Clathrus archeri": "starfish", "Craterellus tubaeformis": "chanterelle", "Craterellus lutescens": "chanterelle",
   "Collybia rivulosa": "funnel", "Collybia dealbata": "funnel",
+  "Hygrocybe conica": "bell", // conical waxcap: a pointed bell, unlike the other waxcaps
 };
 
 // Illustration choice per genus where morphology data is missing or misleading.
@@ -51,6 +52,22 @@ const GENUS_SHAPE: Record<string, Shape> = {
   Trametes: "bracket", Bjerkandera: "bracket", Daedaleopsis: "bracket", Daedalea: "bracket", Cerioporus: "bracket", Polyporus: "bracket", Lenzites: "bracket", Hapalopilus: "bracket", Amylocystis: "bracket", Cerrena: "bracket", Trichaptum: "bracket", Gloeophyllum: "bracket", Postia: "bracket", Climacocystis: "bracket", Fuscoporia: "bracket",
   Laetiporus: "rosette", Meripilus: "rosette", Grifola: "rosette", Phaeolus: "rosette", Bondarzewia: "rosette",
   Stereum: "crust", Serpula: "crust", Amylostereum: "crust", Phlebia: "crust", Chondrostereum: "crust", Hymenochaete: "crust", Xylobolus: "crust",
+  // v0.14.0: genera of the 61 model species added to the dex and the new rares
+  Rickenella: "bell", Marasmiellus: "bell", Gliophorus: "bell",
+  Sarcomyxa: "oyster",
+  Lacrymaria: "gilled", Leratiomyces: "gilled", Tubaria: "gilled", Volvariella: "gilled",
+  Picipes: "funnel",
+  Astraeus: "starfish", Geastrum: "starfish",
+  Neofavolus: "bracket", Climacodon: "bracket",
+  Myxarium: "jelly", Phaeotremella: "jelly", Ascocoryne: "jelly",
+  Pseudoinonotus: "hoof",
+  Abortiporus: "rosette",
+  Leucocoprinus: "parasol",
+  Urnula: "cup", Bulgaria: "cup", Chlorociboria: "cup", Calycina: "cup",
+  Battarrea: "stinkhorn",
+  Irpex: "crust", Merulius: "crust", Kretzschmaria: "crust",
+  Xylaria: "dogstink",
+  Hypomyces: "bolete",
 };
 const Q = {
   pores: "Q19861549", gleba: "Q2034230", noCap: "Q19887965", offset: "Q14544541",
