@@ -9,6 +9,7 @@ import type { Identification } from "./lib/identify";
 import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
 import { shortMorph, SPORE_COLOR } from "./lib/morph";
+import { useOverlay } from "./lib/overlay";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, FindPhoto, Lang, MorphKey, RefMap, Species } from "./lib/types";
 
@@ -350,6 +351,7 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
   }, [cur.b, bigOk]);
   const x0 = useRef<number | null>(null);
   const go = (d: number) => setI(k => (k + d + srcs.length) % srcs.length);
+  useOverlay({ ok: onClose, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) });
   return (
     <div className="lightbox" role="dialog" aria-label={ctx.t("enlarge")} onClick={onClose}
       onTouchStart={e => { x0.current = e.touches[0].clientX; }}
@@ -363,12 +365,17 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
     </div>
   );
 }
+/** Which Pokedex button does what while a dialog is open (the dialogs have no on-screen buttons). */
+function KeyHint({ items }: { items: string[][] }) {
+  return <div className="keyhint">{items.map(([k, v]) => <span key={k}><b>{k}</b>{v}</span>)}</div>;
+}
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
 function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
   const [k, setK] = useState(0);
   const x0 = useRef<number | null>(null);
   const go = (d: number) => setK(i => (i + d + srcs.length) % srcs.length);
+  useOverlay({ ok: onPick, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) });
   return (
     <div className="compare" role="dialog" aria-label={ctx.t("compare")}>
       <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span className="cmpr"><b>{Math.round(p * 100)}%</b>{badge(ctx, sp.edibility)}</span></div>
@@ -389,7 +396,7 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
         </div>
         <p className="m0 cmplat"><i>{sp.latin}</i></p>
       </div>
-      <div className="cmpbtns"><button type="button" className="cta ghost" onClick={onClose}>{ctx.t("back")}</button><button type="button" className="cta" onClick={onPick}>{ctx.t("itsIt")}</button></div>
+      <KeyHint items={[["OK", ctx.t("itsIt")], [ctx.t("back"), ctx.t("cancel")]]} />
     </div>
   );
 }
@@ -414,6 +421,7 @@ export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area | null>(null);
+  useOverlay({ ok: () => { if (area) onDone(area); }, back: onCancel, other: onOther });
   return (
     <div className="cropper" role="dialog" aria-label={ctx.t("crop")}>
       <div className="croparea">
@@ -421,12 +429,7 @@ export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src
           onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={(_, px) => setArea(px)} />
       </div>
       <p className="crophint">{ctx.t("cropHint")}</p>
-      <div className={`srcrow${onOther ? " three" : ""}`}>
-        <button type="button" className="cta ghost" onClick={onCancel}>{ctx.t("cancel")}</button>
-        {onOther && <label className="cta ghost filebtn">{ctx.t("otherPhoto")}
-          <input type="file" accept="image/*" onChange={e => { const f = e.target.files?.[0]; e.target.value = ""; if (f) onOther(f); }} /></label>}
-        <button type="button" className="cta" disabled={!area} onClick={() => area && onDone(area)}>{ctx.t("useCrop")}</button>
-      </div>
+      <KeyHint items={[["OK", ctx.t("useCrop")], [ctx.t("back"), ctx.t("cancel")], ...(onOther ? [[ctx.t("catch"), ctx.t("otherPhoto")]] : [])]} />
     </div>
   );
 }
