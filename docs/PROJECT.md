@@ -46,6 +46,8 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
   versioned so re-crops propagate. Language + grid/list prefs synced per account (newer wins).
 - Rares (v0.12.0): off-dex species the photo model knows can be caught too (Raretés section, R-01.., name + photos,
   "Données non disponibles", edibility ???). Regenerate names with `node scripts/scrape-rares.mjs` after a dex re-scrape.
+- Compare before confirming (v0.13.0): reference photos next to suggestions, comparison screen, full-screen photos,
+  side-by-side "are you sure" alert. Refresh with `python3 scripts/scrape-refs.py` after a dex or rares re-scrape.
 - Settings: language FR/EN/DE, grid/list, account, export JSON, restore backup, data credits, disclaimer.
 - Web >= 900px: two-panel Pokédex (left device, right panel with filters/progress, page 2, catch form, settings,
   10 latest-finds keys, PREV/NEXT).

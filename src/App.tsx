@@ -8,7 +8,7 @@ import { compress, getPhoto, loadFinds, makeThumb, putPhoto, saveFinds, store, t
 import { supabase } from "./lib/supabase";
 import { photoUrlOf, pullPrefs, pushPrefs, sync } from "./lib/sync";
 import { loadPrefs, newerPrefs, savePrefs, type Prefs, type Sort } from "./lib/prefs";
-import type { Edibility, Find, Lang, RareEntry, Species, SpeciesFile } from "./lib/types";
+import type { Edibility, Find, Lang, RareEntry, RefMap, Species, SpeciesFile } from "./lib/types";
 import { rareSpecies, shortNo, sortByName } from "./lib/species";
 
 type View = "login" | "index" | "entry" | "catch" | "settings";
@@ -17,6 +17,7 @@ type Mode = "grid" | "list";
 export default function App() {
   const [data, setData] = useState<SpeciesFile | null>(null);
   const [rareList, setRareList] = useState<RareEntry[]>([]);
+  const [refs, setRefs] = useState<RefMap>({});
   const [prefs, setPrefsState] = useState<Prefs>(loadPrefs);
   const { lang, mode, sort } = prefs;
   const [user, setUser] = useState<{ id: string; email: string | null } | null>(null);
@@ -76,6 +77,8 @@ export default function App() {
     fetch(`${import.meta.env.BASE_URL}data/species.json`).then(r => r.json()).then(setData).catch(() => setData(null));
     // off-dex species the photo model knows (v0.12.0); optional: without it, finds stay dex-only
     fetch(`${import.meta.env.BASE_URL}data/rares.json`).then(r => r.json()).then(j => setRareList(j.rares ?? [])).catch(() => setRareList([]));
+    // reference photos for "compare before you confirm" (v0.13.0); optional
+    fetch(`${import.meta.env.BASE_URL}data/refs.json`).then(r => r.json()).then(j => setRefs(j.refs ?? {})).catch(() => setRefs({}));
   }, []);
 
   // auth
@@ -129,7 +132,7 @@ export default function App() {
   const caught = useMemo(() => findsBySpecies(finds), [finds]);
   // rares you have found, by R number (or A to Z when chosen)
   const caughtRares = useMemo(() => { const r = rares.filter(x => x.rare); return sort === "az" ? sortByName(r, lang) : r.sort((a, b) => a.rare! - b.rare!); }, [rares, sort, lang]);
-  const ctx: Ctx = { t, lang, all, caught, right: wide ? rightEl : null };
+  const ctx: Ctx = { t, lang, all, caught, refs, right: wide ? rightEl : null };
   const visible = core.filter(s =>
     (filter === "all" || (filter === "got" ? caught.has(s.inat) : !caught.has(s.inat))) && (!edf || s.edibility === edf));
   const byId = (id: number) => all.find(s => s.inat === id);

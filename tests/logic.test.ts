@@ -282,3 +282,14 @@ describe("rares (v0.12.0)", () => {
     expect(rares.every(r => r.names.fr && r.names.en && r.names.de)).toBe(true);
   });
 });
+
+import { existsSync } from "node:fs";
+describe("reference photos (v0.13.0)", () => {
+  const refs = JSON.parse(readFileSync("public/data/refs.json", "utf8")).refs as Record<string, { photos: { f: string; by: string; lic: string }[] }>;
+  it("every photo exists, is openly licensed (no ND, no all rights reserved) and has a credit", () => {
+    const ok = new Set(["cc0", "cc-by", "cc-by-sa", "cc-by-nc", "cc-by-nc-sa"]);
+    const all = Object.values(refs).flatMap(r => r.photos);
+    expect(all.length).toBeGreaterThan(800);
+    expect(all.filter(p => !ok.has(p.lic) || !p.by || !existsSync(`public/refs/${p.f}`))).toEqual([]);
+  });
+});
