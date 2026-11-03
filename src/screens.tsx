@@ -317,7 +317,8 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
 }
 
 // ---------------------------------------------------------------- reference photos (v0.13.0)
-const refUrl = (f: string) => `${import.meta.env.BASE_URL}refs/${f}`;
+// hosted file name, or (rares added in v0.15.2) a full iNaturalist open-data URL
+const refUrl = (f: string) => (f.startsWith("https://") ? f : `${import.meta.env.BASE_URL}refs/${f}`);
 const refsOf = (ctx: Ctx, sp: Species) => (ctx.refs[String(sp.inat)]?.photos ?? []).map(p => refUrl(p.f));
 /** For the full-screen viewer: hosted copy first, then the big version from iNaturalist when online (v0.13.1). */
 type RefShot = { s: string; b?: string };
