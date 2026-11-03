@@ -12,7 +12,7 @@ const SHORT: Record<string, T> = {
   Q23445: ["NOIR", "BLACK", "SCHWARZ"], Q429220: ["ROSE", "PINK", "ROSA"], Q19888339: ["BRUN-NOIR", "DARK BROWN", "SCHWARZBRAUN"],
   Q194191: ["OCRE", "OCHRE", "OCKER"], Q1670336: ["FAUVE", "TAN", "LOHFARBEN"], Q2085487: ["CHAMOIS", "BUFF", "GELBBRAUN"],
   Q10859033: ["BORDEAUX", "BORDEAUX", "BORDEAUX"], Q19888373: ["VIOLET-NOIR", "PURPLE-BLACK", "PURPURSCHWARZ"],
-  Q3133: ["VERT", "GREEN", "GRUEN"], Q2015138: ["SAUMON", "SALMON", "LACHS"],
+  Q3133: ["VERT", "GREEN", "GRUEN"], Q2015138: ["SAUMON", "SALMON", "LACHS"], Q3257809: ["POURPRE", "PURPLE", "PURPUR"],
   // cap
   Q14544535: ["CONVEXE", "CONVEX", "GEWOELBT"], Q19887957: ["PLAT", "FLAT", "FLACH"], Q19887965: ["AUCUN", "NONE", "OHNE"],
   Q62023127: ["BOMBE", "DOMED", "HALBKUGEL"], Q19887955: ["CREUSE", "DEPRESSED", "VERTIEFT"], Q19887954: ["CONIQUE", "CONICAL", "KEGELIG"],
@@ -32,7 +32,7 @@ const SHORT: Record<string, T> = {
 export const SPORE_COLOR: Record<string, string> = {
   Q23444: "#f4f1e6", Q47071: "#7a5230", Q19888352: "#6f6a3a", Q2730433: "#efe2bd", Q864152: "#7d7d3b", Q943: "#e8c84a",
   Q23445: "#1c1c1c", Q429220: "#e8a7a0", Q19888339: "#3e2a1c", Q194191: "#c9903a", Q1670336: "#c8a77a", Q2085487: "#d9b98c",
-  Q10859033: "#6a1f2b", Q19888373: "#2e1c33", Q3133: "#5b8a3a", Q2015138: "#f0a080",
+  Q10859033: "#6a1f2b", Q19888373: "#2e1c33", Q3133: "#5b8a3a", Q2015138: "#f0a080", Q3257809: "#5a2a4a",
 };
 const LI: Record<Lang, number> = { fr: 0, en: 1, de: 2 };
 const plain = (s: string) => s.normalize("NFD").replace(/[̀-̧́̂̈]/g, m => (m === "̈" ? m : "")).normalize("NFC").toUpperCase();
