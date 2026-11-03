@@ -138,6 +138,9 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   both species' photos side by side. Photos are hosted by the app (`public/refs/`, ~34 MB, CacheFirst after first
   view, never precached); licences CC0 / BY / BY-SA / BY-NC / BY-NC-SA only (no ND: we resize). Credits ONLY in
   Settings (Sam), never on the comparison screen. 4 lookalikes have no open photo: silhouette instead.
+  Full screen (v0.13.1, Sam: no downscaled photo when enlarged): shows the hosted copy, then swaps to the 1024 px
+  version from iNaturalist's open-data bucket (`big` in refs.json) once loaded; offline it keeps the hosted copy.
+  Hosting large versions was measured at ~490 MB (originals 1.5 GB), beyond GitHub Pages.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
   UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added

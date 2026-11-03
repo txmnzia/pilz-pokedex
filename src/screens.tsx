@@ -319,29 +319,41 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
 // ---------------------------------------------------------------- reference photos (v0.13.0)
 const refUrl = (f: string) => `${import.meta.env.BASE_URL}refs/${f}`;
 const refsOf = (ctx: Ctx, sp: Species) => (ctx.refs[String(sp.inat)]?.photos ?? []).map(p => refUrl(p.f));
+/** For the full-screen viewer: hosted copy first, then the big version from iNaturalist when online (v0.13.1). */
+type RefShot = { s: string; b?: string };
+const shotsOf = (ctx: Ctx, sp: Species): RefShot[] => (ctx.refs[String(sp.inat)]?.photos ?? []).map(p => ({ s: refUrl(p.f), b: p.big }));
 /** Small reference picture for a suggestion row; silhouette when there is none (or offline and never seen). */
 function RefThumb({ ctx, sp }: { ctx: Ctx; sp: Species }) {
   const src = refsOf(ctx, sp)[0];
   const [bad, setBad] = useState(false);
   return <span className="refthumb">{src && !bad ? <img src={src} alt="" loading="lazy" onError={() => setBad(true)} /> : <Silhouette shape={shapeOf(sp)} />}</span>;
 }
-function RefImg({ ctx, sp, onOpen }: { ctx: Ctx; sp: Species; onOpen(srcs: string[]): void }) {
+function RefImg({ ctx, sp, onOpen }: { ctx: Ctx; sp: Species; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
   const [bad, setBad] = useState(false);
   return srcs[0] && !bad
-    ? <button type="button" className="refimg" onClick={() => onOpen(srcs)} aria-label={ctx.t("enlarge")}><img src={srcs[0]} alt="" onError={() => setBad(true)} /></button>
+    ? <button type="button" className="refimg" onClick={() => onOpen(shotsOf(ctx, sp))} aria-label={ctx.t("enlarge")}><img src={srcs[0]} alt="" onError={() => setBad(true)} /></button>
     : <span className="refimg none"><Silhouette shape={shapeOf(sp)} /></span>;
 }
 /** Full-screen photo viewer: tap anywhere to close, arrows / swipe to browse. */
-function Lightbox({ srcs, onClose, ctx }: { srcs: string[]; onClose(): void; ctx: Ctx }) {
+function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ctx: Ctx }) {
   const [i, setI] = useState(0);
+  const [bigOk, setBigOk] = useState<Record<string, true>>({});
+  const cur = srcs[i];
+  useEffect(() => { // load the big version in the background; keep the hosted copy if it fails (offline)
+    if (!cur.b || bigOk[cur.b]) return;
+    const im = new Image(); let alive = true;
+    im.onload = () => { if (alive) setBigOk(o => ({ ...o, [cur.b!]: true })); };
+    im.src = cur.b;
+    return () => { alive = false; };
+  }, [cur.b, bigOk]);
   const x0 = useRef<number | null>(null);
   const go = (d: number) => setI(k => (k + d + srcs.length) % srcs.length);
   return (
     <div className="lightbox" role="dialog" aria-label={ctx.t("enlarge")} onClick={onClose}
       onTouchStart={e => { x0.current = e.touches[0].clientX; }}
       onTouchEnd={e => { const dx = e.changedTouches[0].clientX - (x0.current ?? e.changedTouches[0].clientX); x0.current = null; if (srcs.length > 1 && Math.abs(dx) > 40) { e.preventDefault(); go(dx < 0 ? 1 : -1); } }}>
-      <img src={srcs[i]} alt="" />
+      <img src={cur.b && bigOk[cur.b] ? cur.b : cur.s} alt="" />
       {srcs.length > 1 && <>
         <button type="button" className="garr l" aria-label={ctx.t("prev")} onClick={e => { e.stopPropagation(); go(-1); }}>‹</button>
         <button type="button" className="garr r" aria-label={ctx.t("next")} onClick={e => { e.stopPropagation(); go(1); }}>›</button>
@@ -352,7 +364,7 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: string[]; onClose(): void; ctx
 }
 const CMP_ROWS: [MorphKey, StringKey][] = [["spores", "spores"], ["hymenium", "hymenium"], ["stipe", "stipe"]];
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
-function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(srcs: string[]): void }) {
+function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
   const [k, setK] = useState(0);
   const x0 = useRef<number | null>(null);
@@ -362,11 +374,11 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
       <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span>{badge(ctx, sp.edibility)}</div>
       <div className="cmpbody">
         <div className="pair">
-          <figure><button type="button" className="refimg" onClick={() => onOpen([mine])} aria-label={ctx.t("enlarge")}><img src={mine} alt="" /></button><figcaption>{ctx.t("yourPhoto")}</figcaption></figure>
+          <figure><button type="button" className="refimg" onClick={() => onOpen([{ s: mine }])} aria-label={ctx.t("enlarge")}><img src={mine} alt="" /></button><figcaption>{ctx.t("yourPhoto")}</figcaption></figure>
           <figure className="refwrap" onTouchStart={e => { x0.current = e.touches[0].clientX; }}
             onTouchEnd={e => { const dx = e.changedTouches[0].clientX - (x0.current ?? e.changedTouches[0].clientX); x0.current = null; if (srcs.length > 1 && Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); }}>
             {srcs.length
-              ? <button type="button" className="refimg" onClick={() => onOpen([...srcs.slice(k), ...srcs.slice(0, k)])} aria-label={ctx.t("enlarge")}><img src={srcs[k]} alt="" /></button>
+              ? <button type="button" className="refimg" onClick={() => { const sh = shotsOf(ctx, sp); onOpen([...sh.slice(k), ...sh.slice(0, k)]); }} aria-label={ctx.t("enlarge")}><img src={srcs[k]} alt="" /></button>
               : <span className="refimg none"><Silhouette shape={shapeOf(sp)} /></span>}
             {srcs.length > 1 && <>
               <button type="button" className="garr l" aria-label={ctx.t("prev")} onClick={() => go(-1)}>‹</button>
@@ -445,7 +457,7 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const [known, setKnown] = useState<ReadonlySet<string> | null>(null);
   const [dismissed, setDismissed] = useState<string | null>(null);
   const [compare, setCompare] = useState<{ sp: Species; p: number } | null>(null);
-  const [big, setBig] = useState<string[] | null>(null); // photos shown full screen
+  const [big, setBig] = useState<RefShot[] | null>(null); // photos shown full screen
   const verify = initial != null;
   const nextKey = useRef(1);
   const shotsRef = useRef(shots); shotsRef.current = shots;

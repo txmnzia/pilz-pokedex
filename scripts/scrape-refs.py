@@ -49,7 +49,9 @@ for n, (inat, latin) in enumerate(taxa):
         im.thumbnail((480, 480), Image.LANCZOS)
         fn = f"{inat}-{len(picked)}.jpg"
         im.save(f"public/refs/{fn}", "JPEG", quality=74, optimize=True, progressive=True)
-        picked.append({"f": fn, "by": ph.get("attribution", ""), "lic": ph["license_code"]})
+        # big = the 1024 px version on iNaturalist's open-data bucket, loaded only in full screen (Sam, v0.13.1):
+        # hosting large versions would be ~490 MB, beyond GitHub Pages
+        picked.append({"f": fn, "by": ph.get("attribution", ""), "lic": ph["license_code"], "big": url.replace("/medium.", "/large.")})
     out[str(inat)] = {"latin": latin, "photos": picked}
     sys.stdout.write("." if picked else "0"); sys.stdout.flush()
 json.dump({"generatedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
