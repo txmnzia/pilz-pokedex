@@ -2,7 +2,7 @@
 
 Everything agreed with Sam so far, so the next session does not re-ask or re-litigate. `CLAUDE.md` is the short
 operational version (map, hard rules, iOS notes); this file is the why, the decisions and the backlog.
-State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deploy from `main` via Actions).
+State at writing: v0.14.0 (181 dex species, 168 lookalikes, 11 rares), live at https://txmnzia.github.io/pilz-pokedex/ (deploy from `main` via Actions).
 
 ## 1. Working with Sam
 
@@ -19,6 +19,10 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
 - Verify visually before claiming done: `node tests/ui/fit-check.cjs` against `npx vite preview --port 4193`
   (Playwright is preinstalled), plus a screenshot of the changed screen. Kill servers with `fuser -k 4193/tcp`
   (never `pkill`, it killed the session shell once). The preview server dies when the session restarts.
+- Sandbox network: txmnzia.github.io is blocked by the proxy (403), so the live page can't be fetched; check the
+  Actions run (GitHub MCP `actions_list`) instead and ask Sam to look at the version in the header. Node scripts need
+  `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt`. static.inaturalist.org is blocked too (only the
+  inaturalist-open-data S3 bucket works for photos). Run long scrapes detached: `setsid nohup ... & disown`.
 - Do not change anything inside the device frame when fixing layout around Safari bars. Do not suggest clearing
   Safari website data (the apps share an origin). Sam dislikes red frames / red rings and anything overflowing.
 - This is a private, personal tool. Pokédex homage (red handheld, type badges, capture ball) is fine.
@@ -128,6 +132,15 @@ Data
 - [x] The 8 "???" species (list in section 3) stay "???" on purpose (Sam, 2026-11-02). Do not ask again; only revisit
       if a source (Wikidata, mycodb) starts giving a value after a re-scrape.
 - [ ] The photo model knows 136 of the 181 dex species; the others can't be suggested.
+- [x] v0.14.0 (Sam, 2026-11-03): "can the rares become normal species?" Answer chosen: the 61 model species seen in
+      FR + DE joined the dex as 121-181 (Sam accepted going past the old 150 cap; the test now allows up to 200).
+      Model labels outside the mushroom classes were offered and Sam took only the ~10 forest fungi, as rares
+      (`ALSO` set in `scripts/scrape-rares.mjs`). Do not re-ask.
+- [ ] New ??? species from v0.14.0 (kept ??? per Sam's rule): Crucibulum laeve, Trametes cinnabarina, Trametes betulina,
+      Merulius tremellosus, Panaeolus foenisecii. Latin name shown as fallback: Pholiotina rugosa (fr), Panaeolus
+      antillarum (fr, en).
+- [ ] 5 lookalikes have no open-licence reference photo (silhouette instead): Paxillus rubicundulus, Lactarius
+      semisanguifluus, Pholiota limonella, Leccinum piceinum, Clavulinopsis helvola.
 
 UI
 - [ ] Lookalike EX tiles: dashed border kept for consistency with the dex; Sam was offered solid borders on the
@@ -144,6 +157,7 @@ Code hygiene
 - [ ] `design/icons.html` still shows superseded LED options; mark it as historical or delete.
 
 Sam's side (not code)
+- [ ] Migration `supabase/migrations/0004_sort.sql` (sort pref sync): Sam never confirmed running it (0003 is run).
 - [ ] Save the updated `add-db/` and `new-app/` skills from txmnzia/claude-skills into the Claude account.
 
 ## 6. Release checklist (short)
