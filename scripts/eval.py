@@ -36,9 +36,9 @@ def labels_to_ids(model, labels):
 # each runner returns (ids array aligned with the score vector, function photo -> probabilities)
 def run_current():
     from ai_edge_litert.interpreter import Interpreter
-    L = json.load(open("public/models/fungi-labels.json"))
+    L = json.load(open("data/models/species-classifiers/fungi-labels.json"))
     eu = np.array([l["eu"] for l in L], dtype=float)
-    it = Interpreter(model_path="public/models/fungi_int8.tflite"); it.allocate_tensors()
+    it = Interpreter(model_path="data/models/species-classifiers/fungi_int8.tflite"); it.allocate_tensors()
     i, o = it.get_input_details()[0], it.get_output_details()[0]
     def f(p):
         it.set_tensor(i["index"], np.asarray(center(img(p), 183, 160), dtype=np.uint8)[None]); it.invoke()

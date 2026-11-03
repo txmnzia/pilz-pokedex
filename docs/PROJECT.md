@@ -2,7 +2,7 @@
 
 Everything agreed with Sam so far, so the next session does not re-ask or re-litigate. `CLAUDE.md` is the short
 operational version (map, hard rules, iOS notes); this file is the why, the decisions and the backlog.
-State at writing: v0.14.0 (181 dex species, 168 lookalikes, 11 rares), live at https://txmnzia.github.io/pilz-pokedex/ (deploy from `main` via Actions).
+State at writing: v0.15.0 (181 dex species, 168 lookalikes, 11 rares; FungiTastic identifier), live at https://txmnzia.github.io/pilz-pokedex/ (deploy from `main` via Actions).
 
 ## 1. Working with Sam
 
@@ -131,7 +131,20 @@ Design artifacts (all in `design/`, published as claude.ai artifacts)
 Data
 - [x] The 8 "???" species (list in section 3) stay "???" on purpose (Sam, 2026-11-02). Do not ask again; only revisit
       if a source (Wikidata, mycodb) starts giving a value after a re-scrape.
-- [ ] The photo model knows 136 of the 181 dex species; the others can't be suggested.
+- [x] v0.15.0 (Sam, 2026-11-03): "recognition is often wrong, test alternatives, build a golden dataset". Golden set =
+      3511 iNat photos (data/golden.json); benchmark of the old model, FungiTastic, BioCLIP 2 and iNat online
+      (artifact https://claude.ai/artifact/GK4yGKL94CxvYUgpSM6HSm). Sam chose FungiTastic in the app (offline). Root cause
+      of the old failures: the old model knew only 175 of the 360 app taxa (0% on the others) and announced 32% of
+      deadly photos as an edible species. Do not re-litigate; next steps are below.
+- [ ] FungiTastic knows 297 of the 360 app taxa; the 63 others (e.g. Cortinarius orellanus, Amanita verna, Mycena pura,
+      Battarrea phalloides) can't be suggested. Options offered: own classifier on our 360 taxa (distil BioCLIP 2), or
+      BioCLIP 2 / iNat online when there is a network.
+- [ ] Sam's own photos for the golden set: Sam agreed to send them as attachments with their names; storage not
+      decided yet (private Supabase bucket recommended; the repo is PUBLIC, never put them there).
+- [ ] ~1.2 s per photo in desktop Chromium (wasm); measure on Sam's iPhone. LiteRT.js has a WebGPU accelerator to try
+      if it is slow. First identification downloads 46 MB (then cached).
+- [ ] Rares are still defined from the OLD model's labels (11 entries); FungiTastic knows ~2500 other European species.
+      Whether to widen the rares list is Sam's call.
 - [x] v0.14.0 (Sam, 2026-11-03): "can the rares become normal species?" Answer chosen: the 61 model species seen in
       FR + DE joined the dex as 121-181 (Sam accepted going past the old 150 cap; the test now allows up to 200).
       Model labels outside the mushroom classes were offered and Sam took only the ~10 forest fungi, as rares

@@ -1,0 +1,7 @@
+fungitastic_fp16.tflite
+FungiTastic DINOv3 ViT-S/16 @ 384 px, 2,827 fungi species, by Paul Bauriegel
+https://huggingface.co/paulbauriegel/fungitastic-dinov3-vits16-384 (file mushroom_model_fp16.tflite, unchanged)
+
+Weights derive from DINOv3 (Meta), covered by the DINOv3 License: see LICENSE-dinov3.md in this folder.
+Training data: FungiTastic (Picek et al., 2024, arXiv:2408.13632), CC BY-NC-SA 4.0. Used here for a private,
+non-commercial app; the conservative reading is that the weights inherit the non-commercial and share-alike terms.

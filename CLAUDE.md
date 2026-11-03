@@ -33,10 +33,14 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/local.ts` | localStorage + IndexedDB photo store, image compression |
 | `src/lib/sync.ts` | Supabase upload/upsert/pull, signed photo URLs, prefs pull/push |
 | `src/lib/prefs.ts` | Pure-ish: language + grid/list prefs, local-first, newer `updated_at` wins per account |
-| `src/lib/identify.ts` | On-device photo identifier: lazy LiteRT.js (wasm), Pillow-equivalent preprocessing, model in `public/models/` |
+| `src/lib/identify.ts` | On-device photo identifier: lazy LiteRT.js (wasm), Pillow-equivalent preprocessing, FungiTastic model in `public/models/` (v0.15.0) |
 | `src/lib/exif.ts` | Pure: JPEG EXIF date taken + GPS for library imports (tests use `tests/fixtures/*.jpg`, fake data) |
 | `src/lib/rank.ts`, `src/lib/resample.ts` | Pure: European-only ranking + confidence threshold; anti-aliased bilinear resize (matches Pillow, worth ~5 pts top-1) |
-| `scripts/model-labels.mjs`, `scripts/fix-model-batch.py`, `scripts/copy-litert.mjs` | Model prep: European flags per label (iNat), fix dynamic batch for LiteRT.js, copy wasm runtime to `public/litert/` (gitignored) |
+| `scripts/ft-labels.py`, `scripts/copy-litert.mjs` | Model prep: `public/models/fungitastic-labels.json` (model labels renamed to the Pilzdex Latin when they are synonyms), copy wasm runtime to `public/litert/` (gitignored) |
+| `scripts/golden.py`, `scripts/golden_lib.py` | Golden set: `data/golden.json` (3511 recent open-licence iNat photos, 10 per taxon, ids only), images re-downloaded to `.cache/golden/` with `--images` |
+| `scripts/model-map.py`, `data/model-maps/` | Model label -> current iNat taxon id (synonyms, Latin genders, nominate varieties, ambiguity check); human decisions in `overrides.json` with a reason |
+| `scripts/eval.py`, `scripts/bench_report.py`, `tests/ui/ident-bench.cjs` | Benchmark: score models on the golden set (`current`, `fungitastic`, `bioclip2`, `inat`), overview page `design/benchmark.html`; in-browser check of the real `identify()` (needs `npx vite --port 4194`) |
+| `data/models/species-classifiers/` | The old model (v0.4 to v0.14), kept only to re-run the benchmark; `scripts/model-labels.mjs`, `fix-model-batch.py`, `scrape-rares.mjs` still read its labels |
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings. Each screen sends its right-side part to `ctx.right` via a portal (`ToRight`) on the web |
 | `src/components/RightPanel.tsx` | Web only (>= 900px): second Pokédex panel: LCD (portal target), 10 finds keys, yellow PREV/NEXT |
 | `src/App.tsx` | State, hardware buttons (big yellow CATCH = photo picker, D-pad scrolls / steps species, B=back, PAGE), auth, sync, re-crop |
@@ -57,18 +61,25 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Tests + lint + check-data before merging.
 - Species data is scraped, never hand-written. Human edibility decisions go in `data/edibility-overrides.json` with a reason.
 - Finds: every mutation mirrors to localStorage; remote merges never drop local finds; deletes are soft.
-- Photo identifier: suggestion only, user confirms; preselect only when p >= CONFIDENT (0.5). Measured on 232 post-2023
-  European iNat photos of 29 dex species in Chromium: top-1 74.6%, top-3 85.8%; "Probably" shown for 78%, right 84%.
-  Re-measure after any preprocessing or model change (browser resize alone once cost 5 points).
+- Photo identifier: suggestion only, user confirms; preselect only when p >= CONFIDENT (0.5). Model (v0.15.0, Sam): FungiTastic
+  DINOv3 ViT-S/16, 2827 European fungi, fp16 TFLite 46 MB (CacheFirst, downloaded on first identification), input 384
+  float32 after Pillow-style resize of the short side to 439 + centre crop, logits -> softmax; labels that are synonyms of
+  one Pilzdex species are summed. Chosen on the golden set (benchmark artifact https://claude.ai/artifact/GK4yGKL94CxvYUgpSM6HSm,
+  1078 photos, 3 per taxon): old model 36% top-1 / 44% top-3, FungiTastic 59% / 72%, BioCLIP 2 73% / 89% (1.6 GB,
+  too big for a phone), iNat online 70% / 85% (no GPS, API not open to third-party apps). Deadly photos announced as an
+  edible species: 32% -> 3%. Knows 297 of the 360 app taxa (old: 175). Measured in Chromium through the real
+  `identify()`: 59.5% / 73.0%, ~1.2 s per photo (wasm); "Probably" (p >= 0.5) on 54% of photos, right 82.7%.
+  Licences: DINOv3 License (copy shipped in `public/models/`) + FungiTastic data CC BY-NC-SA: private non-commercial
+  use only. Re-measure (`scripts/eval.py`, `tests/ui/ident-bench.cjs`) after any preprocessing or model change.
 - Catch: CATCH button / tapping an uncaught silhouette opens the photo input directly (no `capture`: the OS offers camera
   or library), then a square finger-only crop (react-easy-crop, no slider), then
   identification on the crop. From a species page it is silent unless `mismatch()` fires (top >= 0.5 and selected < 0.1:
-  measured 7.3% false alarms, catches 70% of lookalike mix-ups); from the list it suggests the top 3.
+  v0.15.0 measured 4.6% false alarms, catches 53% of mix-ups with any dex lookalike); from the list it suggests the top 3.
 - Several photos per find (v0.9.0, issue #1): up to 4 (`MAX_PHOTOS`), first = cover, no cover label (Sam): drag the
   thumbnails to reorder (pointer events, iOS has no HTML drag on touch; tap without moving = crop; arrow keys move). `Find.photos` = [{id, path}];
   the cover keeps the find id as its IndexedDB key and `photo_path` mirrors it (old finds and old app versions keep
-  working). Each photo is cropped and identified on its own, then `combineGuesses` takes the geometric mean (measured
-  on pairs of the same species: 74% -> 91% top-1 with 2 photos, 95% with 3; mean of p 89%, max 87%). Without
+  working). Each photo is cropped and identified on its own, then `combineGuesses` takes the geometric mean (v0.15.0,
+  photos of the same species from different observations: 59.5% top-1 with 1 photo, 67% with 2, 71% with 3). Without
   migration 0003 sync silently falls back to cover only. Species page = gallery of all photos (swipe on the photo or
   arrows; that swipe does not flip the page); finds list shows the extra photos, tap = re-crop that photo.
 - Thumbnails (v0.10.1, Sam): grid, list, keys and finds list use a 480 px JPEG (`thumbUrlOf`), the species gallery the

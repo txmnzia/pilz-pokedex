@@ -21,7 +21,7 @@ ED = ev.ED
 L = open(".cache/df20/labels.txt").read().splitlines()
 pseudo = {-(k + 1): l for k, l in enumerate(L)}
 inv = {v: k for k, v in json.load(open("data/model-maps/fungitastic.json")).items() if v}
-cur_labels = {-(k + 1): l["latin"] for k, l in enumerate(json.load(open("public/models/fungi-labels.json")))}
+cur_labels = {-(k + 1): l["latin"] for k, l in enumerate(json.load(open("data/models/species-classifiers/fungi-labels.json")))}
 
 def top(q, mode):
     q = {int(k): v for k, v in q.items()}

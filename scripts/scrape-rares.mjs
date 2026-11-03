@@ -33,7 +33,7 @@ async function get(url) {
   throw new Error(`gave up: ${url}`);
 }
 const qs = o => new URLSearchParams(o).toString();
-const labels = JSON.parse(await readFile("public/models/fungi-labels.json", "utf8"));
+const labels = JSON.parse(await readFile("data/models/species-classifiers/fungi-labels.json", "utf8"));
 const dex = new Set(JSON.parse(await readFile("public/data/species.json", "utf8")).species.map(s => s.latin));
 const cands = labels.filter(l => l.eu && !dex.has(l.latin));
 const out = [];
