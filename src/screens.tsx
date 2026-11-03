@@ -163,7 +163,8 @@ export function Dex(p: DexProps) {
   const { ctx } = p;
   const gridRef = useFitTileNames([ctx.lang, p.mode, p.list, p.extras, p.rares]);
   const core = ctx.all.filter(s => !s.extra);
-  const n = core.filter(s => ctx.caught.has(s.inat)).length;
+  // v0.16.0 (Sam): one total, every species counts (dex + rares), no denominator
+  const n = ctx.all.filter(s => ctx.caught.has(s.inat)).length;
   const item = (sp: Species) => {
     const got = ctx.caught.has(sp.inat);
     return p.mode === "grid" ? (
@@ -184,7 +185,7 @@ export function Dex(p: DexProps) {
   const bar = (got: number, tot: number) => <span className="bar"><i style={{ width: `${tot ? (got / tot) * 100 : 0}%` }} /></span>;
   return (
     <>
-      <div className="titlebar"><span>{ctx.t("dex")}</span><span>{n}/{core.length}</span></div>
+      <div className="titlebar"><span>{ctx.t("dex")}</span><span>{n} {ctx.t("caught")}</span></div>
       <div className="scroll" ref={gridRef}>
         {!ctx.right && !p.gridOnly && <div className="chips one">{statusChips}<span className="sep" />{edChips}</div>}
         <ToRight ctx={ctx}>
@@ -192,11 +193,11 @@ export function Dex(p: DexProps) {
           <div className="scroll">
             <div className="chips one">{statusChips}<span className="sep" />{edChips}</div>
             <div className="box"><h3>{ctx.t("progress")}</h3>
-              <div className="prog"><span>{n}/{core.length}</span>{bar(n, core.length)}<span>{Math.round((n / Math.max(1, core.length)) * 100)}%</span></div></div>
-            <div className="box"><h3>{ctx.t("byEd")}</h3><div className="prog">
+              <p className="total"><b>{n}</b> {ctx.t("caught")}</p></div>
+            <div className="box"><h3>{ctx.t("byEd")}</h3><div className="prog counts">
               {(["edible", "none", "toxic", "deadly", null] as const).map(e => {
-                const tot = core.filter(s => s.edibility === e), got = tot.filter(s => ctx.caught.has(s.inat)).length;
-                return tot.length ? <Fragment key={String(e)}><span className="ed"><EdIcon ed={e} /></span>{bar(got, tot.length)}<span>{got}/{tot.length}</span></Fragment> : null;
+                const tot = ctx.all.filter(s => s.edibility === e), got = tot.filter(s => ctx.caught.has(s.inat)).length;
+                return tot.length ? <Fragment key={String(e)}><span className="ed"><EdIcon ed={e} /></span><span>{got}</span></Fragment> : null;
               })}</div></div>
             <div className="box"><h3>{ctx.t("regions")}</h3><div className="prog">
               {(["berlin", "grenoble"] as const).map(r => {
