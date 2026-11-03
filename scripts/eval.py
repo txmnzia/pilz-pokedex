@@ -60,18 +60,22 @@ def run_bioclip2():
     model, _, pre = open_clip.create_model_and_transforms("hf-hub:imageomics/bioclip-2", cache_dir=".cache/hf")
     tok = open_clip.get_tokenizer("hf-hub:imageomics/bioclip-2", cache_dir=".cache/hf")
     # label set = FungiTastic's (open set of ~2800 European fungi) + the app taxa it lacks: comparable with fungitastic
-    ft = json.load(open(f"{MAPS}/fungitastic.json"))
+    labels = open(".cache/df20/labels.txt").read().splitlines()
     names = {}
-    for l, t in ft.items():
-        if t and t not in names: names[t] = l
+    for l, t in zip(labels, labels_to_ids("fungitastic", labels)):
+        if int(t) not in names: names[int(t)] = l
     for s in species + rares:
         names[s["inat"]] = s["latin"]
     ids = np.array(list(names)); model.eval()
-    with torch.no_grad():
+    tp = ".cache/eval/bioclip2-text.pt"
+    if os.path.exists(tp) and torch.load(tp)["n"] == len(ids): T = torch.load(tp)["T"]
+    else:
+      with torch.no_grad():
         T = []
         for k in range(0, len(ids), 256):
             T.append(model.encode_text(tok([f"a photo of {names[t]}." for t in ids[k:k + 256]])))
         T = torch.cat(T); T = T / T.norm(dim=-1, keepdim=True)
+      torch.save({"n": len(ids), "T": T}, tp)
     def f(p):
         with torch.no_grad():
             e = model.encode_image(pre(img(p)).unsqueeze(0)); e = e / e.norm(dim=-1, keepdim=True)
