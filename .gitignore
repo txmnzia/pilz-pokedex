@@ -4,3 +4,4 @@ dist/
 .env
 *.tsbuildinfo
 public/litert/
+__pycache__/
