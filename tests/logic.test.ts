@@ -300,6 +300,8 @@ describe("reference photos (v0.13.0)", () => {
     const ok = new Set(["cc0", "cc-by", "cc-by-sa", "cc-by-nc", "cc-by-nc-sa"]);
     const all = Object.values(refs).flatMap(r => r.photos);
     expect(all.length).toBeGreaterThan(800);
-    expect(all.filter(p => !ok.has(p.lic) || !p.by || !existsSync(`public/refs/${p.f}`))).toEqual([]);
+    // hosted file, or (rares added in v0.15.2) a photo on iNaturalist's open-data bucket
+    const there = (f: string) => (f.startsWith("https://") ? f.startsWith("https://inaturalist-open-data.s3.amazonaws.com/photos/") : existsSync(`public/refs/${f}`));
+    expect(all.filter(p => !ok.has(p.lic) || !p.by || !there(p.f))).toEqual([]);
   });
 });
