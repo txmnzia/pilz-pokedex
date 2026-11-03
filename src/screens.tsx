@@ -368,7 +368,7 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
 }
 /** Small drawings of the Pokedex buttons, used in the dialog hints. */
 const OkKey = () => <span className="kOk" aria-label="OK">OK</span>;
-const BackKey = () => <span className="kBack" aria-label="←"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M10 6l-6 6 6 6M4 12h16" /></svg></span>;
+const BackKey = () => <span className="kBack" aria-label="←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter"><path d="M10 6l-6 6 6 6M4 12h16" /></svg></span>;
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
 function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);

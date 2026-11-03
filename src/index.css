@@ -219,11 +219,12 @@ ul.list{list-style:none;margin:0;padding:0}
 .cropper{position:absolute;inset:0;z-index:6;background:#0d130a;display:flex;flex-direction:column;gap:8px;padding:8px}
 .croparea{position:relative;flex:1;min-height:0;border:2px solid var(--lcd);border-radius:3px;overflow:hidden}
 .crophint{margin:0;color:var(--lcd);font-size:18px;text-align:center;display:flex;gap:8px;align-items:center;justify-content:center}
-/* v0.16.4 (Sam): drawings of the Pokedex buttons in dialog hints (OK = d-pad centre, BACK = blue round) */
-.kOk{display:inline-grid;place-items:center;width:26px;height:22px;border-radius:4px;background:#262626;color:#eee;font-family:var(--font-label);font-size:7px;box-shadow:2px 2px 0 rgba(0,0,0,.35);flex:none}
-.kBack{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark));flex:none}
+/* v0.16.4 (Sam): drawings of the Pokedex buttons in dialog hints, one LCD ink colour like an old Game Boy screen (v0.16.5) */
+.kOk,.kBack{display:inline-grid;place-items:center;flex:none;background:var(--lcd-ink);color:var(--lcd)}
+.kOk{width:26px;height:20px;border-radius:3px;font-family:var(--font-label);font-size:7px}
+.kBack{width:20px;height:20px;border-radius:50%}
 .kBack svg{width:12px;height:12px}
-.cropper .kOk{box-shadow:0 0 0 1.5px var(--lcd)}
+.cropper .kOk,.cropper .kBack{background:var(--lcd);color:#0d130a}
 .cmphint{margin:0;padding:4px 10px 10px;display:flex;gap:18px;justify-content:center;align-items:center;font-size:19px}
 .cmphint > span{display:inline-flex;gap:6px;align-items:center}
 .cropper .cta.ghost{color:var(--lcd);border-color:var(--lcd)}
