@@ -3,7 +3,7 @@ UX/UI decisions, core features and the backlog.
 
 # Pilzdex (pilz-pokedex)
 
-A Pokédex for the mushrooms Sam finds. Classic red handheld UI, mobile first. 120 species (v0.10.0) chosen from real data, each with
+A Pokédex for the mushrooms Sam finds. Classic red handheld UI, mobile first. 181 species (v0.14.0: 120 chosen from real data + 61 the photo model knows), each with
 lookalikes that get their own pages (EX-nn). Uncaught species show a black silhouette; caught ones show your photo.
 FR/EN/DE. Vite + React + TS, Supabase (shared project, schema `pilz_pokedex`, bucket `pilz_pokedex`), magic-link auth,
 local-first (works offline, syncs when signed in). Deployed to GitHub Pages from `main` via Actions.
@@ -127,11 +127,11 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   Wikidata value; spore print = real colour swatch. Words come from `src/lib/morph.ts` (keyed by QID, FR/EN/DE, capitals
   without accents/umlauts); a test fails if a new QID in the data has no short word. No stat bars (Sam declined).
 - No text selection anywhere (v0.11.1, Sam): `* {user-select:none; -webkit-touch-callout:none}`, inputs/selects excepted.
-- Rares (v0.12.0, Sam): a find can be an off-dex species, but ONLY one the photo model knows (62 in `rares.json`, names
+- Rares (v0.12.0, Sam): a find can be an off-dex species, but ONLY one the photo model knows (v0.14.0: model species seen in FR+DE joined the dex as 121-181; `rares.json` now holds 11: Aseroe rubra + 10 forest fungi Sam picked (Calocera, Xylaria, Chlorociboria...), names
   scraped, Latin as fallback). Stored like any find (species = its iNat id, no schema change). Suggestions "hors
   Pilzdex" become clickable; the species menu has a "Raretés" group. Dex: section "Raretés" after the lookalikes,
   only caught ones, numbered R-01.. by first catch (`rareSpecies`). Page: photos + "Données non disponibles" + links
-  (iNaturalist, Wikipedia); edibility always ???. Not counted in x/120.
+  (iNaturalist, Wikipedia); edibility always ???. Not counted in x/181.
 - Compare before confirming (v0.13.0, Sam, artifact FVjK4vRPwvwKMifPhwEX2T): each suggestion shows a reference photo;
   tapping it opens a comparison (your photo | reference photos with arrows/swipe, spore/hymenium/stem badges,
   RETOUR / C'EST LUI). Tapping any photo opens it full screen. From a species page the "are you sure" alert shows

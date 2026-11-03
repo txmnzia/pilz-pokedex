@@ -12,6 +12,7 @@ const SPECIES_SHAPE: Record<string, Shape> = {
   "Clathrus archeri": "starfish", "Craterellus tubaeformis": "chanterelle", "Craterellus lutescens": "chanterelle",
   "Collybia rivulosa": "funnel", "Collybia dealbata": "funnel",
   "Hygrocybe conica": "bell", // conical waxcap: a pointed bell, unlike the other waxcaps
+  "Marasmius rotula": "bell", "Marasmius bulliardii": "bell", // pinwheels: tiny pleated parachutes
 };
 
 // Illustration choice per genus where morphology data is missing or misleading.
@@ -43,7 +44,7 @@ const GENUS_SHAPE: Record<string, Shape> = {
   Auricularia: "ear",
   Tremella: "jelly", Naematelia: "jelly", Pseudohydnum: "jelly", Dacrymyces: "jelly", Exidia: "jelly",
   Aleuria: "cup", Peziza: "cup", Otidea: "cup", Sarcoscypha: "cup", Scutellinia: "cup", Tarzetta: "cup", Paragalactinia: "cup",
-  Ramaria: "coral", Clavulina: "coral", Calocera: "coral", Clavaria: "coral", Clavulinopsis: "coral", Artomyces: "coral",
+  Ramaria: "coral", Clavulina: "coral", Calocera: "coral", Clavaria: "coral", Clavulinopsis: "coral", Artomyces: "coral", Ramariopsis: "coral", Multiclavula: "coral", Alloclavaria: "coral",
   Sparassis: "cauliflower",
   Hericium: "icicles",
   Cyathus: "nest", Crucibulum: "nest",

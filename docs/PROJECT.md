@@ -25,7 +25,7 @@ State at writing: v0.8.5, live at https://txmnzia.github.io/pilz-pokedex/ (deplo
 
 ## 2. Core features (what exists)
 
-- 120 dex species + 136 lookalike-only species (EX-nn), each with its own page. Uncaught = black silhouette, caught =
+- 181 dex species (v0.14.0) + 168 lookalike-only species (EX-nn), each with its own page. Uncaught = black silhouette, caught =
   your latest photo with a capture ball in the corner.
 - Species page (2 pages on phones, PAGE pill / swipe; on the web page 2 lives in the right panel): name, dex number,
   edibility badge, Latin name, Wikipedia intro (source link, CC BY-SA), season bars, morphology, Berlin / Grenoble
@@ -67,7 +67,9 @@ query.wikidata.org, *.wikipedia.org, www.mycodb.fr.
    every DEADLY species with >= 1 research-grade observation in FR + DE (sources: Wikidata P789 deadly + English
    Wikipedia "Category:Deadly fungi"; renamed iNat taxa are followed to their current id); then the free slots are
    split half and half: most famous EDIBLE species, then most famous of everything left. Fame = (obs DE + obs FR) x
-   number of Wikipedia language editions. `node scripts/scrape.mjs --plan` prints the selection without scraping.
+   number of Wikipedia language editions. v0.14.0 (Sam): then every European species the photo model knows that is
+   observed in FR + DE and is not already in the dex is appended (121-181, by fame); `--no-model` skips that step.
+   Existing numbers never change. `node scripts/scrape.mjs --plan` prints the selection without scraping.
    Wikipedia rate-limits the sandbox hard (429 with ~50 s waits even at 1 request / 6 s): a full run takes hours;
    run it detached (`setsid nohup ... &`), everything is cached in `.cache/`. Node fetch needs
    `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt` in the sandbox.
@@ -125,7 +127,7 @@ Design artifacts (all in `design/`, published as claude.ai artifacts)
 Data
 - [x] The 8 "???" species (list in section 3) stay "???" on purpose (Sam, 2026-11-02). Do not ask again; only revisit
       if a source (Wikidata, mycodb) starts giving a value after a re-scrape.
-- [ ] The photo model knows 75 of the 120 dex species (101 of 256 with lookalikes); the others can't be suggested.
+- [ ] The photo model knows 136 of the 181 dex species; the others can't be suggested.
 
 UI
 - [ ] Lookalike EX tiles: dashed border kept for consistency with the dex; Sam was offered solid borders on the
