@@ -93,16 +93,23 @@ def run_inat():
         b = uuid.uuid4().hex; data = open(f".cache/golden/{p['photo']}.jpg", "rb").read()
         body = (f"--{b}\r\nContent-Disposition: form-data; name=\"image\"; filename=\"x.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n"
                 ).encode() + data + f"\r\n--{b}--\r\n".encode()
-        time.sleep(2)
-        r = json.loads(urllib.request.urlopen(urllib.request.Request(
+        for attempt in range(5):
+          time.sleep(2 + 10 * attempt)
+          try:
+            r = json.loads(urllib.request.urlopen(urllib.request.Request(
             "https://api.inaturalist.org/v1/computervision/score_image", data=body, method="POST",
             headers={"Authorization": jwt, "Content-Type": f"multipart/form-data; boundary={b}",
                      "User-Agent": "pilz-pokedex/0.1 (https://github.com/txmnzia/pilz-pokedex)"}), context=ctx, timeout=60).read())
+            break
+          except Exception as e:
+            if attempt == 4: raise
+            print("retry", e, flush=True)
         out = {}
         for x in r["results"]:
             t = x["taxon"]; tid = t["id"] if t["rank"] == "species" else (t.get("parent_id") if t["rank"] in ("subspecies", "variety", "form") else None)
             if tid: out[tid] = out.get(tid, 0) + x.get("combined_score", x.get("vision_score", 0))
-        return out
+        z = sum(out.values()) or 1
+        return {k: v / z for k, v in out.items()}
     return None, f
 
 RUN = {"current": run_current, "fungitastic": run_fungitastic, "bioclip2": run_bioclip2, "inat": run_inat}
@@ -127,7 +134,7 @@ def score(model):
         keep = dict(sorted(top.items(), key=lambda kv: -kv[1])[:50])
         keep |= {t: v for t, v in top.items() if t in APPSET and v > 1e-6}
         done[str(p["photo"])] = {str(k): round(v, 6) for k, v in keep.items()}
-        if n % 100 == 0:
+        if n % (10 if model == "inat" else 100) == 0:
             print(f"{model} {n}/{len(todo)}", flush=True); json.dump(done, open(path, "w"))
     json.dump(done, open(path, "w")); return done
 
