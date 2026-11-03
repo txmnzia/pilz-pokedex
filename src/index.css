@@ -438,13 +438,19 @@ img,svg{-webkit-user-drag:none}
 input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 
 /* v0.13.0 (Sam): reference photos next to suggestions, comparison screen, full-screen viewer */
-.guess.withref{grid-template-columns:44px auto minmax(0,1fr) auto}
+.guess.withref{grid-template-columns:44px minmax(0,1fr) auto;gap:8px;padding:4px 6px 4px 4px}
+.guess.withref .gname{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;line-height:1}
+.guess .grt{display:grid;gap:4px;justify-items:end}
+.guess .grt b{font-size:21px;white-space:nowrap}.guess .grt i{font-style:normal;font-family:var(--font-label);font-size:9px}
 .refthumb{width:44px;height:44px;border:1.5px solid var(--ink);border-radius:3px;overflow:hidden;display:grid;place-items:center;background:#dfe8c8}
 .refthumb img{width:100%;height:100%;object-fit:cover;display:block}
 .refthumb svg{width:80%;height:80%}
 .cmpcue,.guess .gname .cmpcue{display:block;font-family:var(--font-label);font-size:6px;opacity:.7;margin-top:3px;letter-spacing:.3px}
-.compare{position:absolute;inset:0;z-index:6;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));color:var(--lcd-ink);display:grid;grid-template-rows:auto minmax(0,1fr) auto}
-.cmpbody{overflow:auto;padding:8px 10px;display:grid;gap:8px;align-content:start}
+.compare{position:absolute;inset:0;z-index:6;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));color:var(--lcd-ink);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
+.cmpbody{overflow:hidden;padding:8px 10px;display:grid;gap:6px;align-content:start;min-height:0}
+.compare .titlebar .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.compare .titlebar{align-items:center}
+.cmpr{display:flex;gap:8px;align-items:center;flex:none}.cmpr b{font-weight:400;font-family:var(--font-lcd);font-size:22px;line-height:1;font-variant-numeric:tabular-nums}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pair figure,.vs figure{margin:0;display:grid;gap:4px;position:relative;min-width:0}
 .pair figcaption{font-family:var(--font-label);font-size:6px;text-align:center}
@@ -456,8 +462,9 @@ input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-sel
 .cdots,.lbdots{display:flex;gap:4px;justify-content:center}
 .cdots i,.lbdots i{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--lcd-ink)}
 .cdots i.on{background:var(--lcd-ink)}
-.cmplat{font-size:17px;color:var(--lcd-dim)}
-.cmpbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 10px 12px}
+.cmplat{font-size:18px;color:var(--lcd-dim);text-align:center}
+.cmpbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 10px 10px}
+.cmpbtns .cta{height:38px;padding:0;margin:0;display:grid;place-items:center;border:2px solid var(--lcd-ink)}
 .lightbox{position:fixed;inset:0;z-index:60;background:rgba(5,8,4,.94);display:grid;place-items:center;cursor:zoom-out}
 .lightbox img{max-width:96vw;max-height:86vh;object-fit:contain;border-radius:4px}
 .lightbox .garr{position:fixed;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:rgba(255,255,255,.9);font-size:24px;line-height:1;display:grid;place-items:center;padding:0 0 3px;cursor:pointer}
