@@ -141,8 +141,9 @@ Data
       BioCLIP 2 / iNat online when there is a network.
 - [ ] Sam's own photos for the golden set: Sam agreed to send them as attachments with their names; storage not
       decided yet (private Supabase bucket recommended; the repo is PUBLIC, never put them there).
-- [ ] ~1.2 s per photo in desktop Chromium (wasm); measure on Sam's iPhone. LiteRT.js has a WebGPU accelerator to try
-      if it is slow. First identification downloads 46 MB (then cached).
+- [x] v0.15.1 (Sam: 46 MB too heavy): int8 model, 24 MB, -0.3 pt, twice as fast (0.6 s per photo in desktop Chromium).
+      Int4 does not run (XNNPACK). Not chosen yet: background download on Wi-Fi, old model as fallback.
+- [ ] Measure on Sam's iPhone (download time, seconds per photo). LiteRT.js has a WebGPU accelerator to try if slow.
 - [ ] Rares are still defined from the OLD model's labels (11 entries); FungiTastic knows ~2500 other European species.
       Whether to widen the rares list is Sam's call.
 - [x] v0.14.0 (Sam, 2026-11-03): "can the rares become normal species?" Answer chosen: the 61 model species seen in
