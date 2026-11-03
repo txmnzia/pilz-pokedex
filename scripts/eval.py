@@ -29,8 +29,9 @@ def center(im, short, crop):
 def softmax(x): x = np.exp(x - x.max()); return x / x.sum()
 
 def labels_to_ids(model, labels):
+    # unmapped labels get their own negative pseudo id: they still compete (a wrong answer stays wrong)
     m = json.load(open(f"{MAPS}/{model}.json"))
-    return np.array([m.get(l) or -1 for l in labels])
+    return np.array([m.get(l) or -(k + 1) for k, l in enumerate(labels)])
 
 # each runner returns (ids array aligned with the score vector, function photo -> probabilities)
 def run_current():
@@ -116,7 +117,7 @@ def score(model):
         else:
             agg = {}
             for t, v in zip(ids, q):
-                if t > 0: agg[int(t)] = agg.get(int(t), 0.0) + float(v)
+                if t != 0: agg[int(t)] = agg.get(int(t), 0.0) + float(v)
             top = agg
         # keep the 50 best taxa (enough for top-k in both modes) + all app taxa with p > 0
         keep = dict(sorted(top.items(), key=lambda kv: -kv[1])[:50])
@@ -125,6 +126,28 @@ def score(model):
         if n % 100 == 0:
             print(f"{model} {n}/{len(todo)}", flush=True); json.dump(done, open(path, "w"))
     json.dump(done, open(path, "w")); return done
+
+ED = {s["inat"]: s.get("edibility") for s in species}
+
+def quality(S, mode):
+    """Per-species precision / recall of the top-1 answer (macro means over the golden taxa) and the safety numbers:
+    deadly photos found, and deadly photos answered with an EDIBLE species."""
+    import collections
+    tp, pred, true = collections.Counter(), collections.Counter(), collections.Counter()
+    dead = dead_ok = dead_edible = 0
+    for p in G:
+        q = S.get(str(p["photo"]))
+        if q is None: continue
+        q = {int(k): v for k, v in q.items()}
+        if mode == "app": q = {k: v for k, v in q.items() if k in APPSET}
+        top = max(q, key=q.get) if q else None
+        true[p["inat"]] += 1; pred[top] += 1; tp[top] += top == p["inat"]
+        if ED.get(p["inat"]) == "deadly":
+            dead += 1; dead_ok += top == p["inat"]; dead_edible += ED.get(top) == "edible"
+    taxa = list(true)
+    rec = sum(tp[t] / true[t] for t in taxa) / len(taxa)
+    pr = [tp[t] / pred[t] for t in taxa if pred[t]]
+    return rec, sum(pr) / len(pr), dead_ok / dead, dead_edible / dead, dead
 
 def report(models):
     rows = []
@@ -150,6 +173,14 @@ def report(models):
     print(f"{'model':12s} {'mode':5s} {'group':10s} {'n':>5s} {'top-1':>6s} {'top-3':>6s} {'p>=.5':>6s} {'right':>6s}")
     for m, mode, grp, n, a, b, c, d in rows:
         print(f"{m:12s} {mode:5s} {grp:10s} {n:5d} {a:6.1%} {b:6.1%} {c:6.1%} {d:6.1%}")
+    print(f"\n{'model':12s} {'mode':5s} {'recall':>7s} {'precis.':>7s} {'deadly found':>13s} {'deadly->EDIBLE':>15s}")
+    for m in models:
+        path = f".cache/eval/{m}.json"
+        if not os.path.exists(path): continue
+        S = json.load(open(path))
+        for mode in ("open", "app"):
+            r, pr, d1, d2, n = quality(S, mode)
+            print(f"{m:12s} {mode:5s} {r:7.1%} {pr:7.1%} {d1:13.1%} {d2:15.1%}   (deadly photos: {n})")
     return rows
 
 if __name__ == "__main__":
