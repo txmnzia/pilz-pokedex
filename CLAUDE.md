@@ -21,6 +21,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 |---|---|
 | `scripts/scrape.mjs` | Scraper: iNaturalist (ranking, regions, season), Wikidata (names, edibility, morphology), Wikipedia (text, lookalikes) |
 | `scripts/scrape-rares.mjs` | Rares: model labels (European, Agaricomycetes + Pezizomycetes) not in the dex, FR/EN/DE names from iNat then Wikidata -> `public/data/rares.json` |
+| `scripts/scrape-refs.py` | Reference photos: up to 3 open-licence iNat photos per species/lookalike/rare, 480 px -> `public/refs/`, credits in `public/data/refs.json` |
 | `scripts/check-data.mjs` | Data validation + review list (edibility conflicts, missing names) |
 | `data/edibility-overrides.json` | Human decisions for conflicting/missing edibility, applied by the scraper (optional file) |
 | `public/data/species.json` | Generated data, fetched at runtime (NetworkFirst in the SW, never precached) |
@@ -131,6 +132,12 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   Pilzdex" become clickable; the species menu has a "Raretés" group. Dex: section "Raretés" after the lookalikes,
   only caught ones, numbered R-01.. by first catch (`rareSpecies`). Page: photos + "Données non disponibles" + links
   (iNaturalist, Wikipedia); edibility always ???. Not counted in x/120.
+- Compare before confirming (v0.13.0, Sam, artifact FVjK4vRPwvwKMifPhwEX2T): each suggestion shows a reference photo;
+  tapping it opens a comparison (your photo | reference photos with arrows/swipe, spore/hymenium/stem badges,
+  RETOUR / C'EST LUI). Tapping any photo opens it full screen. From a species page the "are you sure" alert shows
+  both species' photos side by side. Photos are hosted by the app (`public/refs/`, ~34 MB, CacheFirst after first
+  view, never precached); licences CC0 / BY / BY-SA / BY-NC / BY-NC-SA only (no ND: we resize). Credits ONLY in
+  Settings (Sam), never on the comparison screen. 4 lookalikes have no open photo: silhouette instead.
 - Lookalikes (v0.8.2): same `DexTile` component as the dex grid (badge, picture, ball, fitted name); one tile look everywhere.
 - Order (v0.10.5, Sam): a Settings pref `sort` = "no" (by dex number = popularity rank, DEFAULT) or "az" (A to Z in the
   UI language, `sortByName`); core and lookalikes, PREV/NEXT follow it. Synced per account like lang/mode (column added

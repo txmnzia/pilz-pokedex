@@ -32,7 +32,7 @@ export default defineConfig({
         // Network first for the app itself: the page is never served from a stale copy when online.
         // index.html is not precached; navigations go to the network (bypassing the HTTP cache) and fall back
         // to the last good copy only when offline / no answer within 4 s. JS/CSS are hashed, so never stale.
-        globIgnores: ["**/data/**", "**/models/**", "**/litert/**", "**/*.html"],
+        globIgnores: ["**/data/**", "**/models/**", "**/litert/**", "**/refs/**", "**/*.html"],
         navigateFallback: null,
         // take over as soon as installed: without this the new worker waited for a SKIP_WAITING message that never
         // came (measured), so phones kept running old versions and offline pages mismatched their scripts
@@ -42,6 +42,8 @@ export default defineConfig({
           { urlPattern: ({ request }) => request.mode === "navigate", handler: "NetworkFirst",
             options: { cacheName: "pages", networkTimeoutSeconds: 4, fetchOptions: { cache: "no-store" } } },
           { urlPattern: /\/data\/.*\.json$/, handler: "NetworkFirst", options: { cacheName: "data", networkTimeoutSeconds: 5 } },
+          // reference photos (v0.13.0): fetched the first time they are shown, then kept for offline use
+          { urlPattern: /\/refs\/.*\.jpg$/, handler: "CacheFirst", options: { cacheName: "refs", expiration: { maxEntries: 1200 } } },
           // photo identifier: big, rarely changes, only fetched when first used, then works offline
           { urlPattern: /\/(models|litert)\/.*$/, handler: "CacheFirst", options: { cacheName: "identifier", expiration: { maxEntries: 10 } } },
           { urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\//, handler: "CacheFirst", options: { cacheName: "fonts" } },

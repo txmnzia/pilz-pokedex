@@ -27,6 +27,9 @@ export interface Species {
   wiki?: Partial<Record<Lang, string>>;
 }
 
+/** public/data/refs.json (scripts/scrape-refs.py): reference photos + credits per iNat id. */
+export type RefMap = Record<string, { latin: string; photos: { f: string; by: string; lic: string }[] }>;
+
 /** public/data/rares.json entry (scripts/scrape-rares.mjs). */
 export interface RareEntry { inat: number; latin: string; names: Record<Lang, string>; nameSource: Record<Lang, string>; wiki?: Partial<Record<Lang, string>> }
 

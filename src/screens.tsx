@@ -10,13 +10,15 @@ import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
 import { shortMorph, SPORE_COLOR } from "./lib/morph";
 import type { StringKey } from "./lib/i18n";
-import type { Edibility, Find, FindPhoto, Lang, MorphKey, Species } from "./lib/types";
+import type { Edibility, Find, FindPhoto, Lang, MorphKey, RefMap, Species } from "./lib/types";
 
 export interface Ctx {
   t: (k: StringKey) => string;
   lang: Lang;
   all: Species[];
   caught: Map<number, Find[]>;
+  /** Reference photos per iNat id (public/data/refs.json, v0.13.0); empty until loaded / offline. */
+  refs: RefMap;
   /** Web two-panel layout: the right panel's screen. null on phones (everything stays on the left). */
   right: HTMLElement | null;
 }
@@ -314,6 +316,79 @@ export function Entry({ ctx, sp, page, open, onDelete, onCatchFile, onRecrop, sc
   }
 }
 
+// ---------------------------------------------------------------- reference photos (v0.13.0)
+const refUrl = (f: string) => `${import.meta.env.BASE_URL}refs/${f}`;
+const refsOf = (ctx: Ctx, sp: Species) => (ctx.refs[String(sp.inat)]?.photos ?? []).map(p => refUrl(p.f));
+/** Small reference picture for a suggestion row; silhouette when there is none (or offline and never seen). */
+function RefThumb({ ctx, sp }: { ctx: Ctx; sp: Species }) {
+  const src = refsOf(ctx, sp)[0];
+  const [bad, setBad] = useState(false);
+  return <span className="refthumb">{src && !bad ? <img src={src} alt="" loading="lazy" onError={() => setBad(true)} /> : <Silhouette shape={shapeOf(sp)} />}</span>;
+}
+function RefImg({ ctx, sp, onOpen }: { ctx: Ctx; sp: Species; onOpen(srcs: string[]): void }) {
+  const srcs = refsOf(ctx, sp);
+  const [bad, setBad] = useState(false);
+  return srcs[0] && !bad
+    ? <button type="button" className="refimg" onClick={() => onOpen(srcs)} aria-label={ctx.t("enlarge")}><img src={srcs[0]} alt="" onError={() => setBad(true)} /></button>
+    : <span className="refimg none"><Silhouette shape={shapeOf(sp)} /></span>;
+}
+/** Full-screen photo viewer: tap anywhere to close, arrows / swipe to browse. */
+function Lightbox({ srcs, onClose, ctx }: { srcs: string[]; onClose(): void; ctx: Ctx }) {
+  const [i, setI] = useState(0);
+  const x0 = useRef<number | null>(null);
+  const go = (d: number) => setI(k => (k + d + srcs.length) % srcs.length);
+  return (
+    <div className="lightbox" role="dialog" aria-label={ctx.t("enlarge")} onClick={onClose}
+      onTouchStart={e => { x0.current = e.touches[0].clientX; }}
+      onTouchEnd={e => { const dx = e.changedTouches[0].clientX - (x0.current ?? e.changedTouches[0].clientX); x0.current = null; if (srcs.length > 1 && Math.abs(dx) > 40) { e.preventDefault(); go(dx < 0 ? 1 : -1); } }}>
+      <img src={srcs[i]} alt="" />
+      {srcs.length > 1 && <>
+        <button type="button" className="garr l" aria-label={ctx.t("prev")} onClick={e => { e.stopPropagation(); go(-1); }}>‹</button>
+        <button type="button" className="garr r" aria-label={ctx.t("next")} onClick={e => { e.stopPropagation(); go(1); }}>›</button>
+        <span className="lbdots">{srcs.map((_, k) => <i key={k} className={k === i ? "on" : ""} />)}</span>
+      </>}
+    </div>
+  );
+}
+const CMP_ROWS: [MorphKey, StringKey][] = [["spores", "spores"], ["hymenium", "hymenium"], ["stipe", "stipe"]];
+/** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
+function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(srcs: string[]): void }) {
+  const srcs = refsOf(ctx, sp);
+  const [k, setK] = useState(0);
+  const x0 = useRef<number | null>(null);
+  const go = (d: number) => setK(i => (i + d + srcs.length) % srcs.length);
+  return (
+    <div className="compare" role="dialog" aria-label={ctx.t("compare")}>
+      <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span>{badge(ctx, sp.edibility)}</div>
+      <div className="cmpbody">
+        <div className="pair">
+          <figure><button type="button" className="refimg" onClick={() => onOpen([mine])} aria-label={ctx.t("enlarge")}><img src={mine} alt="" /></button><figcaption>{ctx.t("yourPhoto")}</figcaption></figure>
+          <figure className="refwrap" onTouchStart={e => { x0.current = e.touches[0].clientX; }}
+            onTouchEnd={e => { const dx = e.changedTouches[0].clientX - (x0.current ?? e.changedTouches[0].clientX); x0.current = null; if (srcs.length > 1 && Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); }}>
+            {srcs.length
+              ? <button type="button" className="refimg" onClick={() => onOpen([...srcs.slice(k), ...srcs.slice(0, k)])} aria-label={ctx.t("enlarge")}><img src={srcs[k]} alt="" /></button>
+              : <span className="refimg none"><Silhouette shape={shapeOf(sp)} /></span>}
+            {srcs.length > 1 && <>
+              <button type="button" className="garr l" aria-label={ctx.t("prev")} onClick={() => go(-1)}>‹</button>
+              <button type="button" className="garr r" aria-label={ctx.t("next")} onClick={() => go(1)}>›</button></>}
+            <figcaption>{srcs.length ? ctx.t("reference") : ctx.t("noRef")}</figcaption>
+            {srcs.length > 1 && <span className="cdots">{srcs.map((_, i) => <i key={i} className={i === k ? "on" : ""} />)}</span>}
+          </figure>
+        </div>
+        <p className="m0 cmplat"><i>{sp.latin}</i> · {Math.round(p * 100)} %</p>
+        {CMP_ROWS.some(([m]) => sp.morph[m]?.length) && <div className="box">
+          {CMP_ROWS.filter(([m]) => sp.morph[m]?.length).map(([m, label]) => {
+            const v = sp.morph[m]![0];
+            return <div className="mrow" key={m}><span>{ctx.t(label)}</span>
+              <span className="mchip">{m === "spores" && SPORE_COLOR[v.qid] && <i style={{ background: SPORE_COLOR[v.qid] }} />}{shortMorph(v, ctx.lang)}</span></div>;
+          })}
+        </div>}
+      </div>
+      <div className="cmpbtns"><button type="button" className="cta ghost" onClick={onClose}>{ctx.t("back")}</button><button type="button" className="cta" onClick={onPick}>{ctx.t("itsIt")}</button></div>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------- catch
 export interface CatchDraft { files: Blob[]; species: number; observed_on: string; place: string; note: string; lat: number | null; lng: number | null }
 
@@ -369,6 +444,8 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const [identErr, setIdentErr] = useState(false);
   const [known, setKnown] = useState<ReadonlySet<string> | null>(null);
   const [dismissed, setDismissed] = useState<string | null>(null);
+  const [compare, setCompare] = useState<{ sp: Species; p: number } | null>(null);
+  const [big, setBig] = useState<string[] | null>(null); // photos shown full screen
   const verify = initial != null;
   const nextKey = useRef(1);
   const shotsRef = useRef(shots); shotsRef.current = shots;
@@ -506,6 +583,12 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const warnBox = verify && warn && warnKey !== dismissed && (
     <div className="box warnbox" role="alert" ref={el => el?.scrollIntoView({ block: "nearest", behavior: "smooth" })}>
       <p className="m0">{fill(ctx.t("areYouSure"), { x: sel ? name(sel, ctx.lang) : "", y: spName(warn), p: `${Math.round(warn.p * 100)}%` })}</p>
+      {sel && warnSp && (refsOf(ctx, sel).length > 0 || refsOf(ctx, warnSp).length > 0) && (
+        <div className="vs">
+          <figure><RefImg ctx={ctx} sp={sel} onOpen={setBig} /><figcaption>{name(sel, ctx.lang)}<small>{ctx.t("yourChoice")}</small></figcaption></figure>
+          <b>VS</b>
+          <figure><RefImg ctx={ctx} sp={warnSp} onOpen={setBig} /><figcaption>{name(warnSp, ctx.lang)}<small>{Math.round(warn.p * 100)} %</small></figcaption></figure>
+        </div>)}
       <div className="srcrow">
         {warnSp
           ? <button type="button" className="cta" onClick={() => setSpecies(warnSp.inat)}>{fill(ctx.t("switchTo"), { y: name(warnSp, ctx.lang) })}</button>
@@ -558,8 +641,9 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
               const sp = byLatin.get(g.latin);
               const pct = `${Math.round(g.p * 100)}%`;
               return sp
-                ? <button type="button" key={g.latin} className="guess" aria-pressed={species === sp.inat} onClick={() => setSpecies(sp.inat)}>
-                    <span className="ed"><EdIcon ed={sp.edibility} /></span><span className="gname">{name(sp, ctx.lang)}</span><b>{pct}</b></button>
+                ? <button type="button" key={g.latin} className="guess withref" aria-pressed={species === sp.inat} onClick={() => setCompare({ sp, p: g.p })}>
+                    <RefThumb ctx={ctx} sp={sp} /><span className="ed"><EdIcon ed={sp.edibility} /></span>
+                    <span className="gname">{name(sp, ctx.lang)}<small className="cmpcue">{ctx.t("compare")} ›</small></span><b>{pct}</b></button>
                 : <div key={g.latin} className="guess off">
                     <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{pct}</b></div>;
             })}
@@ -592,6 +676,9 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
         <div className="titlebar"><span>{ctx.t(verify ? "species" : "suggestion")}</span></div>
         <div className="scroll">{warnBox}{formPart}</div>
       </ToRight>
+      {compare && cover && <Compare ctx={ctx} sp={compare.sp} p={compare.p} mine={cover.url!} onOpen={setBig}
+        onPick={() => { setSpecies(compare.sp.inat); setCompare(null); }} onClose={() => setCompare(null)} />}
+      {big && <Lightbox srcs={big} onClose={() => setBig(null)} ctx={ctx} />}
       {cropping && <Cropper key={cropping.key + cropping.origUrl} ctx={ctx} src={cropping.origUrl} onDone={finishCrop} onOther={f => pick(f, cropping.key)} onCancel={cancelCrop} />}
     </>
   );
@@ -626,6 +713,11 @@ export function Settings({ ctx, email, mode, sort, setSort, setLang, setMode, on
           }} /></label>{msg && <p className="note">{msg}</p>}</div>
         <div className="box"><h3>{ctx.t("credits")}</h3>
           <ul className="credits">{Object.entries(sources).map(([k, v]) => <li key={k}>{v}</li>)}<li>{ctx.t("idCredit")}</li></ul></div>
+        {Object.keys(ctx.refs).length > 0 && <div className="box"><h3>{ctx.t("refCredits")}</h3>
+          <details className="refcredits"><summary>{ctx.t("refCreditsText")} ({Object.values(ctx.refs).reduce((n, r) => n + r.photos.length, 0)})</summary>
+            <ul className="credits">{ctx.all.filter(sp => ctx.refs[String(sp.inat)]?.photos.length).map(sp => (
+              <li key={sp.inat}><b>{name(sp, ctx.lang)}</b>: {ctx.refs[String(sp.inat)].photos.map(p => p.by.replace(/, uploaded by .*$/, "")).join(" · ")}</li>))}</ul>
+          </details></div>}
         <p className="note">{ctx.t("disclaimer")}</p>
       </div>
     </>
