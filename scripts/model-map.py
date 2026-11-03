@@ -12,9 +12,17 @@ labels = [l["latin"] for l in json.load(open(src))] if src.endswith(".json") els
 out = json.load(open(dst)) if os.path.exists(dst) else {}
 for n, name in enumerate(labels):
     if name in out: continue
-    r = get("https://api.inaturalist.org/v1/taxa?" + urllib.parse.urlencode({"q": name, "is_active": "true", "per_page": 5}))["results"]
-    hit = next((t for t in r if t["rank"] in ("species", "subspecies", "variety", "form") and
-                (t["name"] == name or t.get("matched_term") == name)), None)
+    hit = None
+    ep = name.split(" ")
+    # the name as given, then the other Latin genders of the epithet (labels like "Polyporus umbellata")
+    tries = [name] + ([" ".join(ep[:-1] + [ep[-1][:-len(a)] + b]) for a in ("us", "a", "um") if ep[-1].endswith(a)
+                       for b in ("us", "a", "um") if b != a] if len(ep) == 2 else [])
+    for q in tries:
+        r = get("https://api.inaturalist.org/v1/taxa?" + urllib.parse.urlencode({"q": q, "is_active": "true", "per_page": 5}))["results"]
+        hit = next((t for t in r if t["rank"] in ("species", "subspecies", "variety", "form") and
+                    t.get("iconic_taxon_name") in ("Fungi", "Protozoa", None) and
+                    (t["name"] == q or t.get("matched_term") == q)), None)
+        if hit: break
     out[name] = (hit["id"] if hit["rank"] == "species" else hit.get("parent_id")) if hit else None
     if n % 100 == 0:
         print(f"{n}/{len(labels)}", flush=True); json.dump(out, open(dst, "w"), indent=0)
