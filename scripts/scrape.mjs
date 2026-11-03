@@ -168,6 +168,7 @@ async function wikipedia(e) {
   for (const l of LANGS) {
     const site = e.sites?.[l]; if (!site) continue;
     const q = await wiki(l, { action: "query", prop: "extracts|revisions", explaintext: 1, exsectionformat: "wiki", rvprop: "content", rvslots: "main", redirects: 1, titles: site.title });
+    if (!q?.query?.pages) continue; // Wikipedia sometimes answers an error instead of a page: skip that language
     const page = q.query.pages[0] || {};
     const full = page.extract || "";
     const parts = full.split(/\n(={2,})\s*(.+?)\s*\1\n/);
