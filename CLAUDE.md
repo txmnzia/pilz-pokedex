@@ -36,7 +36,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `src/lib/identify.ts` | On-device photo identifier: lazy LiteRT.js (wasm), Pillow-equivalent preprocessing, FungiTastic model in `public/models/` (v0.15.0) |
 | `src/lib/exif.ts` | Pure: JPEG EXIF date taken + GPS for library imports (tests use `tests/fixtures/*.jpg`, fake data) |
 | `src/lib/rank.ts`, `src/lib/resample.ts` | Pure: European-only ranking + confidence threshold; anti-aliased bilinear resize (matches Pillow, worth ~5 pts top-1) |
-| `scripts/ft-labels.py`, `scripts/copy-litert.mjs` | Model prep: `public/models/fungitastic-labels.json` (model labels renamed to the Pilzdex Latin when they are synonyms), copy wasm runtime to `public/litert/` (gitignored) |
+| `scripts/ft-labels.py`, `scripts/quantize-ft.py`, `scripts/copy-litert.mjs` | Model prep: `public/models/fungitastic-labels.json` (model labels renamed to the Pilzdex Latin when they are synonyms), copy wasm runtime to `public/litert/` (gitignored) |
 | `scripts/golden.py`, `scripts/golden_lib.py` | Golden set: `data/golden.json` (3511 recent open-licence iNat photos, 10 per taxon, ids only), images re-downloaded to `.cache/golden/` with `--images` |
 | `scripts/model-map.py`, `data/model-maps/` | Model label -> current iNat taxon id (synonyms, Latin genders, nominate varieties, ambiguity check); human decisions in `overrides.json` with a reason |
 | `scripts/eval.py`, `scripts/bench_report.py`, `tests/ui/ident-bench.cjs` | Benchmark: score models on the golden set (`current`, `fungitastic`, `bioclip2`, `inat`), overview page `design/benchmark.html`; in-browser check of the real `identify()` (needs `npx vite --port 4194`) |
@@ -62,13 +62,14 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Species data is scraped, never hand-written. Human edibility decisions go in `data/edibility-overrides.json` with a reason.
 - Finds: every mutation mirrors to localStorage; remote merges never drop local finds; deletes are soft.
 - Photo identifier: suggestion only, user confirms; preselect only when p >= CONFIDENT (0.5). Model (v0.15.0, Sam): FungiTastic
-  DINOv3 ViT-S/16, 2827 European fungi, fp16 TFLite 46 MB (CacheFirst, downloaded on first identification), input 384
+  DINOv3 ViT-S/16, 2827 European fungi, int8 TFLite 24 MB (v0.15.1, Sam found 46 MB fp16 too heavy: `scripts/quantize-ft.py`,
+  -0.3 pt top-1; int4 does not run in XNNPACK) (CacheFirst, downloaded on first identification), input 384
   float32 after Pillow-style resize of the short side to 439 + centre crop, logits -> softmax; labels that are synonyms of
   one Pilzdex species are summed. Chosen on the golden set (benchmark artifact https://claude.ai/artifact/GK4yGKL94CxvYUgpSM6HSm,
   1078 photos, 3 per taxon): old model 36% top-1 / 44% top-3, FungiTastic 59% / 72%, BioCLIP 2 73% / 89% (1.6 GB,
   too big for a phone), iNat online 70% / 85% (no GPS, API not open to third-party apps). Deadly photos announced as an
   edible species: 32% -> 3%. Knows 297 of the 360 app taxa (old: 175). Measured in Chromium through the real
-  `identify()`: 59.5% / 73.0%, ~1.2 s per photo (wasm); "Probably" (p >= 0.5) on 54% of photos, right 82.7%.
+  `identify()` (int8): 59.2% / 72.8%, ~0.6 s per photo (wasm, desktop); "Probably" (p >= 0.5) on 53% of photos, right 83.0%.
   Licences: DINOv3 License (copy shipped in `public/models/`) + FungiTastic data CC BY-NC-SA: private non-commercial
   use only. Re-measure (`scripts/eval.py`, `tests/ui/ident-bench.cjs`) after any preprocessing or model change.
 - Catch: CATCH button / tapping an uncaught silhouette opens the photo input directly (no `capture`: the OS offers camera

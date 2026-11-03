@@ -1,5 +1,5 @@
 // On-device mushroom photo identifier. Free, no account, offline after the first load.
-// Model (v0.15.0): FungiTastic DINOv3 ViT-S/16, 2 827 European fungi, fp16 TFLite (46 MB), float32 NHWC 0..255 input
+// Model (v0.15.0): FungiTastic DINOv3 ViT-S/16, 2 827 European fungi, int8 TFLite (24 MB, v0.15.1, scripts/quantize-ft.py), float32 NHWC 0..255 input
 // (normalisation is inside the graph), logits out. Chosen on the golden set: see design/benchmark.html.
 // LiteRT.js is imported lazily so the app itself stays small.
 import { cropBox, rankGuesses, softmax, type Guess, type ModelLabel } from "./rank";
@@ -14,7 +14,7 @@ function load() {
     const lrt = await import("@litertjs/core");
     await lrt.loadLiteRt(`${BASE}litert/`);
     const [model, labels] = await Promise.all([
-      lrt.loadAndCompile(`${BASE}models/fungitastic_fp16.tflite`, { accelerator: "wasm" }),
+      lrt.loadAndCompile(`${BASE}models/fungitastic_int8.tflite`, { accelerator: "wasm" }),
       fetch(`${BASE}models/fungitastic-labels.json`).then(r => r.json() as Promise<ModelLabel[]>),
     ]);
     return { model: model as unknown as Model, labels, Tensor: lrt.Tensor };

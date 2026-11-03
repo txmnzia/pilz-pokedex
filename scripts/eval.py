@@ -45,10 +45,10 @@ def run_current():
         q = it.get_tensor(o["index"])[0] / 256.0 * eu; return q / q.sum()
     return labels_to_ids("current", [l["latin"] for l in L]), f
 
-def run_fungitastic():
+def run_fungitastic(variant="fp16"):
     from ai_edge_litert.interpreter import Interpreter
     labels = open(".cache/df20/labels.txt").read().splitlines()
-    it = Interpreter(model_path=".cache/df20/ft_fp16.tflite", num_threads=4); it.allocate_tensors()
+    it = Interpreter(model_path=f".cache/df20/ft_{variant}.tflite", num_threads=4); it.allocate_tensors()
     i, o = it.get_input_details()[0], it.get_output_details()[0]
     def f(p):
         it.set_tensor(i["index"], np.asarray(center(img(p), 439, 384), dtype=np.float32)[None]); it.invoke()
@@ -112,6 +112,7 @@ def run_inat():
         return {k: v / z for k, v in out.items()}
     return None, f
 
+# fungitastic-<variant> = a quantized copy in .cache/df20/ft_<variant>.tflite (v0.15.1: int8 trials)
 RUN = {"current": run_current, "fungitastic": run_fungitastic, "bioclip2": run_bioclip2, "inat": run_inat}
 
 def score(model):
@@ -120,7 +121,7 @@ def score(model):
     photos = G if model != "inat" else [p for k, p in enumerate(G) if sum(q["inat"] == p["inat"] for q in G[:k]) < 3]
     todo = [p for p in photos if str(p["photo"]) not in done]
     if not todo: return done
-    ids, f = RUN[model]()
+    ids, f = RUN[model]() if model in RUN else run_fungitastic(model.split("-", 1)[1])
     for n, p in enumerate(todo):
         try: q = f(p)
         except FileNotFoundError: continue
