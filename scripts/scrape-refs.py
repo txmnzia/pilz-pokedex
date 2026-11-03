@@ -31,7 +31,10 @@ def get(url, raw=False):
     raise err
 species = json.load(open("public/data/species.json"))["species"]
 rares = json.load(open("public/data/rares.json"))["rares"]
+# v0.15.2: the 440 rares added from FungiTastic get REMOTE photos (iNat open-data bucket, 500 px, not hosted: Sam chose
+# that over ~50 MB more on GitHub Pages); dex, lookalikes and the first 11 rares stay hosted. "remote" = rares with obsFrDe.
 taxa = [(s["inat"], s["latin"]) for s in species] + [(r["inat"], r["latin"]) for r in rares]
+remote = {r["inat"] for r in rares if "obsFrDe" in r and not os.path.exists(f"public/refs/{r['inat']}-0.jpg")}
 out = {}
 for n, (inat, latin) in enumerate(taxa):
     t = get(f"https://api.inaturalist.org/v1/taxa/{inat}")["results"]
@@ -42,6 +45,9 @@ for n, (inat, latin) in enumerate(taxa):
         if len(picked) >= PER: break
         url = ph.get("medium_url") or ""
         if (ph.get("license_code") or "") not in OK or "inaturalist-open-data" not in url: continue
+        if inat in remote:
+            picked.append({"f": url, "by": ph.get("attribution", ""), "lic": ph["license_code"], "big": url.replace("/medium.", "/large.")})
+            continue
         try:
             im = Image.open(io.BytesIO(get(url, raw=True))).convert("RGB")
         except Exception:

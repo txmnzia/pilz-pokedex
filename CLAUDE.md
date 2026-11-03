@@ -20,7 +20,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | File | Role |
 |---|---|
 | `scripts/scrape.mjs` | Scraper: iNaturalist (ranking, regions, season), Wikidata (names, edibility, morphology), Wikipedia (text, lookalikes) |
-| `scripts/scrape-rares.mjs` | Rares: model labels (European, Agaricomycetes + Pezizomycetes) not in the dex, FR/EN/DE names from iNat then Wikidata -> `public/data/rares.json` |
+| `scripts/scrape-rares.mjs` | Rares (v0.15.2): FungiTastic species not in the dex, mushroom classes (+ ALSO), >= 20 research-grade obs in FR+DE, earlier rares kept; FR/EN/DE names from iNat then Wikidata -> `public/data/rares.json`. Re-run `scripts/ft-labels.py` and `scripts/scrape-refs.py` after it |
 | `scripts/scrape-refs.py` | Reference photos: up to 3 open-licence iNat photos per species/lookalike/rare, 480 px -> `public/refs/`, credits in `public/data/refs.json` |
 | `scripts/check-data.mjs` | Data validation + review list (edibility conflicts, missing names) |
 | `data/edibility-overrides.json` | Human decisions for conflicting/missing edibility, applied by the scraper (optional file) |
@@ -40,7 +40,7 @@ local-first (works offline, syncs when signed in). Deployed to GitHub Pages from
 | `scripts/golden.py`, `scripts/golden_lib.py` | Golden set: `data/golden.json` (3511 recent open-licence iNat photos, 10 per taxon, ids only), images re-downloaded to `.cache/golden/` with `--images` |
 | `scripts/model-map.py`, `data/model-maps/` | Model label -> current iNat taxon id (synonyms, Latin genders, nominate varieties, ambiguity check); human decisions in `overrides.json` with a reason |
 | `scripts/eval.py`, `scripts/bench_report.py`, `tests/ui/ident-bench.cjs` | Benchmark: score models on the golden set (`current`, `fungitastic`, `bioclip2`, `inat`), overview page `design/benchmark.html`; in-browser check of the real `identify()` (needs `npx vite --port 4194`) |
-| `data/models/species-classifiers/` | The old model (v0.4 to v0.14), kept only to re-run the benchmark; `scripts/model-labels.mjs`, `fix-model-batch.py`, `scrape-rares.mjs` still read its labels |
+| `data/models/species-classifiers/` | The old model (v0.4 to v0.14), kept only to re-run the benchmark (`scripts/model-labels.mjs`, `fix-model-batch.py` belong to it) |
 | `src/screens.tsx` | Login, Dex (grid/list), Entry (2 pages), Catch, Settings. Each screen sends its right-side part to `ctx.right` via a portal (`ToRight`) on the web |
 | `src/components/RightPanel.tsx` | Web only (>= 900px): second Pokédex panel: LCD (portal target), 10 finds keys, yellow PREV/NEXT |
 | `src/App.tsx` | State, hardware buttons (big yellow CATCH = photo picker, D-pad scrolls / steps species, B=back, PAGE), auth, sync, re-crop |
@@ -140,7 +140,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   Wikidata value; spore print = real colour swatch. Words come from `src/lib/morph.ts` (keyed by QID, FR/EN/DE, capitals
   without accents/umlauts); a test fails if a new QID in the data has no short word. No stat bars (Sam declined).
 - No text selection anywhere (v0.11.1, Sam): `* {user-select:none; -webkit-touch-callout:none}`, inputs/selects excepted.
-- Rares (v0.12.0, Sam): a find can be an off-dex species, but ONLY one the photo model knows (v0.14.0: model species seen in FR+DE joined the dex as 121-181; `rares.json` now holds 11: Aseroe rubra + 10 forest fungi Sam picked (Calocera, Xylaria, Chlorociboria...), names
+- Rares (v0.12.0, Sam): a find can be an off-dex species, but ONLY one the photo model knows (v0.14.0: model species seen in FR+DE joined the dex as 121-181; v0.15.2, Sam "courantes en FR+DE": `rares.json` = 451, the 11 earlier ones (Aseroe rubra + 10 forest fungi) + every FungiTastic mushroom species with >= 20 research-grade obs in FR+DE (Russula sardonia had 61; a cut at 50 would give 223). Their reference photos are NOT hosted: refs.json `f` is a full iNat open-data URL (online only, silhouette offline); names
   scraped, Latin as fallback). Stored like any find (species = its iNat id, no schema change). Suggestions "hors
   Pilzdex" become clickable; the species menu has a "Raretés" group. Dex: section "Raretés" after the lookalikes,
   only caught ones, numbered R-01.. by first catch (`rareSpecies`). Page: photos + "Données non disponibles" + links

@@ -144,8 +144,10 @@ Data
 - [x] v0.15.1 (Sam: 46 MB too heavy): int8 model, 24 MB, -0.3 pt, twice as fast (0.6 s per photo in desktop Chromium).
       Int4 does not run (XNNPACK). Not chosen yet: background download on Wi-Fi, old model as fallback.
 - [ ] Measure on Sam's iPhone (download time, seconds per photo). LiteRT.js has a WebGPU accelerator to try if slow.
-- [ ] Rares are still defined from the OLD model's labels (11 entries); FungiTastic knows ~2500 other European species.
-      Whether to widen the rares list is Sam's call.
+- [x] v0.15.2 (Sam could not add Russula sardonia): rares widened to FungiTastic mushroom species with >= 20 research-grade
+      observations in FR+DE: 451 (was 11). Options offered: all ~2500 on the fly / common in FR+DE scraped (chosen) /
+      all scraped / case by case. Their comparison photos load from iNaturalist (not hosted). 1286 known species seen
+      in FR+DE at all; below 20 obs they stay non-addable.
 - [x] v0.14.0 (Sam, 2026-11-03): "can the rares become normal species?" Answer chosen: the 61 model species seen in
       FR + DE joined the dex as 121-181 (Sam accepted going past the old 150 cap; the test now allows up to 200).
       Model labels outside the mushroom classes were offered and Sam took only the ~10 forest fungi, as rares
