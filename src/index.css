@@ -482,3 +482,7 @@ input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-sel
 .warnbox .vs figcaption small{display:block;font-size:13px;opacity:.8}
 .refcredits summary{cursor:pointer;font-size:16px}
 .refcredits .credits li{font-size:14px;line-height:1.1}
+
+/* v0.16.3 (Sam): one total "X attrapes", no denominator, no % bar */
+.total{margin:0;font-size:20px}.total b{font-size:26px}
+.prog.counts{grid-template-columns:repeat(5,auto 1fr)}
