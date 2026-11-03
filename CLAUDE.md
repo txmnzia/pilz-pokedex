@@ -145,6 +145,11 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   Pilzdex" become clickable; the species menu has a "Raretés" group. Dex: section "Raretés" after the lookalikes,
   only caught ones, numbered R-01.. by first catch (`rareSpecies`). Page: photos + "Données non disponibles" + links
   (iNaturalist, Wikipedia); edibility always ???. Not counted in x/181.
+- Suggestions + comparison (v0.16.0, Sam, design/compare.html, artifact 5iKnvf4eHsodp1HudpdhfQ): title "Quelle espece est-ce ?" +
+  "Probablement :" / "Pas sur. Touche pour comparer."; no auto-suggestion disclaimer. Row = reference thumb, name (2 lines
+  max), right column: % + chevron over the word badge (COMEST...). Comparison screen fits one screen without scroll: name +
+  % + badge in the title bar, two photos, Latin name, RETOUR / C'EST LUI same size (38 px). No characteristics there (they
+  stay on the species page). Catch form: no date/GPS/"up to 4 photos" line (date and GPS are still saved silently).
 - Compare before confirming (v0.13.0, Sam, artifact FVjK4vRPwvwKMifPhwEX2T): each suggestion shows a reference photo;
   tapping it opens a comparison (your photo | reference photos with arrows/swipe, spore/hymenium/stem badges,
   RETOUR / C'EST LUI). Tapping any photo opens it full screen. From a species page the "are you sure" alert shows

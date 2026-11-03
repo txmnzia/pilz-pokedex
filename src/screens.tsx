@@ -362,7 +362,6 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
     </div>
   );
 }
-const CMP_ROWS: [MorphKey, StringKey][] = [["spores", "spores"], ["hymenium", "hymenium"], ["stipe", "stipe"]];
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
 function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
@@ -371,7 +370,7 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
   const go = (d: number) => setK(i => (i + d + srcs.length) % srcs.length);
   return (
     <div className="compare" role="dialog" aria-label={ctx.t("compare")}>
-      <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span>{badge(ctx, sp.edibility)}</div>
+      <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span className="cmpr"><b>{Math.round(p * 100)}%</b>{badge(ctx, sp.edibility)}</span></div>
       <div className="cmpbody">
         <div className="pair">
           <figure><button type="button" className="refimg" onClick={() => onOpen([{ s: mine }])} aria-label={ctx.t("enlarge")}><img src={mine} alt="" /></button><figcaption>{ctx.t("yourPhoto")}</figcaption></figure>
@@ -387,14 +386,7 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
             {srcs.length > 1 && <span className="cdots">{srcs.map((_, i) => <i key={i} className={i === k ? "on" : ""} />)}</span>}
           </figure>
         </div>
-        <p className="m0 cmplat"><i>{sp.latin}</i> · {Math.round(p * 100)} %</p>
-        {CMP_ROWS.some(([m]) => sp.morph[m]?.length) && <div className="box">
-          {CMP_ROWS.filter(([m]) => sp.morph[m]?.length).map(([m, label]) => {
-            const v = sp.morph[m]![0];
-            return <div className="mrow" key={m}><span>{ctx.t(label)}</span>
-              <span className="mchip">{m === "spores" && SPORE_COLOR[v.qid] && <i style={{ background: SPORE_COLOR[v.qid] }} />}{shortMorph(v, ctx.lang)}</span></div>;
-          })}
-        </div>}
+        <p className="m0 cmplat"><i>{sp.latin}</i></p>
       </div>
       <div className="cmpbtns"><button type="button" className="cta ghost" onClick={onClose}>{ctx.t("back")}</button><button type="button" className="cta" onClick={onPick}>{ctx.t("itsIt")}</button></div>
     </div>
@@ -637,30 +629,29 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
       })}
       {shots.length < MAX_PHOTOS && addLabel("sh add", <><span aria-hidden="true">+</span><small>{ctx.t("addPhoto")}</small></>)}
     </div>}
-    {cover && <p className="note autometa">{date} · GPS {pos ? "✓" : "–"}{ready.length > 1 ? ` · ${ctx.t("dragToReorder")}` : ready.length < MAX_PHOTOS ? ` · ${ctx.t("morePhotos")}` : ""}</p>}
   </>;
 
   const formPart = <>
     {!verify && ident !== "idle" && (
       <div className="box ident" aria-live="polite">
-        <h3>{ctx.t("suggestion")}</h3>
+        <h3>{ctx.t("whichSpecies")}</h3>
         {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
         {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
         {ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
-          <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSure")}{done.length > 1 ? <small> ({fill(ctx.t("fromPhotos"), { n: String(done.length) })})</small> : null}</p>
+          <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSureTap")}{done.length > 1 ? <small> ({fill(ctx.t("fromPhotos"), { n: String(done.length) })})</small> : null}</p>
           <div className="guesses">
             {result.guesses.slice(0, 3).map(g => {
               const sp = byLatin.get(g.latin);
               const pct = `${Math.round(g.p * 100)}%`;
               return sp
                 ? <button type="button" key={g.latin} className="guess withref" aria-pressed={species === sp.inat} onClick={() => setCompare({ sp, p: g.p })}>
-                    <RefThumb ctx={ctx} sp={sp} /><span className="ed"><EdIcon ed={sp.edibility} /></span>
-                    <span className="gname">{name(sp, ctx.lang)}<small className="cmpcue">{ctx.t("compare")} ›</small></span><b>{pct}</b></button>
+                    <RefThumb ctx={ctx} sp={sp} />
+                    <span className="gname">{name(sp, ctx.lang)}</span>
+                    <span className="grt"><b>{pct} <i aria-hidden="true">›</i></b>{badge(ctx, sp.edibility)}</span></button>
                 : <div key={g.latin} className="guess off">
                     <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{pct}</b></div>;
             })}
           </div>
-          <p className="note">{ctx.t("idDisclaimer")}</p>
         </>)}
       </div>
     )}
