@@ -365,6 +365,9 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
     </div>
   );
 }
+/** Small drawings of the Pokedex buttons, used in the dialog hints. */
+const OkKey = () => <span className="kOk" aria-label="OK">OK</span>;
+const BackKey = () => <span className="kBack" aria-label="←"><svg viewBox="0 0 24 24" fill="none" stroke="#10324f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M10 6l-6 6 6 6M4 12h16" /></svg></span>;
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
 function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
@@ -392,6 +395,7 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
         </div>
         <p className="m0 cmplat"><i>{sp.latin}</i></p>
       </div>
+      <p className="cmphint"><span><OkKey /> {ctx.t("cmpOk")}</span><span><BackKey /> {ctx.t("cmpBack")}</span></p>
     </div>
   );
 }
@@ -423,7 +427,7 @@ export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src
         <EasyCrop image={src} crop={crop} zoom={zoom} maxZoom={6} aspect={1} objectFit="cover" zoomSpeed={0.4}
           onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={(_, px) => setArea(px)} />
       </div>
-      <p className="crophint">{ctx.t("cropHint")}</p>
+      <p className="crophint">{ctx.t("cropHint")} <OkKey /></p>
     </div>
   );
 }

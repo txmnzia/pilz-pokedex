@@ -218,7 +218,14 @@ ul.list{list-style:none;margin:0;padding:0}
 .cta.srcbtn{margin-bottom:8px}
 .cropper{position:absolute;inset:0;z-index:6;background:#0d130a;display:flex;flex-direction:column;gap:8px;padding:8px}
 .croparea{position:relative;flex:1;min-height:0;border:2px solid var(--lcd);border-radius:3px;overflow:hidden}
-.crophint{margin:0;color:var(--lcd);font-size:16px;text-align:center}
+.crophint{margin:0;color:var(--lcd);font-size:18px;text-align:center;display:flex;gap:8px;align-items:center;justify-content:center}
+/* v0.16.3 (Sam): drawings of the Pokedex buttons in dialog hints (OK = d-pad centre, BACK = blue round) */
+.kOk{display:inline-grid;place-items:center;width:26px;height:22px;border-radius:4px;background:#262626;color:#eee;font-family:var(--font-label);font-size:7px;box-shadow:2px 2px 0 rgba(0,0,0,.35);flex:none}
+.kBack{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);background:radial-gradient(circle at 35% 30%,#e8f6ff 0 10%,#7cc3f6 25%,var(--blue) 55%,var(--blue-dark));flex:none}
+.kBack svg{width:12px;height:12px}
+.cropper .kOk{box-shadow:0 0 0 1.5px var(--lcd)}
+.cmphint{margin:0;padding:4px 10px 10px;display:flex;gap:18px;justify-content:center;align-items:center;font-size:19px}
+.cmphint > span{display:inline-flex;gap:6px;align-items:center}
 .cropper .cta.ghost{color:var(--lcd);border-color:var(--lcd)}
 .warnbox{background:#f6d27a;border-color:#7a4a00}
 .warnbox p{font-size:19px}
@@ -446,7 +453,7 @@ input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-sel
 .refthumb img{width:100%;height:100%;object-fit:cover;display:block}
 .refthumb svg{width:80%;height:80%}
 .cmpcue,.guess .gname .cmpcue{display:block;font-family:var(--font-label);font-size:6px;opacity:.7;margin-top:3px;letter-spacing:.3px}
-.compare{position:absolute;inset:0;z-index:6;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));color:var(--lcd-ink);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+.compare{position:absolute;inset:0;z-index:6;background:linear-gradient(135deg,var(--lcd),var(--lcd-2));color:var(--lcd-ink);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
 .cmpbody{overflow:hidden;padding:8px 10px;display:grid;gap:6px;align-content:start;min-height:0}
 .compare .titlebar .name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .compare .titlebar{align-items:center}
