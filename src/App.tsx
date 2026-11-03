@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
+import { topOverlay } from "./lib/overlay";
 import { RightPanel, type KeyItem } from "./components/RightPanel";
 import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
@@ -155,20 +156,22 @@ export default function App() {
   const flashLed = (msg: string) => { setToast(msg); setFlash(x => x + 1); setTimeout(() => setToast(null), 1400); };
   const scrollBy = (dy: number) => entryScroll.current?.scrollBy({ top: dy, behavior: "smooth" }) ?? document.querySelector(".lcd .scroll")?.scrollBy({ top: dy, behavior: "smooth" });
 
+  // a dialog on the screen (cropper, comparison, full-screen photo) owns the hardware buttons while it is open
   const hw: Hardware = {
     // touch-first: arrows scroll; in an entry, left/right step to the previous/next species
-    up: () => scrollBy(-180),
-    down: () => scrollBy(180),
-    left: () => { if (effectiveView === "entry") step(-1); },
-    right: () => { if (effectiveView === "entry") step(1); },
-    ok: () => { if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
+    up: () => { if (!topOverlay()) scrollBy(-180); },
+    down: () => { if (!topOverlay()) scrollBy(180); },
+    left: () => { const o = topOverlay(); if (o) o.left?.(); else if (effectiveView === "entry") step(-1); },
+    right: () => { const o = topOverlay(); if (o) o.right?.(); else if (effectiveView === "entry") step(1); },
+    ok: () => { const o = topOverlay(); if (o) o.ok?.(); else if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
     b: () => {
+      const o = topOverlay(); if (o) { o.back?.(); return; }
       if (effectiveView === "entry") {
         if (stack.length) { setCur(stack[stack.length - 1]); setStack(s => s.slice(0, -1)); setPage(1); } else go("index");
       } else if (effectiveView === "catch" || effectiveView === "settings") setView(prev === "login" ? "index" : prev);
     },
-    page: () => setPage(p => (p ? 0 : 1)),
-    menu: () => { if (!signedIn) return; if (effectiveView === "settings") setView(prev === "login" ? "index" : prev); else go("settings"); }, // toggles
+    page: () => { if (!topOverlay()) setPage(p => (p ? 0 : 1)); },
+    menu: () => { if (!signedIn || topOverlay()) return; if (effectiveView === "settings") setView(prev === "login" ? "index" : prev); else go("settings"); }, // toggles
   };
 
   useEffect(() => {
@@ -266,7 +269,7 @@ export default function App() {
      <div className={`book${wide ? " wide" : ""}`} ref={bookRef}>
       <Device hw={hw} ledFlash={flash} status={status} pageEnabled={effectiveView === "entry"}
         catchEnabled={signedIn && all.length > 0}
-        onCatchFile={f => startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null)}
+        onCatchFile={f => { const o = topOverlay(); if (o) o.other?.(f); else startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null); }}
         labels={{ a: t("catch"), b: t("back"), page: t("page"), counter: `${core.filter(s => caught.has(s.inat)).length}/${core.length || 30}`, counterSub: t("caught") }}>
         {screen}
         {recrop && <Cropper ctx={ctx} src={recrop.url} onDone={finishRecrop} onCancel={closeRecrop} />}
