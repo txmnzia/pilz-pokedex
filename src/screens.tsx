@@ -365,10 +365,6 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
     </div>
   );
 }
-/** Which Pokedex button does what while a dialog is open (the dialogs have no on-screen buttons). */
-function KeyHint({ items }: { items: string[][] }) {
-  return <div className="keyhint">{items.map(([k, v]) => <span key={k}><b>{k}</b>{v}</span>)}</div>;
-}
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
 function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
@@ -396,7 +392,6 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
         </div>
         <p className="m0 cmplat"><i>{sp.latin}</i></p>
       </div>
-      <KeyHint items={[["OK", ctx.t("itsIt")], [ctx.t("back"), ctx.t("cancel")]]} />
     </div>
   );
 }
@@ -429,7 +424,6 @@ export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src
           onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={(_, px) => setArea(px)} />
       </div>
       <p className="crophint">{ctx.t("cropHint")}</p>
-      <KeyHint items={[["OK", ctx.t("useCrop")], [ctx.t("back"), ctx.t("cancel")], ...(onOther ? [[ctx.t("catch"), ctx.t("otherPhoto")]] : [])]} />
     </div>
   );
 }

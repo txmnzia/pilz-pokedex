@@ -153,7 +153,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 - Dialogs use the Pokedex buttons (v0.16.1, Sam): NO on-screen buttons in the cropper, the comparison screen or the full-screen
   photo. `src/lib/overlay.ts` (`useOverlay`): while a dialog is open it owns the hardware buttons (all others are swallowed):
   OK = validate (Valider / C'EST LUI), BACK = cancel, yellow CATCH = other photo (cropper in the catch flow only),
-  left/right = reference photos. A `KeyHint` line at the bottom of the dialog says which button does what.
+  left/right = reference photos. No legend on screen (Sam).
   The "are you sure" alert (switch / keep) still has on-screen buttons (not asked yet).
 - Compare before confirming (v0.13.0, Sam, artifact FVjK4vRPwvwKMifPhwEX2T): each suggestion shows a reference photo;
   tapping it opens a comparison (your photo | reference photos with arrows/swipe, spore/hymenium/stem badges,
