@@ -1,4 +1,4 @@
-// Builds public/models/fungi-labels.json for the on-device photo identifier.
+// Builds data/models/species-classifiers/fungi-labels.json for the on-device photo identifier.
 // Model: mlgraham/species-classifiers "fungi" (Apache-2.0), MobileNetV2 int8, 341 iNat2021 fungi species.
 //   Source: https://github.com/mlgraham/species-classifiers  models/students/fungi/
 //   fungi_int8.tflite sha256 273797691fabff2d1d7707fade66cc6d785541f9cb09060d3c6d6fe5bd42a47f
@@ -24,5 +24,5 @@ const labels = lines.map(l => {
   const latin = m ? m[1] : l;
   return { latin, common: m ? m[2] : "", eu: (counts[latin] ?? 0) >= 50 || dex.has(latin) };
 });
-await writeFile("public/models/fungi-labels.json", JSON.stringify(labels));
+await writeFile("data/models/species-classifiers/fungi-labels.json", JSON.stringify(labels));
 console.log(`${labels.length} labels, ${labels.filter(l => l.eu).length} European`);

@@ -2,7 +2,7 @@
 # LiteRT.js 2.6 rejects a dynamic batch dim, so every tensor shape_signature batch -1 is set to 1 (shape is already 1).
 # Source model: github.com/mlgraham/species-classifiers models/students/fungi/fungi_int8.tflite (Apache-2.0)
 #   in sha256 273797691fabff2d1d7707fade66cc6d785541f9cb09060d3c6d6fe5bd42a47f -> out 9ce7af6858485ee1f17b1d12b47d9ee61125e9697d4b19973cded1b8282acccf
-# Usage: python3 -I scripts/fix-model-batch.py in.tflite public/models/fungi_int8.tflite
+# Usage: python3 -I scripts/fix-model-batch.py in.tflite data/models/species-classifiers/fungi_int8.tflite
 import sys, struct, hashlib, tflite
 src, dst = sys.argv[1], sys.argv[2]
 buf = bytearray(open(src, "rb").read())

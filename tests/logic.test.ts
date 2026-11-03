@@ -136,24 +136,34 @@ describe("prefs", () => {
   });
 });
 
-import { cropBox, rankGuesses } from "../src/lib/rank";
+import { cropBox, rankGuesses, softmax } from "../src/lib/rank";
 describe("photo identifier post-processing", () => {
   const labels = [{ latin: "A a", common: "", eu: true }, { latin: "B b", common: "", eu: false }, { latin: "C c", common: "", eu: true }];
   it("drops non-European classes and renormalises", () => {
-    const g = rankGuesses([64, 128, 64], labels);
+    const g = rankGuesses([0.25, 0.5, 0.25], labels);
     expect(g.map(x => x.latin)).toEqual(["A a", "C c"]);
     expect(g[0].p).toBeCloseTo(0.5);
   });
-  it("empty when nothing European scores", () => expect(rankGuesses([0, 255, 0], labels)).toEqual([]));
-  it("centre crop matches the model card (183 -> 160)", () => {
-    expect(cropBox(4000, 3000)).toMatchObject({ sh: 183, sw: 244, x: 42, y: 11, size: 160 });
+  it("empty when nothing European scores", () => expect(rankGuesses([0, 1, 0], labels)).toEqual([]));
+  it("adds model labels that are synonyms of one species", () => {
+    const syn = [{ latin: "A a", common: "", eu: true }, { latin: "C c", common: "", eu: true }, { latin: "A a", common: "", eu: true }];
+    const g = rankGuesses([0.3, 0.4, 0.3], syn);
+    expect(g[0]).toMatchObject({ latin: "A a" }); expect(g[0].p).toBeCloseTo(0.6);
   });
-  it("labels file covers the dex", async () => {
+  it("softmax is stable and sums to 1", () => {
+    const p = softmax([1000, 1000, 0]);
+    expect(p[0]).toBeCloseTo(0.5); expect(p[0] + p[1] + p[2]).toBeCloseTo(1);
+  });
+  it("centre crop matches the FungiTastic eval transform (439 -> 384)", () => {
+    expect(cropBox(4000, 3000)).toMatchObject({ sh: 439, sw: 585, x: 100, y: 27, size: 384 });
+  });
+  it("labels file is index-aligned with the model and covers most of the dex", async () => {
     const { readFileSync } = await import("node:fs");
-    const lab = JSON.parse(readFileSync("public/models/fungi-labels.json", "utf8"));
+    const lab = JSON.parse(readFileSync("public/models/fungitastic-labels.json", "utf8"));
+    expect(lab.length).toBe(2827);
     const latin = new Set(lab.map((l: { latin: string }) => l.latin));
     const core = data.species.filter(s => !s.extra);
-    expect(core.filter(s => latin.has(s.latin)).length).toBeGreaterThanOrEqual(29);
+    expect(core.filter(s => latin.has(s.latin)).length).toBeGreaterThanOrEqual(150);
   });
 });
 

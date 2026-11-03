@@ -29,7 +29,7 @@ const fr = {
   suggestion: "Suggestion", analysing: "Analyse de la photo…", probably: "Probablement :", notSure: "Pas sûr. Possibilités :",
   notInDex: "hors Pilzdex", idFailed: "Analyse impossible sur cet appareil.",
   idDisclaimer: "Suggestion automatique, souvent fausse. Vérifie toi-même.",
-  idCredit: "Suggestions photo : modèle « species-classifiers » fungi (M. Graham, Apache-2.0), entraîné sur iNaturalist 2021",
+  idCredit: "Suggestions photo : modèle FungiTastic DINOv3 ViT-S/16 (P. Bauriegel), poids dérivés de DINOv3 (Meta, licence DINOv3), entraîné sur FungiTastic (Picek et al., CC BY-NC-SA 4.0)",
 };
 type Dict = typeof fr;
 
@@ -62,7 +62,7 @@ const en: Dict = {
   suggestion: "Suggestion", analysing: "Analysing photo…", probably: "Probably:", notSure: "Not sure. Could be:",
   notInDex: "not in Pilzdex", idFailed: "Photo analysis is not available on this device.",
   idDisclaimer: "Automatic suggestion, often wrong. Check it yourself.",
-  idCredit: "Photo suggestions: species-classifiers fungi model (M. Graham, Apache-2.0), trained on iNaturalist 2021",
+  idCredit: "Photo suggestions: FungiTastic DINOv3 ViT-S/16 model (P. Bauriegel), weights derived from DINOv3 (Meta, DINOv3 License), trained on FungiTastic (Picek et al., CC BY-NC-SA 4.0)",
 };
 
 const de: Dict = {
@@ -94,7 +94,7 @@ const de: Dict = {
   suggestion: "Vorschlag", analysing: "Foto wird analysiert…", probably: "Wahrscheinlich:", notSure: "Unsicher. Möglich:",
   notInDex: "nicht im Pilzdex", idFailed: "Fotoanalyse auf diesem Gerät nicht verfügbar.",
   idDisclaimer: "Automatischer Vorschlag, oft falsch. Selbst prüfen.",
-  idCredit: "Fotovorschläge: species-classifiers-Pilzmodell (M. Graham, Apache-2.0), trainiert mit iNaturalist 2021",
+  idCredit: "Fotovorschläge: Modell FungiTastic DINOv3 ViT-S/16 (P. Bauriegel), Gewichte aus DINOv3 (Meta, DINOv3-Lizenz), trainiert mit FungiTastic (Picek et al., CC BY-NC-SA 4.0)",
 };
 
 export const STRINGS: Record<Lang, Dict> = { fr, en, de };
