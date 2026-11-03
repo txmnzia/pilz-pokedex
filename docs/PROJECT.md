@@ -2,7 +2,7 @@
 
 Everything agreed with Sam so far, so the next session does not re-ask or re-litigate. `CLAUDE.md` is the short
 operational version (map, hard rules, iOS notes); this file is the why, the decisions and the backlog.
-State at writing: v0.15.0 (181 dex species, 168 lookalikes, 11 rares; FungiTastic identifier), live at https://txmnzia.github.io/pilz-pokedex/ (deploy from `main` via Actions).
+State at writing: v0.16.3 (349 dex species incl. the former lookalikes, 451 rares; FungiTastic identifier), live at https://txmnzia.github.io/pilz-pokedex/ (deploy from `main` via Actions).
 
 ## 1. Working with Sam
 
@@ -171,6 +171,10 @@ Code hygiene
 - [ ] Dead CSS from earlier iterations: `.lk*` (old lookalike tiles), `.edpill*`, LED colour vars `--ed/--none/--tox/
       --dead`. Remove in one pass and re-run `tests/ui/fit-check.cjs`.
 - [ ] `design/icons.html` still shows superseded LED options; mark it as historical or delete.
+
+- [x] v0.16.3 (Sam): everything counts in one total "X attrapés" (no x/N); lookalikes numbered 182-349 in the dex.
+      Options offered: lookalikes as dex 182-349 + "X attrapés" (chosen), separate counters, single total keeping
+      EX numbers, rename only. Regions keep x/y; ask Sam if he wants them as plain counts too.
 
 Sam's side (not code)
 - [ ] Migration `supabase/migrations/0004_sort.sql` (sort pref sync): Sam never confirmed running it (0003 is run).

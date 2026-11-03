@@ -270,7 +270,7 @@ export default function App() {
       <Device hw={hw} ledFlash={flash} status={status} pageEnabled={effectiveView === "entry"}
         catchEnabled={signedIn && all.length > 0}
         onCatchFile={f => { const o = topOverlay(); if (o) o.other?.(f); else startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null); }}
-        labels={{ a: t("catch"), b: t("back"), page: t("page"), counter: `${core.filter(s => caught.has(s.inat)).length}/${core.length || 30}`, counterSub: t("caught") }}>
+        labels={{ a: t("catch"), b: t("back"), page: t("page"), counter: String(all.filter(s => caught.has(s.inat)).length), counterSub: t("caught") }}>
         {screen}
         {recrop && <Cropper ctx={ctx} src={recrop.url} onDone={finishRecrop} onCancel={closeRecrop} />}
         {toast && <div className="toast">{toast}</div>}

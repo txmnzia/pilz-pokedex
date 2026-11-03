@@ -442,7 +442,9 @@ const out = {
     names_edibility_morphology: "Wikidata (CC0); edibility conflicts resolved with mycodb.fr",
     text: "Wikipedia FR/EN/DE (CC BY-SA 4.0), see text.<lang>.url",
   },
-  species: [...core.map((e, i) => ({ no: i + 1, extra: false, ...e })), ...keptExtras.map((e, i) => ({ no: null, ex: i + 1, extra: true, ...e }))]
+  // v0.16.3 (Sam): lookalikes are normal dex species, numbered after the core (182-349 at the time); `lookalikeOnly`
+  // records why they are in. On the next run they are part of `keep` (stable numbers), so the dex only grows.
+  species: [...core.map((e, i) => ({ no: i + 1, extra: false, ...e })), ...keptExtras.map((e, i) => ({ no: core.length + i + 1, extra: false, lookalikeOnly: true, ...e }))]
     .map(({ lookalikeCandidates, commonNames, inatNames, sites, ...e }) => e),
 };
 await mkdir("public/data", { recursive: true });

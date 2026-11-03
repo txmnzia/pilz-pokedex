@@ -36,10 +36,10 @@ describe("shapeOf", () => {
 });
 
 describe("species data", () => {
-  it("has 100 to 200 core species numbered 1..N (issue #2), the original 30 keep their numbers", () => {
+  it("has 300 to 400 dex species numbered 1..N (v0.16.3: lookalikes numbered after the core), the original 30 keep their numbers", () => {
     const core = data.species.filter(s => !s.extra);
-    expect(core.length).toBeGreaterThanOrEqual(100);
-    expect(core.length).toBeLessThanOrEqual(200);
+    expect(core.length).toBeGreaterThanOrEqual(300);
+    expect(core.length).toBeLessThanOrEqual(400);
     expect(core.map(s => s.no)).toEqual(Array.from({ length: core.length }, (_, i) => i + 1));
     expect(core.find(s => s.no === 1)?.latin).toBe("Amanita muscaria");
     expect(core.find(s => s.latin === "Gyromitra esculenta")?.edibility).toBe("deadly");
