@@ -33,22 +33,43 @@ async function get(url) {
   throw new Error(`gave up: ${url}`);
 }
 const qs = o => new URLSearchParams(o).toString();
-const labels = JSON.parse(await readFile("data/models/species-classifiers/fungi-labels.json", "utf8"));
-const dex = new Set(JSON.parse(await readFile("public/data/species.json", "utf8")).species.map(s => s.latin));
-const cands = labels.filter(l => l.eu && !dex.has(l.latin));
+// v0.15.2 (Sam): candidates = species the photo model (FungiTastic) knows that are not in the Pilzdex data, mushroom
+// classes only (+ ALSO), with at least MIN_OBS research-grade observations in France + Germany ("common here").
+// Every rare from an earlier list is kept (finds may point to it).
+const MIN_OBS = 20;
+const dexIds = new Set(JSON.parse(await readFile("public/data/species.json", "utf8")).species.map(s => s.inat));
+const ftMap = JSON.parse(await readFile("data/model-maps/fungitastic.json", "utf8")); // model label -> iNat id
+const modelIds = new Map();
+for (const [label, id] of Object.entries(ftMap)) if (id && !dexIds.has(id)) (modelIds.get(id) ?? modelIds.set(id, []).get(id)).push(label);
+const counts = new Map();
+for (let page = 1; page < 40; page++) {
+  const r = await get(`https://api.inaturalist.org/v1/observations/species_counts?${qs({ place_id: "6753,7207", taxon_id: 47170, quality_grade: "research", per_page: 500, page })}`);
+  for (const x of r.results) counts.set(x.taxon.id, x);
+  if (r.results.length < 500) break;
+}
+let previous = [];
+try { previous = JSON.parse(await readFile("public/data/rares.json", "utf8")).rares; } catch {}
+const keep = new Set(previous.map(e => e.inat));
+const cands = [...new Set([...modelIds.keys(), ...keep])].filter(id => {
+  if (dexIds.has(id)) return false;
+  if (keep.has(id)) return true;
+  const c = counts.get(id);
+  if (!c) return false;
+  return (ALSO.has(c.taxon.name) || c.taxon.ancestor_ids?.some(a => MUSHROOMS.includes(a))) && c.count >= MIN_OBS;
+});
 const out = [];
-for (const l of cands) {
-  const r = await get(`https://api.inaturalist.org/v1/taxa?${qs({ q: l.latin, rank: "species", per_page: 5 })}`);
-  let t = r.results.find(x => x.name === l.latin) ?? r.results.find(x => x.matched_term === l.latin);
-  if (!t) { process.stdout.write("?"); continue; }
-  if (!ALSO.has(l.latin) && !t.ancestor_ids?.some(a => MUSHROOMS.includes(a))) { process.stdout.write("x"); continue; } // lichens, moulds...
-  const names = {}, nameSource = {};
+for (let i = 0; i < cands.length; i += 30) {
+  const ids = cands.slice(i, i + 30);
+  const by = {};
   for (const lang of LANGS) {
-    const lr = await get(`https://api.inaturalist.org/v1/taxa/${t.id}?${qs({ locale: lang })}`);
-    const n = lr.results[0]?.preferred_common_name;
-    if (n) { names[lang] = n.charAt(0).toUpperCase() + n.slice(1); nameSource[lang] = "inaturalist"; }
+    const r = await get(`https://api.inaturalist.org/v1/taxa/${ids.join(",")}?${qs({ locale: lang, per_page: 30 })}`);
+    for (const t of r.results) {
+      const e = by[t.id] ??= { inat: t.id, latin: t.name, modelLatin: (modelIds.get(t.id) ?? [t.name]).join(" / "), obsFrDe: counts.get(t.id)?.count ?? 0, names: {}, nameSource: {} };
+      const n = t.preferred_common_name;
+      if (n) { e.names[lang] = n.charAt(0).toUpperCase() + n.slice(1); e.nameSource[lang] = "inaturalist"; }
+    }
   }
-  out.push({ inat: t.id, latin: l.latin, modelLatin: l.latin, names, nameSource });
+  out.push(...Object.values(by));
   process.stdout.write(".");
 }
 // Wikidata: common names (P1843) and Wikipedia links, by iNat id
@@ -66,7 +87,7 @@ for (let i = 0; i < out.length; i += 50) {
 for (const e of out) for (const lang of LANGS) if (!e.names[lang]) { e.names[lang] = e.latin; e.nameSource[lang] = "latin"; }
 out.sort((a, b) => a.latin.localeCompare(b.latin));
 await writeFile("public/data/rares.json", JSON.stringify({ generatedAt: new Date().toISOString(),
-  sources: { list: "photo model labels (species-classifiers fungi, European only) minus the Pilzdex species", names: "iNaturalist localized common names, then Wikidata P1843; Latin when none" },
+  sources: { list: `photo model labels (FungiTastic) minus the Pilzdex species, mushroom classes, >= ${MIN_OBS} research-grade observations in FR + DE; earlier rares kept`, names: "iNaturalist localized common names, then Wikidata P1843; Latin when none" },
   rares: out }, null, 1));
 const cov = l => out.filter(e => e.nameSource[l] !== "latin").length;
-console.log(`\n${out.length} rares (of ${cands.length} model labels not in the dex); common names: fr ${cov("fr")}, en ${cov("en")}, de ${cov("de")}`);
+console.log(`\n${out.length} rares (of ${cands.length} candidates); common names: fr ${cov("fr")}, en ${cov("en")}, de ${cov("de")}`);
