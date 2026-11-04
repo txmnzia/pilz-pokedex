@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
-import { topOverlay } from "./lib/overlay";
+import { screenOk, topOverlay } from "./lib/overlay";
 import { RightPanel, type KeyItem } from "./components/RightPanel";
 import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
@@ -163,7 +163,7 @@ export default function App() {
     down: () => { if (!topOverlay()) scrollBy(180); },
     left: () => { const o = topOverlay(); if (o) o.left?.(); else if (effectiveView === "entry") step(-1); },
     right: () => { const o = topOverlay(); if (o) o.right?.(); else if (effectiveView === "entry") step(1); },
-    ok: () => { const o = topOverlay(); if (o) o.ok?.(); else if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
+    ok: () => { const o = topOverlay(), so = screenOk(); if (o) o.ok?.(); else if (so && effectiveView === "catch") so(); else if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
     b: () => {
       const o = topOverlay(); if (o) { o.back?.(); return; }
       if (effectiveView === "entry") {
