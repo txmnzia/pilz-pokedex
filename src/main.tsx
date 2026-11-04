@@ -6,6 +6,22 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
 
+// v0.16.7 (Sam: "after a reload the UI is shifted up under the status bar"). On iOS the page is 100lvh, taller than the
+// visible area, so the window can scroll: Safari restores the old scroll position on reload, and focusing an input (the
+// species search) scrolls the window and leaves it there when the keyboard closes. The app never scrolls the window
+// itself (everything scrolls inside the LCD), so pin it back to the top whenever nothing is being typed.
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+const pinTop = () => {
+  const a = document.activeElement;
+  if (a instanceof HTMLInputElement || a instanceof HTMLTextAreaElement || a instanceof HTMLSelectElement) return;
+  if (window.scrollY || window.scrollX) window.scrollTo(0, 0);
+};
+addEventListener("pageshow", pinTop);
+addEventListener("load", pinTop);
+document.addEventListener("focusout", () => setTimeout(pinTop, 120));
+visualViewport?.addEventListener("resize", () => setTimeout(pinTop, 120));
+addEventListener("scroll", () => setTimeout(pinTop, 250), { passive: true });
+
 // Drop the cache-busting ?v= left by a forced update (keeps any other parameter such as ?debug=1)
 { const u = new URL(location.href); if (u.searchParams.has("v")) { u.searchParams.delete("v"); history.replaceState(null, "", u.toString()); } }
 
@@ -57,7 +73,7 @@ if (new URLSearchParams(location.search).has("debug")) {
   const show = () => {
     const cs = getComputedStyle(probe), dev = document.getElementById("device")?.getBoundingClientRect();
     box.textContent = [
-      `innerH ${innerHeight}  vvH ${Math.round(visualViewport?.height ?? 0)}  screenH ${screen.height}`,
+      `scrollY ${Math.round(scrollY)}  innerH ${innerHeight}  vvH ${Math.round(visualViewport?.height ?? 0)}  screenH ${screen.height}`,
       `safe-area t ${cs.paddingTop} b ${cs.paddingBottom}`,
       units.map(([u, el]) => `${u} ${Math.round(el.getBoundingClientRect().height)}`).join("  ") +
         `  vvTop ${Math.round(visualViewport?.offsetTop ?? 0)}  docH ${document.documentElement.clientHeight}`,
