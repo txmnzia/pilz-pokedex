@@ -95,6 +95,10 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   iOS only (`@supports (-webkit-touch-callout: none)`; Android keeps 100dvh, its address bar does not overlay the page):
   like the eki app, `#root` is 100lvh (runs under the floating URL bar) and `#device` padding-bottom is
   `max(10px + safe-area, 100lvh - 100dvh - 10px)`: controls end ~17pt above the URL bar (iPhone: lvh 754, dvh 654, gap 27pt). `?debug=1` prints innerHeight / visualViewport / safe-area / #device rect.
+- Window scroll pinned to the top (v0.16.7, Sam: UI shifted up under the status bar after a reload): the 100lvh page is
+  taller than the visible area, Safari restored the old scroll position and inputs (species search) scrolled the window.
+  `src/main.tsx`: `history.scrollRestoration = "manual"` + `scrollTo(0, 0)` on load/pageshow/focusout/viewport resize/
+  scroll unless an input is focused. `?debug=1` shows `scrollY`.
 - Caching is NETWORK FIRST (Sam's choice): index.html is not precached; navigations fetch from the network with
   `cache: no-store` and fall back to the last good copy only offline (4 s timeout). JS/CSS are hashed. The worker has
   `skipWaiting` + `clientsClaim` (without them new versions sat in 'waiting' forever: the root cause of stuck phones).
