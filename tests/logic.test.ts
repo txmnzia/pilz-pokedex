@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { seasonLabel, shapeOf, lookalikesOf, dexLabel, textFor } from "../src/lib/species";
+import { seasonLabel, shapeOf, lookalikesOf, dexLabel, textFor, searchSpecies, fold } from "../src/lib/species";
 import { mergeFinds, newFind, deleteFind, findsBySpecies } from "../src/lib/finds";
 import { STRINGS, defaultLang } from "../src/lib/i18n";
 import type { Find, Species, SpeciesFile } from "../src/lib/types";
@@ -303,5 +303,26 @@ describe("reference photos (v0.13.0)", () => {
     // hosted file, or (rares added in v0.15.2) a photo on iNaturalist's open-data bucket
     const there = (f: string) => (f.startsWith("https://") ? f.startsWith("https://inaturalist-open-data.s3.amazonaws.com/photos/") : existsSync(`public/refs/${f}`));
     expect(all.filter(p => !ok.has(p.lic) || !p.by || !there(p.f))).toEqual([]);
+  });
+});
+
+describe("species picker search", () => {
+  const data = JSON.parse(readFileSync("public/data/species.json", "utf8")) as SpeciesFile;
+  const all = data.species;
+  it("ignores accents and case", () => {
+    expect(fold("Cèpe Röhrling")).toBe("cepe rohrling");
+    expect(searchSpecies("CEPE", all, "fr").map(s => s.latin)).toContain("Boletus edulis");
+  });
+  it("finds by Latin and other languages", () => {
+    expect(searchSpecies("boletus edulis", all, "fr")[0].latin).toBe("Boletus edulis");
+    expect(searchSpecies("steinpilz", all, "fr").map(s => s.latin)).toContain("Boletus edulis");
+  });
+  it("puts names starting with the query first", () => {
+    const r = searchSpecies("girol", all, "fr");
+    expect(r[0].names.fr.toLowerCase().startsWith("girol")).toBe(true);
+  });
+  it("needs every word and returns nothing for an empty query", () => {
+    expect(searchSpecies("  ", all, "fr")).toEqual([]);
+    expect(searchSpecies("cepe zzzz", all, "fr")).toEqual([]);
   });
 });

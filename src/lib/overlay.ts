@@ -12,3 +12,12 @@ export function useOverlay(keys: OverlayKeys) {
   const ref = useRef(keys); ref.current = keys;
   useEffect(() => { stack.push(ref); return () => { const i = stack.indexOf(ref); if (i >= 0) stack.splice(i, 1); }; }, []);
 }
+
+/** A screen's own OK action (v0.16.6: the catch screen saves with OK), used when no dialog is open. Other keys keep their
+ *  normal job (D-pad scrolls, BACK leaves the screen). */
+const okStack: { current: () => void }[] = [];
+export const screenOk = (): (() => void) | null => okStack[okStack.length - 1]?.current ?? null;
+export function useOkKey(fn: () => void) {
+  const ref = useRef(fn); ref.current = fn;
+  useEffect(() => { okStack.push(ref); return () => { const i = okStack.indexOf(ref); if (i >= 0) okStack.splice(i, 1); }; }, []);
+}

@@ -142,6 +142,28 @@ export function lookalikesOf(sp: Species, all: Species[]): Species[] {
     .sort((a, b) => (a.edibility ? danger[a.edibility] : 2) - (b.edibility ? danger[b.edibility] : 2));
 }
 
+/** Lowercase without accents or umlauts ("Cèpe" -> "cepe", "Röhrling" -> "rohrling") for search. */
+export const fold = (x: string) => x.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+/** Species picker search (v0.16.6, Sam): every word of the query must appear in one of the FR/EN/DE names or the Latin
+ *  name, accents ignored. Name in the UI language starting with the query first, then any word starting with it, then the
+ *  rest; ties by dex number, rares last. */
+export function searchSpecies(query: string, all: Species[], lang: Lang, limit = 8): Species[] {
+  const words = fold(query).split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const q = words.join(" ");
+  const scored: [number, Species][] = [];
+  for (const sp of all) {
+    const own = fold(sp.names[lang] ?? "");
+    const hay = fold([sp.names.fr, sp.names.en, sp.names.de, sp.latin].filter(Boolean).join(" | "));
+    if (!words.every(w => hay.includes(w))) continue;
+    const score = own.startsWith(q) ? 0 : fold(sp.latin).startsWith(q) ? 1 : new RegExp(`(^|[\\s|'-])${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`).test(hay) ? 2 : 3;
+    scored.push([score, sp]);
+  }
+  const rank = (sp: Species) => (sp.rare != null ? 1e6 : 0) + (sp.no ?? 9999);
+  return scored.sort((a, b) => a[0] - b[0] || rank(a[1]) - rank(b[1])).slice(0, limit).map(x => x[1]);
+}
+
 /** Text in the wanted language, else the first available, with the language it came from. */
 export function textFor(sp: Species, lang: Lang) {
   for (const l of [lang, "en", "fr", "de"] as Lang[]) {

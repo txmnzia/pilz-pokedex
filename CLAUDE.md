@@ -108,7 +108,7 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
 
 ## UX decisions (v0.6.0, Sam)
 - Catch form: only the photo and the species. Date (EXIF or today) and GPS (EXIF or current position) are saved
-  automatically and shown as one line; no place/note fields. Tap the photo = crop window with Cancel / Other photo / Use.
+  automatically (not shown since v0.16.0); no place/note fields. Tap the photo = crop window with Cancel / Other photo / Use.
 - Filters: All / Caught / Missing + the 4 edibility icons on ONE line on every screen size (measured to fit iPhone SE,
   iPhone 13, Galaxy S22 in fr/en/de; under 380px the icon chips lose their boxes).
 - Edibility (v0.8.0, design/badges.html option C, artifact https://claude.ai/artifact/PQszbEioeKok55gZxnm5iW): Pokédex
@@ -156,6 +156,13 @@ Design source: `design/mockup.html` (artifact https://claude.ai/artifact/U6nJ9Kc
   left/right = reference photos. v0.16.4 (Sam): small drawings of the buttons (`OkKey`, `BackKey`), v0.16.5 one LCD ink colour, no blue or shadow (Game Boy screen): cropper hint "Pince ou
   glisse puis [OK]", comparison footer "[OK] Valider  [<-] Precedent". No full key legend.
   The "are you sure" alert (switch / keep) still has on-screen buttons (not asked yet).
+- Species picker (v0.16.6, Sam, design/picker.html option A, artifact AZjxfntVqyZZMdkPd5VwtE): no dropdown and no
+  ENREGISTRER button. The "Quelle espece est-ce ?" frame holds everything: suggestions, the chosen species (kept visible
+  when picked from the search), "AUTRE ESPECE" search (`searchSpecies` in `src/lib/species.ts`: every word must appear in
+  the FR/EN/DE or Latin name, accents ignored, own-language name starting with the query first, dex before rares), and
+  "SOSIES" shortcuts (lookalikes of the top 2 suggestions, or of the page's species when verifying) while the field is
+  empty. Same row look everywhere; tap = comparison (no % for search rows), or direct pick if there is no photo yet.
+  The hardware OK saves (`useOkKey` in `src/lib/overlay.ts`, used when no dialog is open); footer "[OK] Enregistrer".
 - Compare before confirming (v0.13.0, Sam, artifact FVjK4vRPwvwKMifPhwEX2T): each suggestion shows a reference photo;
   tapping it opens a comparison (your photo | reference photos with arrows/swipe, spore/hymenium/stem badges,
   RETOUR / C'EST LUI). Tapping any photo opens it full screen. From a species page the "are you sure" alert shows

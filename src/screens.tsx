@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { CaughtBall, EdBadge, EdIcon, Silhouette } from "./components/Art";
-import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
+import { dexLabel, habitatFor, labelIn, lookalikesOf, REGION_MIN_OBS, searchSpecies, seasonLabel, shapeOf, shortNo, textFor } from "./lib/species";
 import { photoUrlOf, thumbUrlOf } from "./lib/sync";
 import { MAX_PHOTOS, photosOf } from "./lib/finds";
 import { combineGuesses, CONFIDENT, mismatch, type Guess } from "./lib/rank";
@@ -9,7 +9,7 @@ import type { Identification } from "./lib/identify";
 import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
 import { shortMorph, SPORE_COLOR } from "./lib/morph";
-import { useOverlay } from "./lib/overlay";
+import { useOkKey, useOverlay } from "./lib/overlay";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, FindPhoto, Lang, MorphKey, RefMap, Species } from "./lib/types";
 
@@ -370,7 +370,7 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
 const OkKey = () => <span className="kOk" aria-label="OK">OK</span>;
 const BackKey = () => <span className="kBack" aria-label="←"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter"><path d="M10 6l-6 6 6 6M4 12h16" /></svg></span>;
 /** Compare your photo with reference photos of a suggestion before choosing it. Credits live in Settings. */
-function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
+function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: Species; p: number | null; mine: string; onPick(): void; onClose(): void; onOpen(shots: RefShot[]): void }) {
   const srcs = refsOf(ctx, sp);
   const [k, setK] = useState(0);
   const x0 = useRef<number | null>(null);
@@ -378,7 +378,7 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
   useOverlay({ ok: onPick, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) });
   return (
     <div className="compare" role="dialog" aria-label={ctx.t("compare")}>
-      <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span className="cmpr"><b>{Math.round(p * 100)}%</b>{badge(ctx, sp.edibility)}</span></div>
+      <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span className="cmpr">{p != null && <b>{Math.round(p * 100)}%</b>}{badge(ctx, sp.edibility)}</span></div>
       <div className="cmpbody">
         <div className="pair">
           <figure><button type="button" className="refimg" onClick={() => onOpen([{ s: mine }])} aria-label={ctx.t("enlarge")}><img src={mine} alt="" /></button><figcaption>{ctx.t("yourPhoto")}</figcaption></figure>
@@ -451,7 +451,8 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const [identErr, setIdentErr] = useState(false);
   const [known, setKnown] = useState<ReadonlySet<string> | null>(null);
   const [dismissed, setDismissed] = useState<string | null>(null);
-  const [compare, setCompare] = useState<{ sp: Species; p: number } | null>(null);
+  const [compare, setCompare] = useState<{ sp: Species; p: number | null } | null>(null);
+  const [query, setQuery] = useState("");
   const [big, setBig] = useState<RefShot[] | null>(null); // photos shown full screen
   const verify = initial != null;
   const nextKey = useRef(1);
@@ -579,8 +580,7 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   const warn = ident === "done" && result && sel && verify ? mismatch(result.guesses, sel.latin, result.known) : null;
   const warnKey = warn && sel ? `${sel.inat}:${warn.latin}` : null;
   const warnSp = warn ? byLatin.get(warn.latin) : undefined;
-  const sorted = [...ctx.all].sort((a, b) => (a.extra === b.extra ? (a.no ?? a.ex ?? 0) - (b.no ?? b.ex ?? 0) : a.extra ? 1 : -1));
-  const rareOpts = ctx.all.filter(sp => sp.rare != null).sort((a, b) => name(a, ctx.lang).localeCompare(name(b, ctx.lang), ctx.lang));
+  useOkKey(() => submit());
   const submit = () => {
     if (!ready.length) { setMsg(ctx.t("photoNeeded")); return; }
     if (species == null) { setMsg(ctx.t("pickSpecies")); return; }
@@ -634,37 +634,48 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
     </div>}
   </>;
 
+  // one row look for suggestions, shortcuts and search results (v0.16.6, Sam): tap = compare (or pick when no photo yet)
+  const row = (sp: Species, p: number | null, latin: boolean) => (
+    <button type="button" key={sp.inat} className="guess withref" aria-pressed={species === sp.inat}
+      onClick={() => (cover ? setCompare({ sp, p }) : setSpecies(sp.inat))}>
+      <RefThumb ctx={ctx} sp={sp} />
+      <span className="gname"><span className="gn">{name(sp, ctx.lang)}</span>{latin && <small className="glat">{sp.latin}</small>}</span>
+      <span className="grt">{p != null ? <b>{Math.round(p * 100)}% <i aria-hidden="true">›</i></b> : <b><i aria-hidden="true">›</i></b>}{badge(ctx, sp.edibility)}</span></button>);
+  const sugg = ident === "done" && result ? result.guesses.slice(0, 3) : [];
+  const suggSp = sugg.map(g => byLatin.get(g.latin)).filter((x): x is Species => !!x);
+  const listed = new Set(suggSp.map(x => x.inat));
+  // the chosen species stays visible even when it came from the search and the field was cleared
+  const chosenRow = sel && !listed.has(sel.inat) && !query.trim() ? sel : null;
+  if (chosenRow) listed.add(chosenRow.inat);
+  const shortcuts = query.trim() ? [] : [...new Map([...(sel && verify ? [sel] : []), ...suggSp.slice(0, 2)]
+    .flatMap(x => lookalikesOf(x, ctx.all)).filter(x => !listed.has(x.inat)).map(x => [x.inat, x] as const)).values()].slice(0, 4);
+  const found = searchSpecies(query, ctx.all, ctx.lang, 12).filter(x => !listed.has(x.inat)).slice(0, 8);
   const formPart = <>
-    {!verify && ident !== "idle" && (
-      <div className="box ident" aria-live="polite">
-        <h3>{ctx.t("whichSpecies")}</h3>
-        {ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
-        {ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
-        {ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
-          <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSureTap")}{done.length > 1 ? <small> ({fill(ctx.t("fromPhotos"), { n: String(done.length) })})</small> : null}</p>
-          <div className="guesses">
-            {result.guesses.slice(0, 3).map(g => {
-              const sp = byLatin.get(g.latin);
-              const pct = `${Math.round(g.p * 100)}%`;
-              return sp
-                ? <button type="button" key={g.latin} className="guess withref" aria-pressed={species === sp.inat} onClick={() => setCompare({ sp, p: g.p })}>
-                    <RefThumb ctx={ctx} sp={sp} />
-                    <span className="gname">{name(sp, ctx.lang)}</span>
-                    <span className="grt"><b>{pct} <i aria-hidden="true">›</i></b>{badge(ctx, sp.edibility)}</span></button>
-                : <div key={g.latin} className="guess off">
-                    <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{pct}</b></div>;
-            })}
-          </div>
-        </>)}
-      </div>
-    )}
-    <div className="field"><label htmlFor="spc">{ctx.t("species")}</label>
-      <select id="spc" value={species ?? ""} onChange={e => setSpecies(e.target.value ? Number(e.target.value) : null)}>
-        {species == null && <option value="">{ctx.t("choose")}</option>}
-        {sorted.filter(sp => sp.rare == null).map(sp => <option key={sp.inat} value={sp.inat}>{dexLabel(sp)} {name(sp, ctx.lang)}</option>)}
-        {rareOpts.length > 0 && <optgroup label={ctx.t("raresHead")}>{rareOpts.map(sp => <option key={sp.inat} value={sp.inat}>{name(sp, ctx.lang)} ({sp.latin})</option>)}</optgroup>}
-      </select></div>
-    <button className="cta" type="button" onClick={submit}>{ctx.t("save")}</button>
+    <div className="box ident picker" aria-live="polite">
+      <h3>{ctx.t("whichSpecies")}</h3>
+      {!verify && ident === "busy" && <p className="m0">{ctx.t("analysing")}</p>}
+      {!verify && ident === "error" && <p className="m0">{ctx.t("idFailed")}</p>}
+      {!verify && ident === "done" && result && (result.guesses.length === 0 ? <p className="m0">{ctx.t("notSure")}</p> : <>
+        <p className="m0">{result.guesses[0].p >= CONFIDENT ? ctx.t("probably") : ctx.t("notSureTap")}{done.length > 1 ? <small> ({fill(ctx.t("fromPhotos"), { n: String(done.length) })})</small> : null}</p>
+        <div className="guesses">
+          {sugg.map(g => {
+            const sp = byLatin.get(g.latin);
+            return sp ? row(sp, g.p, false)
+              : <div key={g.latin} className="guess off">
+                  <span className="ed" /><span className="gname"><i>{g.latin}</i><small>{ctx.t("notInDex")}</small></span><b>{Math.round(g.p * 100)}%</b></div>;
+          })}
+        </div>
+      </>)}
+      {chosenRow && <div className="guesses">{row(chosenRow, null, true)}</div>}
+      <p className="psep">{ctx.t("otherSpecies")}</p>
+      <label className="search"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" /><path d="M10 10l4 4" /></svg>
+        <input type="search" value={query} placeholder={ctx.t("searchSpecies")} aria-label={ctx.t("searchSpecies")}
+          autoComplete="off" autoCorrect="off" spellCheck={false} enterKeyHint="search"
+          onChange={e => setQuery(e.target.value)} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); e.currentTarget.blur(); } }} /></label>
+      {query.trim() && <div className="guesses">{found.length ? found.map(sp => row(sp, null, true)) : <p className="m0 note">{ctx.t("noMatch")}</p>}</div>}
+      {shortcuts.length > 0 && <><p className="psep">{ctx.t("similarHead")}</p><div className="guesses">{shortcuts.map(sp => row(sp, null, true))}</div></>}
+      <p className="okfoot"><OkKey /> {ctx.t("saveFind")}</p>
+    </div>
     <p className="note" id="catchMsg" aria-live="polite">{msg}</p>
   </>;
 

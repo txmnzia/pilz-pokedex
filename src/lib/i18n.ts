@@ -28,7 +28,7 @@ const fr = {
   fromPhotoMeta: "Date et lieu repris de la photo.", fromPhotoDate: "Date reprise de la photo (pas de position enregistrée).", noPhotoMeta: "Pas de date dans la photo : vérifie la date.",
   suggestion: "Suggestion", analysing: "Analyse de la photo…", probably: "Probablement :", notSure: "Pas sûr. Possibilités :",
   notInDex: "hors Pilzdex", idFailed: "Analyse impossible sur cet appareil.",
-  whichSpecies: "Quelle espèce est-ce ?", notSureTap: "Pas sûr. Touche pour comparer.",
+  whichSpecies: "Quelle espèce est-ce ?", otherSpecies: "AUTRE ESPECE", searchSpecies: "Cherche un nom (français, latin…)", noMatch: "Aucune espèce trouvée", similarHead: "SOSIES", saveFind: "Enregistrer", notSureTap: "Pas sûr. Touche pour comparer.",
   idCredit: "Suggestions photo : modèle FungiTastic DINOv3 ViT-S/16 (P. Bauriegel), poids dérivés de DINOv3 (Meta, licence DINOv3), entraîné sur FungiTastic (Picek et al., CC BY-NC-SA 4.0)",
 };
 type Dict = typeof fr;
@@ -61,7 +61,7 @@ const en: Dict = {
   fromPhotoMeta: "Date and place taken from the photo.", fromPhotoDate: "Date taken from the photo (no location saved in it).", noPhotoMeta: "No date in the photo: check the date.",
   suggestion: "Suggestion", analysing: "Analysing photo…", probably: "Probably:", notSure: "Not sure. Could be:",
   notInDex: "not in Pilzdex", idFailed: "Photo analysis is not available on this device.",
-  whichSpecies: "Which species is it?", notSureTap: "Not sure. Tap to compare.",
+  whichSpecies: "Which species is it?", otherSpecies: "OTHER SPECIES", searchSpecies: "Search a name (English, Latin…)", noMatch: "No species found", similarHead: "LOOKALIKES", saveFind: "Save", notSureTap: "Not sure. Tap to compare.",
   idCredit: "Photo suggestions: FungiTastic DINOv3 ViT-S/16 model (P. Bauriegel), weights derived from DINOv3 (Meta, DINOv3 License), trained on FungiTastic (Picek et al., CC BY-NC-SA 4.0)",
 };
 
@@ -93,7 +93,7 @@ const de: Dict = {
   fromPhotoMeta: "Datum und Ort aus dem Foto übernommen.", fromPhotoDate: "Datum aus dem Foto übernommen (kein Ort gespeichert).", noPhotoMeta: "Kein Datum im Foto: Datum prüfen.",
   suggestion: "Vorschlag", analysing: "Foto wird analysiert…", probably: "Wahrscheinlich:", notSure: "Unsicher. Möglich:",
   notInDex: "nicht im Pilzdex", idFailed: "Fotoanalyse auf diesem Gerät nicht verfügbar.",
-  whichSpecies: "Welche Art ist das?", notSureTap: "Unsicher. Antippen zum Vergleichen.",
+  whichSpecies: "Welche Art ist das?", otherSpecies: "ANDERE ART", searchSpecies: "Namen suchen (deutsch, lateinisch…)", noMatch: "Keine Art gefunden", similarHead: "DOPPELGÄNGER", saveFind: "Speichern", notSureTap: "Unsicher. Antippen zum Vergleichen.",
   idCredit: "Fotovorschläge: Modell FungiTastic DINOv3 ViT-S/16 (P. Bauriegel), Gewichte aus DINOv3 (Meta, DINOv3-Lizenz), trainiert mit FungiTastic (Picek et al., CC BY-NC-SA 4.0)",
 };
 
