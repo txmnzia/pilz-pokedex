@@ -9,8 +9,9 @@ A Pokédex for the mushrooms I find around Berlin and Grenoble. Live: https://tx
   morphology, Berlin/Grenoble presence, Wikipedia text, and lookalikes that get their own page
 - Catch: one photo button (camera or library, chosen in the OS menu), crop and zoom on the mushroom, date + GPS from the
   photo when it is an older one. From a species page, a silent check warns only if the photo looks like another species. Local-first, synced to Supabase when signed in (magic link)
-- Photo suggestions on the phone, offline, no account: MobileNetV2 fungi model (species-classifiers by M. Graham,
-  Apache-2.0, iNaturalist 2021), European species only. Measured 74.6% top-1 / 85.8% top-3 on 232 recent photos. Suggestion only.
+- Photo suggestions on the phone, offline, no account: FungiTastic DINOv3 ViT-S/16 model (P. Bauriegel; DINOv3 License,
+  FungiTastic data CC BY-NC-SA 4.0), quantized to int8 (24 MB). Chosen after benchmarking 4 models on a 3,511 photo golden
+  set of recent iNaturalist photos (`scripts/golden.py`, `scripts/eval.py`): 60.7% top-1 / 73.3% top-3. Suggestion only.
 - Grid or list view, FR / EN / DE (set in Settings, kept per account)
 
 **Not an identification guide. Never eat a mushroom based on this app.**

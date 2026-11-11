@@ -41,9 +41,9 @@ State at writing: v0.16.3 (349 dex species incl. the former lookalikes, 451 rare
   reorder, v0.9.1, Sam; tap = crop, arrow keys move),
   identification combines all photos (geometric mean). Species page 1 is a gallery of every photo of every find.
   Migration `0003_photos.sql` has been run in Supabase (Sam, 2026-11-02), so all photos sync.
-- On-device identifier (LiteRT.js wasm, MobileNetV2 fungi model, Apache-2.0): suggestion only, European species only,
+- On-device identifier (LiteRT.js wasm, FungiTastic DINOv3 int8 model since v0.15.0/v0.15.1, see Data backlog): suggestion only, European species only,
   preselect only when p >= 0.5. From a species page it stays silent unless the photo clearly looks like another species
-  (`mismatch()`); from the list it suggests the top 3. Measured 74.6% top-1 / 85.8% top-3; re-measure after any
+  (`mismatch()`); from the list it suggests the top 3. Measured on the golden set 60.7% top-1 / 73.3% top-3 (old MobileNetV2: 74.6% on 232 photos, not comparable); re-measure after any
   preprocessing or model change.
 - Local-first: finds in localStorage, photos in IndexedDB, works offline; magic-link login syncs to Supabase
   (schema `pilz_pokedex`, bucket `pilz_pokedex`). Merges never drop local finds, deletes are soft, photo paths are
