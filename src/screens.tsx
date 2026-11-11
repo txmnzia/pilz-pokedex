@@ -9,7 +9,7 @@ import type { Identification } from "./lib/identify";
 import EasyCrop, { type Area } from "react-easy-crop";
 import { readExif } from "./lib/exif";
 import { shortMorph, SPORE_COLOR } from "./lib/morph";
-import { useOkKey, useOverlay } from "./lib/overlay";
+import { dlog, useOkKey, useOverlay } from "./lib/overlay";
 import type { StringKey } from "./lib/i18n";
 import type { Edibility, Find, FindPhoto, Lang, MorphKey, RefMap, Species } from "./lib/types";
 
@@ -352,7 +352,7 @@ function Lightbox({ srcs, onClose, ctx }: { srcs: RefShot[]; onClose(): void; ct
   }, [cur.b, bigOk]);
   const x0 = useRef<number | null>(null);
   const go = (d: number) => setI(k => (k + d + srcs.length) % srcs.length);
-  useOverlay({ ok: onClose, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) });
+  useOverlay({ ok: onClose, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) }, "lightbox");
   return (
     <div className="lightbox" role="dialog" aria-label={ctx.t("enlarge")} onClick={onClose}
       onTouchStart={e => { x0.current = e.touches[0].clientX; }}
@@ -375,7 +375,7 @@ function Compare({ ctx, sp, p, mine, onPick, onClose, onOpen }: { ctx: Ctx; sp: 
   const [k, setK] = useState(0);
   const x0 = useRef<number | null>(null);
   const go = (d: number) => setK(i => (i + d + srcs.length) % srcs.length);
-  useOverlay({ ok: onPick, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) });
+  useOverlay({ ok: onPick, back: onClose, left: () => srcs.length > 1 && go(-1), right: () => srcs.length > 1 && go(1) }, "compare");
   return (
     <div className="compare" role="dialog" aria-label={ctx.t("compare")}>
       <div className="titlebar"><span className="name">{name(sp, ctx.lang)}</span><span className="cmpr">{p != null && <b>{Math.round(p * 100)}%</b>}{badge(ctx, sp.edibility)}</span></div>
@@ -421,7 +421,7 @@ export function Cropper({ ctx, src, onDone, onCancel, onOther }: { ctx: Ctx; src
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [area, setArea] = useState<Area | null>(null);
-  useOverlay({ ok: () => { if (area) onDone(area); }, back: onCancel, other: onOther });
+  useOverlay({ ok: () => { if (area) onDone(area); }, back: onCancel, other: onOther }, "cropper");
   return (
     <div className="cropper" role="dialog" aria-label={ctx.t("crop")}>
       <div className="croparea">
@@ -497,6 +497,7 @@ export function Catch({ ctx, initial, startFile, onSave, onCancelEmpty }: { ctx:
   };
   /** New photo (replace = re-pick the original of an existing shot from the cropper's "Other photo"). */
   const pick = async (f: File | undefined, replace?: number) => {
+    dlog(`pick ${f ? `${f.type || "?"} ${Math.round(f.size / 1024)}k` : "none"}${replace != null ? " replace" : ""} shots ${shotsRef.current.length}`);
     if (!f) return;
     if (replace != null) {
       setShots(xs => xs.map(x => { if (x.key !== replace) return x; URL.revokeObjectURL(x.origUrl); return { ...x, orig: f, origUrl: URL.createObjectURL(f) }; }));

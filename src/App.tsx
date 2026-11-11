@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Device, type Hardware } from "./components/Device";
-import { screenOk, topOverlay } from "./lib/overlay";
+import { dlog, overlayDepth, screenOk, topOverlay } from "./lib/overlay";
 import { RightPanel, type KeyItem } from "./components/RightPanel";
 import { Catch, Cropper, cropToBlob, Dex, Entry, Login, Settings, type CatchDraft, type Ctx, type Filter } from "./screens";
 import { STRINGS, type StringKey } from "./lib/i18n";
@@ -163,7 +163,7 @@ export default function App() {
     down: () => { if (!topOverlay()) scrollBy(180); },
     left: () => { const o = topOverlay(); if (o) o.left?.(); else if (effectiveView === "entry") step(-1); },
     right: () => { const o = topOverlay(); if (o) o.right?.(); else if (effectiveView === "entry") step(1); },
-    ok: () => { const o = topOverlay(), so = screenOk(); if (o) o.ok?.(); else if (so && effectiveView === "catch") so(); else if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
+    ok: () => { const o = topOverlay(), so = screenOk(); dlog(`OK overlays ${overlayDepth()} view ${effectiveView}`); if (o) o.ok?.(); else if (so && effectiveView === "catch") so(); else if (effectiveView === "entry" && !wide) setPage(p => (p ? 0 : 1)); },
     b: () => {
       const o = topOverlay(); if (o) { o.back?.(); return; }
       if (effectiveView === "entry") {
@@ -269,7 +269,7 @@ export default function App() {
      <div className={`book${wide ? " wide" : ""}`} ref={bookRef}>
       <Device hw={hw} ledFlash={flash} status={status} pageEnabled={effectiveView === "entry"}
         catchEnabled={signedIn && all.length > 0}
-        onCatchFile={f => { const o = topOverlay(); if (o) o.other?.(f); else startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null); }}
+        onCatchFile={f => { const o = topOverlay(); dlog(`CATCH file ${f.type || "?"} overlays ${overlayDepth()} view ${effectiveView}`); if (o) o.other?.(f); else startCatch(f, effectiveView === "entry" && curSp ? curSp.inat : null); }}
         labels={{ a: t("catch"), b: t("back"), page: t("page"), counter: String(all.filter(s => caught.has(s.inat)).length), counterSub: t("caught") }}>
         {screen}
         {recrop && <Cropper ctx={ctx} src={recrop.url} onDone={finishRecrop} onCancel={closeRecrop} />}

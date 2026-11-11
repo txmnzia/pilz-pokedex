@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { registerSW } from "virtual:pwa-register";
 import "./index.css";
 import App from "./App";
+import { debugLog, dlog, overlayDepth } from "./lib/overlay";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
 
@@ -78,9 +79,12 @@ if (new URLSearchParams(location.search).has("debug")) {
       units.map(([u, el]) => `${u} ${Math.round(el.getBoundingClientRect().height)}`).join("  ") +
         `  vvTop ${Math.round(visualViewport?.offsetTop ?? 0)}  docH ${document.documentElement.clientHeight}`,
       `device top ${Math.round(dev?.top ?? 0)} h ${Math.round(dev?.height ?? 0)}`,
-      `standalone ${matchMedia("(display-mode: standalone)").matches}  v${__APP_VERSION__}`,
+      `standalone ${matchMedia("(display-mode: standalone)").matches}  v${__APP_VERSION__}  overlays ${overlayDepth()}`,
+      ...debugLog,
     ].join("\n");
   };
-  show(); setInterval(show, 2000); addEventListener("resize", show); visualViewport?.addEventListener("resize", show);
+  addEventListener("error", e => { dlog(`ERR ${e.message}`); show(); });
+  addEventListener("unhandledrejection", e => { dlog(`REJ ${String((e as PromiseRejectionEvent).reason).slice(0, 80)}`); show(); });
+  show(); setInterval(show, 1000); addEventListener("resize", show); visualViewport?.addEventListener("resize", show);
 }
 declare const __APP_VERSION__: string;
