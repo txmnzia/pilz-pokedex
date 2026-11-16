@@ -122,9 +122,9 @@ Layout
 - CATCH is the most prominent control; its label must fit (no oversized "ATTRAPER").
 
 Design artifacts (all in `design/`, published as claude.ai artifacts)
-- `mockup.html`: original UX + web two-panel design ([link removed])
+- `mockup.html`: original UX + web two-panel design
 - `icons.html`: earlier icon exploration (LED and ball options; superseded for edibility by badges)
-- `badges.html`: type-badge options, option C chosen ([link removed])
+- `badges.html`: type-badge options, option C chosen
 
 ## 5. Backlog / open points
 
@@ -132,8 +132,8 @@ Data
 - [x] The 8 "???" species (list in section 3) stay "???" on purpose (Sam, 2026-11-02). Do not ask again; only revisit
       if a source (Wikidata, mycodb) starts giving a value after a re-scrape.
 - [x] v0.15.0 (Sam, 2026-11-03): "recognition is often wrong, test alternatives, build a golden dataset". Golden set =
-      3511 iNat photos (data/golden.json); benchmark of the old model, FungiTastic, BioCLIP 2 and iNat online
-      (artifact [link removed]). Sam chose FungiTastic in the app (offline). Root cause
+      3511 iNat photos (data/golden.json); benchmark of the old model, FungiTastic, BioCLIP 2 and iNat online.
+      Sam chose FungiTastic in the app (offline). Root cause
       of the old failures: the old model knew only 175 of the 360 app taxa (0% on the others) and announced 32% of
       deadly photos as an edible species. Do not re-litigate; next steps are below.
 - [ ] FungiTastic knows 297 of the 360 app taxa; the 63 others (e.g. Cortinarius orellanus, Amanita verna, Mycena pura,

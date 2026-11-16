@@ -3,7 +3,7 @@ import type { Shape } from "../lib/species";
 import type { Edibility } from "../lib/types";
 
 // Black silhouettes, 100x100. Uncaught species only ever show these.
-// Silhouettes, 100x100, ground at y=92 (v0.10.0, design: [link removed]).
+// Silhouettes, 100x100, ground at y=92 (v0.10.0).
 // Generated from smooth splines (no straight edges); each shape = pieces drawn as separate paths with the nonzero rule,
 // so overlapping pieces stay solid. Only the cage has holes (wound the other way). Regenerate, don't hand-edit.
 const S: Record<Shape, string[]> = {

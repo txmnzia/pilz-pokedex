@@ -1,7 +1,6 @@
 # Silhouette archetypes for the Pilzdex (v0.10.0), 100x100, ground at y=92. Smooth curves only; each entry = list of pieces.
 # Usage: python3 scripts/silhouettes.py out.json   then paste the shapes into the S table of src/components/Art.tsx.
-# Rounds of review with Sam are kept in order (later assignments override earlier ones). Design page with photos:
-# [link removed]
+# Rounds of review with Sam are kept in order (later assignments override earlier ones).
 import math, json, sys
 OUT = sys.argv[1] if len(sys.argv) > 1 else "silhouettes.json"
 def f(x): return f"{x:.1f}".rstrip("0").rstrip(".")
