@@ -1,6 +1,6 @@
 # Pilzdex
 
-A Pokédex for the mushrooms I find around Berlin and Grenoble. Live: https://txmnzia.github.io/pilz-pokedex/
+A Pokédex for wild mushrooms. Live: https://txmnzia.github.io/pilz-pokedex/
 
 - 120 species (v0.10.0): the original 30, every deadly species observed in France or Germany (Wikidata + Wikipedia
   "Deadly fungi"), then edible and famous species ranked by iNaturalist observations in FR + DE × Wikipedia languages;
